@@ -52,6 +52,11 @@ Target length: below 150 lines.
 - Use real tab characters for indentation in all repository files instead of groups of four spaces.
 - Preserve tabs when editing existing files and correct space-based indentation to tabs when touching files.
 
+## Line Endings
+
+- Use `CRLF` line endings for all repository files.
+- Preserve `CRLF` when editing existing files and normalize non-CRLF files to `CRLF` when touching them.
+
 ## If status.md Does Not Exist
 
 Create it before making further changes, then continue following the normal process.
