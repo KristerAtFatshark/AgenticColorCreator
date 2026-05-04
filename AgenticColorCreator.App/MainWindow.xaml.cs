@@ -6,22 +6,22 @@ namespace AgenticColorCreator.App;
 
 public partial class MainWindow : Window
 {
-    public MainWindow()
-    {
-        InitializeComponent();
-        Closing += OnClosing;
-    }
+	public MainWindow()
+	{
+		InitializeComponent();
+		Closing += OnClosing;
+	}
 
-    private void OnClosing(object? sender, CancelEventArgs e)
-    {
-        if (DataContext is not MainWindowViewModel viewModel)
-        {
-            return;
-        }
+	private void OnClosing(object? sender, CancelEventArgs e)
+	{
+		if (DataContext is not MainWindowViewModel viewModel)
+		{
+			return;
+		}
 
-        if (!viewModel.ConfirmClose())
-        {
-            e.Cancel = true;
-        }
-    }
+		if (!viewModel.ConfirmClose())
+		{
+			e.Cancel = true;
+		}
+	}
 }

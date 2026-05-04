@@ -8,22 +8,22 @@ namespace AgenticColorCreator.App;
 
 public partial class App : Application
 {
-    protected override void OnStartup(StartupEventArgs e)
-    {
-        base.OnStartup(e);
+	protected override void OnStartup(StartupEventArgs e)
+	{
+		base.OnStartup(e);
 
-        var serializer = new AgenticColorsMarkdownSerializer();
-        var fileDialogService = new FileDialogService();
-        var messageBoxService = new MessageBoxService();
-        var colorPickerDialogService = new ColorPickerDialogService();
-        var mainWindowViewModel = new MainWindowViewModel(serializer, fileDialogService, messageBoxService, colorPickerDialogService);
+		var serializer = new AgenticColorsMarkdownSerializer();
+		var fileDialogService = new FileDialogService();
+		var messageBoxService = new MessageBoxService();
+		var colorPickerDialogService = new ColorPickerDialogService();
+		var mainWindowViewModel = new MainWindowViewModel(serializer, fileDialogService, messageBoxService, colorPickerDialogService);
 
-        var window = new MainWindow
-        {
-            DataContext = mainWindowViewModel,
-        };
+		var window = new MainWindow
+		{
+			DataContext = mainWindowViewModel,
+		};
 
-        MainWindow = window;
-        window.Show();
-    }
+		MainWindow = window;
+		window.Show();
+	}
 }
