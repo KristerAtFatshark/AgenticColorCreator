@@ -17,6 +17,11 @@ public partial class App : Application
 		var messageBoxService = new MessageBoxService();
 		var colorPickerDialogService = new ColorPickerDialogService();
 		var mainWindowViewModel = new MainWindowViewModel(serializer, fileDialogService, messageBoxService, colorPickerDialogService);
+		var defaultDocumentPath = DefaultDocumentLocator.GetDefaultDocumentPath();
+		if (defaultDocumentPath is not null)
+		{
+			mainWindowViewModel.TryLoadDocument(defaultDocumentPath);
+		}
 
 		var window = new MainWindow
 		{

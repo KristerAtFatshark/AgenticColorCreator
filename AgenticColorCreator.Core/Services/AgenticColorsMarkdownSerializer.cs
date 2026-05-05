@@ -34,10 +34,13 @@ public sealed class AgenticColorsMarkdownSerializer
 				throw new FormatException($"Color '{pendingColorName}' is missing a value.");
 			}
 
+			var (colorName, state) = ExtractColorNameAndState(currentCategoryName, pendingColorName);
+
 			currentColors.Add(new AgenticColorItem(
-				ExtractColorName(currentCategoryName, pendingColorName),
+				colorName,
 				ColorHexParser.Normalize(pendingColorValue),
-				string.Join("\n", pendingDescriptionLines).Trim()));
+				string.Join("\n", pendingDescriptionLines).Trim(),
+				state));
 
 			pendingColorName = null;
 			pendingColorValue = null;
@@ -153,7 +156,7 @@ public sealed class AgenticColorsMarkdownSerializer
 			foreach (var color in category.Colors)
 			{
 				builder.AppendLine();
-				builder.AppendLine($"### {category.Name.Trim()} / {color.Name.Trim()}");
+				builder.AppendLine($"### {category.Name.Trim()} / {color.Name.Trim()} {InteractionStateCatalog.ToLabel(color.State)}");
 				builder.AppendLine($"- value: {ColorHexParser.Normalize(color.HexValue)}");
 				builder.AppendLine($"- description: {NormalizeDescription(color.Description)}");
 			}
@@ -162,12 +165,23 @@ public sealed class AgenticColorsMarkdownSerializer
 		return builder.ToString().TrimEnd() + Environment.NewLine;
 	}
 
-	private static string ExtractColorName(string categoryName, string fullHeading)
+	private static (string Name, InteractionState State) ExtractColorNameAndState(string categoryName, string fullHeading)
 	{
 		var prefix = $"{categoryName} / ";
-		return fullHeading.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)
+		var strippedHeading = fullHeading.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)
 			? fullHeading[prefix.Length..].Trim()
 			: fullHeading.Trim();
+
+		foreach (var state in InteractionStateCatalog.AllStates)
+		{
+			var suffix = $" {InteractionStateCatalog.ToLabel(state)}";
+			if (strippedHeading.EndsWith(suffix, StringComparison.OrdinalIgnoreCase))
+			{
+				return (strippedHeading[..^suffix.Length].Trim(), state);
+			}
+		}
+
+		return (strippedHeading, InteractionState.Default);
 	}
 
 	private static string NormalizeDescription(string description)

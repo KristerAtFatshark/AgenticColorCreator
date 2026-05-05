@@ -31,22 +31,25 @@ public static class AgenticColorsValidator
 
 			foreach (var color in category.Colors)
 			{
+				var stateLabel = InteractionStateCatalog.ToLabel(color.State);
+				var duplicateKey = $"{stateLabel}:{color.Name.Trim()}";
+
 				if (string.IsNullOrWhiteSpace(color.Name))
 				{
-					errors.Add($"Category '{category.Name}' contains a color without a name.");
+					errors.Add($"Category '{category.Name}' contains a color without a name in state '{stateLabel}'.");
 				}
-				else if (!seenNames.Add(color.Name.Trim()))
+				else if (!seenNames.Add(duplicateKey))
 				{
-					errors.Add($"Category '{category.Name}' contains duplicate color name '{color.Name.Trim()}'.");
+					errors.Add($"Category '{category.Name}' contains duplicate color name '{color.Name.Trim()}' in state '{stateLabel}'.");
 				}
 
 				if (string.IsNullOrWhiteSpace(color.HexValue))
 				{
-					errors.Add($"Color '{color.Name}' in category '{category.Name}' is missing a hex value.");
+					errors.Add($"Color '{color.Name}' in category '{category.Name}' and state '{stateLabel}' is missing a hex value.");
 				}
 				else if (!ColorHexParser.TryParseArgb(color.HexValue, out _))
 				{
-					errors.Add($"Color '{color.Name}' in category '{category.Name}' must use '#AARRGGBB'.");
+					errors.Add($"Color '{color.Name}' in category '{category.Name}' and state '{stateLabel}' must use '#AARRGGBB'.");
 				}
 			}
 		}

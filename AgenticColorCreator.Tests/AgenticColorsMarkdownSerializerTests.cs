@@ -17,7 +17,8 @@ public sealed class AgenticColorsMarkdownSerializerTests
 			{
 				new("Surface", new List<AgenticColorItem>
 				{
-					new("App Background", "#ff101418", "Main application background."),
+					new("App Background", "#ff101418", "Main application background.", InteractionState.Default),
+					new("App Background", "#ff202428", "Selected application background.", InteractionState.Selected),
 				}),
 			});
 
@@ -27,7 +28,8 @@ public sealed class AgenticColorsMarkdownSerializerTests
 		Assert.Contains("- format: agentic-colors/v1", markdown);
 		Assert.Contains("- name: Default Theme", markdown);
 		Assert.Contains("## Category: Surface", markdown);
-		Assert.Contains("### Surface / App Background", markdown);
+		Assert.Contains("### Surface / App Background Default", markdown);
+		Assert.Contains("### Surface / App Background Selected", markdown);
 		Assert.Contains("- value: #FF101418", markdown);
 	}
 
@@ -43,7 +45,7 @@ public sealed class AgenticColorsMarkdownSerializerTests
 
 ## Category: Text
 
-### Text / Primary
+### Text / Primary Disabled
 - value: #FFF3F5F7
 - description: High emphasis text.
 """;
@@ -56,6 +58,7 @@ public sealed class AgenticColorsMarkdownSerializerTests
 		Assert.Single(document.Categories[0].Colors);
 		Assert.Equal("Primary", document.Categories[0].Colors[0].Name);
 		Assert.Equal("#FFF3F5F7", document.Categories[0].Colors[0].HexValue);
+		Assert.Equal(InteractionState.Disabled, document.Categories[0].Colors[0].State);
 	}
 
 	[Fact]

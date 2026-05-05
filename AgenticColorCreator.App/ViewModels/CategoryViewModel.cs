@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
@@ -14,6 +15,7 @@ public sealed class CategoryViewModel : ViewModelBase
 	private bool _isExpanded;
 	private readonly Action _markDirty;
 	private readonly IColorPickerDialogService _colorPickerDialogService;
+	private readonly Dictionary<InteractionState, StateGroupViewModel> _stateGroupsByState;
 
 	public CategoryViewModel(
 		ColorCategory model,
@@ -25,12 +27,21 @@ public sealed class CategoryViewModel : ViewModelBase
 		_isExpanded = model.IsExpanded;
 		_markDirty = markDirty;
 		_colorPickerDialogService = colorPickerDialogService;
-		Colors = new ObservableCollection<ColorItemViewModel>(model.Colors.Select(color => new ColorItemViewModel(color, RemoveColor, MarkDirty, _colorPickerDialogService)));
+		_stateGroupsByState = InteractionStateCatalog.AllStates.ToDictionary(
+			state => state,
+			state => new StateGroupViewModel(state, () => AddColor(state)));
+		StateGroups = new ObservableCollection<StateGroupViewModel>(_stateGroupsByState.Values);
+
+		foreach (var color in model.Colors)
+		{
+			AddColorItem(color);
+		}
+
 		AddColorCommand = new RelayCommand(AddColor);
 		RemoveCategoryCommand = new RelayCommand(() => removeAction(this));
 	}
 
-	public ObservableCollection<ColorItemViewModel> Colors { get; }
+	public ObservableCollection<StateGroupViewModel> StateGroups { get; }
 
 	public ICommand AddColorCommand { get; }
 
@@ -62,20 +73,51 @@ public sealed class CategoryViewModel : ViewModelBase
 
 	public void AddColor()
 	{
-		Colors.Add(new ColorItemViewModel(new AgenticColorItem("New Color", "#FF000000", string.Empty), RemoveColor, MarkDirty, _colorPickerDialogService));
-		IsExpanded = true;
-		MarkDirty();
+		AddColor(InteractionState.Default);
 	}
 
 	internal ColorCategory ToModel()
 	{
-		return new ColorCategory(Name.Trim(), Colors.Select(color => color.ToModel()).ToList(), IsExpanded);
+		return new ColorCategory(Name.Trim(), StateGroups.SelectMany(group => group.Colors).Select(color => color.ToModel()).ToList(), IsExpanded);
 	}
 
 	private void RemoveColor(ColorItemViewModel color)
 	{
-		Colors.Remove(color);
+		foreach (var group in StateGroups)
+		{
+			if (group.Colors.Remove(color))
+			{
+				break;
+			}
+		}
+
 		MarkDirty();
+	}
+
+	private void AddColor(InteractionState state)
+	{
+		AddColorItem(new AgenticColorItem("New Color", "#FF000000", string.Empty, state));
+		IsExpanded = true;
+		MarkDirty();
+	}
+
+	private void AddColorItem(AgenticColorItem color)
+	{
+		var colorViewModel = new ColorItemViewModel(color, RemoveColor, MoveColorToState, MarkDirty, _colorPickerDialogService);
+		_stateGroupsByState[color.State].Colors.Add(colorViewModel);
+	}
+
+	private void MoveColorToState(ColorItemViewModel color, InteractionState targetState)
+	{
+		foreach (var group in StateGroups)
+		{
+			if (group.Colors.Remove(color))
+			{
+				break;
+			}
+		}
+
+		_stateGroupsByState[targetState].Colors.Add(color);
 	}
 
 	private void MarkDirty()

@@ -98,6 +98,26 @@ public sealed class MainWindowViewModel : ViewModelBase
 		return _messageBoxService.Confirm("You have unsaved changes. Close without saving?", "Unsaved Changes");
 	}
 
+	public bool TryLoadDocument(string path)
+	{
+		try
+		{
+			var markdown = File.ReadAllText(path);
+			var document = _serializer.Deserialize(markdown);
+			LoadDocument(document);
+			_currentFilePath = path;
+			_isDirty = false;
+			OnPropertyChanged(nameof(CurrentFileDisplay));
+			StatusMessage = "Document loaded";
+			return true;
+		}
+		catch (Exception exception)
+		{
+			_messageBoxService.ShowError($"Failed to open file.\n\n{exception.Message}", "Open Failed");
+			return false;
+		}
+	}
+
 	private void NewDocument()
 	{
 		if (!ConfirmAbandonUnsavedChanges())
@@ -110,12 +130,12 @@ public sealed class MainWindowViewModel : ViewModelBase
 		Categories.Clear();
 		Categories.Add(new CategoryViewModel(new ColorCategory("Surface", new List<AgenticColorItem>
 		{
-			new("App Background", "#FF101418", "Main application window background."),
-			new("Panel", "#FF1A2026", "Secondary containers such as panels and cards."),
+			new("App Background", "#FF101418", "Main application window background.", InteractionState.Default),
+			new("Panel", "#FF1A2026", "Secondary containers such as panels and cards.", InteractionState.Default),
 		}, true), RemoveCategory, MarkDirty, _colorPickerDialogService));
 		Categories.Add(new CategoryViewModel(new ColorCategory("Text", new List<AgenticColorItem>
 		{
-			new("Primary", "#FFF3F5F7", "Default high emphasis text color."),
+			new("Primary", "#FFF3F5F7", "Default high emphasis text color.", InteractionState.Default),
 		}, true), RemoveCategory, MarkDirty, _colorPickerDialogService));
 		_isDirty = false;
 		ValidateDocument();
@@ -139,13 +159,7 @@ public sealed class MainWindowViewModel : ViewModelBase
 
 		try
 		{
-			var markdown = File.ReadAllText(path);
-			var document = _serializer.Deserialize(markdown);
-			LoadDocument(document);
-			_currentFilePath = path;
-			_isDirty = false;
-			OnPropertyChanged(nameof(CurrentFileDisplay));
-			StatusMessage = "Document loaded";
+			TryLoadDocument(path);
 		}
 		catch (Exception exception)
 		{

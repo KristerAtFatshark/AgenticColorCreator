@@ -13,6 +13,29 @@
 	<Window.Resources>
 		<BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 
+		<DataTemplate DataType="{x:Type viewModels:StateGroupViewModel}">
+			<StackPanel Margin="0,0,0,10">
+				<Grid Margin="0,0,0,6">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*" />
+						<ColumnDefinition Width="Auto" />
+					</Grid.ColumnDefinitions>
+
+					<TextBlock VerticalAlignment="Center"
+							   FontWeight="SemiBold"
+							   Foreground="{StaticResource HeaderBrush}"
+							   Text="{Binding DisplayName}" />
+					<Button Grid.Column="1"
+							Margin="0"
+							Padding="8,2"
+							Command="{Binding AddColorCommand}"
+							Content="Add" />
+				</Grid>
+
+				<ItemsControl ItemsSource="{Binding Colors}" />
+			</StackPanel>
+		</DataTemplate>
+
 		<DataTemplate DataType="{x:Type viewModels:ColorItemViewModel}">
 			<Border Margin="0,0,0,12"
 					Background="#FF1C2731"
@@ -28,6 +51,7 @@
 						<ColumnDefinition Width="Auto" />
 						<ColumnDefinition Width="Auto" />
 						<ColumnDefinition Width="*" />
+						<ColumnDefinition Width="Auto" />
 						<ColumnDefinition Width="Auto" />
 					</Grid.ColumnDefinitions>
 
@@ -63,8 +87,27 @@
 							 VerticalContentAlignment="Center"
 							 Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
 
+					<ComboBox Grid.Row="0"
+							  Grid.Column="3"
+							  Width="92"
+							  Margin="0,0,8,6"
+							  Template="{StaticResource BlueComboBoxTemplate}"
+							  VerticalContentAlignment="Center"
+							  ItemContainerStyle="{StaticResource ComboPopupItemStyle}"
+							  ItemsSource="{Binding AvailableStates}"
+							  SelectedItem="{Binding State, UpdateSourceTrigger=PropertyChanged}">
+						<ComboBox.Resources>
+							<SolidColorBrush x:Key="{x:Static SystemColors.WindowBrushKey}" Color="#FF22303D" />
+							<SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#FF35506A" />
+							<SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#FF22303D" />
+							<SolidColorBrush x:Key="{x:Static SystemColors.ControlLightBrushKey}" Color="#FF22303D" />
+							<SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}" Color="#FFF1F5F9" />
+							<SolidColorBrush x:Key="{x:Static SystemColors.WindowTextBrushKey}" Color="#FFF1F5F9" />
+						</ComboBox.Resources>
+					</ComboBox>
+
 					<Button Grid.Row="0"
-							Grid.Column="3"
+							Grid.Column="4"
 							Margin="0,0,0,6"
 							Padding="10,4"
 							Command="{Binding RemoveCommand}"
@@ -72,7 +115,7 @@
 
 					<TextBox Grid.Row="1"
 							 Grid.Column="0"
-							 Grid.ColumnSpan="4"
+							 Grid.ColumnSpan="5"
 							 Margin="0"
 							 Padding="8,4"
 							 Height="28"
@@ -99,7 +142,6 @@
 				<Grid.RowDefinitions>
 					<RowDefinition Height="Auto" />
 					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
 				</Grid.RowDefinitions>
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="*" />
@@ -123,23 +165,7 @@
 						   Foreground="{StaticResource AccentBrush}"
 						   Text="{Binding StatusMessage}" />
 
-				<Grid Grid.Row="1"
-					  Grid.ColumnSpan="2"
-					  Margin="0,12,0,0">
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="Auto" />
-						<ColumnDefinition Width="*" />
-					</Grid.ColumnDefinitions>
-
-					<TextBlock Margin="0,0,12,0"
-							   VerticalAlignment="Center"
-							   FontWeight="SemiBold"
-							   Text="Document Title" />
-					<TextBox Grid.Column="1"
-							 Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}" />
-				</Grid>
-
-				<TextBlock Grid.Row="2"
+				<TextBlock Grid.Row="1"
 						   Grid.ColumnSpan="2"
 						   Margin="0,12,0,0"
 						   Text="{Binding CurrentFileDisplay}" />
@@ -218,7 +244,7 @@
 							</Expander.Header>
 
 							<StackPanel Margin="5,4,14,14">
-								<ItemsControl ItemsSource="{Binding Colors}" />
+								<ItemsControl ItemsSource="{Binding StateGroups}" />
 							</StackPanel>
 						</Expander>
 					</DataTemplate>

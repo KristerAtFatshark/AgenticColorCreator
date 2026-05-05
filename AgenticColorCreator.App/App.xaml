@@ -4,10 +4,18 @@
 	<Application.Resources>
 		<SolidColorBrush x:Key="WindowBackgroundBrush" Color="#FF0F141A" />
 		<SolidColorBrush x:Key="PanelBackgroundBrush" Color="#FF18212B" />
+		<SolidColorBrush x:Key="PopupBackgroundBrush" Color="#FF22303D" />
 		<SolidColorBrush x:Key="BorderBrush" Color="#FF304050" />
 		<SolidColorBrush x:Key="HeaderBrush" Color="#FFDCE7F3" />
 		<SolidColorBrush x:Key="BodyBrush" Color="#FFB7C4D1" />
 		<SolidColorBrush x:Key="AccentBrush" Color="#FF5EB2FF" />
+		<SolidColorBrush x:Key="ComboItemHoverBrush" Color="#FF2B3E50" />
+		<SolidColorBrush x:Key="ComboItemSelectedBrush" Color="#FF35506A" />
+		<SolidColorBrush x:Key="ComboPopupWindowBrush" Color="#FF22303D" />
+		<SolidColorBrush x:Key="ComboPopupWindowTextBrush" Color="#FFF1F5F9" />
+		<SolidColorBrush x:Key="ComboPopupControlBrush" Color="#FF22303D" />
+		<SolidColorBrush x:Key="ComboPopupControlLightBrush" Color="#FF22303D" />
+		<SolidColorBrush x:Key="ComboPopupHighlightBrush" Color="#FF35506A" />
 
 		<Style TargetType="Window">
 			<Setter Property="Background" Value="{StaticResource WindowBackgroundBrush}" />
@@ -30,6 +38,82 @@
 			<Setter Property="Padding" Value="4,3" />
 			<Setter Property="Margin" Value="0,2,0,2" />
 		</Style>
+
+		<Style TargetType="ComboBox">
+			<Setter Property="Background" Value="#FF22303D" />
+			<Setter Property="Foreground" Value="#FFF1F5F9" />
+			<Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
+			<Setter Property="Padding" Value="4,3" />
+			<Setter Property="Margin" Value="0,2,0,2" />
+		</Style>
+
+		<Style x:Key="ComboPopupItemStyle" TargetType="ComboBoxItem">
+			<Setter Property="Background" Value="{StaticResource PopupBackgroundBrush}" />
+			<Setter Property="Foreground" Value="#FFF1F5F9" />
+			<Setter Property="Padding" Value="6,3" />
+			<Style.Triggers>
+				<Trigger Property="IsHighlighted" Value="True">
+					<Setter Property="Background" Value="{StaticResource ComboItemHoverBrush}" />
+				</Trigger>
+				<Trigger Property="IsSelected" Value="True">
+					<Setter Property="Background" Value="{StaticResource ComboItemSelectedBrush}" />
+				</Trigger>
+			</Style.Triggers>
+		</Style>
+
+		<ControlTemplate x:Key="BlueComboBoxToggleButtonTemplate" TargetType="ToggleButton">
+			<Border Background="{TemplateBinding Background}"
+					BorderBrush="{TemplateBinding BorderBrush}"
+					BorderThickness="1"
+					CornerRadius="4">
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*" />
+						<ColumnDefinition Width="22" />
+					</Grid.ColumnDefinitions>
+					<Path Grid.Column="1"
+						  HorizontalAlignment="Center"
+						  VerticalAlignment="Center"
+						  Fill="#FFF1F5F9"
+						  Data="M 0 0 L 4 4 L 8 0 Z" />
+				</Grid>
+			</Border>
+		</ControlTemplate>
+
+		<ControlTemplate x:Key="BlueComboBoxTemplate" TargetType="ComboBox">
+			<Grid>
+				<ToggleButton Name="ToggleButton"
+						  Background="{TemplateBinding Background}"
+						  BorderBrush="{TemplateBinding BorderBrush}"
+						  Focusable="False"
+						  IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+						  Template="{StaticResource BlueComboBoxToggleButtonTemplate}" />
+				<ContentPresenter Margin="8,0,28,0"
+							  VerticalAlignment="Center"
+							  HorizontalAlignment="Left"
+							  Content="{TemplateBinding SelectionBoxItem}"
+							  ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+							  ContentStringFormat="{TemplateBinding SelectionBoxItemStringFormat}"
+							  RecognizesAccessKey="True"
+							  SnapsToDevicePixels="True" />
+				<Popup Name="Popup"
+					   Placement="Bottom"
+					   AllowsTransparency="True"
+					   Focusable="False"
+					   IsOpen="{TemplateBinding IsDropDownOpen}"
+					   PopupAnimation="Slide">
+					<Border Margin="0,2,0,0"
+							Background="{StaticResource PopupBackgroundBrush}"
+							BorderBrush="{TemplateBinding BorderBrush}"
+							BorderThickness="1"
+							CornerRadius="4">
+						<ScrollViewer SnapsToDevicePixels="True">
+							<ItemsPresenter />
+						</ScrollViewer>
+					</Border>
+				</Popup>
+			</Grid>
+		</ControlTemplate>
 
 		<Style TargetType="Button">
 			<Setter Property="Background" Value="#FF22303D" />

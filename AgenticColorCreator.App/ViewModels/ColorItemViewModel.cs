@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Windows.Input;
 using System.Windows;
 using System.Windows.Media;
@@ -14,19 +15,24 @@ public sealed class ColorItemViewModel : ViewModelBase
 	private string _name;
 	private string _hexValue;
 	private string _description;
+	private InteractionState _state;
 
 	private readonly IColorPickerDialogService _colorPickerDialogService;
+	private readonly Action<ColorItemViewModel, InteractionState> _moveStateAction;
 
 	public ColorItemViewModel(
 		AgenticColorItem model,
 		Action<ColorItemViewModel> removeAction,
+		Action<ColorItemViewModel, InteractionState> moveStateAction,
 		Action markDirty,
 		IColorPickerDialogService colorPickerDialogService)
 	{
 		_name = model.Name;
 		_hexValue = model.HexValue;
 		_description = model.Description;
+		_state = model.State;
 		_colorPickerDialogService = colorPickerDialogService;
+		_moveStateAction = moveStateAction;
 		RemoveCommand = new RelayCommand(() => removeAction(this));
 		OpenColorPickerCommand = new RelayCommand(OpenColorPicker);
 		MarkDirty = markDirty;
@@ -35,6 +41,8 @@ public sealed class ColorItemViewModel : ViewModelBase
 	public ICommand RemoveCommand { get; }
 
 	public ICommand OpenColorPickerCommand { get; }
+
+	public IReadOnlyList<InteractionState> AvailableStates => InteractionStateCatalog.AllStates;
 
 	public Brush PreviewBrush
 	{
@@ -83,9 +91,22 @@ public sealed class ColorItemViewModel : ViewModelBase
 		}
 	}
 
+	public InteractionState State
+	{
+		get => _state;
+		set
+		{
+			if (SetProperty(ref _state, value))
+			{
+				_moveStateAction(this, value);
+				MarkDirty();
+			}
+		}
+	}
+
 	internal AgenticColorItem ToModel()
 	{
-		return new AgenticColorItem(Name.Trim(), HexValue.Trim(), Description.Trim());
+		return new AgenticColorItem(Name.Trim(), HexValue.Trim(), Description.Trim(), State);
 	}
 
 	private void OpenColorPicker()

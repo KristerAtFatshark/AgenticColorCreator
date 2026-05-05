@@ -4,6 +4,9 @@
 - WPF desktop application scaffolded with a working editor for `agentic_colors.md` files.
 - Solution now contains `AgenticColorCreator.App`, `AgenticColorCreator.Core`, and `AgenticColorCreator.Tests`.
 - The app can create, load, edit, validate, and save the planned markdown color format.
+- On startup, the app now auto-loads `Color\agentic_colors.md` if that file exists in the repository tree.
+- Categories now contain fixed interaction-state subcategories: `Default`, `Selected`, `Pressed`, `Hovered`, and `Disabled`.
+- Colors can be moved between those fixed subcategories by changing the state selector on each color item.
 - The color preview now opens an interactive popup picker for ARGB editing.
 - Color cards have been compacted for denser browsing of large color sets.
 - Repository indentation has been normalized to real tab characters for leading indentation.
@@ -36,6 +39,15 @@
 - Increased header action button padding and spacing so `Add Color` and `Remove Category` display their full labels while keeping the corrected far-right alignment.
 - Converted leading groups of four spaces to real tabs across repository source and documentation files.
 - Converted repository source and documentation files to `CRLF` line endings.
+- Added startup default-document discovery so the editor auto-loads `Color\agentic_colors.md` when present.
+- Added a regression test for default document path discovery from nested app output directories.
+- Removed the document title label and toolbar input field from the main window header since the active file path already provides the document context.
+- Added fixed interaction-state subcategories to each category and updated markdown parsing/serialization to treat trailing state labels as structured data.
+- Added item-level state selection so colors can move between subcategories without deleting and recreating them.
+- Styled `ComboBox` controls to use the same blue-toned background and foreground treatment as the other editor inputs.
+- Styled the `ComboBox` dropdown popup and item containers so the open state list no longer falls back to the default white system background.
+- Fixed a WPF startup crash caused by attempting to set `ComboBox.Resources` through a style setter; dropdown theming is now applied through valid keyed resources and per-control popup resources.
+- Added a custom closed-state `ComboBox` template for the interaction-state selector so the visible selected item area also uses the blue-toned background instead of the default white surface.
 - Added shared core models plus markdown serialization and validation logic.
 - Added unit tests for markdown parsing, serialization, duplicate detection, and hex validation.
 - Verified with `dotnet build AgenticColorCreator.sln` and `dotnet test AgenticColorCreator.Tests\AgenticColorCreator.Tests.csproj`.
