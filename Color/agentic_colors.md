@@ -170,4 +170,74 @@
 
 ### Grid / Background Default
 - value: #FF333333
+- description: 
+
+## Category: Scrollbar
+
+### Scrollbar / Background Default
+- value: #FF292929
+- description: 
+
+### Scrollbar / Border Default
+- value: #FF292929
+- description: 
+
+### Scrollbar / Glyph Default
+- value: #FF555555
+- description: 
+
+### Scrollbar / Thumb Default
+- value: #FF555555
+- description: 
+
+### Scrollbar / Thumb.Border Default
+- value: #FF555555
+- description: 
+
+### Scrollbar / Background Pressed
+- value: #FF555555
+- description: 
+
+### Scrollbar / Border Pressed
+- value: #FF292929
+- description: 
+
+### Scrollbar / Thumb Pressed
+- value: #FF555555
+- description: 
+
+### Scrollbar / Glyph Pressed
+- value: #FF000000
+- description: 
+
+### Scrollbar / Background Hovered
+- value: #FF555555
+- description: 
+
+### Scrollbar / Border Hovered
+- value: #FF292929
+- description: 
+
+### Scrollbar / Glyph Hovered
+- value: #FF000000
+- description: 
+
+### Scrollbar / Thumb Hovered
+- value: #FF555555
+- description: 
+
+### Scrollbar / Thumb.Border Hovered
+- value: #FF555555
+- description: 
+
+### Scrollbar / Background Disabled
+- value: #FF292929
+- description: 
+
+### Scrollbar / Border Disabled
+- value: #FF292929
+- description: 
+
+### Scrollbar / Glyph Disabled
+- value: #FFD4D4D4
 - description:

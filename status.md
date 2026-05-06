@@ -78,6 +78,7 @@
 - Updated all application windows to set `Background="{StaticResource WindowBackgroundBrush}"` directly on the `Window` element instead of relying on the shared `Window` style alone.
 - Removed the background from the top-level `Grid Margin="20"` so only the actual child panels own the `Panel` background color.
 - Added `Expand All` and `Collapse All` buttons under the current file section in the top panel and wired them to expand or collapse every category in the main list.
+- Corrected the scrollbar theme mapping to use the actual `ScrollBar` category values from `agentic_colors.md` instead of the incorrect placeholder colors used in the first pass.
 - Added shared core models plus markdown serialization and validation logic.
 - Added unit tests for markdown parsing, serialization, duplicate detection, and hex validation.
 - Verified with `dotnet build AgenticColorCreator.sln` and `dotnet test AgenticColorCreator.Tests\AgenticColorCreator.Tests.csproj`.
