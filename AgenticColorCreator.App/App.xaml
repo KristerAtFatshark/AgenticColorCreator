@@ -17,9 +17,15 @@
 		<SolidColorBrush x:Key="ComboItemSelectedBrush" Color="#51FF9600" />
 		<SolidColorBrush x:Key="ComboItemBorderHoverBrush" Color="#FF0C0C0C" />
 		<SolidColorBrush x:Key="ScrollBarTrackBrush" Color="#FF292929" />
-		<SolidColorBrush x:Key="ScrollBarThumbBrush" Color="#FF555555" />
+		<SolidColorBrush x:Key="ScrollBarThumbBrush" Color="#FF414141" />
 		<SolidColorBrush x:Key="ScrollBarThumbHoverBrush" Color="#FF555555" />
 		<SolidColorBrush x:Key="ScrollBarThumbPressedBrush" Color="#FF555555" />
+		<SolidColorBrush x:Key="SliderBackgroundBrush" Color="#FF292929" />
+		<SolidColorBrush x:Key="SliderTrackBrush" Color="#FF414141" />
+		<SolidColorBrush x:Key="SliderThumbBrush" Color="#FF414141" />
+		<SolidColorBrush x:Key="SliderThumbHoverBrush" Color="#FF555555" />
+		<SolidColorBrush x:Key="SliderThumbPressedBrush" Color="#FF555555" />
+		<SolidColorBrush x:Key="SliderBorderBrush" Color="#FF1E1E1E" />
 
 		<Style TargetType="Window">
 			<Setter Property="Background" Value="{StaticResource WindowBackgroundBrush}" />
@@ -265,9 +271,9 @@
 
 		<SolidColorBrush x:Key="ScrollBar.Static.Background" Color="#FF292929" />
 		<SolidColorBrush x:Key="ScrollBar.Static.Border" Color="#FF292929" />
-		<SolidColorBrush x:Key="ScrollBar.Static.Glyph" Color="#FF555555" />
-		<SolidColorBrush x:Key="ScrollBar.Static.Thumb" Color="#FF555555" />
-		<SolidColorBrush x:Key="ScrollBar.Static.Thumb.Border" Color="#FF555555" />
+		<SolidColorBrush x:Key="ScrollBar.Static.Glyph" Color="#FF414141" />
+		<SolidColorBrush x:Key="ScrollBar.Static.Thumb" Color="#FF414141" />
+		<SolidColorBrush x:Key="ScrollBar.Static.Thumb.Border" Color="#FF414141" />
 
 		<SolidColorBrush x:Key="ScrollBar.MouseOver.Background" Color="#FF555555" />
 		<SolidColorBrush x:Key="ScrollBar.MouseOver.Border" Color="#FF292929" />
@@ -352,20 +358,28 @@
 				<Setter.Value>
 					<ControlTemplate TargetType="Thumb">
 						<Border x:Name="rectangle"
+								Background="{StaticResource ScrollBar.Static.Thumb.Border}"
 								BorderThickness="1"
 								CornerRadius="3"
 								BorderBrush="{StaticResource ScrollBar.Static.Thumb.Border}"
-								Background="{StaticResource ScrollBar.Static.Thumb}"
 								Height="{TemplateBinding Height}"
 								SnapsToDevicePixels="True"
-								Width="7" />
+								Width="7">
+							<Border x:Name="thumbFill"
+									Background="{StaticResource ScrollBar.Static.Thumb}"
+									CornerRadius="2"
+									Margin="0.5" />
+						</Border>
 						<ControlTemplate.Triggers>
 							<Trigger Property="IsMouseOver" Value="True">
-								<Setter Property="Background" TargetName="rectangle" Value="{StaticResource ScrollBar.MouseOver.Thumb}" />
+								<Setter Property="Background" TargetName="rectangle" Value="{StaticResource ScrollBar.MouseOver.Thumb.Border}" />
 								<Setter Property="BorderBrush" TargetName="rectangle" Value="{StaticResource ScrollBar.MouseOver.Thumb.Border}" />
+								<Setter Property="Background" TargetName="thumbFill" Value="{StaticResource ScrollBar.MouseOver.Thumb}" />
 							</Trigger>
 							<Trigger Property="IsDragging" Value="True">
-								<Setter Property="Background" TargetName="rectangle" Value="{StaticResource ScrollBar.Pressed.Thumb}" />
+								<Setter Property="Background" TargetName="rectangle" Value="{StaticResource ScrollBar.Static.Thumb.Border}" />
+								<Setter Property="BorderBrush" TargetName="rectangle" Value="{StaticResource ScrollBar.Static.Thumb.Border}" />
+								<Setter Property="Background" TargetName="thumbFill" Value="{StaticResource ScrollBar.Pressed.Thumb}" />
 							</Trigger>
 						</ControlTemplate.Triggers>
 					</ControlTemplate>
@@ -381,20 +395,28 @@
 				<Setter.Value>
 					<ControlTemplate TargetType="Thumb">
 						<Border x:Name="rectangle"
+								Background="{StaticResource ScrollBar.Static.Thumb.Border}"
 								BorderThickness="1"
 								CornerRadius="3"
 								BorderBrush="{StaticResource ScrollBar.Static.Thumb.Border}"
-								Background="{StaticResource ScrollBar.Static.Thumb}"
 								Height="7"
 								SnapsToDevicePixels="True"
-								Width="{TemplateBinding Width}" />
+								Width="{TemplateBinding Width}">
+							<Border x:Name="thumbFill"
+									Background="{StaticResource ScrollBar.Static.Thumb}"
+									CornerRadius="2"
+									Margin="0.5" />
+						</Border>
 						<ControlTemplate.Triggers>
 							<Trigger Property="IsMouseOver" Value="True">
-								<Setter Property="Background" TargetName="rectangle" Value="{StaticResource ScrollBar.MouseOver.Thumb}" />
+								<Setter Property="Background" TargetName="rectangle" Value="{StaticResource ScrollBar.MouseOver.Thumb.Border}" />
 								<Setter Property="BorderBrush" TargetName="rectangle" Value="{StaticResource ScrollBar.MouseOver.Thumb.Border}" />
+								<Setter Property="Background" TargetName="thumbFill" Value="{StaticResource ScrollBar.MouseOver.Thumb}" />
 							</Trigger>
 							<Trigger Property="IsDragging" Value="True">
-								<Setter Property="Background" TargetName="rectangle" Value="{StaticResource ScrollBar.Pressed.Thumb}" />
+								<Setter Property="Background" TargetName="rectangle" Value="{StaticResource ScrollBar.Static.Thumb.Border}" />
+								<Setter Property="BorderBrush" TargetName="rectangle" Value="{StaticResource ScrollBar.Static.Thumb.Border}" />
+								<Setter Property="Background" TargetName="thumbFill" Value="{StaticResource ScrollBar.Pressed.Thumb}" />
 							</Trigger>
 						</ControlTemplate.Triggers>
 					</ControlTemplate>
@@ -594,6 +616,89 @@
 							</ControlTemplate>
 						</Setter.Value>
 					</Setter>
+				</Trigger>
+			</Style.Triggers>
+		</Style>
+
+		<Style x:Key="SliderThumbStyle" TargetType="Thumb">
+			<Setter Property="OverridesDefaultStyle" Value="True" />
+			<Setter Property="IsTabStop" Value="False" />
+			<Setter Property="Cursor" Value="Hand" />
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="Thumb">
+						<Border x:Name="SliderThumbBorder"
+								Background="{StaticResource SliderThumbBrush}"
+								BorderBrush="{StaticResource SliderThumbBrush}"
+								BorderThickness="1"
+								CornerRadius="7"
+								Width="14"
+								Height="14"
+								SnapsToDevicePixels="True" />
+						<ControlTemplate.Triggers>
+							<Trigger Property="IsMouseOver" Value="True">
+								<Setter TargetName="SliderThumbBorder" Property="Background" Value="{StaticResource SliderThumbHoverBrush}" />
+								<Setter TargetName="SliderThumbBorder" Property="BorderBrush" Value="{StaticResource SliderThumbHoverBrush}" />
+							</Trigger>
+							<Trigger Property="IsDragging" Value="True">
+								<Setter TargetName="SliderThumbBorder" Property="Background" Value="{StaticResource SliderThumbPressedBrush}" />
+								<Setter TargetName="SliderThumbBorder" Property="BorderBrush" Value="{StaticResource SliderThumbPressedBrush}" />
+							</Trigger>
+						</ControlTemplate.Triggers>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+
+		<ControlTemplate x:Key="HorizontalSliderTemplate" TargetType="Slider">
+			<Grid Margin="0,2">
+				<Border Background="{StaticResource SliderBackgroundBrush}"
+						BorderBrush="{StaticResource SliderBorderBrush}"
+						BorderThickness="1"
+						CornerRadius="3"
+						Height="10"
+						VerticalAlignment="Center" />
+				<Track x:Name="PART_Track"
+					   VerticalAlignment="Center">
+					<Track.DecreaseRepeatButton>
+						<RepeatButton Style="{StaticResource RepeatButtonTransparent}">
+							<RepeatButton.Template>
+								<ControlTemplate TargetType="RepeatButton">
+									<Border Background="{StaticResource SliderTrackBrush}"
+											CornerRadius="3"
+											Height="6"
+											VerticalAlignment="Center" />
+								</ControlTemplate>
+							</RepeatButton.Template>
+						</RepeatButton>
+					</Track.DecreaseRepeatButton>
+					<Track.IncreaseRepeatButton>
+						<RepeatButton Style="{StaticResource RepeatButtonTransparent}">
+							<RepeatButton.Template>
+								<ControlTemplate TargetType="RepeatButton">
+									<Border Background="{StaticResource SliderBackgroundBrush}"
+											CornerRadius="3"
+											Height="6"
+											VerticalAlignment="Center" />
+								</ControlTemplate>
+							</RepeatButton.Template>
+						</RepeatButton>
+					</Track.IncreaseRepeatButton>
+					<Track.Thumb>
+						<Thumb Style="{StaticResource SliderThumbStyle}" />
+					</Track.Thumb>
+				</Track>
+			</Grid>
+		</ControlTemplate>
+
+		<Style TargetType="Slider">
+			<Setter Property="Background" Value="{StaticResource SliderBackgroundBrush}" />
+			<Setter Property="BorderBrush" Value="{StaticResource SliderBorderBrush}" />
+			<Setter Property="Foreground" Value="{StaticResource BodyBrush}" />
+			<Setter Property="Template" Value="{StaticResource HorizontalSliderTemplate}" />
+			<Style.Triggers>
+				<Trigger Property="Orientation" Value="Vertical">
+					<Setter Property="Template" Value="{x:Null}" />
 				</Trigger>
 			</Style.Triggers>
 		</Style>

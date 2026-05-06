@@ -11,19 +11,22 @@
 - Color cards have been compacted for denser browsing of large color sets.
 - Repository indentation has been normalized to real tab characters for leading indentation.
 - Repository line endings have been normalized to `CRLF`.
-- Build and unit tests are currently passing.
+- Build and unit tests are currently passing after the latest scrollbar theme update.
 
 ## Active Issues
 - Descriptions are saved as a single canonical markdown line even if entered over multiple lines in the UI.
 - No drag/drop reordering or search/filtering yet.
 - Rebuilding the WPF app fails while the running executable is still open because the debug output DLL stays locked.
+- The latest scrollbar thumb border/fill fix was validated by build, tests, and app launch, but still needs manual visual confirmation in the running UI.
 
 ## Workarounds
 - Use the popup picker or the hex field with full `#AARRGGBB` values for color editing.
 - Use category expanders to organize larger color sets until search or filtering exists.
 - Close the running app before rebuilding the WPF project.
+- Use the currently running app instance to visually confirm scrollbar thumb default, hover, and pressed states after theme edits.
 
 ## Recent Important Changes
+- Reevaluated UI colors again after `Color\agentic_colors.md` changed at `2026-05-06 15:38:44`, corrected stale default scrollbar glyph/thumb mappings, and kept pressed thumb fill with the default thumb border.
 - Added `.gitignore`, `AGENTS.md`, and this `status.md` workflow file.
 - Added `codestandards.md` as the future location for generic syntax and code standards, and linked it into the required workflow in `AGENTS.md`.
 - Moved the generic indentation and line-ending rules out of `AGENTS.md` and into `codestandards.md` so those standards now live in the dedicated standards file.
@@ -79,6 +82,7 @@
 - Removed the background from the top-level `Grid Margin="20"` so only the actual child panels own the `Panel` background color.
 - Added `Expand All` and `Collapse All` buttons under the current file section in the top panel and wired them to expand or collapse every category in the main list.
 - Corrected the scrollbar theme mapping to use the actual `ScrollBar` category values from `agentic_colors.md` instead of the incorrect placeholder colors used in the first pass.
+- Reevaluated UI colors again after `Color\agentic_colors.md` changed at `2026-05-06 15:08:41`, refreshed the scrollbar thumb default color, and mapped the new `Slider` category onto the color picker sliders.
 - Added shared core models plus markdown serialization and validation logic.
 - Added unit tests for markdown parsing, serialization, duplicate detection, and hex validation.
 - Verified with `dotnet build AgenticColorCreator.sln` and `dotnet test AgenticColorCreator.Tests\AgenticColorCreator.Tests.csproj`.

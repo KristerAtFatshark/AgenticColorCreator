@@ -183,15 +183,15 @@
 - description: 
 
 ### Scrollbar / Glyph Default
-- value: #FF555555
+- value: #FF414141
 - description: 
 
 ### Scrollbar / Thumb Default
-- value: #FF555555
+- value: #FF414141
 - description: 
 
 ### Scrollbar / Thumb.Border Default
-- value: #FF555555
+- value: #FF414141
 - description: 
 
 ### Scrollbar / Background Pressed
@@ -240,4 +240,34 @@
 
 ### Scrollbar / Glyph Disabled
 - value: #FFD4D4D4
+- description: 
+
+## Category: Slider
+
+### Slider / Background Default
+- value: #FF292929
+- description: 
+
+### Slider / Track Default
+- value: #FF414141
+- description: 
+
+### Slider / Thumb Default
+- value: #FF414141
+- description: 
+
+### Slider / Tickbar Default
+- value: #FF4B4B4B
+- description: 
+
+### Slider / Border Default
+- value: #FF1E1E1E
+- description: 
+
+### Slider / Thumb Pressed
+- value: #FF555555
+- description: 
+
+### Slider / Thumb Hovered
+- value: #FF555555
 - description:
