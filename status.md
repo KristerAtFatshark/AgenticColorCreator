@@ -77,6 +77,7 @@
 - Simplified the main window root structure so the `Window` itself owns the window color and the root content now uses a `Grid Margin="20"` with the `Panel` color, matching the intended layout structure.
 - Updated all application windows to set `Background="{StaticResource WindowBackgroundBrush}"` directly on the `Window` element instead of relying on the shared `Window` style alone.
 - Removed the background from the top-level `Grid Margin="20"` so only the actual child panels own the `Panel` background color.
+- Added `Expand All` and `Collapse All` buttons under the current file section in the top panel and wired them to expand or collapse every category in the main list.
 - Added shared core models plus markdown serialization and validation logic.
 - Added unit tests for markdown parsing, serialization, duplicate detection, and hex validation.
 - Verified with `dotnet build AgenticColorCreator.sln` and `dotnet test AgenticColorCreator.Tests\AgenticColorCreator.Tests.csproj`.

@@ -21,7 +21,7 @@ public sealed class MainWindowViewModel : ViewModelBase
 	private string _title = "Untitled Theme";
 	private string? _currentFilePath;
 	private string _statusMessage = "Ready";
-	private bool _isDirty;
+    private bool _isDirty;
 
 	public MainWindowViewModel(
 		AgenticColorsMarkdownSerializer serializer,
@@ -42,6 +42,8 @@ public sealed class MainWindowViewModel : ViewModelBase
 		SaveDocumentCommand = new RelayCommand(SaveDocument);
 		SaveDocumentAsCommand = new RelayCommand(SaveDocumentAs);
 		AddCategoryCommand = new RelayCommand(AddCategory);
+		ExpandAllCategoriesCommand = new RelayCommand(ExpandAllCategories);
+		CollapseAllCategoriesCommand = new RelayCommand(CollapseAllCategories);
 
 		NewDocument();
 	}
@@ -59,6 +61,10 @@ public sealed class MainWindowViewModel : ViewModelBase
 	public ICommand SaveDocumentAsCommand { get; }
 
 	public ICommand AddCategoryCommand { get; }
+
+	public ICommand ExpandAllCategoriesCommand { get; }
+
+	public ICommand CollapseAllCategoriesCommand { get; }
 
 	public string Title
 	{
@@ -96,6 +102,22 @@ public sealed class MainWindowViewModel : ViewModelBase
 		}
 
 		return _messageBoxService.Confirm("You have unsaved changes. Close without saving?", "Unsaved Changes");
+	}
+
+	public void CollapseAllCategories()
+	{
+		foreach (var category in Categories)
+		{
+			category.IsExpanded = false;
+		}
+	}
+
+	public void ExpandAllCategories()
+	{
+		foreach (var category in Categories)
+		{
+			category.IsExpanded = true;
+		}
 	}
 
 	public bool TryLoadDocument(string path)
