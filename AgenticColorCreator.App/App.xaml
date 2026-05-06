@@ -631,9 +631,9 @@
 								Background="{StaticResource SliderThumbBrush}"
 								BorderBrush="{StaticResource SliderThumbBrush}"
 								BorderThickness="1"
-								CornerRadius="7"
-								Width="14"
-								Height="14"
+								CornerRadius="0"
+								Width="10"
+								Height="18"
 								SnapsToDevicePixels="True" />
 						<ControlTemplate.Triggers>
 							<Trigger Property="IsMouseOver" Value="True">
@@ -665,7 +665,7 @@
 							<RepeatButton.Template>
 								<ControlTemplate TargetType="RepeatButton">
 									<Border Background="{StaticResource SliderTrackBrush}"
-											CornerRadius="3"
+											CornerRadius="3,0,0,3"
 											Height="6"
 											VerticalAlignment="Center" />
 								</ControlTemplate>
