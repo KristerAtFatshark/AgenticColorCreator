@@ -60,16 +60,20 @@ Target length: below 150 lines.
 
 - Use `CRLF` line endings for all repository files.
 - Preserve `CRLF` when editing existing files and normalize non-CRLF files to `CRLF` when touching them.
+- After any file edit, explicitly verify the touched files still use `CRLF` and correct them immediately if they do not.
 
 ## UI Color Tracking
 
 - Treat `Color/agentic_colors.md` as the source of truth for UI colors.
 - Always record the latest `Color/agentic_colors.md` file path and timestamp in this file after a UI color update pass.
 - If the file timestamp is newer than the recorded timestamp, all existing UI colors must be reevaluated against the current color definitions and `colors.md` guidance.
+- That reevaluation must include both changed color values and newly added color entries, since new entries may provide a better semantic match than the prior mapping.
+- That reevaluation must also include newly added top-level categories, since a new category may replace an older broad category that was previously used as the closest available match.
+- That reevaluation must also include removed categories, since a deleted category means any existing mapping to it must be replaced with the most specific remaining category.
 
 Latest recorded UI color source:
 - File: `Color/agentic_colors.md`
-- LastWriteTime: `2026-05-05 20:02:35`
+- LastWriteTime: `2026-05-06 10:51:53`
 
 ## If status.md Does Not Exist
 

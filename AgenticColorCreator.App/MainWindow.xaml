@@ -6,6 +6,7 @@
 		xmlns:viewModels="clr-namespace:AgenticColorCreator.App.ViewModels"
 		mc:Ignorable="d"
 		Title="Agentic Color Creator"
+		Background="{StaticResource WindowBackgroundBrush}"
 		Height="900"
 		Width="1280"
 		MinHeight="720"
@@ -130,8 +131,9 @@
 		</DataTemplate>
 	</Window.Resources>
 
-	<DockPanel Margin="20">
-		<Border DockPanel.Dock="Top"
+	<Grid Margin="20">
+		<DockPanel>
+			<Border DockPanel.Dock="Top"
 				Margin="0,0,0,18"
 				Padding="18"
 				Background="{StaticResource PanelBackgroundBrush}"
@@ -172,7 +174,7 @@
 			</Grid>
 		</Border>
 
-		<Border DockPanel.Dock="Top"
+			<Border DockPanel.Dock="Top"
 				Margin="0,0,0,18"
 				Padding="14"
 				Background="{StaticResource PanelBackgroundBrush}"
@@ -194,13 +196,13 @@
 			</StackPanel>
 		</Border>
 
-		<ScrollViewer VerticalScrollBarVisibility="Auto">
-			<ItemsControl ItemsSource="{Binding Categories}">
-				<ItemsControl.ItemTemplate>
-					<DataTemplate DataType="{x:Type viewModels:CategoryViewModel}">
-						<Expander IsExpanded="{Binding IsExpanded}"
-								  HorizontalContentAlignment="Stretch"
-								  Background="{StaticResource PanelBackgroundBrush}">
+			<ScrollViewer VerticalScrollBarVisibility="Auto">
+				<ItemsControl ItemsSource="{Binding Categories}">
+					<ItemsControl.ItemTemplate>
+						<DataTemplate DataType="{x:Type viewModels:CategoryViewModel}">
+							<Expander IsExpanded="{Binding IsExpanded}"
+									  HorizontalContentAlignment="Stretch"
+									  Background="{StaticResource PanelBackgroundBrush}">
 							<Expander.Header>
 								<Grid HorizontalAlignment="Stretch"
 									  Width="{Binding RelativeSource={RelativeSource AncestorType=Expander}, Path=ActualWidth}">
@@ -246,10 +248,11 @@
 							<StackPanel Margin="5,4,14,14">
 								<ItemsControl ItemsSource="{Binding StateGroups}" />
 							</StackPanel>
-						</Expander>
-					</DataTemplate>
-				</ItemsControl.ItemTemplate>
-			</ItemsControl>
-		</ScrollViewer>
-	</DockPanel>
+							</Expander>
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
+			</ScrollViewer>
+		</DockPanel>
+	</Grid>
 </Window>

@@ -4,24 +4,6 @@
 - format: agentic-colors/v1
 - name: Untitled Theme
 
-## Category: Surface
-
-### Surface / App Background Default
-- value: #FF101418
-- description: Main application window background.
-
-### Surface / Panel Default
-- value: #FF333333
-- description: Secondary containers such as panels and cards.
-
-### Surface / Background Default
-- value: #FF333333
-- description: The default background for everything, like panels and grids
-
-### Surface / Windows Background Default
-- value: #FF333333
-- description: The default window background
-
 ## Category: Text
 
 ### Text / Text Default
@@ -55,7 +37,7 @@
 - description: 
 
 ### Text Box / Text Selection Selected
-- value: #59FF9600
+- value: #8FFF9600
 - description: 
 
 ### Text Box / Border Hovered
@@ -156,14 +138,36 @@
 - value: #FF292929
 - description: 
 
+### ComboBox Item / New Color Selected
+- value: #51FF9600
+- description: 
+
 ### ComboBox Item / Text Hovered
 - value: #FFFFFFFF
 - description: 
 
 ### ComboBox Item / Background Hovered
-- value: #8BFF9600
+- value: #94FF9600
 - description: 
 
 ### ComboBox Item / Border Hovered
 - value: #FF0C0C0C
+- description: 
+
+## Category: Window
+
+### Window / Background Default
+- value: #FF282828
+- description: 
+
+## Category: Panel
+
+### Panel / Background Default
+- value: #FF333333
+- description: 
+
+## Category: Grid
+
+### Grid / Background Default
+- value: #FF333333
 - description:

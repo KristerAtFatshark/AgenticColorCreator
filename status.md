@@ -27,6 +27,7 @@
 - Added `.gitignore`, `AGENTS.md`, and this `status.md` workflow file.
 - Added an explicit tab-indentation rule to `AGENTS.md`.
 - Added an explicit `CRLF` line ending rule to `AGENTS.md`.
+- Strengthened the `CRLF` workflow rule so touched files must be explicitly verified and corrected after edits if line endings drift.
 - Added a WPF editor UI with collapsible categories and editable color items.
 - Added an interactive popup color picker launched from the color swatch preview.
 - Fixed the color swatch button so the selected color is visible again after making the swatch clickable.
@@ -63,6 +64,18 @@
 - Reevaluated UI colors after `Color\agentic_colors.md` became newer than the last recorded source timestamp and mapped `Text Box / Text Selection Selected` to WPF `SelectionBrush`.
 - Updated the recorded UI color source timestamp in `AGENTS.md` to `2026-05-05 19:27:07`.
 - Reevaluated UI colors again after `Color\agentic_colors.md` changed at `2026-05-05 20:02:35` and refreshed `TextBox` hover/selection colors to the latest source values.
+- Clarified in `colors.md` that `Hovered` means the active mouse-over state, not a past hover state.
+- Replaced the `ComboBoxItem` popup row rendering with an explicit template so dropdown rows now use the correct `ComboBox Item` hover colors while the mouse is currently over them.
+- Reevaluated UI colors again after `Color\agentic_colors.md` changed at `2026-05-06 08:50:54` and refreshed `TextBox` text selection highlight to the latest selected color value.
+- Reevaluated the old `Surface`-based background mapping after new top-level categories were introduced and aligned the app root/background guidance to the new `Application`, `Window`, `Panel`, and `Grid` categories.
+- Updated `colors.md` and `AGENTS.md` so reevaluation explicitly includes newly added top-level categories, not only changed values and newly added colors within existing categories.
+- Fixed the main window root layout so the outer window surface uses the `Window` background color and the inner app layout uses the `Application` background color without exposing a white default margin area.
+- Renamed the root application background resource to make it clear that only the app root surface uses the `Application` color, while panels continue to use the `Panel` color mapping.
+- Reevaluated UI colors again after `Color\agentic_colors.md` changed at `2026-05-06 10:51:53`, removed the obsolete `Application` root mapping, updated the window background to `#FF282828`, and now use `Panel` for all panel/root content surfaces.
+- Updated `colors.md` and `AGENTS.md` so reevaluation explicitly handles removed categories in addition to changed values, new colors, and new top-level categories.
+- Simplified the main window root structure so the `Window` itself owns the window color and the root content now uses a `Grid Margin="20"` with the `Panel` color, matching the intended layout structure.
+- Updated all application windows to set `Background="{StaticResource WindowBackgroundBrush}"` directly on the `Window` element instead of relying on the shared `Window` style alone.
+- Removed the background from the top-level `Grid Margin="20"` so only the actual child panels own the `Panel` background color.
 - Added shared core models plus markdown serialization and validation logic.
 - Added unit tests for markdown parsing, serialization, duplicate detection, and hex validation.
 - Verified with `dotnet build AgenticColorCreator.sln` and `dotnet test AgenticColorCreator.Tests\AgenticColorCreator.Tests.csproj`.

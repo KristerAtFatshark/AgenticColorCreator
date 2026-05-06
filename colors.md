@@ -19,7 +19,9 @@ Always treat `Color/agentic_colors.md` as the source of truth for UI colors.
 Use the category name as the first filter.
 
 Examples:
-- window and panel backgrounds: `Surface`
+- window backgrounds: `Window`
+- panel/card/container backgrounds: `Panel`
+- layout surface backgrounds: `Grid`
 - text and foreground colors: `Text`
 - input field surfaces: `Text Box`
 - outlines and separators: `Border`
@@ -35,6 +37,11 @@ Each color belongs to one of these fixed interaction states:
 - `Disabled`
 
 After finding the correct category, choose the color from the matching state.
+
+`Hovered` means the control is currently under the mouse pointer right now.
+It is the same as `Mouse Over`.
+It does not mean a control that was hovered earlier or after the hover has ended.
+Whenever UI code uses a mouse-over visual state, map it to `Hovered`.
 
 ## Fallback Rule
 
@@ -63,6 +70,10 @@ Use this order when selecting a color:
 4. Match description.
 5. Fall back to `Default` in the same category if the requested state does not exist.
 
+When `agentic_colors.md` changes, reevaluate both changed colors and newly added colors.
+Newly added colors may provide a more specific semantic match than the previously used mapping and should replace the older mapping when appropriate.
+If new top-level categories are introduced, reevaluate any older mappings that previously relied on a broader category because the new category may now be the correct semantic target.
+
 ## Examples
 
 Example: button background while hovered
@@ -71,6 +82,13 @@ Example: button background while hovered
 2. State: `Hovered`
 3. Best name match: `Button Background`
 4. Result: `Button Background Hovered`
+
+Example: combo box dropdown row while the mouse is currently over it
+
+1. Category: `ComboBox Item`
+2. State: `Hovered`
+3. Use the hovered row background, text, and border colors
+4. Result: `ComboBox Item / Background Hovered`, `ComboBox Item / Text Hovered`, and `ComboBox Item / Border Hovered`
 
 Example: text input field background while disabled, but no disabled entry exists
 
@@ -87,6 +105,12 @@ For controls with popup content, map the closed control and the popup items sepa
 Examples:
 - closed selected surface of a combo box: use `ComboBox`
 - dropdown rows inside the combo box popup: use `ComboBox Item`
+- app root background behind the main layout: use `Application`
+- top-level window surface: use `Window`
+- grouped content containers and cards: use `Panel`
+- layout regions that act as generic content surfaces: use `Grid`
+
+If a category used by the current UI mapping is removed from `agentic_colors.md`, reevaluate the mapping immediately and remap the UI part to the next most specific remaining category.
 
 This means the visible selected item area of a closed combo box should not use `ComboBox Item` colors. Those are only for the popup list entries.
 
@@ -113,3 +137,6 @@ Examples:
 - Do not invent new color meanings if an existing category, state, name, or description already fits.
 - When updating UI code, preserve the semantic mapping between control purpose and color choice.
 - If `agentic_colors.md` is expanded later, prefer the newer explicit entry over any earlier fallback.
+- If the color-file timestamp changed, do not only compare old mapped values. Also inspect newly added entries because they may introduce a better semantic match for an existing UI part.
+- If new top-level categories appear, prefer the newer, more specific category over an older broad category that was only used as an approximation.
+- If a previously used category is removed, replace that mapping with the most specific remaining category instead of keeping a stale category assumption.
