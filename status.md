@@ -48,6 +48,21 @@
 - Styled the `ComboBox` dropdown popup and item containers so the open state list no longer falls back to the default white system background.
 - Fixed a WPF startup crash caused by attempting to set `ComboBox.Resources` through a style setter; dropdown theming is now applied through valid keyed resources and per-control popup resources.
 - Added a custom closed-state `ComboBox` template for the interaction-state selector so the visible selected item area also uses the blue-toned background instead of the default white surface.
+- Added `colors.md` to document how agents should map UI parts to `Color\agentic_colors.md`, including category-first lookup and same-category `Default` fallback behavior.
+- Clarified `colors.md` so agents distinguish between the closed `ComboBox` control surface and `ComboBox Item` popup rows.
+- Remapped the app theme resources toward the actual semantics in `Color\agentic_colors.md`, especially for combo box, text box, button, popup item, and accent usage.
+- Refreshed the app theme again after updated color definitions, including the new `Surface / Panel Default` value and a corrected `Text Box` category reference in `colors.md`.
+- Added `TextBox` state styling so hover uses `Text Box / Border Hovered`, while focused/active editing falls back to `Text Box / Border Default` because no dedicated pressed/selected border color exists.
+- Clarified `colors.md` for focused input controls so active editing visuals follow the same state lookup and fallback rules as other controls.
+- Updated `TextBox` trigger precedence so a selected/focused text box uses `Text Box / Border Selected`, but selected plus hovered resolves to `Text Box / Border Hovered` as instructed.
+- Replaced the default `TextBox` border rendering with an explicit control template so the visible border now uses the exact semantic colors from `agentic_colors.md`: selected `#61FF9600` and hovered `#FFFF9600`.
+- Refreshed the app again after a later color-file update so the explicit `TextBox` hovered border now uses the new `Text Box / Border Hovered` value `#FF019600`, while selected remains `#61FF9600`.
+- Corrected a stale `colors.md` example to reference the real `Text Box` category name.
+- Replaced the default `Button` rendering with an explicit control template so the visible button surface now uses the semantic `Button` colors from `agentic_colors.md` for default, hovered, pressed, and disabled states.
+- Added timestamp-tracking workflow guidance in `AGENTS.md` for `Color\agentic_colors.md`, including the latest recorded color source timestamp used for UI color updates.
+- Reevaluated UI colors after `Color\agentic_colors.md` became newer than the last recorded source timestamp and mapped `Text Box / Text Selection Selected` to WPF `SelectionBrush`.
+- Updated the recorded UI color source timestamp in `AGENTS.md` to `2026-05-05 19:27:07`.
+- Reevaluated UI colors again after `Color\agentic_colors.md` changed at `2026-05-05 20:02:35` and refreshed `TextBox` hover/selection colors to the latest source values.
 - Added shared core models plus markdown serialization and validation logic.
 - Added unit tests for markdown parsing, serialization, duplicate detection, and hex validation.
 - Verified with `dotnet build AgenticColorCreator.sln` and `dotnet test AgenticColorCreator.Tests\AgenticColorCreator.Tests.csproj`.

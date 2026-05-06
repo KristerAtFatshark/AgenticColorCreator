@@ -4,6 +4,8 @@
 
 Before making any code, config, test, or documentation changes in this project, always read `status.md`.
 
+Before making any UI color changes, always check the timestamp of `Color/agentic_colors.md` and compare it to the latest color file version recorded in this file.
+
 After completing any change, always update `status.md`.
 
 ## status.md Requirements
@@ -23,9 +25,11 @@ Target length: below 150 lines.
 ## Required Process
 
 1. Read `status.md` before making changes.
-2. Perform the requested work.
-3. Run relevant verification.
-4. Update `status.md` with:
+2. If the task touches UI colors, check `Color/agentic_colors.md` timestamp and compare it to the latest recorded color-file timestamp in this file.
+3. If `Color/agentic_colors.md` is newer than the last recorded UI color update source, reevaluate all current UI color mappings and update them where needed.
+4. Perform the requested work.
+5. Run relevant verification.
+6. Update `status.md` with:
    - what changed
    - current issues
    - current workarounds
@@ -56,6 +60,16 @@ Target length: below 150 lines.
 
 - Use `CRLF` line endings for all repository files.
 - Preserve `CRLF` when editing existing files and normalize non-CRLF files to `CRLF` when touching them.
+
+## UI Color Tracking
+
+- Treat `Color/agentic_colors.md` as the source of truth for UI colors.
+- Always record the latest `Color/agentic_colors.md` file path and timestamp in this file after a UI color update pass.
+- If the file timestamp is newer than the recorded timestamp, all existing UI colors must be reevaluated against the current color definitions and `colors.md` guidance.
+
+Latest recorded UI color source:
+- File: `Color/agentic_colors.md`
+- LastWriteTime: `2026-05-05 20:02:35`
 
 ## If status.md Does Not Exist
 

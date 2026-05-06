@@ -24,7 +24,7 @@
 				Margin="0,14,0,14"
 				Height="92"
 				CornerRadius="8"
-				BorderBrush="#80FFFFFF"
+				BorderBrush="{StaticResource BorderBrush}"
 				BorderThickness="1"
 				Background="{Binding PreviewBrush}" />
 

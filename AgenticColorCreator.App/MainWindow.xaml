@@ -38,7 +38,7 @@
 
 		<DataTemplate DataType="{x:Type viewModels:ColorItemViewModel}">
 			<Border Margin="0,0,0,12"
-					Background="#FF1C2731"
+					Background="{StaticResource PanelBackgroundBrush}"
 					BorderBrush="{StaticResource BorderBrush}"
 					BorderThickness="1"
 					CornerRadius="8">
@@ -97,12 +97,12 @@
 							  ItemsSource="{Binding AvailableStates}"
 							  SelectedItem="{Binding State, UpdateSourceTrigger=PropertyChanged}">
 						<ComboBox.Resources>
-							<SolidColorBrush x:Key="{x:Static SystemColors.WindowBrushKey}" Color="#FF22303D" />
-							<SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#FF35506A" />
-							<SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#FF22303D" />
-							<SolidColorBrush x:Key="{x:Static SystemColors.ControlLightBrushKey}" Color="#FF22303D" />
-							<SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}" Color="#FFF1F5F9" />
-							<SolidColorBrush x:Key="{x:Static SystemColors.WindowTextBrushKey}" Color="#FFF1F5F9" />
+							<SolidColorBrush x:Key="{x:Static SystemColors.WindowBrushKey}" Color="#FF4C4C4C" />
+							<SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#8BFF9600" />
+							<SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#FF4C4C4C" />
+							<SolidColorBrush x:Key="{x:Static SystemColors.ControlLightBrushKey}" Color="#FF4C4C4C" />
+							<SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}" Color="#FFC8C8C8" />
+							<SolidColorBrush x:Key="{x:Static SystemColors.WindowTextBrushKey}" Color="#FFC8C8C8" />
 						</ComboBox.Resources>
 					</ComboBox>
 
@@ -134,7 +134,7 @@
 		<Border DockPanel.Dock="Top"
 				Margin="0,0,0,18"
 				Padding="18"
-				Background="#FF15202A"
+				Background="{StaticResource PanelBackgroundBrush}"
 				BorderBrush="{StaticResource BorderBrush}"
 				BorderThickness="1"
 				CornerRadius="10">
@@ -175,14 +175,14 @@
 		<Border DockPanel.Dock="Top"
 				Margin="0,0,0,18"
 				Padding="14"
-				Background="#FF15202A"
+				Background="{StaticResource PanelBackgroundBrush}"
 				BorderBrush="{StaticResource BorderBrush}"
 				BorderThickness="1"
 				CornerRadius="10"
 				Visibility="{Binding HasValidationErrors, Converter={StaticResource BooleanToVisibilityConverter}}">
 			<StackPanel>
 				<TextBlock FontWeight="Bold"
-						   Foreground="#FFFFC285"
+						   Foreground="{StaticResource AccentBrush}"
 						   Text="Validation Issues" />
 				<ItemsControl ItemsSource="{Binding ValidationErrors}">
 					<ItemsControl.ItemTemplate>

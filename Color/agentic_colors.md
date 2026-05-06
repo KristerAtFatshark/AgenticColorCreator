@@ -11,7 +11,7 @@
 - description: Main application window background.
 
 ### Surface / Panel Default
-- value: #FF1A2026
+- value: #FF333333
 - description: Secondary containers such as panels and cards.
 
 ### Surface / Background Default
@@ -50,7 +50,15 @@
 - value: #FF4C4C4C
 - description: 
 
-### Text Box / Text Selected
+### Text Box / Border Selected
+- value: #61FF9600
+- description: 
+
+### Text Box / Text Selection Selected
+- value: #59FF9600
+- description: 
+
+### Text Box / Border Hovered
 - value: #FFFF9600
 - description: 
 
