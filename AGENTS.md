@@ -4,6 +4,11 @@
 
 Before making any code, config, test, or documentation changes in this project, always read `status.md`.
 
+Before making any code, config, or test changes in this project, always read `codestandards.md` and follow its rules.
+
+`codestandards.md` does not apply to `*.md` documentation files unless a rule in that file explicitly says it does.
+This includes generic formatting rules defined there, such as indentation and line-ending requirements.
+
 Before making any UI color changes, always check the timestamp of `Color/agentic_colors.md` and compare it to the latest color file version recorded in this file.
 
 After completing any change, always update `status.md`.
@@ -25,11 +30,12 @@ Target length: below 150 lines.
 ## Required Process
 
 1. Read `status.md` before making changes.
-2. If the task touches UI colors, check `Color/agentic_colors.md` timestamp and compare it to the latest recorded color-file timestamp in this file.
-3. If `Color/agentic_colors.md` is newer than the last recorded UI color update source, reevaluate all current UI color mappings and update them where needed.
-4. Perform the requested work.
-5. Run relevant verification.
-6. Update `status.md` with:
+2. If the change touches code, config, or tests, read `codestandards.md` before making changes and follow all rules defined there.
+3. If the task touches UI colors, check `Color/agentic_colors.md` timestamp and compare it to the latest recorded color-file timestamp in this file.
+4. If `Color/agentic_colors.md` is newer than the last recorded UI color update source, reevaluate all current UI color mappings and update them where needed.
+5. Perform the requested work.
+6. Run relevant verification.
+7. Update `status.md` with:
    - what changed
    - current issues
    - current workarounds
@@ -50,17 +56,6 @@ Target length: below 150 lines.
 - Remove outdated information
 - Avoid long historical logs
 - Preserve only information useful for the next contributor
-
-## Indentation Rules
-
-- Use real tab characters for indentation in all repository files instead of groups of four spaces.
-- Preserve tabs when editing existing files and correct space-based indentation to tabs when touching files.
-
-## Line Endings
-
-- Use `CRLF` line endings for all repository files.
-- Preserve `CRLF` when editing existing files and normalize non-CRLF files to `CRLF` when touching them.
-- After any file edit, explicitly verify the touched files still use `CRLF` and correct them immediately if they do not.
 
 ## UI Color Tracking
 

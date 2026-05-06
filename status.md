@@ -25,9 +25,10 @@
 
 ## Recent Important Changes
 - Added `.gitignore`, `AGENTS.md`, and this `status.md` workflow file.
-- Added an explicit tab-indentation rule to `AGENTS.md`.
-- Added an explicit `CRLF` line ending rule to `AGENTS.md`.
-- Strengthened the `CRLF` workflow rule so touched files must be explicitly verified and corrected after edits if line endings drift.
+- Added `codestandards.md` as the future location for generic syntax and code standards, and linked it into the required workflow in `AGENTS.md`.
+- Moved the generic indentation and line-ending rules out of `AGENTS.md` and into `codestandards.md` so those standards now live in the dedicated standards file.
+- Clarified that `codestandards.md` is enforced for code/config/test changes, but is not automatically forced onto `*.md` documentation files.
+- Clarified further that the `*.md` exemption also includes generic formatting rules from `codestandards.md`, such as indentation and line endings, unless explicitly stated otherwise.
 - Added a WPF editor UI with collapsible categories and editable color items.
 - Added an interactive popup color picker launched from the color swatch preview.
 - Fixed the color swatch button so the selected color is visible again after making the swatch clickable.
