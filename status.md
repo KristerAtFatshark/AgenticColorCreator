@@ -26,6 +26,7 @@
 - Use the currently running app instance to visually confirm scrollbar thumb default, hover, and pressed states after theme edits.
 
 ## Recent Important Changes
+- Moved the shared application brushes, styles, and control templates out of `App.xaml` into `AgenticColorCreator.App/DarkStyles.xaml`, and reduced `App.xaml` to a merged resource dictionary wrapper.
 - Restored the slider thumb in `App.xaml` from the newer round shape back to the original square shape while keeping the semantic slider color mapping.
 - Reevaluated UI colors again after `Color\agentic_colors.md` changed at `2026-05-06 15:38:44`, corrected stale default scrollbar glyph/thumb mappings, and kept pressed thumb fill with the default thumb border.
 - Added `.gitignore`, `AGENTS.md`, and this `status.md` workflow file.
