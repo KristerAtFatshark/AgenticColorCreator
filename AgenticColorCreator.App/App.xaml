@@ -631,7 +631,7 @@
 								Background="{StaticResource SliderThumbBrush}"
 								BorderBrush="{StaticResource SliderThumbBrush}"
 								BorderThickness="1"
-								CornerRadius="0"
+								CornerRadius="2"
 								Width="10"
 								Height="18"
 								SnapsToDevicePixels="True" />
