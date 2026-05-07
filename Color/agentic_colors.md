@@ -40,7 +40,7 @@
 - value: #8FFF9600
 - description: 
 
-### Text Box / Border Hovered
+### Text Box / Border MouseOver
 - value: #FFFF9600
 - description: 
 
@@ -74,11 +74,11 @@
 - value: #FF292929
 - description: 
 
-### Button / Background Hovered
+### Button / Background MouseOver
 - value: #FF797979
 - description: The button background when a button is hovered/ mouse over
 
-### Button / Text Hovered
+### Button / Text MouseOver
 - value: #FFFFFFFF
 - description: 
 
@@ -142,15 +142,15 @@
 - value: #51FF9600
 - description: 
 
-### ComboBox Item / Text Hovered
+### ComboBox Item / Text MouseOver
 - value: #FFFFFFFF
 - description: 
 
-### ComboBox Item / Background Hovered
+### ComboBox Item / Background MouseOver
 - value: #94FF9600
 - description: 
 
-### ComboBox Item / Border Hovered
+### ComboBox Item / Border MouseOver
 - value: #FF0C0C0C
 - description: 
 
@@ -210,23 +210,23 @@
 - value: #FF000000
 - description: 
 
-### Scrollbar / Background Hovered
+### Scrollbar / Background MouseOver
 - value: #FF555555
 - description: 
 
-### Scrollbar / Border Hovered
+### Scrollbar / Border MouseOver
 - value: #FF292929
 - description: 
 
-### Scrollbar / Glyph Hovered
+### Scrollbar / Glyph MouseOver
 - value: #FF000000
 - description: 
 
-### Scrollbar / Thumb Hovered
+### Scrollbar / Thumb MouseOver
 - value: #FF555555
 - description: 
 
-### Scrollbar / Thumb.Border Hovered
+### Scrollbar / Thumb.Border MouseOver
 - value: #FF555555
 - description: 
 
@@ -268,6 +268,6 @@
 - value: #FF555555
 - description: 
 
-### Slider / Thumb Hovered
+### Slider / Thumb MouseOver
 - value: #FF555555
 - description:

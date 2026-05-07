@@ -33,15 +33,15 @@ Each color belongs to one of these fixed interaction states:
 - `Default`
 - `Selected`
 - `Pressed`
-- `Hovered`
+- `MouseOver`
 - `Disabled`
 
 After finding the correct category, choose the color from the matching state.
 
-`Hovered` means the control is currently under the mouse pointer right now.
+`MouseOver` means the control is currently under the mouse pointer right now.
 It is the same as `Mouse Over`.
 It does not mean a control that was hovered earlier or after the hover has ended.
-Whenever UI code uses a mouse-over visual state, map it to `Hovered`.
+Whenever UI code uses a mouse-over visual state, map it to `MouseOver`.
 
 ## Fallback Rule
 
@@ -49,7 +49,7 @@ If a UI element needs a state-specific color and that state is not defined in `a
 
 Examples:
 - if a button needs a `Pressed` border color but only `Button Border Default` exists, use `Button Border Default`
-- if text needs a `Hovered` color but only `Text Color Default` exists, use `Text Color Default`
+- if text needs a `MouseOver` color but only `Text Color Default` exists, use `Text Color Default`
 - if an input field uses a focused or active border treatment but there is no dedicated `Pressed` or `Selected` border color, use the same category's `Default` border color unless a better explicit state exists
 
 ## Name And Description Matching
@@ -79,16 +79,16 @@ If new top-level categories are introduced, reevaluate any older mappings that p
 Example: button background while hovered
 
 1. Category: `Button`
-2. State: `Hovered`
+2. State: `MouseOver`
 3. Best name match: `Button Background`
-4. Result: `Button Background Hovered`
+4. Result: `Button Background MouseOver`
 
 Example: combo box dropdown row while the mouse is currently over it
 
 1. Category: `ComboBox Item`
-2. State: `Hovered`
+2. State: `MouseOver`
 3. Use the hovered row background, text, and border colors
-4. Result: `ComboBox Item / Background Hovered`, `ComboBox Item / Text Hovered`, and `ComboBox Item / Border Hovered`
+4. Result: `ComboBox Item / Background MouseOver`, `ComboBox Item / Text MouseOver`, and `ComboBox Item / Border MouseOver`
 
 Example: text input field background while disabled, but no disabled entry exists
 
@@ -119,7 +119,7 @@ This means the visible selected item area of a closed combo box should not use `
 For text-entry controls, focused or active editing visuals should still follow the same state lookup logic.
 
 Examples:
-- hover border on a text box: use `Text Box / Border Hovered` if present
+- hover border on a text box: use `Text Box / Border MouseOver` if present
 - focused or active text box border with no dedicated focused/pressed entry: fall back to `Text Box / Border Default`
 
 ## App-Level Theming Rule

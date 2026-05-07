@@ -6,7 +6,7 @@
 - The app can create, load, edit, validate, and save the planned markdown color format.
 - On startup, the app now auto-loads `Color\agentic_colors.md` if that file exists in the repository tree.
 - The main UI now uses tabs, with the color editor on the default `Colors` tab and a `UI Preview` tab for visual control testing.
-- Categories now contain fixed interaction-state subcategories: `Default`, `Selected`, `Pressed`, `Hovered`, and `Disabled`.
+- Categories now contain fixed interaction-state subcategories: `Default`, `Selected`, `Pressed`, `MouseOver`, and `Disabled`.
 - Colors can be moved between those fixed subcategories by changing the state selector on each color item.
 - The color preview now opens an interactive popup picker for ARGB editing.
 - Color cards have been compacted for denser browsing of large color sets.
@@ -28,6 +28,8 @@
 - Use the `UI Preview` tab to inspect themed control states without leaving the main editor workflow.
 
 ## Recent Important Changes
+- Renamed the UI interaction-state terminology from `Hovered` to `MouseOver` across the theme resources, color definitions, and documentation, while keeping parser support for older `Hovered` labels in existing markdown files.
+- Restructured the shared theme resources so color brushes are centralized near the top of `DarkStyles.xaml` and renamed to the `Category.State.Name` convention, for example `TextBox.Default.Background`.
 - Renamed the shared combo box template keys to remove the stale `Blue` prefix, so `BlueComboBoxTemplate` and `BlueComboBoxToggleButtonTemplate` are now `ComboBoxTemplate` and `ComboBoxToggleButtonTemplate`.
 - Corrected the combo box theming split in `DarkStyles.xaml` so the closed `ComboBox` uses `ComboBox` category resources while popup rows use separate `ComboBox Item` background, text, and border resources.
 - Updated the shared `ComboBox` template in `DarkStyles.xaml` so the popup and popup items keep a minimum width matching the closed combo box width.
@@ -68,18 +70,18 @@
 - Clarified `colors.md` so agents distinguish between the closed `ComboBox` control surface and `ComboBox Item` popup rows.
 - Remapped the app theme resources toward the actual semantics in `Color\agentic_colors.md`, especially for combo box, text box, button, popup item, and accent usage.
 - Refreshed the app theme again after updated color definitions, including the new `Surface / Panel Default` value and a corrected `Text Box` category reference in `colors.md`.
-- Added `TextBox` state styling so hover uses `Text Box / Border Hovered`, while focused/active editing falls back to `Text Box / Border Default` because no dedicated pressed/selected border color exists.
+- Added `TextBox` state styling so hover uses `Text Box / Border MouseOver`, while focused/active editing falls back to `Text Box / Border Default` because no dedicated pressed/selected border color exists.
 - Clarified `colors.md` for focused input controls so active editing visuals follow the same state lookup and fallback rules as other controls.
-- Updated `TextBox` trigger precedence so a selected/focused text box uses `Text Box / Border Selected`, but selected plus hovered resolves to `Text Box / Border Hovered` as instructed.
+- Updated `TextBox` trigger precedence so a selected/focused text box uses `Text Box / Border Selected`, but selected plus mouse-over resolves to `Text Box / Border MouseOver` as instructed.
 - Replaced the default `TextBox` border rendering with an explicit control template so the visible border now uses the exact semantic colors from `agentic_colors.md`: selected `#61FF9600` and hovered `#FFFF9600`.
-- Refreshed the app again after a later color-file update so the explicit `TextBox` hovered border now uses the new `Text Box / Border Hovered` value `#FF019600`, while selected remains `#61FF9600`.
+- Refreshed the app again after a later color-file update so the explicit `TextBox` mouse-over border now uses the new `Text Box / Border MouseOver` value `#FF019600`, while selected remains `#61FF9600`.
 - Corrected a stale `colors.md` example to reference the real `Text Box` category name.
 - Replaced the default `Button` rendering with an explicit control template so the visible button surface now uses the semantic `Button` colors from `agentic_colors.md` for default, hovered, pressed, and disabled states.
 - Added timestamp-tracking workflow guidance in `AGENTS.md` for `Color\agentic_colors.md`, including the latest recorded color source timestamp used for UI color updates.
 - Reevaluated UI colors after `Color\agentic_colors.md` became newer than the last recorded source timestamp and mapped `Text Box / Text Selection Selected` to WPF `SelectionBrush`.
 - Updated the recorded UI color source timestamp in `AGENTS.md` to `2026-05-05 19:27:07`.
 - Reevaluated UI colors again after `Color\agentic_colors.md` changed at `2026-05-05 20:02:35` and refreshed `TextBox` hover/selection colors to the latest source values.
-- Clarified in `colors.md` that `Hovered` means the active mouse-over state, not a past hover state.
+- Clarified in `colors.md` that `MouseOver` means the active mouse-over state, not a past hover state.
 - Replaced the `ComboBoxItem` popup row rendering with an explicit template so dropdown rows now use the correct `ComboBox Item` hover colors while the mouse is currently over them.
 - Reevaluated UI colors again after `Color\agentic_colors.md` changed at `2026-05-06 08:50:54` and refreshed `TextBox` text selection highlight to the latest selected color value.
 - Reevaluated the old `Surface`-based background mapping after new top-level categories were introduced and aligned the app root/background guidance to the new `Application`, `Window`, `Panel`, and `Grid` categories.

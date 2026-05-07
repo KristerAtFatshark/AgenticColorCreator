@@ -8,7 +8,7 @@ public enum InteractionState
 	Default,
 	Selected,
 	Pressed,
-	Hovered,
+	MouseOver,
 	Disabled,
 }
 
@@ -19,17 +19,27 @@ public static class InteractionStateCatalog
 		InteractionState.Default,
 		InteractionState.Selected,
 		InteractionState.Pressed,
-		InteractionState.Hovered,
+		InteractionState.MouseOver,
 		InteractionState.Disabled,
 	];
 
 	public static string ToLabel(InteractionState state)
 	{
-		return state.ToString();
+		return state switch
+		{
+			InteractionState.MouseOver => "MouseOver",
+			_ => state.ToString(),
+		};
 	}
 
 	public static bool TryParseLabel(string? value, out InteractionState state)
 	{
+		if (string.Equals(value, "Hovered", StringComparison.OrdinalIgnoreCase))
+		{
+			state = InteractionState.MouseOver;
+			return true;
+		}
+
 		if (Enum.TryParse(value, true, out state))
 		{
 			foreach (var supportedState in AllStates)
