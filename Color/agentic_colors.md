@@ -135,7 +135,7 @@
 - description: 
 
 ### ComboBox Item / Border Default
-- value: #FF292929
+- value: #FF3C3C3C
 - description: 
 
 ### ComboBox Item / New Color Selected

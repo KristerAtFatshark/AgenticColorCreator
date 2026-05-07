@@ -11,9 +11,12 @@
 	<SolidColorBrush x:Key="ComboBoxTextBrush" Color="#FFC8C8C8" />
 	<SolidColorBrush x:Key="ComboBoxBorderBrush" Color="#FF292929" />
 	<SolidColorBrush x:Key="ComboBoxIconBrush" Color="#FFC8C8C8" />
+	<SolidColorBrush x:Key="ComboItemBackgroundBrush" Color="#FF4C4C4C" />
+	<SolidColorBrush x:Key="ComboItemTextBrush" Color="#FFC8C8C8" />
 	<SolidColorBrush x:Key="ComboItemHoverBrush" Color="#8BFF9600" />
 	<SolidColorBrush x:Key="ComboItemSelectedBrush" Color="#51FF9600" />
 	<SolidColorBrush x:Key="ComboItemBorderHoverBrush" Color="#FF0C0C0C" />
+	<SolidColorBrush x:Key="ComboItemBorderBrush" Color="#FF3C3C3C" />
 	<SolidColorBrush x:Key="ScrollBarTrackBrush" Color="#FF292929" />
 	<SolidColorBrush x:Key="ScrollBarThumbBrush" Color="#FF414141" />
 	<SolidColorBrush x:Key="ScrollBarThumbHoverBrush" Color="#FF555555" />
@@ -44,6 +47,7 @@
 		<Setter Property="Foreground" Value="#FFC8C8C8" />
 		<Setter Property="BorderBrush" Value="#FF4C4C4C" />
 		<Setter Property="BorderThickness" Value="1" />
+		<Setter Property="MinHeight" Value="24" />
 		<Setter Property="SelectionBrush" Value="#8FFF9600" />
 		<Setter Property="Padding" Value="4,3" />
 		<Setter Property="Margin" Value="0,2,0,2" />
@@ -107,21 +111,24 @@
 		<Setter Property="Background" Value="{StaticResource ComboBoxBackgroundBrush}" />
 		<Setter Property="Foreground" Value="{StaticResource ComboBoxTextBrush}" />
 		<Setter Property="BorderBrush" Value="{StaticResource ComboBoxBorderBrush}" />
+		<Setter Property="MinHeight" Value="24" />
 		<Setter Property="Padding" Value="4,3" />
 		<Setter Property="Margin" Value="0,2,0,2" />
 	</Style>
 
 	<Style x:Key="ComboPopupItemStyle" TargetType="ComboBoxItem">
-		<Setter Property="Background" Value="{StaticResource PopupBackgroundBrush}" />
-		<Setter Property="Foreground" Value="{StaticResource BodyBrush}" />
-		<Setter Property="BorderBrush" Value="{StaticResource ComboBoxBorderBrush}" />
+		<Setter Property="Background" Value="{StaticResource ComboItemBackgroundBrush}" />
+		<Setter Property="Foreground" Value="{StaticResource ComboItemTextBrush}" />
+		<Setter Property="BorderBrush" Value="{StaticResource ComboItemBorderBrush}" />
 		<Setter Property="BorderThickness" Value="1" />
+		<Setter Property="MinWidth" Value="{Binding PlacementTarget.ActualWidth, RelativeSource={RelativeSource AncestorType=Popup}}" />
 		<Setter Property="Padding" Value="6,3" />
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="ComboBoxItem">
 					<Border x:Name="ComboBoxItemBorder"
 							Background="{TemplateBinding Background}"
+							MinWidth="{TemplateBinding MinWidth}"
 							BorderBrush="{TemplateBinding BorderBrush}"
 							BorderThickness="{TemplateBinding BorderThickness}">
 						<ContentPresenter HorizontalAlignment="Stretch"
@@ -144,7 +151,7 @@
 		</Setter>
 	</Style>
 
-	<ControlTemplate x:Key="BlueComboBoxToggleButtonTemplate" TargetType="ToggleButton">
+	<ControlTemplate x:Key="ComboBoxToggleButtonTemplate" TargetType="ToggleButton">
 		<Border Background="{TemplateBinding Background}"
 				BorderBrush="{TemplateBinding BorderBrush}"
 				BorderThickness="1"
@@ -163,14 +170,14 @@
 		</Border>
 	</ControlTemplate>
 
-	<ControlTemplate x:Key="BlueComboBoxTemplate" TargetType="ComboBox">
+	<ControlTemplate x:Key="ComboBoxTemplate" TargetType="ComboBox">
 		<Grid>
 			<ToggleButton Name="ToggleButton"
 					  Background="{TemplateBinding Background}"
 					  BorderBrush="{TemplateBinding BorderBrush}"
 					  Focusable="False"
 					  IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
-					  Template="{StaticResource BlueComboBoxToggleButtonTemplate}" />
+					  Template="{StaticResource ComboBoxToggleButtonTemplate}" />
 			<ContentPresenter Margin="8,0,28,0"
 						  VerticalAlignment="Center"
 						  HorizontalAlignment="Left"
@@ -186,11 +193,13 @@
 				   IsOpen="{TemplateBinding IsDropDownOpen}"
 				   PopupAnimation="Slide">
 				<Border Margin="0,2,0,0"
+						MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}"
 						Background="{StaticResource PopupBackgroundBrush}"
 						BorderBrush="{TemplateBinding BorderBrush}"
 						BorderThickness="1"
 						CornerRadius="4">
-					<ScrollViewer SnapsToDevicePixels="True">
+					<ScrollViewer MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}"
+							  SnapsToDevicePixels="True">
 						<ItemsPresenter />
 					</ScrollViewer>
 				</Border>
@@ -203,6 +212,7 @@
 		<Setter Property="Foreground" Value="#FFC8C8C8" />
 		<Setter Property="BorderBrush" Value="#FF292929" />
 		<Setter Property="BorderThickness" Value="1" />
+		<Setter Property="MinHeight" Value="24" />
 		<Setter Property="Padding" Value="6,2" />
 		<Setter Property="Margin" Value="0,0,8,8" />
 		<Setter Property="Template">
@@ -251,6 +261,80 @@
 		<Setter Property="Background" Value="{StaticResource PanelBackgroundBrush}" />
 		<Setter Property="Margin" Value="0,0,0,0" />
 		<Setter Property="HorizontalContentAlignment" Value="Stretch" />
+	</Style>
+
+	<Style TargetType="TabControl">
+		<Setter Property="Background" Value="{StaticResource PanelBackgroundBrush}" />
+		<Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
+		<Setter Property="Foreground" Value="{StaticResource BodyBrush}" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="TabControl">
+					<Grid KeyboardNavigation.TabNavigation="Local"
+						  SnapsToDevicePixels="True">
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto" />
+							<RowDefinition Height="*" />
+						</Grid.RowDefinitions>
+
+						<TabPanel Grid.Row="0"
+								  Margin="0,0,0,8"
+								  IsItemsHost="True"
+								  Background="Transparent" />
+
+						<Border Grid.Row="1"
+								Background="{TemplateBinding Background}"
+								BorderBrush="{TemplateBinding BorderBrush}"
+								BorderThickness="1"
+								CornerRadius="10"
+								Padding="18">
+							<ContentPresenter x:Name="PART_SelectedContentHost"
+											ContentSource="SelectedContent"
+											Margin="0" />
+						</Border>
+					</Grid>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style TargetType="TabItem">
+		<Setter Property="Foreground" Value="{StaticResource BodyBrush}" />
+		<Setter Property="Background" Value="#FF2C2C2C" />
+		<Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
+		<Setter Property="Padding" Value="16,8" />
+		<Setter Property="Margin" Value="0,0,8,0" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="TabItem">
+					<Border x:Name="TabBorder"
+							Background="{TemplateBinding Background}"
+							BorderBrush="{TemplateBinding BorderBrush}"
+							BorderThickness="1"
+							CornerRadius="8,8,0,0"
+							Margin="{TemplateBinding Margin}"
+							Padding="{TemplateBinding Padding}">
+						<ContentPresenter HorizontalAlignment="Center"
+										VerticalAlignment="Center"
+										ContentSource="Header"
+										RecognizesAccessKey="True" />
+					</Border>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsMouseOver" Value="True">
+							<Setter TargetName="TabBorder" Property="Background" Value="#FF4C4C4C" />
+						</Trigger>
+						<Trigger Property="IsSelected" Value="True">
+							<Setter TargetName="TabBorder" Property="Background" Value="{StaticResource PanelBackgroundBrush}" />
+							<Setter TargetName="TabBorder" Property="BorderBrush" Value="{StaticResource AccentBrush}" />
+							<Setter Property="Foreground" Value="{StaticResource HeaderBrush}" />
+						</Trigger>
+						<Trigger Property="IsEnabled" Value="False">
+							<Setter Property="Foreground" Value="#FF7B7B7B" />
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
 	</Style>
 
 	<Style x:Key="FocusVisualScrollbar">
@@ -629,9 +713,9 @@
 							Background="{StaticResource SliderThumbBrush}"
 							BorderBrush="{StaticResource SliderThumbBrush}"
 							BorderThickness="1"
-							CornerRadius="0"
-							Width="14"
-							Height="14"
+							CornerRadius="2"
+							Width="10"
+							Height="18"
 							SnapsToDevicePixels="True" />
 					<ControlTemplate.Triggers>
 						<Trigger Property="IsMouseOver" Value="True">

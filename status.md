@@ -5,6 +5,7 @@
 - Solution now contains `AgenticColorCreator.App`, `AgenticColorCreator.Core`, and `AgenticColorCreator.Tests`.
 - The app can create, load, edit, validate, and save the planned markdown color format.
 - On startup, the app now auto-loads `Color\agentic_colors.md` if that file exists in the repository tree.
+- The main UI now uses tabs, with the color editor on the default `Colors` tab and a `UI Preview` tab for visual control testing.
 - Categories now contain fixed interaction-state subcategories: `Default`, `Selected`, `Pressed`, `Hovered`, and `Disabled`.
 - Colors can be moved between those fixed subcategories by changing the state selector on each color item.
 - The color preview now opens an interactive popup picker for ARGB editing.
@@ -24,8 +25,16 @@
 - Use category expanders to organize larger color sets until search or filtering exists.
 - Close the running app before rebuilding the WPF project.
 - Use the currently running app instance to visually confirm scrollbar thumb default, hover, and pressed states after theme edits.
+- Use the `UI Preview` tab to inspect themed control states without leaving the main editor workflow.
 
 ## Recent Important Changes
+- Renamed the shared combo box template keys to remove the stale `Blue` prefix, so `BlueComboBoxTemplate` and `BlueComboBoxToggleButtonTemplate` are now `ComboBoxTemplate` and `ComboBoxToggleButtonTemplate`.
+- Corrected the combo box theming split in `DarkStyles.xaml` so the closed `ComboBox` uses `ComboBox` category resources while popup rows use separate `ComboBox Item` background, text, and border resources.
+- Updated the shared `ComboBox` template in `DarkStyles.xaml` so the popup and popup items keep a minimum width matching the closed combo box width.
+- Updated the shared `Button`, `TextBox`, and `ComboBox` styles in `DarkStyles.xaml` so all three controls now enforce `MinHeight="24"`.
+- Fixed the slider thumb template in `DarkStyles.xaml` after the style extraction so `SliderThumbBorder` now uses `CornerRadius="2"`, `Width="10"`, and `Height="18"`.
+- Added a `UI Preview` tab beside the main color editor and populated it with themed preview cards for `TextBox`, `Button`, `Slider`, and `ComboBox`, each labeled with its WPF control class name.
+- Added dark `TabControl` and `TabItem` styling so the new tabbed layout uses the same application theme as the rest of the editor.
 - Moved the shared application brushes, styles, and control templates out of `App.xaml` into `AgenticColorCreator.App/DarkStyles.xaml`, and reduced `App.xaml` to a merged resource dictionary wrapper.
 - Restored the slider thumb in `App.xaml` from the newer round shape back to the original square shape while keeping the semantic slider color mapping.
 - Reevaluated UI colors again after `Color\agentic_colors.md` changed at `2026-05-06 15:38:44`, corrected stale default scrollbar glyph/thumb mappings, and kept pressed thumb fill with the default thumb border.

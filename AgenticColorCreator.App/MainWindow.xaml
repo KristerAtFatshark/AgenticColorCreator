@@ -92,7 +92,7 @@
 							  Grid.Column="3"
 							  Width="92"
 							  Margin="0,0,8,6"
-							  Template="{StaticResource BlueComboBoxTemplate}"
+					  Template="{StaticResource ComboBoxTemplate}"
 							  VerticalContentAlignment="Center"
 							  ItemContainerStyle="{StaticResource ComboPopupItemStyle}"
 							  ItemsSource="{Binding AvailableStates}"
@@ -132,136 +132,216 @@
 	</Window.Resources>
 
 	<Grid Margin="20">
-		<DockPanel>
-			<Border DockPanel.Dock="Top"
-				Margin="0,0,0,18"
-				Padding="18"
-				Background="{StaticResource PanelBackgroundBrush}"
-				BorderBrush="{StaticResource BorderBrush}"
-				BorderThickness="1"
-				CornerRadius="10">
-			<Grid>
-				<Grid.RowDefinitions>
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-				</Grid.RowDefinitions>
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="*" />
-					<ColumnDefinition Width="Auto" />
-				</Grid.ColumnDefinitions>
+		<TabControl>
+			<TabItem Header="Colors">
+				<DockPanel>
+					<Border DockPanel.Dock="Top"
+							Margin="0,0,0,18"
+							Padding="18"
+							Background="{StaticResource PanelBackgroundBrush}"
+							BorderBrush="{StaticResource BorderBrush}"
+							BorderThickness="1"
+							CornerRadius="10">
+						<Grid>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto" />
+								<RowDefinition Height="Auto" />
+							</Grid.RowDefinitions>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="*" />
+								<ColumnDefinition Width="Auto" />
+							</Grid.ColumnDefinitions>
 
-				<StackPanel Grid.Row="0"
-							Grid.Column="0"
-							Orientation="Horizontal">
-					<Button Command="{Binding NewDocumentCommand}" Content="New" />
-					<Button Command="{Binding OpenDocumentCommand}" Content="Open" />
-					<Button Command="{Binding SaveDocumentCommand}" Content="Save" />
-					<Button Command="{Binding SaveDocumentAsCommand}" Content="Save As" />
-					<Button Command="{Binding AddCategoryCommand}" Content="Add Category" />
-				</StackPanel>
-
-				<TextBlock Grid.Row="0"
-						   Grid.Column="1"
-						   VerticalAlignment="Center"
-						   FontWeight="SemiBold"
-						   Foreground="{StaticResource AccentBrush}"
-						   Text="{Binding StatusMessage}" />
-
-				<TextBlock Grid.Row="1"
-						   Grid.ColumnSpan="2"
-						   Margin="0,12,0,0"
-						   Text="{Binding CurrentFileDisplay}" />
-
-				<StackPanel Grid.Row="1"
-							Grid.Column="1"
-							Margin="0,12,0,0"
-							Orientation="Horizontal"
-							HorizontalAlignment="Right">
-					<Button Command="{Binding ExpandAllCategoriesCommand}" Content="Expand All" />
-					<Button Command="{Binding CollapseAllCategoriesCommand}" Content="Collapse All" />
-				</StackPanel>
-			</Grid>
-		</Border>
-
-			<Border DockPanel.Dock="Top"
-				Margin="0,0,0,18"
-				Padding="14"
-				Background="{StaticResource PanelBackgroundBrush}"
-				BorderBrush="{StaticResource BorderBrush}"
-				BorderThickness="1"
-				CornerRadius="10"
-				Visibility="{Binding HasValidationErrors, Converter={StaticResource BooleanToVisibilityConverter}}">
-			<StackPanel>
-				<TextBlock FontWeight="Bold"
-						   Foreground="{StaticResource AccentBrush}"
-						   Text="Validation Issues" />
-				<ItemsControl ItemsSource="{Binding ValidationErrors}">
-					<ItemsControl.ItemTemplate>
-						<DataTemplate>
-							<TextBlock Margin="0,4,0,0" Text="{Binding}" />
-						</DataTemplate>
-					</ItemsControl.ItemTemplate>
-				</ItemsControl>
-			</StackPanel>
-		</Border>
-
-			<ScrollViewer VerticalScrollBarVisibility="Auto">
-				<ItemsControl ItemsSource="{Binding Categories}">
-					<ItemsControl.ItemTemplate>
-						<DataTemplate DataType="{x:Type viewModels:CategoryViewModel}">
-							<Expander IsExpanded="{Binding IsExpanded}"
-									  HorizontalContentAlignment="Stretch"
-									  Background="{StaticResource PanelBackgroundBrush}">
-							<Expander.Header>
-								<Grid HorizontalAlignment="Stretch"
-									  Width="{Binding RelativeSource={RelativeSource AncestorType=Expander}, Path=ActualWidth}">
-									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="*" />
-										<ColumnDefinition Width="Auto" />
-									</Grid.ColumnDefinitions>
-
-									<Grid.Margin>
-										<Thickness Left="0" Top="0" Right="13" Bottom="0" />
-									</Grid.Margin>
-
-									<TextBox Grid.Column="0"
-											 MinWidth="220"
-											 Margin="0"
-											 Padding="5,0,5,0"
-											 VerticalContentAlignment="Center"
-											 VerticalAlignment="Center"
-											 Height="30"
-											 FontSize="14"
-											 FontWeight="Bold"
-											 Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
-
-									<StackPanel Grid.Column="1" Width="239"
-											Orientation="Horizontal"
-											HorizontalAlignment="Right"
-											Margin="10,0,0,0">
-										<Button Command="{Binding AddColorCommand}"
-												Margin="0,0,0,0"
-												Padding="10,0"
-												Height="30"
-												Content="Add Color" />
-										<Button Margin="8,0,0,0"
-												Padding="10,0"
-												HorizontalContentAlignment="Left"
-												Height="30"
-												Command="{Binding RemoveCategoryCommand}"
-												Content="Remove Category" />
-									</StackPanel>
-								</Grid>
-							</Expander.Header>
-
-							<StackPanel Margin="5,4,14,14">
-								<ItemsControl ItemsSource="{Binding StateGroups}" />
+							<StackPanel Grid.Row="0"
+										Grid.Column="0"
+										Orientation="Horizontal">
+								<Button Command="{Binding NewDocumentCommand}" Content="New" />
+								<Button Command="{Binding OpenDocumentCommand}" Content="Open" />
+								<Button Command="{Binding SaveDocumentCommand}" Content="Save" />
+								<Button Command="{Binding SaveDocumentAsCommand}" Content="Save As" />
+								<Button Command="{Binding AddCategoryCommand}" Content="Add Category" />
 							</StackPanel>
-							</Expander>
-						</DataTemplate>
-					</ItemsControl.ItemTemplate>
-				</ItemsControl>
-			</ScrollViewer>
-		</DockPanel>
+
+							<TextBlock Grid.Row="0"
+									   Grid.Column="1"
+									   VerticalAlignment="Center"
+									   FontWeight="SemiBold"
+									   Foreground="{StaticResource AccentBrush}"
+									   Text="{Binding StatusMessage}" />
+
+							<TextBlock Grid.Row="1"
+									   Grid.ColumnSpan="2"
+									   Margin="0,12,0,0"
+									   Text="{Binding CurrentFileDisplay}" />
+
+							<StackPanel Grid.Row="1"
+										Grid.Column="1"
+										Margin="0,12,0,0"
+										Orientation="Horizontal"
+										HorizontalAlignment="Right">
+								<Button Command="{Binding ExpandAllCategoriesCommand}" Content="Expand All" />
+								<Button Command="{Binding CollapseAllCategoriesCommand}" Content="Collapse All" />
+							</StackPanel>
+						</Grid>
+					</Border>
+
+					<Border DockPanel.Dock="Top"
+							Margin="0,0,0,18"
+							Padding="14"
+							Background="{StaticResource PanelBackgroundBrush}"
+							BorderBrush="{StaticResource BorderBrush}"
+							BorderThickness="1"
+							CornerRadius="10"
+							Visibility="{Binding HasValidationErrors, Converter={StaticResource BooleanToVisibilityConverter}}">
+						<StackPanel>
+							<TextBlock FontWeight="Bold"
+									   Foreground="{StaticResource AccentBrush}"
+									   Text="Validation Issues" />
+							<ItemsControl ItemsSource="{Binding ValidationErrors}">
+								<ItemsControl.ItemTemplate>
+									<DataTemplate>
+										<TextBlock Margin="0,4,0,0" Text="{Binding}" />
+									</DataTemplate>
+								</ItemsControl.ItemTemplate>
+							</ItemsControl>
+						</StackPanel>
+					</Border>
+
+					<ScrollViewer VerticalScrollBarVisibility="Auto">
+						<ItemsControl ItemsSource="{Binding Categories}">
+							<ItemsControl.ItemTemplate>
+								<DataTemplate DataType="{x:Type viewModels:CategoryViewModel}">
+									<Expander IsExpanded="{Binding IsExpanded}"
+											  HorizontalContentAlignment="Stretch"
+											  Background="{StaticResource PanelBackgroundBrush}">
+										<Expander.Header>
+											<Grid HorizontalAlignment="Stretch"
+												  Width="{Binding RelativeSource={RelativeSource AncestorType=Expander}, Path=ActualWidth}">
+												<Grid.ColumnDefinitions>
+													<ColumnDefinition Width="*" />
+													<ColumnDefinition Width="Auto" />
+												</Grid.ColumnDefinitions>
+
+												<Grid.Margin>
+													<Thickness Left="0" Top="0" Right="13" Bottom="0" />
+												</Grid.Margin>
+
+												<TextBox Grid.Column="0"
+														 MinWidth="220"
+														 Margin="0"
+														 Padding="5,0,5,0"
+														 VerticalContentAlignment="Center"
+														 VerticalAlignment="Center"
+														 Height="30"
+														 FontSize="14"
+														 FontWeight="Bold"
+														 Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+
+												<StackPanel Grid.Column="1" Width="239"
+														Orientation="Horizontal"
+														HorizontalAlignment="Right"
+														Margin="10,0,0,0">
+													<Button Command="{Binding AddColorCommand}"
+															Margin="0,0,0,0"
+															Padding="10,0"
+															Height="30"
+															Content="Add Color" />
+													<Button Margin="8,0,0,0"
+															Padding="10,0"
+															HorizontalContentAlignment="Left"
+															Height="30"
+															Command="{Binding RemoveCategoryCommand}"
+															Content="Remove Category" />
+												</StackPanel>
+											</Grid>
+										</Expander.Header>
+
+										<StackPanel Margin="5,4,14,14">
+											<ItemsControl ItemsSource="{Binding StateGroups}" />
+										</StackPanel>
+									</Expander>
+								</DataTemplate>
+							</ItemsControl.ItemTemplate>
+						</ItemsControl>
+					</ScrollViewer>
+				</DockPanel>
+			</TabItem>
+
+			<TabItem Header="UI Preview">
+				<ScrollViewer VerticalScrollBarVisibility="Auto">
+					<WrapPanel Margin="0" ItemWidth="320" ItemHeight="190">
+						<Border Margin="0,0,18,18"
+								Padding="16"
+								Width="300"
+								Background="{StaticResource PanelBackgroundBrush}"
+								BorderBrush="{StaticResource BorderBrush}"
+								BorderThickness="1"
+								CornerRadius="10">
+							<StackPanel>
+								<TextBlock FontSize="16" FontWeight="SemiBold" Text="TextBox" />
+								<TextBlock Margin="0,2,0,14" Foreground="{StaticResource AccentBrush}" Text="System.Windows.Controls.TextBox" />
+								<TextBox Text="My Text" />
+							</StackPanel>
+						</Border>
+
+						<Border Margin="0,0,18,18"
+								Padding="16"
+								Width="300"
+								Background="{StaticResource PanelBackgroundBrush}"
+								BorderBrush="{StaticResource BorderBrush}"
+								BorderThickness="1"
+								CornerRadius="10">
+							<StackPanel>
+								<TextBlock FontSize="16" FontWeight="SemiBold" Text="Button" />
+								<TextBlock Margin="0,2,0,14" Foreground="{StaticResource AccentBrush}" Text="System.Windows.Controls.Button" />
+								<Button HorizontalAlignment="Left" Content="Button 1" />
+							</StackPanel>
+						</Border>
+
+						<Border Margin="0,0,18,18"
+								Padding="16"
+								Width="300"
+								Background="{StaticResource PanelBackgroundBrush}"
+								BorderBrush="{StaticResource BorderBrush}"
+								BorderThickness="1"
+								CornerRadius="10">
+							<StackPanel>
+								<TextBlock FontSize="16" FontWeight="SemiBold" Text="Slider" />
+								<TextBlock Margin="0,2,0,14" Foreground="{StaticResource AccentBrush}" Text="System.Windows.Controls.Slider" />
+								<Slider Minimum="0" Maximum="100" Value="75" />
+							</StackPanel>
+						</Border>
+
+						<Border Margin="0,0,18,18"
+								Padding="16"
+								Width="300"
+								Background="{StaticResource PanelBackgroundBrush}"
+								BorderBrush="{StaticResource BorderBrush}"
+								BorderThickness="1"
+								CornerRadius="10">
+							<StackPanel>
+								<TextBlock FontSize="16" FontWeight="SemiBold" Text="ComboBox" />
+								<TextBlock Margin="0,2,0,14" Foreground="{StaticResource AccentBrush}" Text="System.Windows.Controls.ComboBox" />
+								<ComboBox Template="{StaticResource ComboBoxTemplate}"
+										  ItemContainerStyle="{StaticResource ComboPopupItemStyle}"
+										  SelectedIndex="0">
+									<ComboBox.Resources>
+										<SolidColorBrush x:Key="{x:Static SystemColors.WindowBrushKey}" Color="#FF4C4C4C" />
+										<SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#8BFF9600" />
+										<SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#FF4C4C4C" />
+										<SolidColorBrush x:Key="{x:Static SystemColors.ControlLightBrushKey}" Color="#FF4C4C4C" />
+										<SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}" Color="#FFC8C8C8" />
+										<SolidColorBrush x:Key="{x:Static SystemColors.WindowTextBrushKey}" Color="#FFC8C8C8" />
+									</ComboBox.Resources>
+									<ComboBoxItem Content="Item 1" />
+									<ComboBoxItem Content="Item 2" />
+									<ComboBoxItem Content="Item 3" />
+								</ComboBox>
+							</StackPanel>
+						</Border>
+					</WrapPanel>
+				</ScrollViewer>
+			</TabItem>
+		</TabControl>
 	</Grid>
 </Window>
