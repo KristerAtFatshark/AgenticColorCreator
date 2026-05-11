@@ -88,7 +88,7 @@
 	<SolidColorBrush x:Key="Slider.Default.Thumb" Color="#FF4C4C4C" />
 	<SolidColorBrush x:Key="Slider.Default.Border" Color="#FF1E1E1E" />
 	<SolidColorBrush x:Key="Slider.Default.ThumbBorder" Color="#FF1E1E1E" />
-	<SolidColorBrush x:Key="Slider.MouseOver.Thumb" Color="#FF555555" />
+	<SolidColorBrush x:Key="Slider.MouseOver.Thumb" Color="#FF5E5E5E" />
 	<SolidColorBrush x:Key="Slider.Pressed.Thumb" Color="#FF555555" />
 	<SolidColorBrush x:Key="Slider.Disabled.Track" Color="#FF2C2C2C" />
 	<SolidColorBrush x:Key="Slider.Disabled.Thumb" Color="#FF2C2C2C" />

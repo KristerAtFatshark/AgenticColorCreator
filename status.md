@@ -28,6 +28,7 @@
 - Use the `UI Preview` tab to inspect themed control states without leaving the main editor workflow.
 
 ## Recent Important Changes
+- Reevaluated UI colors after `Color\agentic_colors.md` changed at `2026-05-11 09:38:45` and updated the slider mouse-over thumb color in `DarkStyles.xaml` to match the latest `Slider / Thumb MouseOver` value.
 - Reevaluated UI colors after `Color\agentic_colors.md` changed at `2026-05-11 09:32:56`, added `Slider / Thumb.Border` mapping, and updated the slider thumb template so thumb border colors come from the new semantic slider border entries.
 - Reevaluated UI colors after `Color\agentic_colors.md` changed at `2026-05-11 09:16:07`, updated the slider default/disabled colors to the latest `Slider` values, and corrected the closed `ComboBox` disabled colors to match the current `ComboBox` category.
 - Expanded the `UI Preview` tab so every previewed control now also shows a disabled (`IsEnabled="False"`) example for state validation.
