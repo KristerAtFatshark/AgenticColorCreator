@@ -130,6 +130,7 @@
 				</Grid>
 			</Border>
 		</DataTemplate>
+
 	</Window.Resources>
 
 	<Grid Margin="20">
@@ -408,10 +409,16 @@
 									<RowDefinition Height="Auto" />
 									<RowDefinition Height="Auto" />
 									<RowDefinition Height="140" />
+									<RowDefinition Height="Auto" />
 								</Grid.RowDefinitions>
 								<TextBlock FontSize="16" FontWeight="SemiBold" Text="CFTreeView" />
 								<TextBlock Grid.Row="1" Margin="0,2,0,14" Foreground="{StaticResource Text.Selected.Foreground}" Text="System.Windows.Controls.TreeView" />
-								<userControls:CFTreeView Grid.Row="2"/>
+								<userControls:CFTreeView Grid.Row="2"
+											 SelectedTreeViewItem="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=SelectedPreviewTreeViewItem, Mode=TwoWay}" />
+								<TextBox Grid.Row="3"
+										 Margin="0,8,0,0"
+										 IsReadOnly="True"
+										 Text="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=SelectedPreviewTreeViewDetails}" />
 							</Grid>
 						</Border>
 					</WrapPanel>
