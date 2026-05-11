@@ -28,6 +28,9 @@
 - Use the `UI Preview` tab to inspect themed control states without leaving the main editor workflow.
 
 ## Recent Important Changes
+- Corrected stale checkbox resource values in `DarkStyles.xaml` so the checkbox glyph and mouse-over background now match the current `Checkbox` colors from `Color\agentic_colors.md`.
+- Reevaluated UI colors after `Color\agentic_colors.md` changed at `2026-05-10 15:39:32` and replaced the checkbox styling with a Microsoft-style-based `CheckBox` template in `DarkStyles.xaml`, mapped to the current checkbox background, border, text, and glyph colors.
+- Expanded the `UI Preview` tab with `CheckBox` and grouped `RadioButton` preview cards so those controls can be inspected before they get custom styling.
 - Renamed the UI interaction-state terminology from `Hovered` to `MouseOver` across the theme resources, color definitions, and documentation, while keeping parser support for older `Hovered` labels in existing markdown files.
 - Restructured the shared theme resources so color brushes are centralized near the top of `DarkStyles.xaml` and renamed to the `Category.State.Name` convention, for example `TextBox.Default.Background`.
 - Renamed the shared combo box template keys to remove the stale `Blue` prefix, so `BlueComboBoxTemplate` and `BlueComboBoxToggleButtonTemplate` are now `ComboBoxTemplate` and `ComboBoxToggleButtonTemplate`.

@@ -339,6 +339,37 @@
 								</ComboBox>
 							</StackPanel>
 						</Border>
+
+						<Border Margin="0,0,18,18"
+								Padding="16"
+								Width="300"
+								Background="{StaticResource Panel.Default.Background}"
+								BorderBrush="{StaticResource Border.Default.Border}"
+								BorderThickness="1"
+								CornerRadius="10">
+							<StackPanel>
+								<TextBlock FontSize="16" FontWeight="SemiBold" Text="CheckBox" />
+								<TextBlock Margin="0,2,0,14" Foreground="{StaticResource Text.Selected.Foreground}" Text="System.Windows.Controls.CheckBox" />
+								<CheckBox IsThreeState="True" IsChecked="True" Content="Checked" />
+								<CheckBox IsThreeState="True" IsChecked="False" Content="Unchecked" />
+								<CheckBox IsThreeState="True" IsChecked="{x:Null}" Content="Indeterminate" />
+							</StackPanel>
+						</Border>
+
+						<Border Margin="0,0,18,18"
+								Padding="16"
+								Width="300"
+								Background="{StaticResource Panel.Default.Background}"
+								BorderBrush="{StaticResource Border.Default.Border}"
+								BorderThickness="1"
+								CornerRadius="10">
+							<StackPanel>
+								<TextBlock FontSize="16" FontWeight="SemiBold" Text="RadioButton" />
+								<TextBlock Margin="0,2,0,14" Foreground="{StaticResource Text.Selected.Foreground}" Text="System.Windows.Controls.RadioButton" />
+								<RadioButton GroupName="PreviewRadioGroup" IsChecked="True" Content="Option 1" />
+								<RadioButton GroupName="PreviewRadioGroup" Content="Option 2" />
+							</StackPanel>
+						</Border>
 					</WrapPanel>
 				</ScrollViewer>
 			</TabItem>

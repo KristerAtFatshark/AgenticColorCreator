@@ -270,4 +270,42 @@
 
 ### Slider / Thumb MouseOver
 - value: #FF555555
+- description: 
+
+## Category: Checkbox
+
+### Checkbox / Glyph Default
+- value: #FFFF9600
+- description: 
+
+### Checkbox / Border Default
+- value: #FF292929
+- description: 
+
+### Checkbox / Background Default
+- value: #FF4C4C4C
+- description: 
+
+### Checkbox / Text Default
+- value: #FFC8C8C8
+- description: 
+
+### Checkbox / Background Pressed
+- value: #FF4C4C4C
+- description: 
+
+### Checkbox / Background MouseOver
+- value: #FF5E5E5E
+- description: 
+
+### Checkbox / Glyph Disabled
+- value: #FF7B7B7B
+- description: 
+
+### Checkbox / Text Disabled
+- value: #FF7B7B7B
+- description: 
+
+### Checkbox / Background Disabled
+- value: #FF2C2C2C
 - description:
