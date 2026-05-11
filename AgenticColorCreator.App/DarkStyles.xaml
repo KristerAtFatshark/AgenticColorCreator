@@ -87,11 +87,14 @@
 	<SolidColorBrush x:Key="Slider.Default.Track" Color="#FF4C4C4C" />
 	<SolidColorBrush x:Key="Slider.Default.Thumb" Color="#FF4C4C4C" />
 	<SolidColorBrush x:Key="Slider.Default.Border" Color="#FF1E1E1E" />
+	<SolidColorBrush x:Key="Slider.Default.ThumbBorder" Color="#FF1E1E1E" />
 	<SolidColorBrush x:Key="Slider.MouseOver.Thumb" Color="#FF555555" />
 	<SolidColorBrush x:Key="Slider.Pressed.Thumb" Color="#FF555555" />
 	<SolidColorBrush x:Key="Slider.Disabled.Track" Color="#FF2C2C2C" />
 	<SolidColorBrush x:Key="Slider.Disabled.Thumb" Color="#FF2C2C2C" />
 	<SolidColorBrush x:Key="Slider.Disabled.Tickbar" Color="#FF2C2C2C" />
+	<SolidColorBrush x:Key="Slider.Disabled.Border" Color="#FF4C4C4C" />
+	<SolidColorBrush x:Key="Slider.Disabled.ThumbBorder" Color="#FF4C4C4C" />
 
 	<Style TargetType="Window">
 		<Setter Property="Background" Value="{StaticResource Window.Default.Background}" />
@@ -934,7 +937,7 @@
 				<ControlTemplate TargetType="Thumb">
 					<Border x:Name="SliderThumbBorder"
 							Background="{StaticResource Slider.Default.Thumb}"
-							BorderBrush="{StaticResource Slider.Default.Thumb}"
+							BorderBrush="{StaticResource Slider.Default.ThumbBorder}"
 							BorderThickness="1"
 							CornerRadius="2"
 							Width="10"
@@ -943,15 +946,15 @@
 					<ControlTemplate.Triggers>
 						<Trigger Property="IsMouseOver" Value="True">
 							<Setter TargetName="SliderThumbBorder" Property="Background" Value="{StaticResource Slider.MouseOver.Thumb}" />
-							<Setter TargetName="SliderThumbBorder" Property="BorderBrush" Value="{StaticResource Slider.MouseOver.Thumb}" />
+							<Setter TargetName="SliderThumbBorder" Property="BorderBrush" Value="{StaticResource Slider.Default.ThumbBorder}" />
 						</Trigger>
 						<Trigger Property="IsDragging" Value="True">
 							<Setter TargetName="SliderThumbBorder" Property="Background" Value="{StaticResource Slider.Pressed.Thumb}" />
-							<Setter TargetName="SliderThumbBorder" Property="BorderBrush" Value="{StaticResource Slider.Pressed.Thumb}" />
+							<Setter TargetName="SliderThumbBorder" Property="BorderBrush" Value="{StaticResource Slider.Default.ThumbBorder}" />
 						</Trigger>
 						<Trigger Property="IsEnabled" Value="False">
 							<Setter TargetName="SliderThumbBorder" Property="Background" Value="{StaticResource Slider.Disabled.Thumb}" />
-							<Setter TargetName="SliderThumbBorder" Property="BorderBrush" Value="{StaticResource Slider.Disabled.Thumb}" />
+							<Setter TargetName="SliderThumbBorder" Property="BorderBrush" Value="{StaticResource Slider.Disabled.ThumbBorder}" />
 						</Trigger>
 					</ControlTemplate.Triggers>
 				</ControlTemplate>
@@ -962,7 +965,7 @@
 	<ControlTemplate x:Key="HorizontalSliderTemplate" TargetType="Slider">
 		<Grid Margin="0,2">
 			<Border Background="{StaticResource Slider.Default.Background}"
-					BorderBrush="{StaticResource Slider.Default.Border}"
+					BorderBrush="{TemplateBinding BorderBrush}"
 					BorderThickness="1"
 					CornerRadius="3"
 					Height="10"
@@ -1018,6 +1021,9 @@
 		<Setter Property="Foreground" Value="{StaticResource Text.Default.Foreground}" />
 		<Setter Property="Template" Value="{StaticResource HorizontalSliderTemplate}" />
 		<Style.Triggers>
+			<Trigger Property="IsEnabled" Value="False">
+				<Setter Property="BorderBrush" Value="{StaticResource Slider.Disabled.Border}" />
+			</Trigger>
 			<Trigger Property="Orientation" Value="Vertical">
 				<Setter Property="Template" Value="{x:Null}" />
 			</Trigger>
