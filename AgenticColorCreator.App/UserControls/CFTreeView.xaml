@@ -1,26 +1,27 @@
 <UserControl x:Class="AgenticColorCreator.App.UserControls.CFTreeView"
 			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:local="clr-namespace:AgenticColorCreator.App.UserControls"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 mc:Ignorable="d"
 			 d:DesignHeight="220"
 			 d:DesignWidth="260">
 	<TreeView Style="{StaticResource CFTreeViewStyle}">
-		<TreeViewItem Header="Palette">
-			<TreeViewItem Header="Primary" />
-			<TreeViewItem Header="Secondary" />
-			<TreeViewItem Header="Accent" />
-		</TreeViewItem>
-		<TreeViewItem Header="Controls">
-			<TreeViewItem Header="Inputs">
-				<TreeViewItem Header="TextBox" />
-				<TreeViewItem Header="ComboBox" />
-			</TreeViewItem>
-			<TreeViewItem Header="Selection">
-				<TreeViewItem Header="CheckBox" />
-				<TreeViewItem Header="RadioButton" />
-			</TreeViewItem>
-		</TreeViewItem>
+		<local:CFTreeViewItem Icon="📁" Text="Palette" Value="palette" IsExpanded="True">
+			<local:CFTreeViewItem Icon="🎨" Text="Primary" Value="palette.primary" />
+			<local:CFTreeViewItem Icon="🎨" Text="Secondary" Value="palette.secondary" />
+			<local:CFTreeViewItem Icon="✨" Text="Accent" Value="palette.accent" />
+		</local:CFTreeViewItem>
+		<local:CFTreeViewItem Icon="🧩" Text="Controls" Value="controls" IsExpanded="True">
+			<local:CFTreeViewItem Icon="⌨" Text="Inputs" Value="controls.inputs" IsExpanded="True">
+				<local:CFTreeViewItem Icon="T" Text="TextBox" Value="controls.inputs.textbox" />
+				<local:CFTreeViewItem Icon="▾" Text="ComboBox" Value="controls.inputs.combobox" />
+			</local:CFTreeViewItem>
+			<local:CFTreeViewItem Icon="✔" Text="Selection" Value="controls.selection" IsExpanded="True">
+				<local:CFTreeViewItem Icon="☑" Text="CheckBox" Value="controls.selection.checkbox" />
+				<local:CFTreeViewItem Icon="◉" Text="RadioButton" Value="controls.selection.radiobutton" />
+			</local:CFTreeViewItem>
+		</local:CFTreeViewItem>
 	</TreeView>
 </UserControl>

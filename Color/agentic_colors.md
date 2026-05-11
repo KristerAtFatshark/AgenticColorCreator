@@ -386,6 +386,64 @@
 - value: #FFC8C8C8
 - description: 
 
+### TreeView / Glyph Default
+- value: #FFC8C8C8
+- description: 
+
+### TreeView / Glyph.Background Default
+- value: #00000000
+- description: Transparent
+
+### TreeView / Glyph.Border Default
+- value: #00000000
+- description: Transparent
+
+### TreeView / Glyph MouseOver
+- value: #FFFFFFFF
+- description: 
+
 ### TreeView / Background Disabled
 - value: #FF202020
+- description: 
+
+## Category: TreeView Item
+
+### TreeView Item / Text Default
+- value: #FFC8C8C8
+- description: 
+
+### TreeView Item / Icon Default
+- value: #FFC8C8C8
+- description: 
+
+### TreeView Item / Background Default
+- value: #FF202020
+- description: 
+
+### TreeView Item / Border Default
+- value: #00000000
+- description: Border should not be visible from the start
+
+### TreeView Item / Text Selected
+- value: #FFFFFFFF
+- description: 
+
+### TreeView Item / Icon Selected
+- value: #FFFFFFFF
+- description: 
+
+### TreeView Item / Background Selected
+- value: #94FF9600
+- description: 
+
+### TreeView Item / Border Selected
+- value: #FFFF9600
+- description: 
+
+### TreeView Item / Text MouseOver
+- value: #FFFFFFFF
+- description: 
+
+### TreeView Item / Icon MouseOver
+- value: #FFFFFFFF
 - description:

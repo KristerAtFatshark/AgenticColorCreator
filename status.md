@@ -12,13 +12,13 @@
 - Color cards have been compacted for denser browsing of large color sets.
 - Repository indentation has been normalized to real tab characters for leading indentation.
 - Repository line endings have been normalized to `CRLF`.
-- Build and unit tests are currently passing after the latest scrollbar theme update.
+- Build and unit tests are passing after the latest TreeView expander toggle template fix.
 
 ## Active Issues
 - Descriptions are saved as a single canonical markdown line even if entered over multiple lines in the UI.
 - No drag/drop reordering or search/filtering yet.
 - Rebuilding the WPF app fails while the running executable is still open because the debug output DLL stays locked.
-- The latest scrollbar thumb border/fill fix was validated by build, tests, and app launch, but still needs manual visual confirmation in the running UI.
+- The latest TreeView expander toggle template fix was validated by build and tests, but still needs manual visual confirmation in the running UI.
 
 ## Workarounds
 - Use the popup picker or the hex field with full `#AARRGGBB` values for color editing.
@@ -28,6 +28,15 @@
 - Use the `UI Preview` tab to inspect themed control states without leaving the main editor workflow.
 
 ## Recent Important Changes
+- Replaced the `CFTreeViewItem` expander `ToggleButton` with a minimal custom template so the default WPF blue border chrome no longer renders around the TreeView arrow button.
+- Reevaluated UI colors after `Color\agentic_colors.md` changed at `2026-05-11 11:50:19`, added the new `TreeView / Glyph`, `Glyph.Background`, and `Glyph.Border` mappings in `DarkStyles.xaml`, and applied them to the `CFTreeViewItem` expander toggle.
+- Reworked `CFTreeViewItem` styling to be an implicit style for the custom item type, so nested explicit `CFTreeViewItem` children use the same template without relying on `TreeView.ItemContainerStyle`.
+- Switched the custom `CFTreeViewItem` template back onto the normal WPF header/content pipeline with a `HeaderTemplate` plus `PART_Header`, while keeping the semantic icon/text, selected, and mouse-over visuals.
+- Verified the latest TreeView item template changes with `dotnet build AgenticColorCreator.sln` and `dotnet test AgenticColorCreator.Tests\AgenticColorCreator.Tests.csproj`.
+- Reevaluated the latest `TreeView Item` color update and confirmed the current `CFTreeViewItem` semantic resource values already match the new default, selected, and mouse-over entries in `Color\agentic_colors.md`.
+- Reevaluated UI colors after `Color\agentic_colors.md` changed at `2026-05-11 11:10:06` and refreshed `CFTreeViewItem` styling in `DarkStyles.xaml` to use the new default background/border plus the updated selected background, border, text, and icon colors.
+- Reevaluated UI colors after `Color\agentic_colors.md` changed at `2026-05-11 10:54:10` and updated `CFTreeViewItem` styling in `DarkStyles.xaml` so tree item icon/text visuals now use the new `TreeView Item` default, selected, and mouse-over colors.
+- Added `UserControls\CFTreeViewItem` as a custom `TreeViewItem` type with `Icon`, `Text`, and public `Value` properties, styled its header to show icon plus text, and updated the `CFTreeView` mock data to use the new item type.
 - Fixed the `CFTreeView` preview card layout so the full border remains visible and the preview uses a constrained inner height that allows the tree view scrollbars to handle expanded content.
 - Reevaluated UI colors after `Color\agentic_colors.md` changed at `2026-05-11 10:20:52`, added `UserControls\CFTreeView`, introduced a Microsoft-style-based `TreeView` theme in `DarkStyles.xaml`, and added the new tree view with mock data to the `UI Preview` tab.
 - Reevaluated UI colors after `Color\agentic_colors.md` changed at `2026-05-11 09:38:45` and updated the slider mouse-over thumb color in `DarkStyles.xaml` to match the latest `Slider / Thumb MouseOver` value.
