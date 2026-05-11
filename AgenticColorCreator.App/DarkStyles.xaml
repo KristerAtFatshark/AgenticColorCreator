@@ -31,6 +31,10 @@
 	<SolidColorBrush x:Key="ComboBox.Default.Foreground" Color="#FFC8C8C8" />
 	<SolidColorBrush x:Key="ComboBox.Default.Border" Color="#FF292929" />
 	<SolidColorBrush x:Key="ComboBox.Default.Icon" Color="#FFC8C8C8" />
+	<SolidColorBrush x:Key="ComboBox.Disabled.Background" Color="#FF2C2C2C" />
+	<SolidColorBrush x:Key="ComboBox.Disabled.Foreground" Color="#FF7B7B7B" />
+	<SolidColorBrush x:Key="ComboBox.Disabled.Border" Color="#FF4C4C4C" />
+	<SolidColorBrush x:Key="ComboBox.Disabled.Icon" Color="#FF7B7B7B" />
 	<SolidColorBrush x:Key="ComboBoxItem.Default.Background" Color="#FF4C4C4C" />
 	<SolidColorBrush x:Key="ComboBoxItem.Default.Foreground" Color="#FFC8C8C8" />
 	<SolidColorBrush x:Key="ComboBoxItem.Default.Border" Color="#FF3C3C3C" />
@@ -80,11 +84,14 @@
 	<SolidColorBrush x:Key="Scrollbar.Disabled.Border" Color="#FF292929" />
 	<SolidColorBrush x:Key="Scrollbar.Disabled.Glyph" Color="#FFD4D4D4" />
 	<SolidColorBrush x:Key="Slider.Default.Background" Color="#FF292929" />
-	<SolidColorBrush x:Key="Slider.Default.Track" Color="#FF414141" />
-	<SolidColorBrush x:Key="Slider.Default.Thumb" Color="#FF414141" />
+	<SolidColorBrush x:Key="Slider.Default.Track" Color="#FF4C4C4C" />
+	<SolidColorBrush x:Key="Slider.Default.Thumb" Color="#FF4C4C4C" />
 	<SolidColorBrush x:Key="Slider.Default.Border" Color="#FF1E1E1E" />
 	<SolidColorBrush x:Key="Slider.MouseOver.Thumb" Color="#FF555555" />
 	<SolidColorBrush x:Key="Slider.Pressed.Thumb" Color="#FF555555" />
+	<SolidColorBrush x:Key="Slider.Disabled.Track" Color="#FF2C2C2C" />
+	<SolidColorBrush x:Key="Slider.Disabled.Thumb" Color="#FF2C2C2C" />
+	<SolidColorBrush x:Key="Slider.Disabled.Tickbar" Color="#FF2C2C2C" />
 
 	<Style TargetType="Window">
 		<Setter Property="Background" Value="{StaticResource Window.Default.Background}" />
@@ -172,6 +179,13 @@
 		<Setter Property="MinHeight" Value="24" />
 		<Setter Property="Padding" Value="4,3" />
 		<Setter Property="Margin" Value="0,2,0,2" />
+		<Style.Triggers>
+			<Trigger Property="IsEnabled" Value="False">
+				<Setter Property="Background" Value="{StaticResource ComboBox.Disabled.Background}" />
+				<Setter Property="Foreground" Value="{StaticResource ComboBox.Disabled.Foreground}" />
+				<Setter Property="BorderBrush" Value="{StaticResource ComboBox.Disabled.Border}" />
+			</Trigger>
+		</Style.Triggers>
 	</Style>
 
 	<Style x:Key="ComboPopupItemStyle" TargetType="ComboBoxItem">
@@ -219,13 +233,19 @@
 					<ColumnDefinition Width="*" />
 					<ColumnDefinition Width="22" />
 				</Grid.ColumnDefinitions>
-				<Path Grid.Column="1"
+				<Path x:Name="ComboBoxIcon"
+					  Grid.Column="1"
 					  HorizontalAlignment="Center"
 					  VerticalAlignment="Center"
 					  Fill="{StaticResource ComboBox.Default.Icon}"
 					  Data="M 0 0 L 4 4 L 8 0 Z" />
 			</Grid>
 		</Border>
+		<ControlTemplate.Triggers>
+			<Trigger Property="IsEnabled" Value="False">
+				<Setter TargetName="ComboBoxIcon" Property="Fill" Value="{StaticResource ComboBox.Disabled.Icon}" />
+			</Trigger>
+		</ControlTemplate.Triggers>
 	</ControlTemplate>
 
 	<ControlTemplate x:Key="ComboBoxTemplate" TargetType="ComboBox">
@@ -929,6 +949,10 @@
 							<Setter TargetName="SliderThumbBorder" Property="Background" Value="{StaticResource Slider.Pressed.Thumb}" />
 							<Setter TargetName="SliderThumbBorder" Property="BorderBrush" Value="{StaticResource Slider.Pressed.Thumb}" />
 						</Trigger>
+						<Trigger Property="IsEnabled" Value="False">
+							<Setter TargetName="SliderThumbBorder" Property="Background" Value="{StaticResource Slider.Disabled.Thumb}" />
+							<Setter TargetName="SliderThumbBorder" Property="BorderBrush" Value="{StaticResource Slider.Disabled.Thumb}" />
+						</Trigger>
 					</ControlTemplate.Triggers>
 				</ControlTemplate>
 			</Setter.Value>
@@ -946,28 +970,40 @@
 			<Track x:Name="PART_Track"
 				   VerticalAlignment="Center">
 				<Track.DecreaseRepeatButton>
-					<RepeatButton Style="{StaticResource RepeatButtonTransparent}">
-						<RepeatButton.Template>
-							<ControlTemplate TargetType="RepeatButton">
-								<Border Background="{StaticResource Slider.Default.Track}"
-										CornerRadius="3"
-										Height="6"
-										VerticalAlignment="Center" />
-							</ControlTemplate>
-						</RepeatButton.Template>
-					</RepeatButton>
+						<RepeatButton Style="{StaticResource RepeatButtonTransparent}">
+							<RepeatButton.Template>
+								<ControlTemplate TargetType="RepeatButton">
+									<Border x:Name="DecreaseTrack"
+											Background="{StaticResource Slider.Default.Track}"
+											CornerRadius="3,0,0,3"
+											Height="8"
+											VerticalAlignment="Center" />
+									<ControlTemplate.Triggers>
+										<Trigger Property="IsEnabled" Value="False">
+											<Setter TargetName="DecreaseTrack" Property="Background" Value="{StaticResource Slider.Disabled.Track}" />
+										</Trigger>
+									</ControlTemplate.Triggers>
+								</ControlTemplate>
+							</RepeatButton.Template>
+						</RepeatButton>
 				</Track.DecreaseRepeatButton>
 				<Track.IncreaseRepeatButton>
-					<RepeatButton Style="{StaticResource RepeatButtonTransparent}">
-						<RepeatButton.Template>
-							<ControlTemplate TargetType="RepeatButton">
-								<Border Background="{StaticResource Slider.Default.Background}"
-										CornerRadius="3"
-										Height="6"
-										VerticalAlignment="Center" />
-							</ControlTemplate>
-						</RepeatButton.Template>
-					</RepeatButton>
+						<RepeatButton Style="{StaticResource RepeatButtonTransparent}">
+							<RepeatButton.Template>
+								<ControlTemplate TargetType="RepeatButton">
+									<Border x:Name="IncreaseTrack"
+											Background="{StaticResource Slider.Disabled.Tickbar}"
+											CornerRadius="3"
+											Height="6"
+											VerticalAlignment="Center" />
+									<ControlTemplate.Triggers>
+										<Trigger Property="IsEnabled" Value="False">
+											<Setter TargetName="IncreaseTrack" Property="Background" Value="{StaticResource Slider.Disabled.Tickbar}" />
+										</Trigger>
+									</ControlTemplate.Triggers>
+								</ControlTemplate>
+							</RepeatButton.Template>
+						</RepeatButton>
 				</Track.IncreaseRepeatButton>
 				<Track.Thumb>
 					<Thumb Style="{StaticResource SliderThumbStyle}" />

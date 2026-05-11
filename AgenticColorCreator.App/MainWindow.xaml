@@ -281,6 +281,7 @@
 								<TextBlock FontSize="16" FontWeight="SemiBold" Text="TextBox" />
 								<TextBlock Margin="0,2,0,14" Foreground="{StaticResource Text.Selected.Foreground}" Text="System.Windows.Controls.TextBox" />
 								<TextBox Text="My Text" />
+								<TextBox IsEnabled="False" Text="My Text" />
 							</StackPanel>
 						</Border>
 
@@ -295,6 +296,7 @@
 								<TextBlock FontSize="16" FontWeight="SemiBold" Text="Button" />
 								<TextBlock Margin="0,2,0,14" Foreground="{StaticResource Text.Selected.Foreground}" Text="System.Windows.Controls.Button" />
 								<Button HorizontalAlignment="Left" Content="Button 1" />
+								<Button HorizontalAlignment="Left" IsEnabled="False" Content="Button 1" />
 							</StackPanel>
 						</Border>
 
@@ -309,6 +311,7 @@
 								<TextBlock FontSize="16" FontWeight="SemiBold" Text="Slider" />
 								<TextBlock Margin="0,2,0,14" Foreground="{StaticResource Text.Selected.Foreground}" Text="System.Windows.Controls.Slider" />
 								<Slider Minimum="0" Maximum="100" Value="75" />
+								<Slider IsEnabled="False" Minimum="0" Maximum="100" Value="75" />
 							</StackPanel>
 						</Border>
 
@@ -323,6 +326,22 @@
 								<TextBlock FontSize="16" FontWeight="SemiBold" Text="ComboBox" />
 								<TextBlock Margin="0,2,0,14" Foreground="{StaticResource Text.Selected.Foreground}" Text="System.Windows.Controls.ComboBox" />
 								<ComboBox Template="{StaticResource ComboBoxTemplate}"
+										  ItemContainerStyle="{StaticResource ComboPopupItemStyle}"
+										  SelectedIndex="0">
+									<ComboBox.Resources>
+										<SolidColorBrush x:Key="{x:Static SystemColors.WindowBrushKey}" Color="#FF4C4C4C" />
+										<SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#8BFF9600" />
+										<SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#FF4C4C4C" />
+										<SolidColorBrush x:Key="{x:Static SystemColors.ControlLightBrushKey}" Color="#FF4C4C4C" />
+										<SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}" Color="#FFC8C8C8" />
+										<SolidColorBrush x:Key="{x:Static SystemColors.WindowTextBrushKey}" Color="#FFC8C8C8" />
+									</ComboBox.Resources>
+									<ComboBoxItem Content="Item 1" />
+									<ComboBoxItem Content="Item 2" />
+									<ComboBoxItem Content="Item 3" />
+								</ComboBox>
+								<ComboBox IsEnabled="False"
+										  Template="{StaticResource ComboBoxTemplate}"
 										  ItemContainerStyle="{StaticResource ComboPopupItemStyle}"
 										  SelectedIndex="0">
 									<ComboBox.Resources>
@@ -353,6 +372,9 @@
 								<CheckBox IsThreeState="True" IsChecked="True" Content="Checked" />
 								<CheckBox IsThreeState="True" IsChecked="False" Content="Unchecked" />
 								<CheckBox IsThreeState="True" IsChecked="{x:Null}" Content="Indeterminate" />
+								<CheckBox IsEnabled="False" IsThreeState="True" IsChecked="True" Content="Checked" />
+								<CheckBox IsEnabled="False" IsThreeState="True" IsChecked="False" Content="Unchecked" />
+								<CheckBox IsEnabled="False" IsThreeState="True" IsChecked="{x:Null}" Content="Indeterminate" />
 							</StackPanel>
 						</Border>
 
@@ -368,6 +390,8 @@
 								<TextBlock Margin="0,2,0,14" Foreground="{StaticResource Text.Selected.Foreground}" Text="System.Windows.Controls.RadioButton" />
 								<RadioButton GroupName="PreviewRadioGroup" IsChecked="True" Content="Option 1" />
 								<RadioButton GroupName="PreviewRadioGroup" Content="Option 2" />
+								<RadioButton GroupName="PreviewRadioGroupDisabled" IsEnabled="False" IsChecked="True" Content="Option 1" />
+								<RadioButton GroupName="PreviewRadioGroupDisabled" IsEnabled="False" Content="Option 2" />
 							</StackPanel>
 						</Border>
 					</WrapPanel>

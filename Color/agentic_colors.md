@@ -249,18 +249,22 @@
 - description: 
 
 ### Slider / Track Default
-- value: #FF414141
+- value: #FF4C4C4C
 - description: 
 
 ### Slider / Thumb Default
-- value: #FF414141
+- value: #FF4C4C4C
 - description: 
 
 ### Slider / Tickbar Default
-- value: #FF4B4B4B
+- value: #FF555555
 - description: 
 
 ### Slider / Border Default
+- value: #FF1E1E1E
+- description: 
+
+### Slider / Thumb.Border Default
 - value: #FF1E1E1E
 - description: 
 
@@ -270,6 +274,26 @@
 
 ### Slider / Thumb MouseOver
 - value: #FF555555
+- description: 
+
+### Slider / Track Disabled
+- value: #FF2C2C2C
+- description: 
+
+### Slider / Thumb Disabled
+- value: #FF2C2C2C
+- description: 
+
+### Slider / Tickbar Disabled
+- value: #FF2C2C2C
+- description: 
+
+### Slider / Border Disabled
+- value: #FF4C4C4C
+- description: 
+
+### Slider / Thumb.Border Disabled
+- value: #FF4C4C4C
 - description: 
 
 ## Category: Checkbox
@@ -308,7 +332,7 @@
 
 ### Checkbox / Background Disabled
 - value: #FF2C2C2C
-- description:
+- description: 
 
 ## Category: RadioButton
 
