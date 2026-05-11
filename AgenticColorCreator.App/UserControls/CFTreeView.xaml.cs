@@ -10,6 +10,12 @@ namespace AgenticColorCreator.App.UserControls;
 
 public partial class CFTreeView : UserControl
 {
+	public static readonly DependencyProperty IsMultiSelectProperty = DependencyProperty.Register(
+		nameof(IsMultiSelect),
+		typeof(bool),
+		typeof(CFTreeView),
+		new PropertyMetadata(false, OnIsMultiSelectChanged));
+
 	public static readonly DependencyProperty SelectedTreeViewItemsProperty = DependencyProperty.Register(
 		nameof(SelectedTreeViewItems),
 		typeof(IReadOnlyList<CFTreeViewItem>),
@@ -29,8 +35,51 @@ public partial class CFTreeView : UserControl
 		set => SetValue(SelectedTreeViewItemsProperty, value);
 	}
 
+	public bool IsMultiSelect
+	{
+		get => (bool)GetValue(IsMultiSelectProperty);
+		set => SetValue(IsMultiSelectProperty, value);
+	}
+
+	private static void OnIsMultiSelectChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+	{
+		if (d is not CFTreeView treeView)
+		{
+			return;
+		}
+
+		treeView.SyncSelectionMode();
+	}
+
+	private void OnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+	{
+		if (IsMultiSelect)
+		{
+			return;
+		}
+
+		foreach (var item in _selectedTreeViewItems)
+		{
+			item.IsMultiSelected = false;
+		}
+
+		_selectedTreeViewItems.Clear();
+
+		if (e.NewValue is CFTreeViewItem selectedItem)
+		{
+			_selectedTreeViewItems.Add(selectedItem);
+		}
+
+		UpdateSelectedTreeViewItems();
+	}
+
 	private void OnPreviewTreeViewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 	{
+		if (!IsMultiSelect)
+		{
+			return;
+		}
+
 		if (FindAncestor<ToggleButton>(e.OriginalSource as DependencyObject) is not null)
 		{
 			return;
@@ -85,6 +134,28 @@ public partial class CFTreeView : UserControl
 	private void UpdateSelectedTreeViewItems()
 	{
 		SelectedTreeViewItems = _selectedTreeViewItems.ToList();
+	}
+
+	private void SyncSelectionMode()
+	{
+		foreach (var item in _selectedTreeViewItems)
+		{
+			item.IsMultiSelected = false;
+		}
+
+		_selectedTreeViewItems.Clear();
+
+		if (PreviewTreeView.SelectedItem is CFTreeViewItem selectedItem)
+		{
+			if (IsMultiSelect)
+			{
+				selectedItem.IsMultiSelected = true;
+			}
+
+			_selectedTreeViewItems.Add(selectedItem);
+		}
+
+		UpdateSelectedTreeViewItems();
 	}
 
 	private static T? FindAncestor<T>(DependencyObject? dependencyObject)
