@@ -626,7 +626,7 @@
 								</Setter.Value>
 							</Setter>
 						</Trigger>
-						<Trigger Property="IsSelected" Value="True">
+						<Trigger Property="IsMultiSelected" Value="True">
 							<Setter TargetName="ItemHeaderBorder" Property="Background" Value="{StaticResource TreeViewItem.Selected.Background}" />
 							<Setter TargetName="ItemHeaderBorder" Property="BorderBrush" Value="{StaticResource TreeViewItem.Selected.Border}" />
 							<Setter Property="Tag" Value="{StaticResource TreeViewItem.Selected.Icon}" />
@@ -635,7 +635,7 @@
 						<MultiTrigger>
 							<MultiTrigger.Conditions>
 								<Condition Property="IsMouseOver" Value="True" />
-								<Condition Property="IsSelected" Value="False" />
+								<Condition Property="IsMultiSelected" Value="False" />
 							</MultiTrigger.Conditions>
 							<Setter Property="Tag" Value="{StaticResource TreeViewItem.MouseOver.Icon}" />
 							<Setter Property="Foreground" Value="{StaticResource TreeViewItem.MouseOver.Text}" />

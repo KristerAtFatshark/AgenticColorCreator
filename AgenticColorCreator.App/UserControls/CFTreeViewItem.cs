@@ -17,6 +17,12 @@ public class CFTreeViewItem : TreeViewItem
 		typeof(CFTreeViewItem),
 		new PropertyMetadata(string.Empty));
 
+	public static readonly DependencyProperty IsMultiSelectedProperty = DependencyProperty.Register(
+		nameof(IsMultiSelected),
+		typeof(bool),
+		typeof(CFTreeViewItem),
+		new PropertyMetadata(false));
+
 	public string Icon
 	{
 		get => (string)GetValue(IconProperty);
@@ -27,6 +33,12 @@ public class CFTreeViewItem : TreeViewItem
 	{
 		get => (string)GetValue(TextProperty);
 		set => SetValue(TextProperty, value);
+	}
+
+	public bool IsMultiSelected
+	{
+		get => (bool)GetValue(IsMultiSelectedProperty);
+		set => SetValue(IsMultiSelectedProperty, value);
 	}
 
 	public string Value { get; set; } = string.Empty;

@@ -9,7 +9,7 @@
 			 d:DesignWidth="260">
 	<TreeView x:Name="PreviewTreeView"
 			  Style="{StaticResource CFTreeViewStyle}"
-			  SelectedItemChanged="OnSelectedItemChanged">
+			  PreviewMouseLeftButtonDown="OnPreviewTreeViewMouseLeftButtonDown">
 			<local:CFTreeViewItem Icon="📁" Text="Palette" Value="palette" IsExpanded="True">
 				<local:CFTreeViewItem Icon="🎨" Text="Primary" Value="palette.primary" />
 				<local:CFTreeViewItem Icon="🎨" Text="Secondary" Value="palette.secondary" />
