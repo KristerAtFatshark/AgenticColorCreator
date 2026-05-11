@@ -28,6 +28,8 @@
 - Use the `UI Preview` tab to inspect themed control states without leaving the main editor workflow.
 
 ## Recent Important Changes
+- Reevaluated UI colors after `Color\agentic_colors.md` changed at `2026-05-11 08:45:34` and added a Microsoft-style-based `RadioButton` template in `DarkStyles.xaml`, mapped to the new `RadioButton` category colors.
+- Duplicated the `Checkbox` color definitions in `Color\agentic_colors.md` into a new `RadioButton` category as the starting point for future radio button theming.
 - Corrected stale checkbox resource values in `DarkStyles.xaml` so the checkbox glyph and mouse-over background now match the current `Checkbox` colors from `Color\agentic_colors.md`.
 - Reevaluated UI colors after `Color\agentic_colors.md` changed at `2026-05-10 15:39:32` and replaced the checkbox styling with a Microsoft-style-based `CheckBox` template in `DarkStyles.xaml`, mapped to the current checkbox background, border, text, and glyph colors.
 - Expanded the `UI Preview` tab with `CheckBox` and grouped `RadioButton` preview cards so those controls can be inspected before they get custom styling.

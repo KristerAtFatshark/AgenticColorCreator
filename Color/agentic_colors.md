@@ -309,3 +309,41 @@
 ### Checkbox / Background Disabled
 - value: #FF2C2C2C
 - description:
+
+## Category: RadioButton
+
+### RadioButton / Glyph Default
+- value: #FFFF9600
+- description: 
+
+### RadioButton / Border Default
+- value: #FF292929
+- description: 
+
+### RadioButton / Background Default
+- value: #FF4C4C4C
+- description: 
+
+### RadioButton / Text Default
+- value: #FFC8C8C8
+- description: 
+
+### RadioButton / Background Pressed
+- value: #FF4C4C4C
+- description: 
+
+### RadioButton / Background MouseOver
+- value: #FF5E5E5E
+- description: 
+
+### RadioButton / Glyph Disabled
+- value: #FF7B7B7B
+- description: 
+
+### RadioButton / Text Disabled
+- value: #FF7B7B7B
+- description: 
+
+### RadioButton / Background Disabled
+- value: #FF2C2C2C
+- description:
