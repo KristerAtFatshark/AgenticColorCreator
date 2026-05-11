@@ -1,0 +1,26 @@
+<UserControl x:Class="AgenticColorCreator.App.UserControls.CFTreeView"
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 mc:Ignorable="d"
+			 d:DesignHeight="220"
+			 d:DesignWidth="260">
+	<TreeView Style="{StaticResource CFTreeViewStyle}">
+		<TreeViewItem Header="Palette">
+			<TreeViewItem Header="Primary" />
+			<TreeViewItem Header="Secondary" />
+			<TreeViewItem Header="Accent" />
+		</TreeViewItem>
+		<TreeViewItem Header="Controls">
+			<TreeViewItem Header="Inputs">
+				<TreeViewItem Header="TextBox" />
+				<TreeViewItem Header="ComboBox" />
+			</TreeViewItem>
+			<TreeViewItem Header="Selection">
+				<TreeViewItem Header="CheckBox" />
+				<TreeViewItem Header="RadioButton" />
+			</TreeViewItem>
+		</TreeViewItem>
+	</TreeView>
+</UserControl>

@@ -61,6 +61,10 @@
 	<SolidColorBrush x:Key="RadioButton.Disabled.Background" Color="#FF2C2C2C" />
 	<SolidColorBrush x:Key="RadioButton.Disabled.Glyph" Color="#FF7B7B7B" />
 	<SolidColorBrush x:Key="RadioButton.Disabled.Foreground" Color="#FF7B7B7B" />
+	<SolidColorBrush x:Key="TreeView.Default.Background" Color="#FF202020" />
+	<SolidColorBrush x:Key="TreeView.Default.Border" Color="#FF828790" />
+	<SolidColorBrush x:Key="TreeView.Default.Text" Color="#FFC8C8C8" />
+	<SolidColorBrush x:Key="TreeView.Disabled.Background" Color="#FF202020" />
 	<SolidColorBrush x:Key="TabItem.Default.Background" Color="#FF2C2C2C" />
 	<SolidColorBrush x:Key="TabItem.MouseOver.Background" Color="#FF4C4C4C" />
 	<SolidColorBrush x:Key="TabItem.Selected.Background" Color="#FF333333" />
@@ -501,6 +505,59 @@
 				</ControlTemplate>
 			</Setter.Value>
 		</Setter>
+	</Style>
+
+	<Style x:Key="CFTreeViewStyle" TargetType="TreeView">
+		<Setter Property="Background" Value="{StaticResource TreeView.Default.Background}" />
+		<Setter Property="BorderBrush" Value="{StaticResource TreeView.Default.Border}" />
+		<Setter Property="BorderThickness" Value="1" />
+		<Setter Property="Padding" Value="1" />
+		<Setter Property="Foreground" Value="{StaticResource TreeView.Default.Text}" />
+		<Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+		<Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+		<Setter Property="ScrollViewer.PanningMode" Value="Both" />
+		<Setter Property="Stylus.IsFlicksEnabled" Value="False" />
+		<Setter Property="VerticalContentAlignment" Value="Center" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="TreeView">
+					<Border x:Name="Bd"
+							BorderBrush="{TemplateBinding BorderBrush}"
+							BorderThickness="{TemplateBinding BorderThickness}"
+							SnapsToDevicePixels="True">
+						<ScrollViewer x:Name="_tv_scrollviewer_"
+									Background="{TemplateBinding Background}"
+									CanContentScroll="False"
+									Focusable="False"
+									HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+									Padding="{TemplateBinding Padding}"
+									SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+									VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
+							<ItemsPresenter />
+						</ScrollViewer>
+					</Border>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsEnabled" Value="False">
+							<Setter TargetName="Bd" Property="Background" Value="{StaticResource TreeView.Disabled.Background}" />
+						</Trigger>
+						<Trigger Property="VirtualizingPanel.IsVirtualizing" Value="True">
+							<Setter TargetName="_tv_scrollviewer_" Property="CanContentScroll" Value="True" />
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+		<Style.Triggers>
+			<Trigger Property="VirtualizingPanel.IsVirtualizing" Value="True">
+				<Setter Property="ItemsPanel">
+					<Setter.Value>
+						<ItemsPanelTemplate>
+							<VirtualizingStackPanel />
+						</ItemsPanelTemplate>
+					</Setter.Value>
+				</Setter>
+			</Trigger>
+		</Style.Triggers>
 	</Style>
 
 	<Style TargetType="Expander">

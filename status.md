@@ -28,6 +28,8 @@
 - Use the `UI Preview` tab to inspect themed control states without leaving the main editor workflow.
 
 ## Recent Important Changes
+- Fixed the `CFTreeView` preview card layout so the full border remains visible and the preview uses a constrained inner height that allows the tree view scrollbars to handle expanded content.
+- Reevaluated UI colors after `Color\agentic_colors.md` changed at `2026-05-11 10:20:52`, added `UserControls\CFTreeView`, introduced a Microsoft-style-based `TreeView` theme in `DarkStyles.xaml`, and added the new tree view with mock data to the `UI Preview` tab.
 - Reevaluated UI colors after `Color\agentic_colors.md` changed at `2026-05-11 09:38:45` and updated the slider mouse-over thumb color in `DarkStyles.xaml` to match the latest `Slider / Thumb MouseOver` value.
 - Reevaluated UI colors after `Color\agentic_colors.md` changed at `2026-05-11 09:32:56`, added `Slider / Thumb.Border` mapping, and updated the slider thumb template so thumb border colors come from the new semantic slider border entries.
 - Reevaluated UI colors after `Color\agentic_colors.md` changed at `2026-05-11 09:16:07`, updated the slider default/disabled colors to the latest `Slider` values, and corrected the closed `ComboBox` disabled colors to match the current `ComboBox` category.
