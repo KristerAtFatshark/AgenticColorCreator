@@ -1,8 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <ItemGroup>
-	<ProjectReference Include="..\AgenticColorCreator.Core\AgenticColorCreator.Core.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\AgenticColorCreator.Core\AgenticColorCreator.Core.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="Data\*.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
 
   <PropertyGroup>
 	<OutputType>WinExe</OutputType>

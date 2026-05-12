@@ -1,0 +1,14 @@
+[
+	{
+		"Type": "folder",
+		"Icon": "📁"
+	},
+	{
+		"Type": "control",
+		"Icon": "🧩"
+	},
+	{
+		"Type": "palette",
+		"Icon": "🎨"
+	}
+]

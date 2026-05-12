@@ -12,13 +12,13 @@
 - Color cards have been compacted for denser browsing of large color sets.
 - Repository indentation has been normalized to real tab characters for leading indentation.
 - Repository line endings have been normalized to `CRLF`.
-- Build and unit tests are passing after the latest opt-in TreeView multi-select update.
+- Build and unit tests are passing after the latest JSON-backed TreeView source update.
 
 ## Active Issues
 - Descriptions are saved as a single canonical markdown line even if entered over multiple lines in the UI.
 - No drag/drop reordering or search/filtering yet.
 - Rebuilding the WPF app fails while the running executable is still open because the debug output DLL stays locked.
-- The latest opt-in TreeView multi-select update was validated by build and tests, but still needs manual visual confirmation in the running UI.
+- The latest JSON-backed TreeView source update was validated by build and tests, but still needs manual visual confirmation in the running UI.
 
 ## Workarounds
 - Use the popup picker or the hex field with full `#AARRGGBB` values for color editing.
@@ -28,8 +28,9 @@
 - Use the `UI Preview` tab to inspect themed control states without leaving the main editor workflow.
 
 ## Recent Important Changes
-- Added an `IsMultiSelect` property to `CFTreeView` so multi-select behavior is opt-in, while single-select falls back to normal `TreeView.SelectedItem` behavior when the property is `False`.
-- Updated the MainWindow TreeView preview to set `IsMultiSelect="True"`, bind `SelectedTreeViewItems`, and show each selected item's `Text` and `Value` on separate lines in the preview field.
+- Added a new Newtonsoft.Json-based `JsonFileSerializer` in `AgenticColorCreator.Core` for serializing and deserializing JSON files, with tests covering round-trip JSON file handling.
+- Added `TreeViewItems.json` and `TreeViewTypeIcons.json` under `AgenticColorCreator.App\Data`, and replaced the hardcoded `CFTreeView.xaml` item tree with runtime loading plus hierarchy building from those JSON files.
+- Added `TreeViewNodeBuilder` in `AgenticColorCreator.Core` to convert flat slash-delimited JSON paths into nested TreeView nodes while mapping node types to icons from a separate JSON file.
 - Replaced the `CFTreeViewItem` expander `ToggleButton` with a minimal custom template so the default WPF blue border chrome no longer renders around the TreeView arrow button.
 - Reevaluated UI colors after `Color\agentic_colors.md` changed at `2026-05-11 11:50:19`, added the new `TreeView / Glyph`, `Glyph.Background`, and `Glyph.Border` mappings in `DarkStyles.xaml`, and applied them to the `CFTreeViewItem` expander toggle.
 - Reworked `CFTreeViewItem` styling to be an implicit style for the custom item type, so nested explicit `CFTreeViewItem` children use the same template without relying on `TreeView.ItemContainerStyle`.

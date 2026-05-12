@@ -1,0 +1,30 @@
+[
+	{
+		"Value": "palette/primary",
+		"Type": "palette"
+	},
+	{
+		"Value": "palette/secondary",
+		"Type": "palette"
+	},
+	{
+		"Value": "palette/accent",
+		"Type": "palette"
+	},
+	{
+		"Value": "controls/inputs/textbox",
+		"Type": "control"
+	},
+	{
+		"Value": "controls/inputs/combobox",
+		"Type": "control"
+	},
+	{
+		"Value": "controls/selection/checkbox",
+		"Type": "control"
+	},
+	{
+		"Value": "controls/selection/radiobutton",
+		"Type": "control"
+	}
+]
