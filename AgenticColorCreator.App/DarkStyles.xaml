@@ -544,6 +544,8 @@
 		<Setter Property="Foreground" Value="{StaticResource TreeViewItem.Default.Text}" />
 		<Setter Property="Background" Value="{StaticResource TreeViewItem.Default.Background}" />
 		<Setter Property="BorderBrush" Value="{StaticResource TreeViewItem.Default.Border}" />
+		<Setter Property="HorizontalContentAlignment" Value="Stretch" />
+		<Setter Property="VerticalContentAlignment" Value="Center" />
 		<Setter Property="Tag" Value="{StaticResource TreeViewItem.Default.Icon}" />
 		<Setter Property="HeaderTemplate">
 			<Setter.Value>

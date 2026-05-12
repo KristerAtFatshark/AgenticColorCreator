@@ -1,3 +1,5 @@
+using System.Collections.ObjectModel;
+
 namespace AgenticColorCreator.Core.Models;
 
 public sealed class TreeViewNode
@@ -10,5 +12,5 @@ public sealed class TreeViewNode
 
 	public string Icon { get; set; } = string.Empty;
 
-	public List<TreeViewNode> Children { get; set; } = [];
+	public ObservableCollection<TreeViewNode> Children { get; set; } = [];
 }

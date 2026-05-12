@@ -12,13 +12,13 @@
 - Color cards have been compacted for denser browsing of large color sets.
 - Repository indentation has been normalized to real tab characters for leading indentation.
 - Repository line endings have been normalized to `CRLF`.
-- Build and unit tests are passing after the latest JSON-backed TreeView source update.
+- Build and unit tests are passing after the latest TreeView external-selection override fix.
 
 ## Active Issues
 - Descriptions are saved as a single canonical markdown line even if entered over multiple lines in the UI.
 - No drag/drop reordering or search/filtering yet.
 - Rebuilding the WPF app fails while the running executable is still open because the debug output DLL stays locked.
-- The latest JSON-backed TreeView source update was validated by build and tests, but still needs manual visual confirmation in the running UI.
+- The latest TreeView external-selection override fix was validated by build and tests, but still needs manual visual confirmation in the running UI.
 
 ## Workarounds
 - Use the popup picker or the hex field with full `#AARRGGBB` values for color editing.
@@ -28,9 +28,18 @@
 - Use the `UI Preview` tab to inspect themed control states without leaving the main editor workflow.
 
 ## Recent Important Changes
-- Added a new Newtonsoft.Json-based `JsonFileSerializer` in `AgenticColorCreator.Core` for serializing and deserializing JSON files, with tests covering round-trip JSON file handling.
-- Added `TreeViewItems.json` and `TreeViewTypeIcons.json` under `AgenticColorCreator.App\Data`, and replaced the hardcoded `CFTreeView.xaml` item tree with runtime loading plus hierarchy building from those JSON files.
-- Added `TreeViewNodeBuilder` in `AgenticColorCreator.Core` to convert flat slash-delimited JSON paths into nested TreeView nodes while mapping node types to icons from a separate JSON file.
+- Moved the TreeView preview mock data ownership into `MainWindowViewModel` as a mutable `ObservableCollection<TreeViewSourceEntry>` containing only `Value` and `Type`, matching the intended flat source shape.
+- Updated `CFTreeView` so its `NodesSource` now binds to that flat observable collection, builds the visible hierarchy internally from slash-delimited `Value` paths, and maps `Type` to icons inside the control.
+- Kept the preview TreeView mutable at runtime by subscribing to the bound flat source collection and rebuilding the rendered tree when entries are added or removed.
+- Added `Remove Last 4` and `Add Last 4` buttons under the `CFTreeView` preview selection field, backed by new `MainWindowViewModel` commands that remove and restore the final four `control` entries in `PreviewTreeViewNodes` for observable-collection update testing.
+- Added explicit `HorizontalContentAlignment` and `VerticalContentAlignment` setters to the `CFTreeViewItem` style to stop the inherited WPF ancestor bindings from spamming binding errors before items are attached to the visual tree.
+- Extracted the TreeView type-to-icon mapping into `AgenticColorCreator.App\Services\TreeViewIconMap.cs` so other user controls can reuse the same icon lookup instead of duplicating a local dictionary.
+- Added a bindable `SelectedValues` dependency property to `CFTreeView` so selection can now be driven externally by `Value`/path strings and kept in sync with click selection inside the control.
+- Added `Select Primary` and `Select Primary + Accent` preview buttons, backed by new `MainWindowViewModel` commands that update a bound `ObservableCollection<string>` of selected TreeView paths for external selection testing.
+- Switched the preview selection-button container to a `WrapPanel` so all four TreeView test buttons remain visible inside the fixed-width preview card.
+- Updated `CFTreeView` so external forced selection now uses normal single selection when the bound selected-values list contains one path and custom multi selection only when it contains multiple paths.
+- Rebuilt the internal selected-item list from forced selections during TreeView refresh, and updated manual click selection so externally forced selections are cleared before applying the click, preventing prior forced selection state from sticking.
+- Adjusted external selection handling so when the bound selected-values collection changes, that external update remains authoritative for the full update cycle instead of briefly falling back to the prior manual selection during `Clear()` plus `Add()` sequences.
 - Replaced the `CFTreeViewItem` expander `ToggleButton` with a minimal custom template so the default WPF blue border chrome no longer renders around the TreeView arrow button.
 - Reevaluated UI colors after `Color\agentic_colors.md` changed at `2026-05-11 11:50:19`, added the new `TreeView / Glyph`, `Glyph.Background`, and `Glyph.Border` mappings in `DarkStyles.xaml`, and applied them to the `CFTreeViewItem` expander toggle.
 - Reworked `CFTreeViewItem` styling to be an implicit style for the custom item type, so nested explicit `CFTreeViewItem` children use the same template without relying on `TreeView.ItemContainerStyle`.

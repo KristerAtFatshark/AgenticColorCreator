@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.ComponentModel;
 using System.Windows;
@@ -15,6 +16,12 @@ public partial class MainWindow : Window
 		typeof(MainWindow),
 		new PropertyMetadata(null, OnSelectedPreviewTreeViewItemsChanged));
 
+	public static readonly DependencyProperty SelectedPreviewTreeViewValuesProperty = DependencyProperty.Register(
+		nameof(SelectedPreviewTreeViewValues),
+		typeof(ObservableCollection<string>),
+		typeof(MainWindow),
+		new PropertyMetadata(null));
+
 	public static readonly DependencyProperty SelectedPreviewTreeViewDetailsProperty = DependencyProperty.Register(
 		nameof(SelectedPreviewTreeViewDetails),
 		typeof(string),
@@ -23,6 +30,7 @@ public partial class MainWindow : Window
 
 	public MainWindow()
 	{
+		SelectedPreviewTreeViewValues = [];
 		InitializeComponent();
 		Closing += OnClosing;
 	}
@@ -31,6 +39,12 @@ public partial class MainWindow : Window
 	{
 		get => (IReadOnlyList<CFTreeViewItem>?)GetValue(SelectedPreviewTreeViewItemsProperty);
 		set => SetValue(SelectedPreviewTreeViewItemsProperty, value);
+	}
+
+	public ObservableCollection<string> SelectedPreviewTreeViewValues
+	{
+		get => (ObservableCollection<string>)GetValue(SelectedPreviewTreeViewValuesProperty);
+		set => SetValue(SelectedPreviewTreeViewValuesProperty, value);
 	}
 
 	public string SelectedPreviewTreeViewDetails

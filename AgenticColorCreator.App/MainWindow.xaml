@@ -410,11 +410,14 @@
 									<RowDefinition Height="Auto" />
 									<RowDefinition Height="140" />
 									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
 								</Grid.RowDefinitions>
 								<TextBlock FontSize="16" FontWeight="SemiBold" Text="CFTreeView" />
 								<TextBlock Grid.Row="1" Margin="0,2,0,14" Foreground="{StaticResource Text.Selected.Foreground}" Text="System.Windows.Controls.TreeView" />
 								<userControls:CFTreeView Grid.Row="2"
 											 IsMultiSelect="True"
+											 NodesSource="{Binding PreviewTreeViewNodes}"
+											 SelectedValues="{Binding PreviewSelectedTreeViewValues}"
 											 SelectedTreeViewItems="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=SelectedPreviewTreeViewItems, Mode=OneWayToSource}" />
 								<TextBox Grid.Row="3"
 										 Margin="0,8,0,0"
@@ -424,6 +427,17 @@
 										 TextWrapping="Wrap"
 										 VerticalScrollBarVisibility="Auto"
 										 Text="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=SelectedPreviewTreeViewDetails}" />
+								<WrapPanel Grid.Row="4"
+										   Margin="0,8,0,0">
+									<Button Command="{Binding RemovePreviewTreeViewTailCommand}"
+											Content="Remove Last 4" />
+									<Button Command="{Binding AddPreviewTreeViewTailCommand}"
+											Content="Add Last 4" />
+									<Button Command="{Binding SelectPreviewPrimaryCommand}"
+											Content="Select Primary" />
+									<Button Command="{Binding SelectPreviewPrimaryAndAccentCommand}"
+											Content="Select Primary + Accent" />
+								</WrapPanel>
 							</Grid>
 						</Border>
 					</WrapPanel>

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -13,7 +14,7 @@ public sealed class TreeViewNodeBuilder
 		IEnumerable<TreeViewTypeIconEntry> typeIconEntries)
 	{
 		var iconMap = typeIconEntries.ToDictionary(entry => entry.Type, entry => entry.Icon, StringComparer.OrdinalIgnoreCase);
-		var rootNodes = new List<TreeViewNode>();
+		var rootNodes = new ObservableCollection<TreeViewNode>();
 
 		foreach (var sourceEntry in sourceEntries)
 		{
@@ -23,7 +24,7 @@ public sealed class TreeViewNodeBuilder
 				continue;
 			}
 
-			var currentNodes = rootNodes;
+			ICollection<TreeViewNode> currentNodes = rootNodes;
 			var currentPath = string.Empty;
 
 			for (var index = 0; index < segments.Length; index++)

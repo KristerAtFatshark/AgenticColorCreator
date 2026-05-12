@@ -35,6 +35,7 @@ public sealed class MainWindowViewModel : ViewModelBase
 		_colorPickerDialogService = colorPickerDialogService;
 
 		Categories = new ObservableCollection<CategoryViewModel>();
+		PreviewTreeViewNodes = CreatePreviewTreeViewNodes();
 		ValidationErrors = new ObservableCollection<string>();
 
 		NewDocumentCommand = new RelayCommand(NewDocument);
@@ -44,11 +45,17 @@ public sealed class MainWindowViewModel : ViewModelBase
 		AddCategoryCommand = new RelayCommand(AddCategory);
 		ExpandAllCategoriesCommand = new RelayCommand(ExpandAllCategories);
 		CollapseAllCategoriesCommand = new RelayCommand(CollapseAllCategories);
+		RemovePreviewTreeViewTailCommand = new RelayCommand(RemovePreviewTreeViewTail);
+		AddPreviewTreeViewTailCommand = new RelayCommand(AddPreviewTreeViewTail);
+		SelectPreviewPrimaryCommand = new RelayCommand(SelectPreviewPrimary);
+		SelectPreviewPrimaryAndAccentCommand = new RelayCommand(SelectPreviewPrimaryAndAccent);
 
 		NewDocument();
 	}
 
 	public ObservableCollection<CategoryViewModel> Categories { get; }
+
+	public ObservableCollection<TreeViewSourceEntry> PreviewTreeViewNodes { get; }
 
 	public ObservableCollection<string> ValidationErrors { get; }
 
@@ -65,6 +72,16 @@ public sealed class MainWindowViewModel : ViewModelBase
 	public ICommand ExpandAllCategoriesCommand { get; }
 
 	public ICommand CollapseAllCategoriesCommand { get; }
+
+	public ICommand RemovePreviewTreeViewTailCommand { get; }
+
+	public ICommand AddPreviewTreeViewTailCommand { get; }
+
+	public ICommand SelectPreviewPrimaryCommand { get; }
+
+	public ICommand SelectPreviewPrimaryAndAccentCommand { get; }
+
+	public ObservableCollection<string> PreviewSelectedTreeViewValues { get; } = [];
 
 	public string Title
 	{
@@ -118,6 +135,40 @@ public sealed class MainWindowViewModel : ViewModelBase
 		{
 			category.IsExpanded = true;
 		}
+	}
+
+	public void RemovePreviewTreeViewTail()
+	{
+		var removeCount = Math.Min(4, PreviewTreeViewNodes.Count);
+		for (var index = 0; index < removeCount; index++)
+		{
+			PreviewTreeViewNodes.RemoveAt(PreviewTreeViewNodes.Count - 1);
+		}
+	}
+
+	public void AddPreviewTreeViewTail()
+	{
+		foreach (var entry in CreatePreviewTreeViewTailEntries())
+		{
+			PreviewTreeViewNodes.Add(new TreeViewSourceEntry
+			{
+				Value = entry.Value,
+				Type = entry.Type,
+			});
+		}
+	}
+
+	public void SelectPreviewPrimary()
+	{
+		PreviewSelectedTreeViewValues.Clear();
+		PreviewSelectedTreeViewValues.Add("palette/primary");
+	}
+
+	public void SelectPreviewPrimaryAndAccent()
+	{
+		PreviewSelectedTreeViewValues.Clear();
+		PreviewSelectedTreeViewValues.Add("palette/primary");
+		PreviewSelectedTreeViewValues.Add("palette/accent");
 	}
 
 	public bool TryLoadDocument(string path)
@@ -219,6 +270,28 @@ public sealed class MainWindowViewModel : ViewModelBase
 		}
 
 		return _messageBoxService.Confirm("You have unsaved changes. Continue without saving them?", "Unsaved Changes");
+	}
+
+	private static ObservableCollection<TreeViewSourceEntry> CreatePreviewTreeViewNodes()
+	{
+		return
+		[
+			new TreeViewSourceEntry { Value = "palette/primary", Type = "palette" },
+			new TreeViewSourceEntry { Value = "palette/secondary", Type = "palette" },
+			new TreeViewSourceEntry { Value = "palette/accent", Type = "palette" },
+			..CreatePreviewTreeViewTailEntries(),
+		];
+	}
+
+	private static IReadOnlyList<TreeViewSourceEntry> CreatePreviewTreeViewTailEntries()
+	{
+		return
+		[
+			new TreeViewSourceEntry { Value = "controls/inputs/textbox", Type = "control" },
+			new TreeViewSourceEntry { Value = "controls/inputs/combobox", Type = "control" },
+			new TreeViewSourceEntry { Value = "controls/selection/checkbox", Type = "control" },
+			new TreeViewSourceEntry { Value = "controls/selection/radiobutton", Type = "control" },
+		];
 	}
 
 	private void LoadDocument(AgenticColorsDocument document)
