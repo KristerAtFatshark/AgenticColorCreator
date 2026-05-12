@@ -1,6 +1,6 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-					xmlns:local="clr-namespace:AgenticColorCreator.App.UserControls">
+					xmlns:local="clr-namespace:AgenticColorCreator.App.UserControls.CFTreeViewControl">
 	<SolidColorBrush x:Key="Window.Default.Background" Color="#FF282828" />
 	<SolidColorBrush x:Key="Panel.Default.Background" Color="#FF333333" />
 	<SolidColorBrush x:Key="Popup.Default.Background" Color="#FF4C4C4C" />

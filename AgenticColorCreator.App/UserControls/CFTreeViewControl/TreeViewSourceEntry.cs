@@ -1,4 +1,4 @@
-namespace AgenticColorCreator.Core.Models;
+namespace AgenticColorCreator.App.UserControls.CFTreeViewControl;
 
 public sealed class TreeViewSourceEntry
 {

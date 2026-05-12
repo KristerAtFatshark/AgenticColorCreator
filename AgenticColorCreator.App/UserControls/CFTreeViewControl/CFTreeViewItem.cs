@@ -1,7 +1,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace AgenticColorCreator.App.UserControls;
+namespace AgenticColorCreator.App.UserControls.CFTreeViewControl;
 
 public class CFTreeViewItem : TreeViewItem
 {

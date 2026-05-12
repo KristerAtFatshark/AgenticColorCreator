@@ -3,8 +3,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.ComponentModel;
 using System.Windows;
+using AgenticColorCreator.App.UserControls.CFTreeViewControl;
 using AgenticColorCreator.App.ViewModels;
-using AgenticColorCreator.App.UserControls;
 
 namespace AgenticColorCreator.App;
 

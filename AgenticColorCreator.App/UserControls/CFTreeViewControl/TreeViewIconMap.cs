@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace AgenticColorCreator.App.Services;
+namespace AgenticColorCreator.App.UserControls.CFTreeViewControl;
 
 public static class TreeViewIconMap
 {

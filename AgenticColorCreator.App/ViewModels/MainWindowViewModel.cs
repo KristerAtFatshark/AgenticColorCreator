@@ -7,6 +7,7 @@ using System.Windows.Input;
 using AgenticColorCreator.App.Commands;
 using AgenticColorCreator.App.Dialogs;
 using AgenticColorCreator.App.Services;
+using AgenticColorCreator.App.UserControls.CFTreeViewControl;
 using AgenticColorCreator.Core.Models;
 using AgenticColorCreator.Core.Services;
 
