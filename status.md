@@ -12,13 +12,13 @@
 - Color cards have been compacted for denser browsing of large color sets.
 - Repository indentation has been normalized to real tab characters for leading indentation.
 - Repository line endings have been normalized to `CRLF`.
-- Build and unit tests are passing after the latest full TreeView control folder reorganization.
+- Build and unit tests are passing after the latest TreeView control documentation update.
 
 ## Active Issues
 - Descriptions are saved as a single canonical markdown line even if entered over multiple lines in the UI.
 - No drag/drop reordering or search/filtering yet.
 - Rebuilding the WPF app fails while the running executable is still open because the debug output DLL stays locked.
-- The latest full TreeView control folder reorganization was validated by build and tests, but still needs manual visual confirmation in the running UI.
+- The latest TreeView control documentation update was validated by build and tests, but still needs manual visual confirmation in the running UI.
 
 ## Workarounds
 - Use the popup picker or the hex field with full `#AARRGGBB` values for color editing.
@@ -32,6 +32,7 @@
 - Updated `CFTreeView` so its `NodesSource` now binds to that flat observable collection, builds the visible hierarchy internally from slash-delimited `Value` paths, and maps `Type` to icons inside the control.
 - Kept the preview TreeView mutable at runtime by subscribing to the bound flat source collection and rebuilding the rendered tree when entries are added or removed.
 - Moved the TreeView-specific files into `AgenticColorCreator.App\UserControls\CFTreeViewControl\` and updated namespaces/XAML references so `CFTreeView`, `CFTreeViewItem`, `TreeViewIconMap`, `TreeViewNode`, and `TreeViewSourceEntry` now live together in a dedicated folder.
+- Added `AgenticColorCreator.App\UserControls\CFTreeViewControl\README.md` with usage documentation covering the public `CFTreeView` properties, required data structures, selection behavior, runtime update behavior, and the `TreeViewIconMap` responsibility.
 - Added `Remove Last 4` and `Add Last 4` buttons under the `CFTreeView` preview selection field, backed by new `MainWindowViewModel` commands that remove and restore the final four `control` entries in `PreviewTreeViewNodes` for observable-collection update testing.
 - Added explicit `HorizontalContentAlignment` and `VerticalContentAlignment` setters to the `CFTreeViewItem` style to stop the inherited WPF ancestor bindings from spamming binding errors before items are attached to the visual tree.
 - Extracted the TreeView type-to-icon mapping into `AgenticColorCreator.App\Services\TreeViewIconMap.cs` so other user controls can reuse the same icon lookup instead of duplicating a local dictionary.
