@@ -12,13 +12,13 @@
 - Color cards have been compacted for denser browsing of large color sets.
 - Repository indentation has been normalized to real tab characters for leading indentation.
 - Repository line endings have been normalized to `CRLF`.
-- Build and unit tests are passing after the latest TreeView external-selection override fix.
+- Build and unit tests are passing after the latest TreeView JSON cleanup.
 
 ## Active Issues
 - Descriptions are saved as a single canonical markdown line even if entered over multiple lines in the UI.
 - No drag/drop reordering or search/filtering yet.
 - Rebuilding the WPF app fails while the running executable is still open because the debug output DLL stays locked.
-- The latest TreeView external-selection override fix was validated by build and tests, but still needs manual visual confirmation in the running UI.
+- The latest TreeView JSON cleanup was validated by build and tests, but still needs manual visual confirmation in the running UI.
 
 ## Workarounds
 - Use the popup picker or the hex field with full `#AARRGGBB` values for color editing.
@@ -40,6 +40,7 @@
 - Updated `CFTreeView` so external forced selection now uses normal single selection when the bound selected-values list contains one path and custom multi selection only when it contains multiple paths.
 - Rebuilt the internal selected-item list from forced selections during TreeView refresh, and updated manual click selection so externally forced selections are cleared before applying the click, preventing prior forced selection state from sticking.
 - Adjusted external selection handling so when the bound selected-values collection changes, that external update remains authoritative for the full update cycle instead of briefly falling back to the prior manual selection during `Clear()` plus `Add()` sequences.
+- Removed the unused Newtonsoft-based TreeView JSON implementation, including the package reference, JSON-only services/models, copied sample JSON files, and the tests that only covered that removed path.
 - Replaced the `CFTreeViewItem` expander `ToggleButton` with a minimal custom template so the default WPF blue border chrome no longer renders around the TreeView arrow button.
 - Reevaluated UI colors after `Color\agentic_colors.md` changed at `2026-05-11 11:50:19`, added the new `TreeView / Glyph`, `Glyph.Background`, and `Glyph.Border` mappings in `DarkStyles.xaml`, and applied them to the `CFTreeViewItem` expander toggle.
 - Reworked `CFTreeViewItem` styling to be an implicit style for the custom item type, so nested explicit `CFTreeViewItem` children use the same template without relying on `TreeView.ItemContainerStyle`.
