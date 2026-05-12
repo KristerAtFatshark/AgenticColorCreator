@@ -22,7 +22,7 @@ public sealed class MainWindowViewModel : ViewModelBase
 	private string _title = "Untitled Theme";
 	private string? _currentFilePath;
 	private string _statusMessage = "Ready";
-    private bool _isDirty;
+	private bool _isDirty;
 
 	public MainWindowViewModel(
 		AgenticColorsMarkdownSerializer serializer,

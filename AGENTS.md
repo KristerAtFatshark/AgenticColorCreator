@@ -34,8 +34,12 @@ Target length: below 150 lines.
 3. If the task touches UI colors, check `Color/agentic_colors.md` timestamp and compare it to the latest recorded color-file timestamp in this file.
 4. If `Color/agentic_colors.md` is newer than the last recorded UI color update source, reevaluate all current UI color mappings and update them where needed.
 5. Perform the requested work.
-6. Run relevant verification.
-7. Update `status.md` with:
+6. Verify formatting for every touched file:
+   - `CRLF` line endings
+   - tab indentation for `*.cs`, `*.csproj`, and `*.xaml`
+   - include newly created files in this check, not only edited files
+7. Run relevant verification.
+8. Update `status.md` with:
    - what changed
    - current issues
    - current workarounds
