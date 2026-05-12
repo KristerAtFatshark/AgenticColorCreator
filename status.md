@@ -12,13 +12,13 @@
 - Color cards have been compacted for denser browsing of large color sets.
 - Repository indentation has been normalized to real tab characters for leading indentation.
 - Repository line endings have been normalized to `CRLF`.
-- Build and unit tests are passing after the latest formatting enforcement update.
+- Build and unit tests are passing after the latest scrollbar/slider `CF` key cleanup.
 
 ## Active Issues
 - Descriptions are saved as a single canonical markdown line even if entered over multiple lines in the UI.
 - No drag/drop reordering or search/filtering yet.
 - Rebuilding the WPF app fails while the running executable is still open because the debug output DLL stays locked.
-- The latest formatting enforcement update was validated by build and tests, but still needs manual visual confirmation in the running UI.
+- The latest scrollbar/slider `CF` key cleanup was validated by build and tests, but still needs manual visual confirmation in the running UI.
 
 ## Workarounds
 - Use the popup picker or the hex field with full `#AARRGGBB` values for color editing.
@@ -34,6 +34,11 @@
 - Moved the TreeView-specific files into `AgenticColorCreator.App\UserControls\CFTreeViewControl\` and updated namespaces/XAML references so `CFTreeView`, `CFTreeViewItem`, `TreeViewIconMap`, `TreeViewNode`, and `TreeViewSourceEntry` now live together in a dedicated folder.
 - Added `AgenticColorCreator.App\UserControls\CFTreeViewControl\README.md` with usage documentation covering the public `CFTreeView` properties, required data structures, selection behavior, runtime update behavior, and the `TreeViewIconMap` responsibility.
 - Added repository-level formatting enforcement with `.gitattributes` and `.editorconfig`, tightened `codestandards.md` and `AGENTS.md` to require explicit CRLF/tab verification for both edited and newly created files, and normalized the currently flagged files so the formatting audit is clean again.
+- Renamed the custom theme resource keys in `DarkStyles.xaml` to use a `CF` prefix such as `CFTextBox.Default.Background`, reducing the risk of collisions with existing or future non-project resource keys.
+- Re-normalized `AgenticColorCreator.App\DarkStyles.xaml` to `CRLF` after the resource-key rename and verified that file explicitly before rebuilding.
+- Corrected the radio button theme key prefix in `DarkStyles.xaml` from the mistaken `RadioCFButton.*` form to the intended `CFRadioButton.*` form.
+- Renamed the remaining custom `x:Key` style/template resources in `DarkStyles.xaml` to `CF...` names as well, such as `CFComboPopupItemStyle`, `CFComboBoxTemplate`, `CFOptionMarkFocusVisual`, and `CFFocusVisualScrollbar`.
+- Renamed the remaining missed scrollbar and slider keyed resources to `CF...` names too, including `CFRepeatButtonTransparent`, `CFScrollBarButton`, `CFScrollBarThumbVertical`, `CFScrollBarThumbHorizontal`, `CFScrollbar*Arrow`, `CFSliderThumbStyle`, and `CFHorizontalSliderTemplate`.
 - Added `Remove Last 4` and `Add Last 4` buttons under the `CFTreeView` preview selection field, backed by new `MainWindowViewModel` commands that remove and restore the final four `control` entries in `PreviewTreeViewNodes` for observable-collection update testing.
 - Added explicit `HorizontalContentAlignment` and `VerticalContentAlignment` setters to the `CFTreeViewItem` style to stop the inherited WPF ancestor bindings from spamming binding errors before items are attached to the visual tree.
 - Extracted the TreeView type-to-icon mapping into `AgenticColorCreator.App\Services\TreeViewIconMap.cs` so other user controls can reuse the same icon lookup instead of duplicating a local dictionary.

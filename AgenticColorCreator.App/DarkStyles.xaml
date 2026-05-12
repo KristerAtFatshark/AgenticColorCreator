@@ -1,143 +1,143 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 					xmlns:local="clr-namespace:AgenticColorCreator.App.UserControls.CFTreeViewControl">
-	<SolidColorBrush x:Key="Window.Default.Background" Color="#FF282828" />
-	<SolidColorBrush x:Key="Panel.Default.Background" Color="#FF333333" />
-	<SolidColorBrush x:Key="Popup.Default.Background" Color="#FF4C4C4C" />
-	<SolidColorBrush x:Key="Border.Default.Border" Color="#FF292929" />
-	<SolidColorBrush x:Key="Preview.Default.Border" Color="#80FFFFFF" />
-	<SolidColorBrush x:Key="Text.Default.Foreground" Color="#FFC8C8C8" />
-	<SolidColorBrush x:Key="Text.Selected.Foreground" Color="#FFFF9600" />
-	<SolidColorBrush x:Key="Text.Disabled.Foreground" Color="#FF7B7B7B" />
-	<SolidColorBrush x:Key="TextBox.Default.Background" Color="#FF1E1E1E" />
-	<SolidColorBrush x:Key="TextBox.Default.Foreground" Color="#FFC8C8C8" />
-	<SolidColorBrush x:Key="TextBox.Default.Border" Color="#FF4C4C4C" />
-	<SolidColorBrush x:Key="TextBox.Selected.Border" Color="#61FF9600" />
-	<SolidColorBrush x:Key="TextBox.Selected.Selection" Color="#8FFF9600" />
-	<SolidColorBrush x:Key="TextBox.MouseOver.Border" Color="#FFFF9600" />
-	<SolidColorBrush x:Key="TextBox.Disabled.Background" Color="#FF2C2C2C" />
-	<SolidColorBrush x:Key="TextBox.Disabled.Foreground" Color="#FF7B7B7B" />
-	<SolidColorBrush x:Key="TextBox.Disabled.Border" Color="#FF4C4C4C" />
-	<SolidColorBrush x:Key="Button.Default.Background" Color="#FF4C4C4C" />
-	<SolidColorBrush x:Key="Button.Default.Foreground" Color="#FFC8C8C8" />
-	<SolidColorBrush x:Key="Button.Default.Border" Color="#FF292929" />
-	<SolidColorBrush x:Key="Button.MouseOver.Background" Color="#FF797979" />
-	<SolidColorBrush x:Key="Button.MouseOver.Foreground" Color="#FFFFFFFF" />
-	<SolidColorBrush x:Key="Button.Pressed.Background" Color="#FF474747" />
-	<SolidColorBrush x:Key="Button.Pressed.Border" Color="#FF292929" />
-	<SolidColorBrush x:Key="Button.Disabled.Background" Color="#FF2C2C2C" />
-	<SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF7B7B7B" />
-	<SolidColorBrush x:Key="Button.Disabled.Border" Color="#FF4C4C4C" />
-	<SolidColorBrush x:Key="ComboBox.Default.Background" Color="#FF4C4C4C" />
-	<SolidColorBrush x:Key="ComboBox.Default.Foreground" Color="#FFC8C8C8" />
-	<SolidColorBrush x:Key="ComboBox.Default.Border" Color="#FF292929" />
-	<SolidColorBrush x:Key="ComboBox.Default.Icon" Color="#FFC8C8C8" />
-	<SolidColorBrush x:Key="ComboBox.Disabled.Background" Color="#FF2C2C2C" />
-	<SolidColorBrush x:Key="ComboBox.Disabled.Foreground" Color="#FF7B7B7B" />
-	<SolidColorBrush x:Key="ComboBox.Disabled.Border" Color="#FF4C4C4C" />
-	<SolidColorBrush x:Key="ComboBox.Disabled.Icon" Color="#FF7B7B7B" />
-	<SolidColorBrush x:Key="ComboBoxItem.Default.Background" Color="#FF4C4C4C" />
-	<SolidColorBrush x:Key="ComboBoxItem.Default.Foreground" Color="#FFC8C8C8" />
-	<SolidColorBrush x:Key="ComboBoxItem.Default.Border" Color="#FF3C3C3C" />
-	<SolidColorBrush x:Key="ComboBoxItem.MouseOver.Background" Color="#8BFF9600" />
-	<SolidColorBrush x:Key="ComboBoxItem.MouseOver.Foreground" Color="#FFFFFFFF" />
-	<SolidColorBrush x:Key="ComboBoxItem.MouseOver.Border" Color="#FF0C0C0C" />
-	<SolidColorBrush x:Key="ComboBoxItem.Selected.Background" Color="#51FF9600" />
-	<SolidColorBrush x:Key="ComboBoxItem.Selected.Foreground" Color="#FFFFFFFF" />
-	<SolidColorBrush x:Key="CheckBox.Default.Background" Color="#FF4C4C4C" />
-	<SolidColorBrush x:Key="CheckBox.Default.Border" Color="#FF292929" />
-	<SolidColorBrush x:Key="CheckBox.Default.Glyph" Color="#FFFF9600" />
-	<SolidColorBrush x:Key="CheckBox.Default.Foreground" Color="#FFC8C8C8" />
-	<SolidColorBrush x:Key="CheckBox.MouseOver.Background" Color="#FF5E5E5E" />
-	<SolidColorBrush x:Key="CheckBox.Pressed.Background" Color="#FF4C4C4C" />
-	<SolidColorBrush x:Key="CheckBox.Disabled.Background" Color="#FF2C2C2C" />
-	<SolidColorBrush x:Key="CheckBox.Disabled.Glyph" Color="#FF7B7B7B" />
-	<SolidColorBrush x:Key="CheckBox.Disabled.Foreground" Color="#FF7B7B7B" />
-	<SolidColorBrush x:Key="RadioButton.Default.Background" Color="#FF4C4C4C" />
-	<SolidColorBrush x:Key="RadioButton.Default.Border" Color="#FF292929" />
-	<SolidColorBrush x:Key="RadioButton.Default.Glyph" Color="#FFFF9600" />
-	<SolidColorBrush x:Key="RadioButton.Default.Foreground" Color="#FFC8C8C8" />
-	<SolidColorBrush x:Key="RadioButton.MouseOver.Background" Color="#FF5E5E5E" />
-	<SolidColorBrush x:Key="RadioButton.Pressed.Background" Color="#FF4C4C4C" />
-	<SolidColorBrush x:Key="RadioButton.Disabled.Background" Color="#FF2C2C2C" />
-	<SolidColorBrush x:Key="RadioButton.Disabled.Glyph" Color="#FF7B7B7B" />
-	<SolidColorBrush x:Key="RadioButton.Disabled.Foreground" Color="#FF7B7B7B" />
-	<SolidColorBrush x:Key="TreeView.Default.Background" Color="#FF202020" />
-	<SolidColorBrush x:Key="TreeView.Default.Border" Color="#FF828790" />
-	<SolidColorBrush x:Key="TreeView.Default.Text" Color="#FFC8C8C8" />
-	<SolidColorBrush x:Key="TreeView.Default.Glyph" Color="#FFC8C8C8" />
-	<SolidColorBrush x:Key="TreeView.Default.GlyphBackground" Color="#00000000" />
-	<SolidColorBrush x:Key="TreeView.Default.GlyphBorder" Color="#00000000" />
-	<SolidColorBrush x:Key="TreeView.MouseOver.Glyph" Color="#FFFFFFFF" />
-	<SolidColorBrush x:Key="TreeView.MouseOver.GlyphBackground" Color="#00000000" />
-	<SolidColorBrush x:Key="TreeView.MouseOver.GlyphBorder" Color="#00000000" />
-	<SolidColorBrush x:Key="TreeView.Disabled.Background" Color="#FF202020" />
-	<SolidColorBrush x:Key="TreeViewItem.Default.Background" Color="#FF202020" />
-	<SolidColorBrush x:Key="TreeViewItem.Default.Border" Color="#00000000" />
-	<SolidColorBrush x:Key="TreeViewItem.Default.Text" Color="#FFC8C8C8" />
-	<SolidColorBrush x:Key="TreeViewItem.Default.Icon" Color="#FFC8C8C8" />
-	<SolidColorBrush x:Key="TreeViewItem.Selected.Background" Color="#94FF9600" />
-	<SolidColorBrush x:Key="TreeViewItem.Selected.Border" Color="#FFFF9600" />
-	<SolidColorBrush x:Key="TreeViewItem.Selected.Text" Color="#FFFFFFFF" />
-	<SolidColorBrush x:Key="TreeViewItem.Selected.Icon" Color="#FFFFFFFF" />
-	<SolidColorBrush x:Key="TreeViewItem.MouseOver.Text" Color="#FFFFFFFF" />
-	<SolidColorBrush x:Key="TreeViewItem.MouseOver.Icon" Color="#FFFFFFFF" />
-	<SolidColorBrush x:Key="TabItem.Default.Background" Color="#FF2C2C2C" />
-	<SolidColorBrush x:Key="TabItem.MouseOver.Background" Color="#FF4C4C4C" />
-	<SolidColorBrush x:Key="TabItem.Selected.Background" Color="#FF333333" />
-	<SolidColorBrush x:Key="TabItem.Selected.Border" Color="#FFFF9600" />
-	<SolidColorBrush x:Key="TabItem.Disabled.Foreground" Color="#FF7B7B7B" />
-	<SolidColorBrush x:Key="Scrollbar.Default.Background" Color="#FF292929" />
-	<SolidColorBrush x:Key="Scrollbar.Default.Border" Color="#FF292929" />
-	<SolidColorBrush x:Key="Scrollbar.Default.Glyph" Color="#FF414141" />
-	<SolidColorBrush x:Key="Scrollbar.Default.Thumb" Color="#FF414141" />
-	<SolidColorBrush x:Key="Scrollbar.Default.ThumbBorder" Color="#FF414141" />
-	<SolidColorBrush x:Key="Scrollbar.MouseOver.Background" Color="#FF555555" />
-	<SolidColorBrush x:Key="Scrollbar.MouseOver.Border" Color="#FF292929" />
-	<SolidColorBrush x:Key="Scrollbar.MouseOver.Glyph" Color="#FF000000" />
-	<SolidColorBrush x:Key="Scrollbar.MouseOver.Thumb" Color="#FF555555" />
-	<SolidColorBrush x:Key="Scrollbar.MouseOver.ThumbBorder" Color="#FF555555" />
-	<SolidColorBrush x:Key="Scrollbar.Pressed.Background" Color="#FF555555" />
-	<SolidColorBrush x:Key="Scrollbar.Pressed.Border" Color="#FF292929" />
-	<SolidColorBrush x:Key="Scrollbar.Pressed.Glyph" Color="#FF000000" />
-	<SolidColorBrush x:Key="Scrollbar.Pressed.Thumb" Color="#FF555555" />
-	<SolidColorBrush x:Key="Scrollbar.Disabled.Background" Color="#FF292929" />
-	<SolidColorBrush x:Key="Scrollbar.Disabled.Border" Color="#FF292929" />
-	<SolidColorBrush x:Key="Scrollbar.Disabled.Glyph" Color="#FFD4D4D4" />
-	<SolidColorBrush x:Key="Slider.Default.Background" Color="#FF292929" />
-	<SolidColorBrush x:Key="Slider.Default.Track" Color="#FF4C4C4C" />
-	<SolidColorBrush x:Key="Slider.Default.Thumb" Color="#FF4C4C4C" />
-	<SolidColorBrush x:Key="Slider.Default.Border" Color="#FF1E1E1E" />
-	<SolidColorBrush x:Key="Slider.Default.ThumbBorder" Color="#FF1E1E1E" />
-	<SolidColorBrush x:Key="Slider.MouseOver.Thumb" Color="#FF5E5E5E" />
-	<SolidColorBrush x:Key="Slider.Pressed.Thumb" Color="#FF555555" />
-	<SolidColorBrush x:Key="Slider.Disabled.Track" Color="#FF2C2C2C" />
-	<SolidColorBrush x:Key="Slider.Disabled.Thumb" Color="#FF2C2C2C" />
-	<SolidColorBrush x:Key="Slider.Disabled.Tickbar" Color="#FF2C2C2C" />
-	<SolidColorBrush x:Key="Slider.Disabled.Border" Color="#FF4C4C4C" />
-	<SolidColorBrush x:Key="Slider.Disabled.ThumbBorder" Color="#FF4C4C4C" />
+	<SolidColorBrush x:Key="CF.Window.Default.Background" Color="#FF282828" />
+	<SolidColorBrush x:Key="CF.Panel.Default.Background" Color="#FF333333" />
+	<SolidColorBrush x:Key="CF.Popup.Default.Background" Color="#FF4C4C4C" />
+	<SolidColorBrush x:Key="CF.Border.Default.Border" Color="#FF292929" />
+	<SolidColorBrush x:Key="CF.Preview.Default.Border" Color="#80FFFFFF" />
+	<SolidColorBrush x:Key="CF.Text.Default.Foreground" Color="#FFC8C8C8" />
+	<SolidColorBrush x:Key="CF.Text.Selected.Foreground" Color="#FFFF9600" />
+	<SolidColorBrush x:Key="CF.Text.Disabled.Foreground" Color="#FF7B7B7B" />
+	<SolidColorBrush x:Key="CF.TextBox.Default.Background" Color="#FF1E1E1E" />
+	<SolidColorBrush x:Key="CF.TextBox.Default.Foreground" Color="#FFC8C8C8" />
+	<SolidColorBrush x:Key="CF.TextBox.Default.Border" Color="#FF4C4C4C" />
+	<SolidColorBrush x:Key="CF.TextBox.Selected.Border" Color="#61FF9600" />
+	<SolidColorBrush x:Key="CF.TextBox.Selected.Selection" Color="#8FFF9600" />
+	<SolidColorBrush x:Key="CF.TextBox.MouseOver.Border" Color="#FFFF9600" />
+	<SolidColorBrush x:Key="CF.TextBox.Disabled.Background" Color="#FF2C2C2C" />
+	<SolidColorBrush x:Key="CF.TextBox.Disabled.Foreground" Color="#FF7B7B7B" />
+	<SolidColorBrush x:Key="CF.TextBox.Disabled.Border" Color="#FF4C4C4C" />
+	<SolidColorBrush x:Key="CF.Button.Default.Background" Color="#FF4C4C4C" />
+	<SolidColorBrush x:Key="CF.Button.Default.Foreground" Color="#FFC8C8C8" />
+	<SolidColorBrush x:Key="CF.Button.Default.Border" Color="#FF292929" />
+	<SolidColorBrush x:Key="CF.Button.MouseOver.Background" Color="#FF797979" />
+	<SolidColorBrush x:Key="CF.Button.MouseOver.Foreground" Color="#FFFFFFFF" />
+	<SolidColorBrush x:Key="CF.Button.Pressed.Background" Color="#FF474747" />
+	<SolidColorBrush x:Key="CF.Button.Pressed.Border" Color="#FF292929" />
+	<SolidColorBrush x:Key="CF.Button.Disabled.Background" Color="#FF2C2C2C" />
+	<SolidColorBrush x:Key="CF.Button.Disabled.Foreground" Color="#FF7B7B7B" />
+	<SolidColorBrush x:Key="CF.Button.Disabled.Border" Color="#FF4C4C4C" />
+	<SolidColorBrush x:Key="CF.ComboBox.Default.Background" Color="#FF4C4C4C" />
+	<SolidColorBrush x:Key="CF.ComboBox.Default.Foreground" Color="#FFC8C8C8" />
+	<SolidColorBrush x:Key="CF.ComboBox.Default.Border" Color="#FF292929" />
+	<SolidColorBrush x:Key="CF.ComboBox.Default.Icon" Color="#FFC8C8C8" />
+	<SolidColorBrush x:Key="CF.ComboBox.Disabled.Background" Color="#FF2C2C2C" />
+	<SolidColorBrush x:Key="CF.ComboBox.Disabled.Foreground" Color="#FF7B7B7B" />
+	<SolidColorBrush x:Key="CF.ComboBox.Disabled.Border" Color="#FF4C4C4C" />
+	<SolidColorBrush x:Key="CF.ComboBox.Disabled.Icon" Color="#FF7B7B7B" />
+	<SolidColorBrush x:Key="CF.ComboBoxItem.Default.Background" Color="#FF4C4C4C" />
+	<SolidColorBrush x:Key="CF.ComboBoxItem.Default.Foreground" Color="#FFC8C8C8" />
+	<SolidColorBrush x:Key="CF.ComboBoxItem.Default.Border" Color="#FF3C3C3C" />
+	<SolidColorBrush x:Key="CF.ComboBoxItem.MouseOver.Background" Color="#8BFF9600" />
+	<SolidColorBrush x:Key="CF.ComboBoxItem.MouseOver.Foreground" Color="#FFFFFFFF" />
+	<SolidColorBrush x:Key="CF.ComboBoxItem.MouseOver.Border" Color="#FF0C0C0C" />
+	<SolidColorBrush x:Key="CF.ComboBoxItem.Selected.Background" Color="#51FF9600" />
+	<SolidColorBrush x:Key="CF.ComboBoxItem.Selected.Foreground" Color="#FFFFFFFF" />
+	<SolidColorBrush x:Key="CF.CheckBox.Default.Background" Color="#FF4C4C4C" />
+	<SolidColorBrush x:Key="CF.CheckBox.Default.Border" Color="#FF292929" />
+	<SolidColorBrush x:Key="CF.CheckBox.Default.Glyph" Color="#FFFF9600" />
+	<SolidColorBrush x:Key="CF.CheckBox.Default.Foreground" Color="#FFC8C8C8" />
+	<SolidColorBrush x:Key="CF.CheckBox.MouseOver.Background" Color="#FF5E5E5E" />
+	<SolidColorBrush x:Key="CF.CheckBox.Pressed.Background" Color="#FF4C4C4C" />
+	<SolidColorBrush x:Key="CF.CheckBox.Disabled.Background" Color="#FF2C2C2C" />
+	<SolidColorBrush x:Key="CF.CheckBox.Disabled.Glyph" Color="#FF7B7B7B" />
+	<SolidColorBrush x:Key="CF.CheckBox.Disabled.Foreground" Color="#FF7B7B7B" />
+	<SolidColorBrush x:Key="CF.RadioButton.Default.Background" Color="#FF4C4C4C" />
+	<SolidColorBrush x:Key="CF.RadioButton.Default.Border" Color="#FF292929" />
+	<SolidColorBrush x:Key="CF.RadioButton.Default.Glyph" Color="#FFFF9600" />
+	<SolidColorBrush x:Key="CF.RadioButton.Default.Foreground" Color="#FFC8C8C8" />
+	<SolidColorBrush x:Key="CF.RadioButton.MouseOver.Background" Color="#FF5E5E5E" />
+	<SolidColorBrush x:Key="CF.RadioButton.Pressed.Background" Color="#FF4C4C4C" />
+	<SolidColorBrush x:Key="CF.RadioButton.Disabled.Background" Color="#FF2C2C2C" />
+	<SolidColorBrush x:Key="CF.RadioButton.Disabled.Glyph" Color="#FF7B7B7B" />
+	<SolidColorBrush x:Key="CF.RadioButton.Disabled.Foreground" Color="#FF7B7B7B" />
+	<SolidColorBrush x:Key="CF.TreeView.Default.Background" Color="#FF202020" />
+	<SolidColorBrush x:Key="CF.TreeView.Default.Border" Color="#FF828790" />
+	<SolidColorBrush x:Key="CF.TreeView.Default.Text" Color="#FFC8C8C8" />
+	<SolidColorBrush x:Key="CF.TreeView.Default.Glyph" Color="#FFC8C8C8" />
+	<SolidColorBrush x:Key="CF.TreeView.Default.GlyphBackground" Color="#00000000" />
+	<SolidColorBrush x:Key="CF.TreeView.Default.GlyphBorder" Color="#00000000" />
+	<SolidColorBrush x:Key="CF.TreeView.MouseOver.Glyph" Color="#FFFFFFFF" />
+	<SolidColorBrush x:Key="CF.TreeView.MouseOver.GlyphBackground" Color="#00000000" />
+	<SolidColorBrush x:Key="CF.TreeView.MouseOver.GlyphBorder" Color="#00000000" />
+	<SolidColorBrush x:Key="CF.TreeView.Disabled.Background" Color="#FF202020" />
+	<SolidColorBrush x:Key="CF.TreeViewItem.Default.Background" Color="#FF202020" />
+	<SolidColorBrush x:Key="CF.TreeViewItem.Default.Border" Color="#00000000" />
+	<SolidColorBrush x:Key="CF.TreeViewItem.Default.Text" Color="#FFC8C8C8" />
+	<SolidColorBrush x:Key="CF.TreeViewItem.Default.Icon" Color="#FFC8C8C8" />
+	<SolidColorBrush x:Key="CF.TreeViewItem.Selected.Background" Color="#94FF9600" />
+	<SolidColorBrush x:Key="CF.TreeViewItem.Selected.Border" Color="#FFFF9600" />
+	<SolidColorBrush x:Key="CF.TreeViewItem.Selected.Text" Color="#FFFFFFFF" />
+	<SolidColorBrush x:Key="CF.TreeViewItem.Selected.Icon" Color="#FFFFFFFF" />
+	<SolidColorBrush x:Key="CF.TreeViewItem.MouseOver.Text" Color="#FFFFFFFF" />
+	<SolidColorBrush x:Key="CF.TreeViewItem.MouseOver.Icon" Color="#FFFFFFFF" />
+	<SolidColorBrush x:Key="CF.TabItem.Default.Background" Color="#FF2C2C2C" />
+	<SolidColorBrush x:Key="CF.TabItem.MouseOver.Background" Color="#FF4C4C4C" />
+	<SolidColorBrush x:Key="CF.TabItem.Selected.Background" Color="#FF333333" />
+	<SolidColorBrush x:Key="CF.TabItem.Selected.Border" Color="#FFFF9600" />
+	<SolidColorBrush x:Key="CF.TabItem.Disabled.Foreground" Color="#FF7B7B7B" />
+	<SolidColorBrush x:Key="CF.Scrollbar.Default.Background" Color="#FF292929" />
+	<SolidColorBrush x:Key="CF.Scrollbar.Default.Border" Color="#FF292929" />
+	<SolidColorBrush x:Key="CF.Scrollbar.Default.Glyph" Color="#FF414141" />
+	<SolidColorBrush x:Key="CF.Scrollbar.Default.Thumb" Color="#FF414141" />
+	<SolidColorBrush x:Key="CF.Scrollbar.Default.ThumbBorder" Color="#FF414141" />
+	<SolidColorBrush x:Key="CF.Scrollbar.MouseOver.Background" Color="#FF555555" />
+	<SolidColorBrush x:Key="CF.Scrollbar.MouseOver.Border" Color="#FF292929" />
+	<SolidColorBrush x:Key="CF.Scrollbar.MouseOver.Glyph" Color="#FF000000" />
+	<SolidColorBrush x:Key="CF.Scrollbar.MouseOver.Thumb" Color="#FF555555" />
+	<SolidColorBrush x:Key="CF.Scrollbar.MouseOver.ThumbBorder" Color="#FF555555" />
+	<SolidColorBrush x:Key="CF.Scrollbar.Pressed.Background" Color="#FF555555" />
+	<SolidColorBrush x:Key="CF.Scrollbar.Pressed.Border" Color="#FF292929" />
+	<SolidColorBrush x:Key="CF.Scrollbar.Pressed.Glyph" Color="#FF000000" />
+	<SolidColorBrush x:Key="CF.Scrollbar.Pressed.Thumb" Color="#FF555555" />
+	<SolidColorBrush x:Key="CF.Scrollbar.Disabled.Background" Color="#FF292929" />
+	<SolidColorBrush x:Key="CF.Scrollbar.Disabled.Border" Color="#FF292929" />
+	<SolidColorBrush x:Key="CF.Scrollbar.Disabled.Glyph" Color="#FFD4D4D4" />
+	<SolidColorBrush x:Key="CF.Slider.Default.Background" Color="#FF292929" />
+	<SolidColorBrush x:Key="CF.Slider.Default.Track" Color="#FF4C4C4C" />
+	<SolidColorBrush x:Key="CF.Slider.Default.Thumb" Color="#FF4C4C4C" />
+	<SolidColorBrush x:Key="CF.Slider.Default.Border" Color="#FF1E1E1E" />
+	<SolidColorBrush x:Key="CF.Slider.Default.ThumbBorder" Color="#FF1E1E1E" />
+	<SolidColorBrush x:Key="CF.Slider.MouseOver.Thumb" Color="#FF5E5E5E" />
+	<SolidColorBrush x:Key="CF.Slider.Pressed.Thumb" Color="#FF555555" />
+	<SolidColorBrush x:Key="CF.Slider.Disabled.Track" Color="#FF2C2C2C" />
+	<SolidColorBrush x:Key="CF.Slider.Disabled.Thumb" Color="#FF2C2C2C" />
+	<SolidColorBrush x:Key="CF.Slider.Disabled.Tickbar" Color="#FF2C2C2C" />
+	<SolidColorBrush x:Key="CF.Slider.Disabled.Border" Color="#FF4C4C4C" />
+	<SolidColorBrush x:Key="CF.Slider.Disabled.ThumbBorder" Color="#FF4C4C4C" />
 
 	<Style TargetType="Window">
-		<Setter Property="Background" Value="{StaticResource Window.Default.Background}" />
-		<Setter Property="Foreground" Value="{StaticResource Text.Default.Foreground}" />
+		<Setter Property="Background" Value="{StaticResource CF.Window.Default.Background}" />
+		<Setter Property="Foreground" Value="{StaticResource CF.Text.Default.Foreground}" />
 	</Style>
 
 	<Style TargetType="GroupBox">
-		<Setter Property="Foreground" Value="{StaticResource Text.Default.Foreground}" />
+		<Setter Property="Foreground" Value="{StaticResource CF.Text.Default.Foreground}" />
 		<Setter Property="Margin" Value="0,0,0,12" />
 	</Style>
 
 	<Style TargetType="TextBlock">
-		<Setter Property="Foreground" Value="{StaticResource Text.Default.Foreground}" />
+		<Setter Property="Foreground" Value="{StaticResource CF.Text.Default.Foreground}" />
 	</Style>
 
 	<Style TargetType="TextBox">
-		<Setter Property="Background" Value="{StaticResource TextBox.Default.Background}" />
-		<Setter Property="Foreground" Value="{StaticResource TextBox.Default.Foreground}" />
-		<Setter Property="BorderBrush" Value="{StaticResource TextBox.Default.Border}" />
+		<Setter Property="Background" Value="{StaticResource CF.TextBox.Default.Background}" />
+		<Setter Property="Foreground" Value="{StaticResource CF.TextBox.Default.Foreground}" />
+		<Setter Property="BorderBrush" Value="{StaticResource CF.TextBox.Default.Border}" />
 		<Setter Property="BorderThickness" Value="1" />
 		<Setter Property="MinHeight" Value="24" />
-		<Setter Property="SelectionBrush" Value="{StaticResource TextBox.Selected.Selection}" />
+		<Setter Property="SelectionBrush" Value="{StaticResource CF.TextBox.Selected.Selection}" />
 		<Setter Property="Padding" Value="4,3" />
 		<Setter Property="Margin" Value="0,2,0,2" />
 		<Setter Property="Template">
@@ -153,22 +153,22 @@
 					</Border>
 					<ControlTemplate.Triggers>
 						<Trigger Property="IsEnabled" Value="False">
-							<Setter TargetName="TextBoxBorder" Property="Background" Value="{StaticResource TextBox.Disabled.Background}" />
-							<Setter Property="Foreground" Value="{StaticResource TextBox.Disabled.Foreground}" />
-							<Setter TargetName="TextBoxBorder" Property="BorderBrush" Value="{StaticResource TextBox.Disabled.Border}" />
+							<Setter TargetName="TextBoxBorder" Property="Background" Value="{StaticResource CF.TextBox.Disabled.Background}" />
+							<Setter Property="Foreground" Value="{StaticResource CF.TextBox.Disabled.Foreground}" />
+							<Setter TargetName="TextBoxBorder" Property="BorderBrush" Value="{StaticResource CF.TextBox.Disabled.Border}" />
 						</Trigger>
 						<Trigger Property="IsKeyboardFocused" Value="True">
-							<Setter TargetName="TextBoxBorder" Property="BorderBrush" Value="{StaticResource TextBox.Selected.Border}" />
+							<Setter TargetName="TextBoxBorder" Property="BorderBrush" Value="{StaticResource CF.TextBox.Selected.Border}" />
 						</Trigger>
 						<Trigger Property="IsMouseOver" Value="True">
-							<Setter TargetName="TextBoxBorder" Property="BorderBrush" Value="{StaticResource TextBox.MouseOver.Border}" />
+							<Setter TargetName="TextBoxBorder" Property="BorderBrush" Value="{StaticResource CF.TextBox.MouseOver.Border}" />
 						</Trigger>
 						<MultiTrigger>
 							<MultiTrigger.Conditions>
 								<Condition Property="IsKeyboardFocused" Value="True" />
 								<Condition Property="IsMouseOver" Value="True" />
 							</MultiTrigger.Conditions>
-							<Setter TargetName="TextBoxBorder" Property="BorderBrush" Value="{StaticResource TextBox.MouseOver.Border}" />
+							<Setter TargetName="TextBoxBorder" Property="BorderBrush" Value="{StaticResource CF.TextBox.MouseOver.Border}" />
 						</MultiTrigger>
 					</ControlTemplate.Triggers>
 				</ControlTemplate>
@@ -176,46 +176,46 @@
 		</Setter>
 		<Style.Triggers>
 			<Trigger Property="IsKeyboardFocused" Value="True">
-				<Setter Property="BorderBrush" Value="{StaticResource TextBox.Selected.Border}" />
+				<Setter Property="BorderBrush" Value="{StaticResource CF.TextBox.Selected.Border}" />
 			</Trigger>
 			<MultiTrigger>
 				<MultiTrigger.Conditions>
 					<Condition Property="IsKeyboardFocused" Value="True" />
 					<Condition Property="IsMouseOver" Value="True" />
 				</MultiTrigger.Conditions>
-				<Setter Property="BorderBrush" Value="{StaticResource TextBox.MouseOver.Border}" />
+				<Setter Property="BorderBrush" Value="{StaticResource CF.TextBox.MouseOver.Border}" />
 			</MultiTrigger>
 			<Trigger Property="IsMouseOver" Value="True">
-				<Setter Property="BorderBrush" Value="{StaticResource TextBox.MouseOver.Border}" />
+				<Setter Property="BorderBrush" Value="{StaticResource CF.TextBox.MouseOver.Border}" />
 			</Trigger>
 			<Trigger Property="IsEnabled" Value="False">
-				<Setter Property="Background" Value="{StaticResource TextBox.Disabled.Background}" />
-				<Setter Property="Foreground" Value="{StaticResource TextBox.Disabled.Foreground}" />
-				<Setter Property="BorderBrush" Value="{StaticResource TextBox.Disabled.Border}" />
+				<Setter Property="Background" Value="{StaticResource CF.TextBox.Disabled.Background}" />
+				<Setter Property="Foreground" Value="{StaticResource CF.TextBox.Disabled.Foreground}" />
+				<Setter Property="BorderBrush" Value="{StaticResource CF.TextBox.Disabled.Border}" />
 			</Trigger>
 		</Style.Triggers>
 	</Style>
 
 	<Style TargetType="ComboBox">
-		<Setter Property="Background" Value="{StaticResource ComboBox.Default.Background}" />
-		<Setter Property="Foreground" Value="{StaticResource ComboBox.Default.Foreground}" />
-		<Setter Property="BorderBrush" Value="{StaticResource ComboBox.Default.Border}" />
+		<Setter Property="Background" Value="{StaticResource CF.ComboBox.Default.Background}" />
+		<Setter Property="Foreground" Value="{StaticResource CF.ComboBox.Default.Foreground}" />
+		<Setter Property="BorderBrush" Value="{StaticResource CF.ComboBox.Default.Border}" />
 		<Setter Property="MinHeight" Value="24" />
 		<Setter Property="Padding" Value="4,3" />
 		<Setter Property="Margin" Value="0,2,0,2" />
 		<Style.Triggers>
 			<Trigger Property="IsEnabled" Value="False">
-				<Setter Property="Background" Value="{StaticResource ComboBox.Disabled.Background}" />
-				<Setter Property="Foreground" Value="{StaticResource ComboBox.Disabled.Foreground}" />
-				<Setter Property="BorderBrush" Value="{StaticResource ComboBox.Disabled.Border}" />
+				<Setter Property="Background" Value="{StaticResource CF.ComboBox.Disabled.Background}" />
+				<Setter Property="Foreground" Value="{StaticResource CF.ComboBox.Disabled.Foreground}" />
+				<Setter Property="BorderBrush" Value="{StaticResource CF.ComboBox.Disabled.Border}" />
 			</Trigger>
 		</Style.Triggers>
 	</Style>
 
-	<Style x:Key="ComboPopupItemStyle" TargetType="ComboBoxItem">
-		<Setter Property="Background" Value="{StaticResource ComboBoxItem.Default.Background}" />
-		<Setter Property="Foreground" Value="{StaticResource ComboBoxItem.Default.Foreground}" />
-		<Setter Property="BorderBrush" Value="{StaticResource ComboBoxItem.Default.Border}" />
+	<Style x:Key="CF.ComboPopupItemStyle" TargetType="ComboBoxItem">
+		<Setter Property="Background" Value="{StaticResource CF.ComboBoxItem.Default.Background}" />
+		<Setter Property="Foreground" Value="{StaticResource CF.ComboBoxItem.Default.Foreground}" />
+		<Setter Property="BorderBrush" Value="{StaticResource CF.ComboBoxItem.Default.Border}" />
 		<Setter Property="BorderThickness" Value="1" />
 		<Setter Property="MinWidth" Value="{Binding PlacementTarget.ActualWidth, RelativeSource={RelativeSource AncestorType=Popup}}" />
 		<Setter Property="Padding" Value="6,3" />
@@ -233,13 +233,13 @@
 					</Border>
 					<ControlTemplate.Triggers>
 						<Trigger Property="IsHighlighted" Value="True">
-							<Setter TargetName="ComboBoxItemBorder" Property="Background" Value="{StaticResource ComboBoxItem.MouseOver.Background}" />
-							<Setter TargetName="ComboBoxItemBorder" Property="BorderBrush" Value="{StaticResource ComboBoxItem.MouseOver.Border}" />
-							<Setter Property="Foreground" Value="{StaticResource ComboBoxItem.MouseOver.Foreground}" />
+							<Setter TargetName="ComboBoxItemBorder" Property="Background" Value="{StaticResource CF.ComboBoxItem.MouseOver.Background}" />
+							<Setter TargetName="ComboBoxItemBorder" Property="BorderBrush" Value="{StaticResource CF.ComboBoxItem.MouseOver.Border}" />
+							<Setter Property="Foreground" Value="{StaticResource CF.ComboBoxItem.MouseOver.Foreground}" />
 						</Trigger>
 						<Trigger Property="IsSelected" Value="True">
-							<Setter TargetName="ComboBoxItemBorder" Property="Background" Value="{StaticResource ComboBoxItem.Selected.Background}" />
-							<Setter Property="Foreground" Value="{StaticResource ComboBoxItem.Selected.Foreground}" />
+							<Setter TargetName="ComboBoxItemBorder" Property="Background" Value="{StaticResource CF.ComboBoxItem.Selected.Background}" />
+							<Setter Property="Foreground" Value="{StaticResource CF.ComboBoxItem.Selected.Foreground}" />
 						</Trigger>
 					</ControlTemplate.Triggers>
 				</ControlTemplate>
@@ -247,7 +247,7 @@
 		</Setter>
 	</Style>
 
-	<ControlTemplate x:Key="ComboBoxToggleButtonTemplate" TargetType="ToggleButton">
+	<ControlTemplate x:Key="CF.ComboBoxToggleButtonTemplate" TargetType="ToggleButton">
 		<Border Background="{TemplateBinding Background}"
 				BorderBrush="{TemplateBinding BorderBrush}"
 				BorderThickness="1"
@@ -261,25 +261,25 @@
 					  Grid.Column="1"
 					  HorizontalAlignment="Center"
 					  VerticalAlignment="Center"
-					  Fill="{StaticResource ComboBox.Default.Icon}"
+					  Fill="{StaticResource CF.ComboBox.Default.Icon}"
 					  Data="M 0 0 L 4 4 L 8 0 Z" />
 			</Grid>
 		</Border>
 		<ControlTemplate.Triggers>
 			<Trigger Property="IsEnabled" Value="False">
-				<Setter TargetName="ComboBoxIcon" Property="Fill" Value="{StaticResource ComboBox.Disabled.Icon}" />
+				<Setter TargetName="ComboBoxIcon" Property="Fill" Value="{StaticResource CF.ComboBox.Disabled.Icon}" />
 			</Trigger>
 		</ControlTemplate.Triggers>
 	</ControlTemplate>
 
-	<ControlTemplate x:Key="ComboBoxTemplate" TargetType="ComboBox">
+	<ControlTemplate x:Key="CF.ComboBoxTemplate" TargetType="ComboBox">
 		<Grid>
 			<ToggleButton Name="ToggleButton"
 					  Background="{TemplateBinding Background}"
 					  BorderBrush="{TemplateBinding BorderBrush}"
 					  Focusable="False"
 					  IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
-					  Template="{StaticResource ComboBoxToggleButtonTemplate}" />
+					  Template="{StaticResource CF.ComboBoxToggleButtonTemplate}" />
 			<ContentPresenter Margin="8,0,28,0"
 						  VerticalAlignment="Center"
 						  HorizontalAlignment="Left"
@@ -296,7 +296,7 @@
 				   PopupAnimation="Slide">
 				<Border Margin="0,2,0,0"
 						MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}"
-						Background="{StaticResource Popup.Default.Background}"
+						Background="{StaticResource CF.Popup.Default.Background}"
 						BorderBrush="{TemplateBinding BorderBrush}"
 						BorderThickness="1"
 						CornerRadius="4">
@@ -310,9 +310,9 @@
 	</ControlTemplate>
 
 	<Style TargetType="Button">
-		<Setter Property="Background" Value="{StaticResource Button.Default.Background}" />
-		<Setter Property="Foreground" Value="{StaticResource Button.Default.Foreground}" />
-		<Setter Property="BorderBrush" Value="{StaticResource Button.Default.Border}" />
+		<Setter Property="Background" Value="{StaticResource CF.Button.Default.Background}" />
+		<Setter Property="Foreground" Value="{StaticResource CF.Button.Default.Foreground}" />
+		<Setter Property="BorderBrush" Value="{StaticResource CF.Button.Default.Border}" />
 		<Setter Property="BorderThickness" Value="1" />
 		<Setter Property="MinHeight" Value="24" />
 		<Setter Property="Padding" Value="6,2" />
@@ -332,25 +332,25 @@
 					</Border>
 					<ControlTemplate.Triggers>
 						<Trigger Property="IsEnabled" Value="False">
-							<Setter TargetName="ButtonBorder" Property="Background" Value="{StaticResource Button.Disabled.Background}" />
-							<Setter TargetName="ButtonBorder" Property="BorderBrush" Value="{StaticResource Button.Disabled.Border}" />
-							<Setter Property="Foreground" Value="{StaticResource Button.Disabled.Foreground}" />
+							<Setter TargetName="ButtonBorder" Property="Background" Value="{StaticResource CF.Button.Disabled.Background}" />
+							<Setter TargetName="ButtonBorder" Property="BorderBrush" Value="{StaticResource CF.Button.Disabled.Border}" />
+							<Setter Property="Foreground" Value="{StaticResource CF.Button.Disabled.Foreground}" />
 						</Trigger>
 						<Trigger Property="IsPressed" Value="True">
-							<Setter TargetName="ButtonBorder" Property="Background" Value="{StaticResource Button.Pressed.Background}" />
-							<Setter TargetName="ButtonBorder" Property="BorderBrush" Value="{StaticResource Button.Pressed.Border}" />
+							<Setter TargetName="ButtonBorder" Property="Background" Value="{StaticResource CF.Button.Pressed.Background}" />
+							<Setter TargetName="ButtonBorder" Property="BorderBrush" Value="{StaticResource CF.Button.Pressed.Border}" />
 						</Trigger>
 						<Trigger Property="IsMouseOver" Value="True">
-							<Setter TargetName="ButtonBorder" Property="Background" Value="{StaticResource Button.MouseOver.Background}" />
-							<Setter Property="Foreground" Value="{StaticResource Button.MouseOver.Foreground}" />
+							<Setter TargetName="ButtonBorder" Property="Background" Value="{StaticResource CF.Button.MouseOver.Background}" />
+							<Setter Property="Foreground" Value="{StaticResource CF.Button.MouseOver.Foreground}" />
 						</Trigger>
 						<MultiTrigger>
 							<MultiTrigger.Conditions>
 								<Condition Property="IsPressed" Value="True" />
 								<Condition Property="IsMouseOver" Value="True" />
 							</MultiTrigger.Conditions>
-							<Setter TargetName="ButtonBorder" Property="Background" Value="{StaticResource Button.Pressed.Background}" />
-							<Setter TargetName="ButtonBorder" Property="BorderBrush" Value="{StaticResource Button.Pressed.Border}" />
+							<Setter TargetName="ButtonBorder" Property="Background" Value="{StaticResource CF.Button.Pressed.Background}" />
+							<Setter TargetName="ButtonBorder" Property="BorderBrush" Value="{StaticResource CF.Button.Pressed.Border}" />
 						</MultiTrigger>
 					</ControlTemplate.Triggers>
 				</ControlTemplate>
@@ -358,11 +358,39 @@
 		</Setter>
 	</Style>
 
+	<Style x:Key="CF.FocusVisualCheckBox">
+		<Setter Property="Control.Template">
+			<Setter.Value>
+				<ControlTemplate>
+					<Rectangle Margin="2"
+							   StrokeDashArray="1 2"
+							   Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"
+							   SnapsToDevicePixels="True"
+							   StrokeThickness="1" />
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style x:Key="CF.FocusVisualRadioButton">
+		<Setter Property="Control.Template">
+			<Setter.Value>
+				<ControlTemplate>
+					<Rectangle Margin="2"
+							   StrokeDashArray="1 2"
+							   Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"
+							   SnapsToDevicePixels="True"
+							   StrokeThickness="1" />
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
 	<Style TargetType="CheckBox">
-		<Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisualScrollbar}" />
-		<Setter Property="Background" Value="{StaticResource CheckBox.Default.Background}" />
-		<Setter Property="BorderBrush" Value="{StaticResource CheckBox.Default.Border}" />
-		<Setter Property="Foreground" Value="{StaticResource CheckBox.Default.Foreground}" />
+		<Setter Property="FocusVisualStyle" Value="{StaticResource CF.FocusVisualCheckBox}" />
+		<Setter Property="Background" Value="{StaticResource CF.CheckBox.Default.Background}" />
+		<Setter Property="BorderBrush" Value="{StaticResource CF.CheckBox.Default.Border}" />
+		<Setter Property="Foreground" Value="{StaticResource CF.CheckBox.Default.Foreground}" />
 		<Setter Property="BorderThickness" Value="1" />
 		<Setter Property="Margin" Value="0,2,0,2" />
 		<Setter Property="Template">
@@ -384,12 +412,12 @@
 							<Grid x:Name="markGrid" Width="13" Height="13">
 								<Path x:Name="optionMark"
 									  Data="F1 M 9.97498,1.22334L 4.6983,9.09834L 4.52164,9.09834L 0,5.19331L 1.27664,3.52165L 4.255,6.08833L 8.33331,1.52588e-005L 9.97498,1.22334 Z"
-									  Fill="{StaticResource CheckBox.Default.Glyph}"
+									  Fill="{StaticResource CF.CheckBox.Default.Glyph}"
 									  Margin="1"
 									  Opacity="0"
 									  Stretch="None" />
 								<Rectangle x:Name="indeterminateMark"
-										   Fill="{StaticResource CheckBox.Default.Glyph}"
+										   Fill="{StaticResource CF.CheckBox.Default.Glyph}"
 										   Margin="2"
 										   Opacity="0" />
 							</Grid>
@@ -417,20 +445,20 @@
 							<Setter TargetName="indeterminateMark" Property="Opacity" Value="1" />
 						</Trigger>
 						<Trigger Property="IsMouseOver" Value="True">
-							<Setter TargetName="checkBoxBorder" Property="Background" Value="{StaticResource CheckBox.MouseOver.Background}" />
-							<Setter TargetName="optionMark" Property="Fill" Value="{StaticResource CheckBox.Default.Glyph}" />
-							<Setter TargetName="indeterminateMark" Property="Fill" Value="{StaticResource CheckBox.Default.Glyph}" />
+							<Setter TargetName="checkBoxBorder" Property="Background" Value="{StaticResource CF.CheckBox.MouseOver.Background}" />
+							<Setter TargetName="optionMark" Property="Fill" Value="{StaticResource CF.CheckBox.Default.Glyph}" />
+							<Setter TargetName="indeterminateMark" Property="Fill" Value="{StaticResource CF.CheckBox.Default.Glyph}" />
 						</Trigger>
 						<Trigger Property="IsPressed" Value="True">
-							<Setter TargetName="checkBoxBorder" Property="Background" Value="{StaticResource CheckBox.Pressed.Background}" />
-							<Setter TargetName="optionMark" Property="Fill" Value="{StaticResource CheckBox.Default.Glyph}" />
-							<Setter TargetName="indeterminateMark" Property="Fill" Value="{StaticResource CheckBox.Default.Glyph}" />
+							<Setter TargetName="checkBoxBorder" Property="Background" Value="{StaticResource CF.CheckBox.Pressed.Background}" />
+							<Setter TargetName="optionMark" Property="Fill" Value="{StaticResource CF.CheckBox.Default.Glyph}" />
+							<Setter TargetName="indeterminateMark" Property="Fill" Value="{StaticResource CF.CheckBox.Default.Glyph}" />
 						</Trigger>
 						<Trigger Property="IsEnabled" Value="False">
-							<Setter Property="Foreground" Value="{StaticResource CheckBox.Disabled.Foreground}" />
-							<Setter TargetName="checkBoxBorder" Property="Background" Value="{StaticResource CheckBox.Disabled.Background}" />
-							<Setter TargetName="optionMark" Property="Fill" Value="{StaticResource CheckBox.Disabled.Glyph}" />
-							<Setter TargetName="indeterminateMark" Property="Fill" Value="{StaticResource CheckBox.Disabled.Glyph}" />
+							<Setter Property="Foreground" Value="{StaticResource CF.CheckBox.Disabled.Foreground}" />
+							<Setter TargetName="checkBoxBorder" Property="Background" Value="{StaticResource CF.CheckBox.Disabled.Background}" />
+							<Setter TargetName="optionMark" Property="Fill" Value="{StaticResource CF.CheckBox.Disabled.Glyph}" />
+							<Setter TargetName="indeterminateMark" Property="Fill" Value="{StaticResource CF.CheckBox.Disabled.Glyph}" />
 						</Trigger>
 					</ControlTemplate.Triggers>
 				</ControlTemplate>
@@ -438,7 +466,7 @@
 		</Setter>
 	</Style>
 
-	<Style x:Key="OptionMarkFocusVisual" TargetType="Control">
+	<Style x:Key="CF.OptionMarkFocusVisual" TargetType="Control">
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate>
@@ -452,7 +480,7 @@
 		</Setter>
 	</Style>
 
-	<ControlTemplate x:Key="TreeViewExpanderToggleTemplate" TargetType="ToggleButton">
+	<ControlTemplate x:Key="CF.TreeViewExpanderToggleTemplate" TargetType="ToggleButton">
 		<Border x:Name="ToggleBorder"
 				Background="{TemplateBinding Background}"
 				BorderBrush="{TemplateBinding BorderBrush}"
@@ -462,17 +490,17 @@
 		</Border>
 		<ControlTemplate.Triggers>
 			<Trigger Property="IsMouseOver" Value="True">
-				<Setter TargetName="ToggleBorder" Property="Background" Value="{StaticResource TreeView.MouseOver.GlyphBackground}" />
-				<Setter TargetName="ToggleBorder" Property="BorderBrush" Value="{StaticResource TreeView.MouseOver.GlyphBorder}" />
+				<Setter TargetName="ToggleBorder" Property="Background" Value="{StaticResource CF.TreeView.MouseOver.GlyphBackground}" />
+				<Setter TargetName="ToggleBorder" Property="BorderBrush" Value="{StaticResource CF.TreeView.MouseOver.GlyphBorder}" />
 			</Trigger>
 		</ControlTemplate.Triggers>
 	</ControlTemplate>
 
 	<Style TargetType="RadioButton">
-		<Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisualScrollbar}" />
-		<Setter Property="Background" Value="{StaticResource RadioButton.Default.Background}" />
-		<Setter Property="BorderBrush" Value="{StaticResource RadioButton.Default.Border}" />
-		<Setter Property="Foreground" Value="{StaticResource RadioButton.Default.Foreground}" />
+		<Setter Property="FocusVisualStyle" Value="{StaticResource CF.FocusVisualRadioButton}" />
+		<Setter Property="Background" Value="{StaticResource CF.RadioButton.Default.Background}" />
+		<Setter Property="BorderBrush" Value="{StaticResource CF.RadioButton.Default.Border}" />
+		<Setter Property="Foreground" Value="{StaticResource CF.RadioButton.Default.Foreground}" />
 		<Setter Property="BorderThickness" Value="1" />
 		<Setter Property="Margin" Value="0,2,0,2" />
 		<Setter Property="Template">
@@ -494,7 +522,7 @@
 								VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
 							<Grid x:Name="markGrid" Margin="2">
 								<Ellipse x:Name="optionMark"
-										 Fill="{StaticResource RadioButton.Default.Glyph}"
+										 Fill="{StaticResource CF.RadioButton.Default.Glyph}"
 										 MinWidth="6"
 										 MinHeight="6"
 										 Opacity="0" />
@@ -512,21 +540,20 @@
 					</Grid>
 					<ControlTemplate.Triggers>
 						<Trigger Property="HasContent" Value="True">
-							<Setter Property="FocusVisualStyle" Value="{StaticResource OptionMarkFocusVisual}" />
 							<Setter Property="Padding" Value="4,-1,0,0" />
 						</Trigger>
 						<Trigger Property="IsMouseOver" Value="True">
-							<Setter TargetName="radioButtonBorder" Property="Background" Value="{StaticResource RadioButton.MouseOver.Background}" />
-							<Setter TargetName="optionMark" Property="Fill" Value="{StaticResource RadioButton.Default.Glyph}" />
+							<Setter TargetName="radioButtonBorder" Property="Background" Value="{StaticResource CF.RadioButton.MouseOver.Background}" />
+							<Setter TargetName="optionMark" Property="Fill" Value="{StaticResource CF.RadioButton.Default.Glyph}" />
 						</Trigger>
 						<Trigger Property="IsEnabled" Value="False">
-							<Setter Property="Foreground" Value="{StaticResource RadioButton.Disabled.Foreground}" />
-							<Setter TargetName="radioButtonBorder" Property="Background" Value="{StaticResource RadioButton.Disabled.Background}" />
-							<Setter TargetName="optionMark" Property="Fill" Value="{StaticResource RadioButton.Disabled.Glyph}" />
+							<Setter Property="Foreground" Value="{StaticResource CF.RadioButton.Disabled.Foreground}" />
+							<Setter TargetName="radioButtonBorder" Property="Background" Value="{StaticResource CF.RadioButton.Disabled.Background}" />
+							<Setter TargetName="optionMark" Property="Fill" Value="{StaticResource CF.RadioButton.Disabled.Glyph}" />
 						</Trigger>
 						<Trigger Property="IsPressed" Value="True">
-							<Setter TargetName="radioButtonBorder" Property="Background" Value="{StaticResource RadioButton.Pressed.Background}" />
-							<Setter TargetName="optionMark" Property="Fill" Value="{StaticResource RadioButton.Default.Glyph}" />
+							<Setter TargetName="radioButtonBorder" Property="Background" Value="{StaticResource CF.RadioButton.Pressed.Background}" />
+							<Setter TargetName="optionMark" Property="Fill" Value="{StaticResource CF.RadioButton.Default.Glyph}" />
 						</Trigger>
 						<Trigger Property="IsChecked" Value="True">
 							<Setter TargetName="optionMark" Property="Opacity" Value="1" />
@@ -541,12 +568,12 @@
 	</Style>
 
 	<Style TargetType="local:CFTreeViewItem">
-		<Setter Property="Foreground" Value="{StaticResource TreeViewItem.Default.Text}" />
-		<Setter Property="Background" Value="{StaticResource TreeViewItem.Default.Background}" />
-		<Setter Property="BorderBrush" Value="{StaticResource TreeViewItem.Default.Border}" />
+		<Setter Property="Foreground" Value="{StaticResource CF.TreeViewItem.Default.Text}" />
+		<Setter Property="Background" Value="{StaticResource CF.TreeViewItem.Default.Background}" />
+		<Setter Property="BorderBrush" Value="{StaticResource CF.TreeViewItem.Default.Border}" />
 		<Setter Property="HorizontalContentAlignment" Value="Stretch" />
 		<Setter Property="VerticalContentAlignment" Value="Center" />
-		<Setter Property="Tag" Value="{StaticResource TreeViewItem.Default.Icon}" />
+		<Setter Property="Tag" Value="{StaticResource CF.TreeViewItem.Default.Icon}" />
 		<Setter Property="HeaderTemplate">
 			<Setter.Value>
 				<DataTemplate>
@@ -579,15 +606,15 @@
 								  Width="16"
 								  Height="16"
 								  Margin="0,0,2,0"
-								  Background="{StaticResource TreeView.Default.GlyphBackground}"
-								  BorderBrush="{StaticResource TreeView.Default.GlyphBorder}"
+								  Background="{StaticResource CF.TreeView.Default.GlyphBackground}"
+								  BorderBrush="{StaticResource CF.TreeView.Default.GlyphBorder}"
 								  BorderThickness="1"
 								  Focusable="False"
-								  Template="{StaticResource TreeViewExpanderToggleTemplate}"
+								  Template="{StaticResource CF.TreeViewExpanderToggleTemplate}"
 								  IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}">
 							<Path x:Name="ExpanderGlyph"
 								  Data="M 0 0 L 4 4 L 0 8 Z"
-								  Fill="{StaticResource TreeView.Default.Glyph}"
+								  Fill="{StaticResource CF.TreeView.Default.Glyph}"
 								  Stretch="Uniform"
 								  Width="8"
 								  Height="8"
@@ -629,16 +656,16 @@
 							</Setter>
 						</Trigger>
 						<Trigger Property="IsMultiSelected" Value="True">
-							<Setter TargetName="ItemHeaderBorder" Property="Background" Value="{StaticResource TreeViewItem.Selected.Background}" />
-							<Setter TargetName="ItemHeaderBorder" Property="BorderBrush" Value="{StaticResource TreeViewItem.Selected.Border}" />
-							<Setter Property="Tag" Value="{StaticResource TreeViewItem.Selected.Icon}" />
-							<Setter Property="Foreground" Value="{StaticResource TreeViewItem.Selected.Text}" />
+							<Setter TargetName="ItemHeaderBorder" Property="Background" Value="{StaticResource CF.TreeViewItem.Selected.Background}" />
+							<Setter TargetName="ItemHeaderBorder" Property="BorderBrush" Value="{StaticResource CF.TreeViewItem.Selected.Border}" />
+							<Setter Property="Tag" Value="{StaticResource CF.TreeViewItem.Selected.Icon}" />
+							<Setter Property="Foreground" Value="{StaticResource CF.TreeViewItem.Selected.Text}" />
 						</Trigger>
 						<Trigger Property="IsSelected" Value="True">
-							<Setter TargetName="ItemHeaderBorder" Property="Background" Value="{StaticResource TreeViewItem.Selected.Background}" />
-							<Setter TargetName="ItemHeaderBorder" Property="BorderBrush" Value="{StaticResource TreeViewItem.Selected.Border}" />
-							<Setter Property="Tag" Value="{StaticResource TreeViewItem.Selected.Icon}" />
-							<Setter Property="Foreground" Value="{StaticResource TreeViewItem.Selected.Text}" />
+							<Setter TargetName="ItemHeaderBorder" Property="Background" Value="{StaticResource CF.TreeViewItem.Selected.Background}" />
+							<Setter TargetName="ItemHeaderBorder" Property="BorderBrush" Value="{StaticResource CF.TreeViewItem.Selected.Border}" />
+							<Setter Property="Tag" Value="{StaticResource CF.TreeViewItem.Selected.Icon}" />
+							<Setter Property="Foreground" Value="{StaticResource CF.TreeViewItem.Selected.Text}" />
 						</Trigger>
 						<MultiTrigger>
 							<MultiTrigger.Conditions>
@@ -646,11 +673,11 @@
 								<Condition Property="IsMultiSelected" Value="False" />
 								<Condition Property="IsSelected" Value="False" />
 							</MultiTrigger.Conditions>
-							<Setter Property="Tag" Value="{StaticResource TreeViewItem.MouseOver.Icon}" />
-							<Setter Property="Foreground" Value="{StaticResource TreeViewItem.MouseOver.Text}" />
+							<Setter Property="Tag" Value="{StaticResource CF.TreeViewItem.MouseOver.Icon}" />
+							<Setter Property="Foreground" Value="{StaticResource CF.TreeViewItem.MouseOver.Text}" />
 						</MultiTrigger>
 						<Trigger SourceName="ExpanderToggle" Property="IsMouseOver" Value="True">
-							<Setter TargetName="ExpanderGlyph" Property="Fill" Value="{StaticResource TreeView.MouseOver.Glyph}" />
+							<Setter TargetName="ExpanderGlyph" Property="Fill" Value="{StaticResource CF.TreeView.MouseOver.Glyph}" />
 						</Trigger>
 					</ControlTemplate.Triggers>
 				</ControlTemplate>
@@ -658,12 +685,12 @@
 		</Setter>
 	</Style>
 
-	<Style x:Key="CFTreeViewStyle" TargetType="TreeView">
-		<Setter Property="Background" Value="{StaticResource TreeView.Default.Background}" />
-		<Setter Property="BorderBrush" Value="{StaticResource TreeView.Default.Border}" />
+	<Style x:Key="CF.TreeViewStyle" TargetType="TreeView">
+		<Setter Property="Background" Value="{StaticResource CF.TreeView.Default.Background}" />
+		<Setter Property="BorderBrush" Value="{StaticResource CF.TreeView.Default.Border}" />
 		<Setter Property="BorderThickness" Value="1" />
 		<Setter Property="Padding" Value="1" />
-		<Setter Property="Foreground" Value="{StaticResource TreeView.Default.Text}" />
+		<Setter Property="Foreground" Value="{StaticResource CF.TreeView.Default.Text}" />
 		<Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
 		<Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
 		<Setter Property="ScrollViewer.PanningMode" Value="Both" />
@@ -689,7 +716,7 @@
 					</Border>
 					<ControlTemplate.Triggers>
 						<Trigger Property="IsEnabled" Value="False">
-							<Setter TargetName="Bd" Property="Background" Value="{StaticResource TreeView.Disabled.Background}" />
+							<Setter TargetName="Bd" Property="Background" Value="{StaticResource CF.TreeView.Disabled.Background}" />
 						</Trigger>
 						<Trigger Property="VirtualizingPanel.IsVirtualizing" Value="True">
 							<Setter TargetName="_tv_scrollviewer_" Property="CanContentScroll" Value="True" />
@@ -712,16 +739,16 @@
 	</Style>
 
 	<Style TargetType="Expander">
-		<Setter Property="Foreground" Value="{StaticResource Text.Default.Foreground}" />
-		<Setter Property="Background" Value="{StaticResource Panel.Default.Background}" />
+		<Setter Property="Foreground" Value="{StaticResource CF.Text.Default.Foreground}" />
+		<Setter Property="Background" Value="{StaticResource CF.Panel.Default.Background}" />
 		<Setter Property="Margin" Value="0,0,0,0" />
 		<Setter Property="HorizontalContentAlignment" Value="Stretch" />
 	</Style>
 
 	<Style TargetType="TabControl">
-		<Setter Property="Background" Value="{StaticResource Panel.Default.Background}" />
-		<Setter Property="BorderBrush" Value="{StaticResource Border.Default.Border}" />
-		<Setter Property="Foreground" Value="{StaticResource Text.Default.Foreground}" />
+		<Setter Property="Background" Value="{StaticResource CF.Panel.Default.Background}" />
+		<Setter Property="BorderBrush" Value="{StaticResource CF.Border.Default.Border}" />
+		<Setter Property="Foreground" Value="{StaticResource CF.Text.Default.Foreground}" />
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="TabControl">
@@ -754,9 +781,9 @@
 	</Style>
 
 	<Style TargetType="TabItem">
-		<Setter Property="Foreground" Value="{StaticResource Text.Default.Foreground}" />
-		<Setter Property="Background" Value="{StaticResource TabItem.Default.Background}" />
-		<Setter Property="BorderBrush" Value="{StaticResource Border.Default.Border}" />
+		<Setter Property="Foreground" Value="{StaticResource CF.Text.Default.Foreground}" />
+		<Setter Property="Background" Value="{StaticResource CF.TabItem.Default.Background}" />
+		<Setter Property="BorderBrush" Value="{StaticResource CF.Border.Default.Border}" />
 		<Setter Property="Padding" Value="16,8" />
 		<Setter Property="Margin" Value="0,0,8,0" />
 		<Setter Property="Template">
@@ -776,15 +803,15 @@
 					</Border>
 					<ControlTemplate.Triggers>
 						<Trigger Property="IsMouseOver" Value="True">
-							<Setter TargetName="TabBorder" Property="Background" Value="{StaticResource TabItem.MouseOver.Background}" />
+							<Setter TargetName="TabBorder" Property="Background" Value="{StaticResource CF.TabItem.MouseOver.Background}" />
 						</Trigger>
 						<Trigger Property="IsSelected" Value="True">
-							<Setter TargetName="TabBorder" Property="Background" Value="{StaticResource TabItem.Selected.Background}" />
-							<Setter TargetName="TabBorder" Property="BorderBrush" Value="{StaticResource TabItem.Selected.Border}" />
-							<Setter Property="Foreground" Value="{StaticResource Text.Default.Foreground}" />
+							<Setter TargetName="TabBorder" Property="Background" Value="{StaticResource CF.TabItem.Selected.Background}" />
+							<Setter TargetName="TabBorder" Property="BorderBrush" Value="{StaticResource CF.TabItem.Selected.Border}" />
+							<Setter Property="Foreground" Value="{StaticResource CF.Text.Default.Foreground}" />
 						</Trigger>
 						<Trigger Property="IsEnabled" Value="False">
-							<Setter Property="Foreground" Value="{StaticResource TabItem.Disabled.Foreground}" />
+							<Setter Property="Foreground" Value="{StaticResource CF.TabItem.Disabled.Foreground}" />
 						</Trigger>
 					</ControlTemplate.Triggers>
 				</ControlTemplate>
@@ -792,7 +819,7 @@
 		</Setter>
 	</Style>
 
-	<Style x:Key="FocusVisualScrollbar">
+	<Style x:Key="CF.FocusVisualScrollbar">
 		<Setter Property="Control.Template">
 			<Setter.Value>
 				<ControlTemplate>
@@ -806,7 +833,7 @@
 		</Setter>
 	</Style>
 
-	<Style x:Key="RepeatButtonTransparent" TargetType="RepeatButton">
+	<Style x:Key="CF.RepeatButtonTransparent" TargetType="RepeatButton">
 		<Setter Property="OverridesDefaultStyle" Value="True" />
 		<Setter Property="Background" Value="Transparent" />
 		<Setter Property="Focusable" Value="False" />
@@ -822,8 +849,8 @@
 		</Setter>
 	</Style>
 
-	<Style x:Key="ScrollBarButton" TargetType="RepeatButton">
-		<Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisualScrollbar}" />
+	<Style x:Key="CF.ScrollBarButton" TargetType="RepeatButton">
+		<Setter Property="FocusVisualStyle" Value="{StaticResource CF.FocusVisualScrollbar}" />
 		<Setter Property="BorderThickness" Value="1" />
 		<Setter Property="HorizontalContentAlignment" Value="Center" />
 		<Setter Property="VerticalContentAlignment" Value="Center" />
@@ -835,8 +862,8 @@
 			<Setter.Value>
 				<ControlTemplate TargetType="RepeatButton">
 					<Border x:Name="border"
-							Background="{StaticResource Scrollbar.Default.Background}"
-							BorderBrush="{StaticResource Scrollbar.Default.Border}"
+							Background="{StaticResource CF.Scrollbar.Default.Background}"
+							BorderBrush="{StaticResource CF.Scrollbar.Default.Border}"
 							BorderThickness="1"
 							SnapsToDevicePixels="True">
 						<ContentPresenter x:Name="contentPresenter"
@@ -848,17 +875,17 @@
 					</Border>
 					<ControlTemplate.Triggers>
 						<Trigger Property="IsMouseOver" Value="True">
-							<Setter Property="Background" TargetName="border" Value="{StaticResource Scrollbar.MouseOver.Background}" />
-							<Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Scrollbar.MouseOver.Border}" />
+							<Setter Property="Background" TargetName="border" Value="{StaticResource CF.Scrollbar.MouseOver.Background}" />
+							<Setter Property="BorderBrush" TargetName="border" Value="{StaticResource CF.Scrollbar.MouseOver.Border}" />
 						</Trigger>
 						<Trigger Property="IsPressed" Value="True">
-							<Setter Property="Background" TargetName="border" Value="{StaticResource Scrollbar.Pressed.Background}" />
-							<Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Scrollbar.Pressed.Border}" />
+							<Setter Property="Background" TargetName="border" Value="{StaticResource CF.Scrollbar.Pressed.Background}" />
+							<Setter Property="BorderBrush" TargetName="border" Value="{StaticResource CF.Scrollbar.Pressed.Border}" />
 						</Trigger>
 						<Trigger Property="IsEnabled" Value="False">
 							<Setter Property="Opacity" TargetName="contentPresenter" Value="0.56" />
-							<Setter Property="Background" TargetName="border" Value="{StaticResource Scrollbar.Disabled.Background}" />
-							<Setter Property="BorderBrush" TargetName="border" Value="{StaticResource Scrollbar.Disabled.Border}" />
+							<Setter Property="Background" TargetName="border" Value="{StaticResource CF.Scrollbar.Disabled.Background}" />
+							<Setter Property="BorderBrush" TargetName="border" Value="{StaticResource CF.Scrollbar.Disabled.Border}" />
 						</Trigger>
 					</ControlTemplate.Triggers>
 				</ControlTemplate>
@@ -866,7 +893,7 @@
 		</Setter>
 	</Style>
 
-	<Style x:Key="ScrollBarThumbVertical" TargetType="Thumb">
+	<Style x:Key="CF.ScrollBarThumbVertical" TargetType="Thumb">
 		<Setter Property="OverridesDefaultStyle" Value="True" />
 		<Setter Property="IsTabStop" Value="False" />
 		<Setter Property="Cursor" Value="Hand" />
@@ -874,28 +901,28 @@
 			<Setter.Value>
 				<ControlTemplate TargetType="Thumb">
 					<Border x:Name="rectangle"
-							Background="{StaticResource Scrollbar.Default.ThumbBorder}"
+							Background="{StaticResource CF.Scrollbar.Default.ThumbBorder}"
 							BorderThickness="1"
 							CornerRadius="3"
-							BorderBrush="{StaticResource Scrollbar.Default.ThumbBorder}"
+							BorderBrush="{StaticResource CF.Scrollbar.Default.ThumbBorder}"
 							Height="{TemplateBinding Height}"
 							SnapsToDevicePixels="True"
 							Width="7">
 						<Border x:Name="thumbFill"
-								Background="{StaticResource Scrollbar.Default.Thumb}"
+								Background="{StaticResource CF.Scrollbar.Default.Thumb}"
 								CornerRadius="2"
 								Margin="0.5" />
 					</Border>
 					<ControlTemplate.Triggers>
 						<Trigger Property="IsMouseOver" Value="True">
-							<Setter Property="Background" TargetName="rectangle" Value="{StaticResource Scrollbar.MouseOver.ThumbBorder}" />
-							<Setter Property="BorderBrush" TargetName="rectangle" Value="{StaticResource Scrollbar.MouseOver.ThumbBorder}" />
-							<Setter Property="Background" TargetName="thumbFill" Value="{StaticResource Scrollbar.MouseOver.Thumb}" />
+							<Setter Property="Background" TargetName="rectangle" Value="{StaticResource CF.Scrollbar.MouseOver.ThumbBorder}" />
+							<Setter Property="BorderBrush" TargetName="rectangle" Value="{StaticResource CF.Scrollbar.MouseOver.ThumbBorder}" />
+							<Setter Property="Background" TargetName="thumbFill" Value="{StaticResource CF.Scrollbar.MouseOver.Thumb}" />
 						</Trigger>
 						<Trigger Property="IsDragging" Value="True">
-							<Setter Property="Background" TargetName="rectangle" Value="{StaticResource Scrollbar.Default.ThumbBorder}" />
-							<Setter Property="BorderBrush" TargetName="rectangle" Value="{StaticResource Scrollbar.Default.ThumbBorder}" />
-							<Setter Property="Background" TargetName="thumbFill" Value="{StaticResource Scrollbar.Pressed.Thumb}" />
+							<Setter Property="Background" TargetName="rectangle" Value="{StaticResource CF.Scrollbar.Default.ThumbBorder}" />
+							<Setter Property="BorderBrush" TargetName="rectangle" Value="{StaticResource CF.Scrollbar.Default.ThumbBorder}" />
+							<Setter Property="Background" TargetName="thumbFill" Value="{StaticResource CF.Scrollbar.Pressed.Thumb}" />
 						</Trigger>
 					</ControlTemplate.Triggers>
 				</ControlTemplate>
@@ -903,7 +930,7 @@
 		</Setter>
 	</Style>
 
-	<Style x:Key="ScrollBarThumbHorizontal" TargetType="Thumb">
+	<Style x:Key="CF.ScrollBarThumbHorizontal" TargetType="Thumb">
 		<Setter Property="OverridesDefaultStyle" Value="True" />
 		<Setter Property="IsTabStop" Value="False" />
 		<Setter Property="Cursor" Value="Hand" />
@@ -911,28 +938,28 @@
 			<Setter.Value>
 				<ControlTemplate TargetType="Thumb">
 					<Border x:Name="rectangle"
-							Background="{StaticResource Scrollbar.Default.ThumbBorder}"
+							Background="{StaticResource CF.Scrollbar.Default.ThumbBorder}"
 							BorderThickness="1"
 							CornerRadius="3"
-							BorderBrush="{StaticResource Scrollbar.Default.ThumbBorder}"
+							BorderBrush="{StaticResource CF.Scrollbar.Default.ThumbBorder}"
 							Height="7"
 							SnapsToDevicePixels="True"
 							Width="{TemplateBinding Width}">
 						<Border x:Name="thumbFill"
-								Background="{StaticResource Scrollbar.Default.Thumb}"
+								Background="{StaticResource CF.Scrollbar.Default.Thumb}"
 								CornerRadius="2"
 								Margin="0.5" />
 					</Border>
 					<ControlTemplate.Triggers>
 						<Trigger Property="IsMouseOver" Value="True">
-							<Setter Property="Background" TargetName="rectangle" Value="{StaticResource Scrollbar.MouseOver.ThumbBorder}" />
-							<Setter Property="BorderBrush" TargetName="rectangle" Value="{StaticResource Scrollbar.MouseOver.ThumbBorder}" />
-							<Setter Property="Background" TargetName="thumbFill" Value="{StaticResource Scrollbar.MouseOver.Thumb}" />
+							<Setter Property="Background" TargetName="rectangle" Value="{StaticResource CF.Scrollbar.MouseOver.ThumbBorder}" />
+							<Setter Property="BorderBrush" TargetName="rectangle" Value="{StaticResource CF.Scrollbar.MouseOver.ThumbBorder}" />
+							<Setter Property="Background" TargetName="thumbFill" Value="{StaticResource CF.Scrollbar.MouseOver.Thumb}" />
 						</Trigger>
 						<Trigger Property="IsDragging" Value="True">
-							<Setter Property="Background" TargetName="rectangle" Value="{StaticResource Scrollbar.Default.ThumbBorder}" />
-							<Setter Property="BorderBrush" TargetName="rectangle" Value="{StaticResource Scrollbar.Default.ThumbBorder}" />
-							<Setter Property="Background" TargetName="thumbFill" Value="{StaticResource Scrollbar.Pressed.Thumb}" />
+							<Setter Property="Background" TargetName="rectangle" Value="{StaticResource CF.Scrollbar.Default.ThumbBorder}" />
+							<Setter Property="BorderBrush" TargetName="rectangle" Value="{StaticResource CF.Scrollbar.Default.ThumbBorder}" />
+							<Setter Property="Background" TargetName="thumbFill" Value="{StaticResource CF.Scrollbar.Pressed.Thumb}" />
 						</Trigger>
 					</ControlTemplate.Triggers>
 				</ControlTemplate>
@@ -940,16 +967,16 @@
 		</Setter>
 	</Style>
 
-	<Geometry x:Key="ScrollbarDownArrow">M 0,0 L 4,4 L 8,0 Z</Geometry>
-	<Geometry x:Key="ScrollbarUpArrow">M 0,4 L 4,0 L 8,4 Z</Geometry>
-	<Geometry x:Key="ScrollbarRightArrow">M 0,0 L 4,4 L 0,8 Z</Geometry>
-	<Geometry x:Key="ScrollbarLeftArrow">M 4,0 L 0,4 L 4,8 Z</Geometry>
+	<Geometry x:Key="CF.ScrollbarDownArrow">M 0,0 L 4,4 L 8,0 Z</Geometry>
+	<Geometry x:Key="CF.ScrollbarUpArrow">M 0,4 L 4,0 L 8,4 Z</Geometry>
+	<Geometry x:Key="CF.ScrollbarRightArrow">M 0,0 L 4,4 L 0,8 Z</Geometry>
+	<Geometry x:Key="CF.ScrollbarLeftArrow">M 4,0 L 0,4 L 4,8 Z</Geometry>
 
 	<Style TargetType="ScrollBar">
 		<Setter Property="Stylus.IsPressAndHoldEnabled" Value="False" />
 		<Setter Property="Stylus.IsFlicksEnabled" Value="False" />
-		<Setter Property="Background" Value="{StaticResource Scrollbar.Default.Background}" />
-		<Setter Property="BorderBrush" Value="{StaticResource Scrollbar.Default.Border}" />
+		<Setter Property="Background" Value="{StaticResource CF.Scrollbar.Default.Background}" />
+		<Setter Property="BorderBrush" Value="{StaticResource CF.Scrollbar.Default.Border}" />
 		<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
 		<Setter Property="BorderThickness" Value="1,0" />
 		<Setter Property="Width" Value="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" />
@@ -970,10 +997,10 @@
 						<RepeatButton x:Name="PART_LineUpButton"
 								  Command="{x:Static ScrollBar.LineUpCommand}"
 								  IsEnabled="{TemplateBinding IsMouseOver}"
-								  Style="{StaticResource ScrollBarButton}">
+						  Style="{StaticResource CF.ScrollBarButton}">
 							<Path x:Name="ArrowTop"
-								  Data="{StaticResource ScrollbarUpArrow}"
-								  Fill="{StaticResource Scrollbar.Default.Glyph}"
+								  Data="{StaticResource CF.ScrollbarUpArrow}"
+								  Fill="{StaticResource CF.Scrollbar.Default.Glyph}"
 								  Margin="3,4,3,3"
 								  Stretch="Uniform" />
 						</RepeatButton>
@@ -982,23 +1009,23 @@
 							   IsEnabled="{TemplateBinding IsMouseOver}"
 							   Grid.Row="1">
 							<Track.DecreaseRepeatButton>
-								<RepeatButton Command="{x:Static ScrollBar.PageUpCommand}" Style="{StaticResource RepeatButtonTransparent}" />
+								<RepeatButton Command="{x:Static ScrollBar.PageUpCommand}" Style="{StaticResource CF.RepeatButtonTransparent}" />
 							</Track.DecreaseRepeatButton>
 							<Track.IncreaseRepeatButton>
-								<RepeatButton Command="{x:Static ScrollBar.PageDownCommand}" Style="{StaticResource RepeatButtonTransparent}" />
+								<RepeatButton Command="{x:Static ScrollBar.PageDownCommand}" Style="{StaticResource CF.RepeatButtonTransparent}" />
 							</Track.IncreaseRepeatButton>
 							<Track.Thumb>
-								<Thumb Style="{StaticResource ScrollBarThumbVertical}" />
+								<Thumb Style="{StaticResource CF.ScrollBarThumbVertical}" />
 							</Track.Thumb>
 						</Track>
 						<RepeatButton x:Name="PART_LineDownButton"
 								  Command="{x:Static ScrollBar.LineDownCommand}"
 								  IsEnabled="{TemplateBinding IsMouseOver}"
 								  Grid.Row="2"
-								  Style="{StaticResource ScrollBarButton}">
+						  Style="{StaticResource CF.ScrollBarButton}">
 							<Path x:Name="ArrowBottom"
-								  Data="{StaticResource ScrollbarDownArrow}"
-								  Fill="{StaticResource Scrollbar.Default.Glyph}"
+								  Data="{StaticResource CF.ScrollbarDownArrow}"
+								  Fill="{StaticResource CF.Scrollbar.Default.Glyph}"
 								  Margin="3,4,3,3"
 								  Stretch="Uniform" />
 						</RepeatButton>
@@ -1009,32 +1036,32 @@
 								<Condition Binding="{Binding IsMouseOver, ElementName=PART_LineDownButton}" Value="True" />
 								<Condition Binding="{Binding IsPressed, ElementName=PART_LineDownButton}" Value="True" />
 							</MultiDataTrigger.Conditions>
-							<Setter Property="Fill" TargetName="ArrowBottom" Value="{StaticResource Scrollbar.Pressed.Glyph}" />
+							<Setter Property="Fill" TargetName="ArrowBottom" Value="{StaticResource CF.Scrollbar.Pressed.Glyph}" />
 						</MultiDataTrigger>
 						<MultiDataTrigger>
 							<MultiDataTrigger.Conditions>
 								<Condition Binding="{Binding IsMouseOver, ElementName=PART_LineUpButton}" Value="True" />
 								<Condition Binding="{Binding IsPressed, ElementName=PART_LineUpButton}" Value="True" />
 							</MultiDataTrigger.Conditions>
-							<Setter Property="Fill" TargetName="ArrowTop" Value="{StaticResource Scrollbar.Pressed.Glyph}" />
+							<Setter Property="Fill" TargetName="ArrowTop" Value="{StaticResource CF.Scrollbar.Pressed.Glyph}" />
 						</MultiDataTrigger>
 						<MultiDataTrigger>
 							<MultiDataTrigger.Conditions>
 								<Condition Binding="{Binding IsMouseOver, ElementName=PART_LineDownButton}" Value="True" />
 								<Condition Binding="{Binding IsPressed, ElementName=PART_LineDownButton}" Value="False" />
 							</MultiDataTrigger.Conditions>
-							<Setter Property="Fill" TargetName="ArrowBottom" Value="{StaticResource Scrollbar.MouseOver.Glyph}" />
+							<Setter Property="Fill" TargetName="ArrowBottom" Value="{StaticResource CF.Scrollbar.MouseOver.Glyph}" />
 						</MultiDataTrigger>
 						<MultiDataTrigger>
 							<MultiDataTrigger.Conditions>
 								<Condition Binding="{Binding IsMouseOver, ElementName=PART_LineUpButton}" Value="True" />
 								<Condition Binding="{Binding IsPressed, ElementName=PART_LineUpButton}" Value="False" />
 							</MultiDataTrigger.Conditions>
-							<Setter Property="Fill" TargetName="ArrowTop" Value="{StaticResource Scrollbar.MouseOver.Glyph}" />
+							<Setter Property="Fill" TargetName="ArrowTop" Value="{StaticResource CF.Scrollbar.MouseOver.Glyph}" />
 						</MultiDataTrigger>
 						<Trigger Property="IsEnabled" Value="False">
-							<Setter Property="Fill" TargetName="ArrowTop" Value="{StaticResource Scrollbar.Disabled.Glyph}" />
-							<Setter Property="Fill" TargetName="ArrowBottom" Value="{StaticResource Scrollbar.Disabled.Glyph}" />
+							<Setter Property="Fill" TargetName="ArrowTop" Value="{StaticResource CF.Scrollbar.Disabled.Glyph}" />
+							<Setter Property="Fill" TargetName="ArrowBottom" Value="{StaticResource CF.Scrollbar.Disabled.Glyph}" />
 						</Trigger>
 					</ControlTemplate.Triggers>
 				</ControlTemplate>
@@ -1063,10 +1090,10 @@
 								<RepeatButton x:Name="PART_LineLeftButton"
 										  Command="{x:Static ScrollBar.LineLeftCommand}"
 										  IsEnabled="{TemplateBinding IsMouseOver}"
-										  Style="{StaticResource ScrollBarButton}">
+									  Style="{StaticResource CF.ScrollBarButton}">
 									<Path x:Name="ArrowLeft"
-										  Data="{StaticResource ScrollbarLeftArrow}"
-										  Fill="{StaticResource Scrollbar.Default.Glyph}"
+										  Data="{StaticResource CF.ScrollbarLeftArrow}"
+										  Fill="{StaticResource CF.Scrollbar.Default.Glyph}"
 										  Margin="3"
 										  Stretch="Uniform" />
 								</RepeatButton>
@@ -1074,23 +1101,23 @@
 									   Grid.Column="1"
 									   IsEnabled="{TemplateBinding IsMouseOver}">
 									<Track.DecreaseRepeatButton>
-										<RepeatButton Command="{x:Static ScrollBar.PageLeftCommand}" Style="{StaticResource RepeatButtonTransparent}" />
+										<RepeatButton Command="{x:Static ScrollBar.PageLeftCommand}" Style="{StaticResource CF.RepeatButtonTransparent}" />
 									</Track.DecreaseRepeatButton>
 									<Track.IncreaseRepeatButton>
-										<RepeatButton Command="{x:Static ScrollBar.PageRightCommand}" Style="{StaticResource RepeatButtonTransparent}" />
+										<RepeatButton Command="{x:Static ScrollBar.PageRightCommand}" Style="{StaticResource CF.RepeatButtonTransparent}" />
 									</Track.IncreaseRepeatButton>
 									<Track.Thumb>
-										<Thumb Style="{StaticResource ScrollBarThumbHorizontal}" />
+										<Thumb Style="{StaticResource CF.ScrollBarThumbHorizontal}" />
 									</Track.Thumb>
 								</Track>
 								<RepeatButton x:Name="PART_LineRightButton"
 										  Command="{x:Static ScrollBar.LineRightCommand}"
 										  Grid.Column="2"
 										  IsEnabled="{TemplateBinding IsMouseOver}"
-										  Style="{StaticResource ScrollBarButton}">
+									  Style="{StaticResource CF.ScrollBarButton}">
 									<Path x:Name="ArrowRight"
-										  Data="{StaticResource ScrollbarRightArrow}"
-										  Fill="{StaticResource Scrollbar.Default.Glyph}"
+										  Data="{StaticResource CF.ScrollbarRightArrow}"
+										  Fill="{StaticResource CF.Scrollbar.Default.Glyph}"
 										  Margin="3"
 										  Stretch="Uniform" />
 								</RepeatButton>
@@ -1101,32 +1128,32 @@
 										<Condition Binding="{Binding IsMouseOver, ElementName=PART_LineRightButton}" Value="True" />
 										<Condition Binding="{Binding IsPressed, ElementName=PART_LineRightButton}" Value="True" />
 									</MultiDataTrigger.Conditions>
-									<Setter Property="Fill" TargetName="ArrowRight" Value="{StaticResource Scrollbar.Pressed.Glyph}" />
+									<Setter Property="Fill" TargetName="ArrowRight" Value="{StaticResource CF.Scrollbar.Pressed.Glyph}" />
 								</MultiDataTrigger>
 								<MultiDataTrigger>
 									<MultiDataTrigger.Conditions>
 										<Condition Binding="{Binding IsMouseOver, ElementName=PART_LineLeftButton}" Value="True" />
 										<Condition Binding="{Binding IsPressed, ElementName=PART_LineLeftButton}" Value="True" />
 									</MultiDataTrigger.Conditions>
-									<Setter Property="Fill" TargetName="ArrowLeft" Value="{StaticResource Scrollbar.Pressed.Glyph}" />
+									<Setter Property="Fill" TargetName="ArrowLeft" Value="{StaticResource CF.Scrollbar.Pressed.Glyph}" />
 								</MultiDataTrigger>
 								<MultiDataTrigger>
 									<MultiDataTrigger.Conditions>
 										<Condition Binding="{Binding IsMouseOver, ElementName=PART_LineRightButton}" Value="True" />
 										<Condition Binding="{Binding IsPressed, ElementName=PART_LineRightButton}" Value="False" />
 									</MultiDataTrigger.Conditions>
-									<Setter Property="Fill" TargetName="ArrowRight" Value="{StaticResource Scrollbar.MouseOver.Glyph}" />
+									<Setter Property="Fill" TargetName="ArrowRight" Value="{StaticResource CF.Scrollbar.MouseOver.Glyph}" />
 								</MultiDataTrigger>
 								<MultiDataTrigger>
 									<MultiDataTrigger.Conditions>
 										<Condition Binding="{Binding IsMouseOver, ElementName=PART_LineLeftButton}" Value="True" />
 										<Condition Binding="{Binding IsPressed, ElementName=PART_LineLeftButton}" Value="False" />
 									</MultiDataTrigger.Conditions>
-									<Setter Property="Fill" TargetName="ArrowLeft" Value="{StaticResource Scrollbar.MouseOver.Glyph}" />
+									<Setter Property="Fill" TargetName="ArrowLeft" Value="{StaticResource CF.Scrollbar.MouseOver.Glyph}" />
 								</MultiDataTrigger>
 								<Trigger Property="IsEnabled" Value="False">
-									<Setter Property="Fill" TargetName="ArrowLeft" Value="{StaticResource Scrollbar.Disabled.Glyph}" />
-									<Setter Property="Fill" TargetName="ArrowRight" Value="{StaticResource Scrollbar.Disabled.Glyph}" />
+									<Setter Property="Fill" TargetName="ArrowLeft" Value="{StaticResource CF.Scrollbar.Disabled.Glyph}" />
+									<Setter Property="Fill" TargetName="ArrowRight" Value="{StaticResource CF.Scrollbar.Disabled.Glyph}" />
 								</Trigger>
 							</ControlTemplate.Triggers>
 						</ControlTemplate>
@@ -1136,7 +1163,7 @@
 		</Style.Triggers>
 	</Style>
 
-	<Style x:Key="SliderThumbStyle" TargetType="Thumb">
+	<Style x:Key="CF.SliderThumbStyle" TargetType="Thumb">
 		<Setter Property="OverridesDefaultStyle" Value="True" />
 		<Setter Property="IsTabStop" Value="False" />
 		<Setter Property="Cursor" Value="Hand" />
@@ -1144,8 +1171,8 @@
 			<Setter.Value>
 				<ControlTemplate TargetType="Thumb">
 					<Border x:Name="SliderThumbBorder"
-							Background="{StaticResource Slider.Default.Thumb}"
-							BorderBrush="{StaticResource Slider.Default.ThumbBorder}"
+							Background="{StaticResource CF.Slider.Default.Thumb}"
+							BorderBrush="{StaticResource CF.Slider.Default.ThumbBorder}"
 							BorderThickness="1"
 							CornerRadius="2"
 							Width="10"
@@ -1153,16 +1180,16 @@
 							SnapsToDevicePixels="True" />
 					<ControlTemplate.Triggers>
 						<Trigger Property="IsMouseOver" Value="True">
-							<Setter TargetName="SliderThumbBorder" Property="Background" Value="{StaticResource Slider.MouseOver.Thumb}" />
-							<Setter TargetName="SliderThumbBorder" Property="BorderBrush" Value="{StaticResource Slider.Default.ThumbBorder}" />
+							<Setter TargetName="SliderThumbBorder" Property="Background" Value="{StaticResource CF.Slider.MouseOver.Thumb}" />
+							<Setter TargetName="SliderThumbBorder" Property="BorderBrush" Value="{StaticResource CF.Slider.Default.ThumbBorder}" />
 						</Trigger>
 						<Trigger Property="IsDragging" Value="True">
-							<Setter TargetName="SliderThumbBorder" Property="Background" Value="{StaticResource Slider.Pressed.Thumb}" />
-							<Setter TargetName="SliderThumbBorder" Property="BorderBrush" Value="{StaticResource Slider.Default.ThumbBorder}" />
+							<Setter TargetName="SliderThumbBorder" Property="Background" Value="{StaticResource CF.Slider.Pressed.Thumb}" />
+							<Setter TargetName="SliderThumbBorder" Property="BorderBrush" Value="{StaticResource CF.Slider.Default.ThumbBorder}" />
 						</Trigger>
 						<Trigger Property="IsEnabled" Value="False">
-							<Setter TargetName="SliderThumbBorder" Property="Background" Value="{StaticResource Slider.Disabled.Thumb}" />
-							<Setter TargetName="SliderThumbBorder" Property="BorderBrush" Value="{StaticResource Slider.Disabled.ThumbBorder}" />
+							<Setter TargetName="SliderThumbBorder" Property="Background" Value="{StaticResource CF.Slider.Disabled.Thumb}" />
+							<Setter TargetName="SliderThumbBorder" Property="BorderBrush" Value="{StaticResource CF.Slider.Disabled.ThumbBorder}" />
 						</Trigger>
 					</ControlTemplate.Triggers>
 				</ControlTemplate>
@@ -1170,9 +1197,9 @@
 		</Setter>
 	</Style>
 
-	<ControlTemplate x:Key="HorizontalSliderTemplate" TargetType="Slider">
+	<ControlTemplate x:Key="CF.HorizontalSliderTemplate" TargetType="Slider">
 		<Grid Margin="0,2">
-			<Border Background="{StaticResource Slider.Default.Background}"
+			<Border Background="{StaticResource CF.Slider.Default.Background}"
 					BorderBrush="{TemplateBinding BorderBrush}"
 					BorderThickness="1"
 					CornerRadius="3"
@@ -1181,17 +1208,17 @@
 			<Track x:Name="PART_Track"
 				   VerticalAlignment="Center">
 				<Track.DecreaseRepeatButton>
-						<RepeatButton Style="{StaticResource RepeatButtonTransparent}">
+						<RepeatButton Style="{StaticResource CF.RepeatButtonTransparent}">
 							<RepeatButton.Template>
 								<ControlTemplate TargetType="RepeatButton">
 									<Border x:Name="DecreaseTrack"
-											Background="{StaticResource Slider.Default.Track}"
+											Background="{StaticResource CF.Slider.Default.Track}"
 											CornerRadius="3,0,0,3"
 											Height="8"
 											VerticalAlignment="Center" />
 									<ControlTemplate.Triggers>
 										<Trigger Property="IsEnabled" Value="False">
-											<Setter TargetName="DecreaseTrack" Property="Background" Value="{StaticResource Slider.Disabled.Track}" />
+											<Setter TargetName="DecreaseTrack" Property="Background" Value="{StaticResource CF.Slider.Disabled.Track}" />
 										</Trigger>
 									</ControlTemplate.Triggers>
 								</ControlTemplate>
@@ -1199,17 +1226,17 @@
 						</RepeatButton>
 				</Track.DecreaseRepeatButton>
 				<Track.IncreaseRepeatButton>
-						<RepeatButton Style="{StaticResource RepeatButtonTransparent}">
+						<RepeatButton Style="{StaticResource CF.RepeatButtonTransparent}">
 							<RepeatButton.Template>
 								<ControlTemplate TargetType="RepeatButton">
 									<Border x:Name="IncreaseTrack"
-											Background="{StaticResource Slider.Disabled.Tickbar}"
+											Background="{StaticResource CF.Slider.Disabled.Tickbar}"
 											CornerRadius="3"
 											Height="6"
 											VerticalAlignment="Center" />
 									<ControlTemplate.Triggers>
 										<Trigger Property="IsEnabled" Value="False">
-											<Setter TargetName="IncreaseTrack" Property="Background" Value="{StaticResource Slider.Disabled.Tickbar}" />
+											<Setter TargetName="IncreaseTrack" Property="Background" Value="{StaticResource CF.Slider.Disabled.Tickbar}" />
 										</Trigger>
 									</ControlTemplate.Triggers>
 								</ControlTemplate>
@@ -1217,20 +1244,20 @@
 						</RepeatButton>
 				</Track.IncreaseRepeatButton>
 				<Track.Thumb>
-					<Thumb Style="{StaticResource SliderThumbStyle}" />
+					<Thumb Style="{StaticResource CF.SliderThumbStyle}" />
 				</Track.Thumb>
 			</Track>
 		</Grid>
 	</ControlTemplate>
 
 	<Style TargetType="Slider">
-		<Setter Property="Background" Value="{StaticResource Slider.Default.Background}" />
-		<Setter Property="BorderBrush" Value="{StaticResource Slider.Default.Border}" />
-		<Setter Property="Foreground" Value="{StaticResource Text.Default.Foreground}" />
-		<Setter Property="Template" Value="{StaticResource HorizontalSliderTemplate}" />
+		<Setter Property="Background" Value="{StaticResource CF.Slider.Default.Background}" />
+		<Setter Property="BorderBrush" Value="{StaticResource CF.Slider.Default.Border}" />
+		<Setter Property="Foreground" Value="{StaticResource CF.Text.Default.Foreground}" />
+		<Setter Property="Template" Value="{StaticResource CF.HorizontalSliderTemplate}" />
 		<Style.Triggers>
 			<Trigger Property="IsEnabled" Value="False">
-				<Setter Property="BorderBrush" Value="{StaticResource Slider.Disabled.Border}" />
+				<Setter Property="BorderBrush" Value="{StaticResource CF.Slider.Disabled.Border}" />
 			</Trigger>
 			<Trigger Property="Orientation" Value="Vertical">
 				<Setter Property="Template" Value="{x:Null}" />
