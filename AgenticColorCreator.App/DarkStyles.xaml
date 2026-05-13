@@ -117,21 +117,21 @@
 	<SolidColorBrush x:Key="CF.Slider.Disabled.Border" Color="#FF4C4C4C" />
 	<SolidColorBrush x:Key="CF.Slider.Disabled.ThumbBorder" Color="#FF4C4C4C" />
 
-	<Style TargetType="Window">
+	<Style x:Key="CF.Window" TargetType="Window">
 		<Setter Property="Background" Value="{StaticResource CF.Window.Default.Background}" />
 		<Setter Property="Foreground" Value="{StaticResource CF.Text.Default.Foreground}" />
 	</Style>
 
-	<Style TargetType="GroupBox">
+	<Style x:Key="CF.GroupBox" TargetType="GroupBox">
 		<Setter Property="Foreground" Value="{StaticResource CF.Text.Default.Foreground}" />
 		<Setter Property="Margin" Value="0,0,0,12" />
 	</Style>
 
-	<Style TargetType="TextBlock">
+	<Style x:Key="CF.TextBlock" TargetType="TextBlock">
 		<Setter Property="Foreground" Value="{StaticResource CF.Text.Default.Foreground}" />
 	</Style>
 
-	<Style TargetType="TextBox">
+	<Style x:Key="CF.TextBox" TargetType="TextBox">
 		<Setter Property="Background" Value="{StaticResource CF.TextBox.Default.Background}" />
 		<Setter Property="Foreground" Value="{StaticResource CF.TextBox.Default.Foreground}" />
 		<Setter Property="BorderBrush" Value="{StaticResource CF.TextBox.Default.Border}" />
@@ -196,7 +196,7 @@
 		</Style.Triggers>
 	</Style>
 
-	<Style TargetType="ComboBox">
+	<Style x:Key="CF.ComboBox" TargetType="ComboBox">
 		<Setter Property="Background" Value="{StaticResource CF.ComboBox.Default.Background}" />
 		<Setter Property="Foreground" Value="{StaticResource CF.ComboBox.Default.Foreground}" />
 		<Setter Property="BorderBrush" Value="{StaticResource CF.ComboBox.Default.Border}" />
@@ -309,7 +309,7 @@
 		</Grid>
 	</ControlTemplate>
 
-	<Style TargetType="Button">
+	<Style x:Key="CF.Button" TargetType="Button">
 		<Setter Property="Background" Value="{StaticResource CF.Button.Default.Background}" />
 		<Setter Property="Foreground" Value="{StaticResource CF.Button.Default.Foreground}" />
 		<Setter Property="BorderBrush" Value="{StaticResource CF.Button.Default.Border}" />
@@ -386,7 +386,7 @@
 		</Setter>
 	</Style>
 
-	<Style TargetType="CheckBox">
+	<Style x:Key="CF.CheckBox" TargetType="CheckBox">
 		<Setter Property="FocusVisualStyle" Value="{StaticResource CF.FocusVisualCheckBox}" />
 		<Setter Property="Background" Value="{StaticResource CF.CheckBox.Default.Background}" />
 		<Setter Property="BorderBrush" Value="{StaticResource CF.CheckBox.Default.Border}" />
@@ -496,7 +496,7 @@
 		</ControlTemplate.Triggers>
 	</ControlTemplate>
 
-	<Style TargetType="RadioButton">
+	<Style x:Key="CF.RadioButton" TargetType="RadioButton">
 		<Setter Property="FocusVisualStyle" Value="{StaticResource CF.FocusVisualRadioButton}" />
 		<Setter Property="Background" Value="{StaticResource CF.RadioButton.Default.Background}" />
 		<Setter Property="BorderBrush" Value="{StaticResource CF.RadioButton.Default.Border}" />
@@ -567,7 +567,7 @@
 		</Setter>
 	</Style>
 
-	<Style TargetType="local:CFTreeViewItem">
+	<Style x:Key="CF.TreeViewItem" TargetType="local:CFTreeViewItem">
 		<Setter Property="Foreground" Value="{StaticResource CF.TreeViewItem.Default.Text}" />
 		<Setter Property="Background" Value="{StaticResource CF.TreeViewItem.Default.Background}" />
 		<Setter Property="BorderBrush" Value="{StaticResource CF.TreeViewItem.Default.Border}" />
@@ -738,14 +738,14 @@
 		</Style.Triggers>
 	</Style>
 
-	<Style TargetType="Expander">
+	<Style x:Key="CF.Expander" TargetType="Expander">
 		<Setter Property="Foreground" Value="{StaticResource CF.Text.Default.Foreground}" />
 		<Setter Property="Background" Value="{StaticResource CF.Panel.Default.Background}" />
 		<Setter Property="Margin" Value="0,0,0,0" />
 		<Setter Property="HorizontalContentAlignment" Value="Stretch" />
 	</Style>
 
-	<Style TargetType="TabControl">
+	<Style x:Key="CF.TabControl" TargetType="TabControl">
 		<Setter Property="Background" Value="{StaticResource CF.Panel.Default.Background}" />
 		<Setter Property="BorderBrush" Value="{StaticResource CF.Border.Default.Border}" />
 		<Setter Property="Foreground" Value="{StaticResource CF.Text.Default.Foreground}" />
@@ -780,7 +780,7 @@
 		</Setter>
 	</Style>
 
-	<Style TargetType="TabItem">
+	<Style x:Key="CF.TabItem" TargetType="TabItem">
 		<Setter Property="Foreground" Value="{StaticResource CF.Text.Default.Foreground}" />
 		<Setter Property="Background" Value="{StaticResource CF.TabItem.Default.Background}" />
 		<Setter Property="BorderBrush" Value="{StaticResource CF.Border.Default.Border}" />
@@ -972,7 +972,7 @@
 	<Geometry x:Key="CF.ScrollbarRightArrow">M 0,0 L 4,4 L 0,8 Z</Geometry>
 	<Geometry x:Key="CF.ScrollbarLeftArrow">M 4,0 L 0,4 L 4,8 Z</Geometry>
 
-	<Style TargetType="ScrollBar">
+	<Style x:Key="CF.ScrollBar" TargetType="ScrollBar">
 		<Setter Property="Stylus.IsPressAndHoldEnabled" Value="False" />
 		<Setter Property="Stylus.IsFlicksEnabled" Value="False" />
 		<Setter Property="Background" Value="{StaticResource CF.Scrollbar.Default.Background}" />
@@ -1250,7 +1250,7 @@
 		</Grid>
 	</ControlTemplate>
 
-	<Style TargetType="Slider">
+	<Style x:Key="CF.Slider" TargetType="Slider">
 		<Setter Property="Background" Value="{StaticResource CF.Slider.Default.Background}" />
 		<Setter Property="BorderBrush" Value="{StaticResource CF.Slider.Default.Border}" />
 		<Setter Property="Foreground" Value="{StaticResource CF.Text.Default.Foreground}" />

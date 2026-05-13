@@ -7,6 +7,7 @@
 		xmlns:viewModels="clr-namespace:AgenticColorCreator.App.ViewModels"
 		mc:Ignorable="d"
 		Title="Agentic Color Creator"
+		Style="{StaticResource CF.Window}"
 		Background="{StaticResource CF.Window.Default.Background}"
 		Height="900"
 		Width="1280"
@@ -14,6 +15,7 @@
 		MinWidth="980">
 	<Window.Resources>
 		<BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+		<Style BasedOn="{StaticResource CF.ScrollBar}" TargetType="ScrollBar" />
 
 		<DataTemplate DataType="{x:Type viewModels:StateGroupViewModel}">
 			<StackPanel Margin="0,0,0,10">
@@ -23,11 +25,13 @@
 						<ColumnDefinition Width="Auto" />
 					</Grid.ColumnDefinitions>
 
-					<TextBlock VerticalAlignment="Center"
+					<TextBlock Style="{StaticResource CF.TextBlock}"
+							   VerticalAlignment="Center"
 							   FontWeight="SemiBold"
 						   Foreground="{StaticResource CF.Text.Default.Foreground}"
 							   Text="{Binding DisplayName}" />
-					<Button Grid.Column="1"
+					<Button Style="{StaticResource CF.Button}"
+							Grid.Column="1"
 							Margin="0"
 							Padding="8,2"
 							Command="{Binding AddColorCommand}"
@@ -57,7 +61,8 @@
 						<ColumnDefinition Width="Auto" />
 					</Grid.ColumnDefinitions>
 
-					<Button Grid.Row="0"
+					<Button Style="{StaticResource CF.Button}"
+							Grid.Row="0"
 							 Grid.Column="0"
 							Width="44"
 							Height="26"
@@ -76,20 +81,23 @@
 						</Button.Template>
 					</Button>
 
-					<TextBox Grid.Row="0"
+					<TextBox Style="{StaticResource CF.TextBox}"
+							 Grid.Row="0"
 							 Grid.Column="1"
 							 Margin="0,0,8,6"
 							 Padding="5,4"
 							 VerticalContentAlignment="Center"
 							 Text="{Binding HexValue, UpdateSourceTrigger=PropertyChanged}" />
 
-					<TextBox Grid.Row="0"
+					<TextBox Style="{StaticResource CF.TextBox}"
+							 Grid.Row="0"
 							 Grid.Column="2"
 							 Margin="0,0,8,6"
 							 VerticalContentAlignment="Center"
 							 Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
 
-					<ComboBox Grid.Row="0"
+					<ComboBox Style="{StaticResource CF.ComboBox}"
+							  Grid.Row="0"
 							  Grid.Column="3"
 							  Width="92"
 							  Margin="0,0,8,6"
@@ -108,14 +116,16 @@
 						</ComboBox.Resources>
 					</ComboBox>
 
-					<Button Grid.Row="0"
+					<Button Style="{StaticResource CF.Button}"
+							Grid.Row="0"
 							Grid.Column="4"
 							Margin="0,0,0,6"
 							Padding="10,4"
 							Command="{Binding RemoveCommand}"
 							Content="Remove" />
 
-					<TextBox Grid.Row="1"
+					<TextBox Style="{StaticResource CF.TextBox}"
+							 Grid.Row="1"
 							 Grid.Column="0"
 							 Grid.ColumnSpan="5"
 							 Margin="0"
@@ -134,8 +144,8 @@
 	</Window.Resources>
 
 	<Grid Margin="20">
-		<TabControl>
-			<TabItem Header="Colors">
+		<TabControl Style="{StaticResource CF.TabControl}">
+			<TabItem Style="{StaticResource CF.TabItem}" Header="Colors">
 				<DockPanel>
 					<Border DockPanel.Dock="Top"
 							Margin="0,0,0,18"
@@ -157,21 +167,23 @@
 							<StackPanel Grid.Row="0"
 										Grid.Column="0"
 										Orientation="Horizontal">
-								<Button Command="{Binding NewDocumentCommand}" Content="New" />
-								<Button Command="{Binding OpenDocumentCommand}" Content="Open" />
-								<Button Command="{Binding SaveDocumentCommand}" Content="Save" />
-								<Button Command="{Binding SaveDocumentAsCommand}" Content="Save As" />
-								<Button Command="{Binding AddCategoryCommand}" Content="Add Category" />
+								<Button Style="{StaticResource CF.Button}" Command="{Binding NewDocumentCommand}" Content="New" />
+								<Button Style="{StaticResource CF.Button}" Command="{Binding OpenDocumentCommand}" Content="Open" />
+								<Button Style="{StaticResource CF.Button}" Command="{Binding SaveDocumentCommand}" Content="Save" />
+								<Button Style="{StaticResource CF.Button}" Command="{Binding SaveDocumentAsCommand}" Content="Save As" />
+								<Button Style="{StaticResource CF.Button}" Command="{Binding AddCategoryCommand}" Content="Add Category" />
 							</StackPanel>
 
-							<TextBlock Grid.Row="0"
+							<TextBlock Style="{StaticResource CF.TextBlock}"
+									   Grid.Row="0"
 									   Grid.Column="1"
 									   VerticalAlignment="Center"
 									   FontWeight="SemiBold"
 								   Foreground="{StaticResource CF.Text.Selected.Foreground}"
 									   Text="{Binding StatusMessage}" />
 
-							<TextBlock Grid.Row="1"
+							<TextBlock Style="{StaticResource CF.TextBlock}"
+									   Grid.Row="1"
 									   Grid.ColumnSpan="2"
 									   Margin="0,12,0,0"
 									   Text="{Binding CurrentFileDisplay}" />
@@ -181,8 +193,8 @@
 										Margin="0,12,0,0"
 										Orientation="Horizontal"
 										HorizontalAlignment="Right">
-								<Button Command="{Binding ExpandAllCategoriesCommand}" Content="Expand All" />
-								<Button Command="{Binding CollapseAllCategoriesCommand}" Content="Collapse All" />
+								<Button Style="{StaticResource CF.Button}" Command="{Binding ExpandAllCategoriesCommand}" Content="Expand All" />
+								<Button Style="{StaticResource CF.Button}" Command="{Binding CollapseAllCategoriesCommand}" Content="Collapse All" />
 							</StackPanel>
 						</Grid>
 					</Border>
@@ -196,13 +208,14 @@
 							CornerRadius="10"
 							Visibility="{Binding HasValidationErrors, Converter={StaticResource BooleanToVisibilityConverter}}">
 						<StackPanel>
-							<TextBlock FontWeight="Bold"
+							<TextBlock Style="{StaticResource CF.TextBlock}"
+									   FontWeight="Bold"
 									   Foreground="{StaticResource CF.Text.Selected.Foreground}"
 									   Text="Validation Issues" />
 							<ItemsControl ItemsSource="{Binding ValidationErrors}">
 								<ItemsControl.ItemTemplate>
 									<DataTemplate>
-										<TextBlock Margin="0,4,0,0" Text="{Binding}" />
+										<TextBlock Style="{StaticResource CF.TextBlock}" Margin="0,4,0,0" Text="{Binding}" />
 									</DataTemplate>
 								</ItemsControl.ItemTemplate>
 							</ItemsControl>
@@ -213,7 +226,8 @@
 						<ItemsControl ItemsSource="{Binding Categories}">
 							<ItemsControl.ItemTemplate>
 								<DataTemplate DataType="{x:Type viewModels:CategoryViewModel}">
-									<Expander IsExpanded="{Binding IsExpanded}"
+									<Expander Style="{StaticResource CF.Expander}"
+											  IsExpanded="{Binding IsExpanded}"
 											  HorizontalContentAlignment="Stretch"
 										  Background="{StaticResource CF.Panel.Default.Background}">
 										<Expander.Header>
@@ -228,7 +242,8 @@
 													<Thickness Left="0" Top="0" Right="13" Bottom="0" />
 												</Grid.Margin>
 
-												<TextBox Grid.Column="0"
+												<TextBox Style="{StaticResource CF.TextBox}"
+														 Grid.Column="0"
 														 MinWidth="220"
 														 Margin="0"
 														 Padding="5,0,5,0"
@@ -243,12 +258,12 @@
 														Orientation="Horizontal"
 														HorizontalAlignment="Right"
 														Margin="10,0,0,0">
-													<Button Command="{Binding AddColorCommand}"
+													<Button Style="{StaticResource CF.Button}" Command="{Binding AddColorCommand}"
 															Margin="0,0,0,0"
 															Padding="10,0"
 															Height="30"
 															Content="Add Color" />
-													<Button Margin="8,0,0,0"
+													<Button Style="{StaticResource CF.Button}" Margin="8,0,0,0"
 															Padding="10,0"
 															HorizontalContentAlignment="Left"
 															Height="30"
@@ -269,7 +284,7 @@
 				</DockPanel>
 			</TabItem>
 
-			<TabItem Header="UI Preview">
+			<TabItem Style="{StaticResource CF.TabItem}" Header="UI Preview">
 				<ScrollViewer VerticalScrollBarVisibility="Auto">
 					<WrapPanel Margin="0" ItemWidth="320">
 						<Border Margin="0,0,18,18"
@@ -280,10 +295,10 @@
 								BorderThickness="1"
 								CornerRadius="10">
 							<StackPanel>
-								<TextBlock FontSize="16" FontWeight="SemiBold" Text="TextBox" />
-								<TextBlock Margin="0,2,0,14" Foreground="{StaticResource CF.Text.Selected.Foreground}" Text="System.Windows.Controls.TextBox" />
-								<TextBox Text="My Text" />
-								<TextBox IsEnabled="False" Text="My Text" />
+								<TextBlock Style="{StaticResource CF.TextBlock}" FontSize="16" FontWeight="SemiBold" Text="TextBox" />
+								<TextBlock Style="{StaticResource CF.TextBlock}" Margin="0,2,0,14" Foreground="{StaticResource CF.Text.Selected.Foreground}" Text="System.Windows.Controls.TextBox" />
+								<TextBox Style="{StaticResource CF.TextBox}" Text="My Text" />
+								<TextBox Style="{StaticResource CF.TextBox}" IsEnabled="False" Text="My Text" />
 							</StackPanel>
 						</Border>
 
@@ -295,10 +310,10 @@
 								BorderThickness="1"
 								CornerRadius="10">
 							<StackPanel>
-								<TextBlock FontSize="16" FontWeight="SemiBold" Text="Button" />
-								<TextBlock Margin="0,2,0,14" Foreground="{StaticResource CF.Text.Selected.Foreground}" Text="System.Windows.Controls.Button" />
-								<Button HorizontalAlignment="Left" Content="Button 1" />
-								<Button HorizontalAlignment="Left" IsEnabled="False" Content="Button 1" />
+								<TextBlock Style="{StaticResource CF.TextBlock}" FontSize="16" FontWeight="SemiBold" Text="Button" />
+								<TextBlock Style="{StaticResource CF.TextBlock}" Margin="0,2,0,14" Foreground="{StaticResource CF.Text.Selected.Foreground}" Text="System.Windows.Controls.Button" />
+								<Button Style="{StaticResource CF.Button}" HorizontalAlignment="Left" Content="Button 1" />
+								<Button Style="{StaticResource CF.Button}" HorizontalAlignment="Left" IsEnabled="False" Content="Button 1" />
 							</StackPanel>
 						</Border>
 
@@ -310,10 +325,10 @@
 								BorderThickness="1"
 								CornerRadius="10">
 							<StackPanel>
-								<TextBlock FontSize="16" FontWeight="SemiBold" Text="Slider" />
-								<TextBlock Margin="0,2,0,14" Foreground="{StaticResource CF.Text.Selected.Foreground}" Text="System.Windows.Controls.Slider" />
-								<Slider Minimum="0" Maximum="100" Value="75" />
-								<Slider IsEnabled="False" Minimum="0" Maximum="100" Value="75" />
+								<TextBlock Style="{StaticResource CF.TextBlock}" FontSize="16" FontWeight="SemiBold" Text="Slider" />
+								<TextBlock Style="{StaticResource CF.TextBlock}" Margin="0,2,0,14" Foreground="{StaticResource CF.Text.Selected.Foreground}" Text="System.Windows.Controls.Slider" />
+								<Slider Style="{StaticResource CF.Slider}" Minimum="0" Maximum="100" Value="75" />
+								<Slider Style="{StaticResource CF.Slider}" IsEnabled="False" Minimum="0" Maximum="100" Value="75" />
 							</StackPanel>
 						</Border>
 
@@ -325,9 +340,10 @@
 								BorderThickness="1"
 								CornerRadius="10">
 							<StackPanel>
-								<TextBlock FontSize="16" FontWeight="SemiBold" Text="ComboBox" />
-								<TextBlock Margin="0,2,0,14" Foreground="{StaticResource CF.Text.Selected.Foreground}" Text="System.Windows.Controls.ComboBox" />
-								<ComboBox Template="{StaticResource CF.ComboBoxTemplate}"
+								<TextBlock Style="{StaticResource CF.TextBlock}" FontSize="16" FontWeight="SemiBold" Text="ComboBox" />
+								<TextBlock Style="{StaticResource CF.TextBlock}" Margin="0,2,0,14" Foreground="{StaticResource CF.Text.Selected.Foreground}" Text="System.Windows.Controls.ComboBox" />
+								<ComboBox Style="{StaticResource CF.ComboBox}"
+										  Template="{StaticResource CF.ComboBoxTemplate}"
 										  ItemContainerStyle="{StaticResource CF.ComboPopupItemStyle}"
 										  SelectedIndex="0">
 									<ComboBox.Resources>
@@ -342,7 +358,8 @@
 									<ComboBoxItem Content="Item 2" />
 									<ComboBoxItem Content="Item 3" />
 								</ComboBox>
-								<ComboBox IsEnabled="False"
+								<ComboBox Style="{StaticResource CF.ComboBox}"
+										  IsEnabled="False"
 										  Template="{StaticResource CF.ComboBoxTemplate}"
 										  ItemContainerStyle="{StaticResource CF.ComboPopupItemStyle}"
 										  SelectedIndex="0">
@@ -369,14 +386,14 @@
 								BorderThickness="1"
 								CornerRadius="10">
 							<StackPanel>
-								<TextBlock FontSize="16" FontWeight="SemiBold" Text="CheckBox" />
-								<TextBlock Margin="0,2,0,14" Foreground="{StaticResource CF.Text.Selected.Foreground}" Text="System.Windows.Controls.CheckBox" />
-								<CheckBox IsThreeState="True" IsChecked="True" Content="Checked" />
-								<CheckBox IsThreeState="True" IsChecked="False" Content="Unchecked" />
-								<CheckBox IsThreeState="True" IsChecked="{x:Null}" Content="Indeterminate" />
-								<CheckBox IsEnabled="False" IsThreeState="True" IsChecked="True" Content="Checked" />
-								<CheckBox IsEnabled="False" IsThreeState="True" IsChecked="False" Content="Unchecked" />
-								<CheckBox IsEnabled="False" IsThreeState="True" IsChecked="{x:Null}" Content="Indeterminate" />
+								<TextBlock Style="{StaticResource CF.TextBlock}" FontSize="16" FontWeight="SemiBold" Text="CheckBox" />
+								<TextBlock Style="{StaticResource CF.TextBlock}" Margin="0,2,0,14" Foreground="{StaticResource CF.Text.Selected.Foreground}" Text="System.Windows.Controls.CheckBox" />
+								<CheckBox Style="{StaticResource CF.CheckBox}" IsThreeState="True" IsChecked="True" Content="Checked" />
+								<CheckBox Style="{StaticResource CF.CheckBox}" IsThreeState="True" IsChecked="False" Content="Unchecked" />
+								<CheckBox Style="{StaticResource CF.CheckBox}" IsThreeState="True" IsChecked="{x:Null}" Content="Indeterminate" />
+								<CheckBox Style="{StaticResource CF.CheckBox}" IsEnabled="False" IsThreeState="True" IsChecked="True" Content="Checked" />
+								<CheckBox Style="{StaticResource CF.CheckBox}" IsEnabled="False" IsThreeState="True" IsChecked="False" Content="Unchecked" />
+								<CheckBox Style="{StaticResource CF.CheckBox}" IsEnabled="False" IsThreeState="True" IsChecked="{x:Null}" Content="Indeterminate" />
 							</StackPanel>
 						</Border>
 
@@ -388,12 +405,12 @@
 								BorderThickness="1"
 								CornerRadius="10">
 							<StackPanel>
-								<TextBlock FontSize="16" FontWeight="SemiBold" Text="RadioButton" />
-								<TextBlock Margin="0,2,0,14" Foreground="{StaticResource CF.Text.Selected.Foreground}" Text="System.Windows.Controls.RadioButton" />
-								<RadioButton GroupName="PreviewRadioGroup" IsChecked="True" Content="Option 1" />
-								<RadioButton GroupName="PreviewRadioGroup" Content="Option 2" />
-								<RadioButton GroupName="PreviewRadioGroupDisabled" IsEnabled="False" IsChecked="True" Content="Option 1" />
-								<RadioButton GroupName="PreviewRadioGroupDisabled" IsEnabled="False" Content="Option 2" />
+								<TextBlock Style="{StaticResource CF.TextBlock}" FontSize="16" FontWeight="SemiBold" Text="RadioButton" />
+								<TextBlock Style="{StaticResource CF.TextBlock}" Margin="0,2,0,14" Foreground="{StaticResource CF.Text.Selected.Foreground}" Text="System.Windows.Controls.RadioButton" />
+								<RadioButton Style="{StaticResource CF.RadioButton}" GroupName="PreviewRadioGroup" IsChecked="True" Content="Option 1" />
+								<RadioButton Style="{StaticResource CF.RadioButton}" GroupName="PreviewRadioGroup" Content="Option 2" />
+								<RadioButton Style="{StaticResource CF.RadioButton}" GroupName="PreviewRadioGroupDisabled" IsEnabled="False" IsChecked="True" Content="Option 1" />
+								<RadioButton Style="{StaticResource CF.RadioButton}" GroupName="PreviewRadioGroupDisabled" IsEnabled="False" Content="Option 2" />
 							</StackPanel>
 						</Border>
 
@@ -412,14 +429,14 @@
 									<RowDefinition Height="Auto" />
 									<RowDefinition Height="Auto" />
 								</Grid.RowDefinitions>
-								<TextBlock FontSize="16" FontWeight="SemiBold" Text="CFTreeView" />
-								<TextBlock Grid.Row="1" Margin="0,2,0,14" Foreground="{StaticResource CF.Text.Selected.Foreground}" Text="System.Windows.Controls.TreeView" />
+								<TextBlock Style="{StaticResource CF.TextBlock}" FontSize="16" FontWeight="SemiBold" Text="CFTreeView" />
+								<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="1" Margin="0,2,0,14" Foreground="{StaticResource CF.Text.Selected.Foreground}" Text="System.Windows.Controls.TreeView" />
 								<userControls:CFTreeView Grid.Row="2"
 											 IsMultiSelect="True"
 											 NodesSource="{Binding PreviewTreeViewNodes}"
 											 SelectedValues="{Binding PreviewSelectedTreeViewValues}"
 											 SelectedTreeViewItems="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=SelectedPreviewTreeViewItems, Mode=OneWayToSource}" />
-								<TextBox Grid.Row="3"
+								<TextBox Style="{StaticResource CF.TextBox}" Grid.Row="3"
 										 Margin="0,8,0,0"
 										 Height="72"
 										 AcceptsReturn="True"
@@ -429,13 +446,13 @@
 										 Text="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=SelectedPreviewTreeViewDetails}" />
 								<WrapPanel Grid.Row="4"
 										   Margin="0,8,0,0">
-									<Button Command="{Binding RemovePreviewTreeViewTailCommand}"
+									<Button Style="{StaticResource CF.Button}" Command="{Binding RemovePreviewTreeViewTailCommand}"
 											Content="Remove Last 4" />
-									<Button Command="{Binding AddPreviewTreeViewTailCommand}"
+									<Button Style="{StaticResource CF.Button}" Command="{Binding AddPreviewTreeViewTailCommand}"
 											Content="Add Last 4" />
-									<Button Command="{Binding SelectPreviewPrimaryCommand}"
+									<Button Style="{StaticResource CF.Button}" Command="{Binding SelectPreviewPrimaryCommand}"
 											Content="Select Primary" />
-									<Button Command="{Binding SelectPreviewPrimaryAndAccentCommand}"
+									<Button Style="{StaticResource CF.Button}" Command="{Binding SelectPreviewPrimaryAndAccentCommand}"
 											Content="Select Primary + Accent" />
 								</WrapPanel>
 							</Grid>

@@ -207,6 +207,7 @@ public partial class CFTreeView : UserControl
 	{
 		var selectedValues = GetSelectedValueSet();
 		var useMultipleSelection = IsMultiSelect && selectedValues.Count > 1;
+		var treeViewItemStyle = PreviewTreeView.TryFindResource("CF.TreeViewItem") as Style;
 
 		PreviewTreeView.Items.Clear();
 
@@ -221,7 +222,7 @@ public partial class CFTreeView : UserControl
 		{
 			foreach (var rootNode in BuildTreeViewNodes(NodesSource))
 			{
-				var treeViewItem = CreateTreeViewItem(rootNode, selectedValues, useMultipleSelection);
+				var treeViewItem = CreateTreeViewItem(rootNode, selectedValues, useMultipleSelection, treeViewItemStyle);
 				PreviewTreeView.Items.Add(treeViewItem);
 				CollectSelectedTreeViewItems(treeViewItem);
 			}
@@ -300,7 +301,7 @@ public partial class CFTreeView : UserControl
 		}
 	}
 
-	private static CFTreeViewItem CreateTreeViewItem(TreeViewNode treeViewNode, IReadOnlySet<string> selectedValues, bool useMultipleSelection)
+	private static CFTreeViewItem CreateTreeViewItem(TreeViewNode treeViewNode, IReadOnlySet<string> selectedValues, bool useMultipleSelection, Style? treeViewItemStyle)
 	{
 		var isSelected = selectedValues.Contains(treeViewNode.Value);
 		var treeViewItem = new CFTreeViewItem
@@ -311,11 +312,12 @@ public partial class CFTreeView : UserControl
 			IsExpanded = treeViewNode.Children.Count > 0,
 			IsMultiSelected = isSelected && useMultipleSelection,
 			IsSelected = isSelected && !useMultipleSelection,
+			Style = treeViewItemStyle,
 		};
 
 		foreach (var childNode in treeViewNode.Children)
 		{
-			treeViewItem.Items.Add(CreateTreeViewItem(childNode, selectedValues, useMultipleSelection));
+			treeViewItem.Items.Add(CreateTreeViewItem(childNode, selectedValues, useMultipleSelection, treeViewItemStyle));
 		}
 
 		return treeViewItem;

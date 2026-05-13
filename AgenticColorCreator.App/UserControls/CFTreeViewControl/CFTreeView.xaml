@@ -9,6 +9,7 @@
 			 d:DesignWidth="260">
 	<TreeView x:Name="PreviewTreeView"
 			  Style="{StaticResource CF.TreeViewStyle}"
+			  ItemContainerStyle="{StaticResource CF.TreeViewItem}"
 			  SelectedItemChanged="OnSelectedItemChanged"
 			  PreviewMouseLeftButtonDown="OnPreviewTreeViewMouseLeftButtonDown" />
 </UserControl>
