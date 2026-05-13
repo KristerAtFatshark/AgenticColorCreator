@@ -12,13 +12,13 @@
 - Color cards have been compacted for denser browsing of large color sets.
 - Repository indentation has been normalized to real tab characters for leading indentation.
 - Repository line endings have been normalized to `CRLF`.
-- Build and unit tests are passing after the latest explicit `CF` style opt-in update.
+- Build and unit tests are passing after the latest `CFDarkStyles.xaml` move.
 
 ## Active Issues
 - Descriptions are saved as a single canonical markdown line even if entered over multiple lines in the UI.
 - No drag/drop reordering or search/filtering yet.
 - Rebuilding the WPF app fails while the running executable is still open because the debug output DLL stays locked.
-- The latest explicit `CF` style opt-in update was validated by build and tests, but still needs manual visual confirmation in the running UI.
+- The latest `CFDarkStyles.xaml` move was validated by build and tests, but still needs manual visual confirmation in the running UI.
 
 ## Workarounds
 - Use the popup picker or the hex field with full `#AARRGGBB` values for color editing.
@@ -33,12 +33,13 @@
 - Kept the preview TreeView mutable at runtime by subscribing to the bound flat source collection and rebuilding the rendered tree when entries are added or removed.
 - Moved the TreeView-specific files into `AgenticColorCreator.App\UserControls\CFTreeViewControl\` and updated namespaces/XAML references so `CFTreeView`, `CFTreeViewItem`, `TreeViewIconMap`, `TreeViewNode`, and `TreeViewSourceEntry` now live together in a dedicated folder.
 - Added `AgenticColorCreator.App\UserControls\CFTreeViewControl\README.md` with usage documentation covering the public `CFTreeView` properties, required data structures, selection behavior, runtime update behavior, and the `TreeViewIconMap` responsibility.
-- Converted the remaining implicit control styles in `DarkStyles.xaml` into keyed `CF...` styles and updated `MainWindow.xaml`, `ColorPickerWindow.xaml`, and `CFTreeView.xaml` to opt into those styles explicitly instead of overriding all controls application-wide.
+- Moved the shared application brushes, styles, and control templates into `AgenticColorCreator.App\Styles\CFDarkStyles.xaml`, and updated `App.xaml` to merge that new path instead of the old top-level `DarkStyles.xaml` file.
+- Converted the remaining implicit control styles in `AgenticColorCreator.App\Styles\CFDarkStyles.xaml` into keyed `CF...` styles and updated `MainWindow.xaml`, `ColorPickerWindow.xaml`, and `CFTreeView.xaml` to opt into those styles explicitly instead of overriding all controls application-wide.
 - Added repository-level formatting enforcement with `.gitattributes` and `.editorconfig`, tightened `codestandards.md` and `AGENTS.md` to require explicit CRLF/tab verification for both edited and newly created files, and normalized the currently flagged files so the formatting audit is clean again.
-- Renamed the custom theme resource keys in `DarkStyles.xaml` to use a `CF` prefix such as `CFTextBox.Default.Background`, reducing the risk of collisions with existing or future non-project resource keys.
-- Re-normalized `AgenticColorCreator.App\DarkStyles.xaml` to `CRLF` after the resource-key rename and verified that file explicitly before rebuilding.
-- Corrected the radio button theme key prefix in `DarkStyles.xaml` from the mistaken `RadioCFButton.*` form to the intended `CFRadioButton.*` form.
-- Renamed the remaining custom `x:Key` style/template resources in `DarkStyles.xaml` to `CF...` names as well, such as `CFComboPopupItemStyle`, `CFComboBoxTemplate`, `CFOptionMarkFocusVisual`, and `CFFocusVisualScrollbar`.
+- Renamed the custom theme resource keys in `AgenticColorCreator.App\Styles\CFDarkStyles.xaml` to use a `CF` prefix such as `CFTextBox.Default.Background`, reducing the risk of collisions with existing or future non-project resource keys.
+- Re-normalized `AgenticColorCreator.App\Styles\CFDarkStyles.xaml` to `CRLF` after the resource-key rename and verified that file explicitly before rebuilding.
+- Corrected the radio button theme key prefix in `AgenticColorCreator.App\Styles\CFDarkStyles.xaml` from the mistaken `RadioCFButton.*` form to the intended `CFRadioButton.*` form.
+- Renamed the remaining custom `x:Key` style/template resources in `AgenticColorCreator.App\Styles\CFDarkStyles.xaml` to `CF...` names as well, such as `CFComboPopupItemStyle`, `CFComboBoxTemplate`, `CFOptionMarkFocusVisual`, and `CFFocusVisualScrollbar`.
 - Renamed the remaining missed scrollbar and slider keyed resources to `CF...` names too, including `CFRepeatButtonTransparent`, `CFScrollBarButton`, `CFScrollBarThumbVertical`, `CFScrollBarThumbHorizontal`, `CFScrollbar*Arrow`, `CFSliderThumbStyle`, and `CFHorizontalSliderTemplate`.
 - Added `Remove Last 4` and `Add Last 4` buttons under the `CFTreeView` preview selection field, backed by new `MainWindowViewModel` commands that remove and restore the final four `control` entries in `PreviewTreeViewNodes` for observable-collection update testing.
 - Added explicit `HorizontalContentAlignment` and `VerticalContentAlignment` setters to the `CFTreeViewItem` style to stop the inherited WPF ancestor bindings from spamming binding errors before items are attached to the visual tree.
@@ -51,7 +52,7 @@
 - Adjusted external selection handling so when the bound selected-values collection changes, that external update remains authoritative for the full update cycle instead of briefly falling back to the prior manual selection during `Clear()` plus `Add()` sequences.
 - Removed the unused Newtonsoft-based TreeView JSON implementation, including the package reference, JSON-only services/models, copied sample JSON files, and the tests that only covered that removed path.
 - Replaced the `CFTreeViewItem` expander `ToggleButton` with a minimal custom template so the default WPF blue border chrome no longer renders around the TreeView arrow button.
-- Reevaluated UI colors after `Color\agentic_colors.md` changed at `2026-05-11 11:50:19`, added the new `TreeView / Glyph`, `Glyph.Background`, and `Glyph.Border` mappings in `DarkStyles.xaml`, and applied them to the `CFTreeViewItem` expander toggle.
+- Reevaluated UI colors after `Color\agentic_colors.md` changed at `2026-05-11 11:50:19`, added the new `TreeView / Glyph`, `Glyph.Background`, and `Glyph.Border` mappings in `AgenticColorCreator.App\Styles\CFDarkStyles.xaml`, and applied them to the `CFTreeViewItem` expander toggle.
 - Reworked `CFTreeViewItem` styling to be an implicit style for the custom item type, so nested explicit `CFTreeViewItem` children use the same template without relying on `TreeView.ItemContainerStyle`.
 - Switched the custom `CFTreeViewItem` template back onto the normal WPF header/content pipeline with a `HeaderTemplate` plus `PART_Header`, while keeping the semantic icon/text, selected, and mouse-over visuals.
 - Verified the latest TreeView item template changes with `dotnet build AgenticColorCreator.sln` and `dotnet test AgenticColorCreator.Tests\AgenticColorCreator.Tests.csproj`.
