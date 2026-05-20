@@ -1,165 +1,42 @@
 # Status
 
 ## General Status
-- WPF desktop application scaffolded with a working editor for `agentic_colors.md` files.
-- Solution now contains `AgenticColorCreator.App`, `AgenticColorCreator.Core`, and `AgenticColorCreator.Tests`.
-- The app can create, load, edit, validate, and save the planned markdown color format.
-- On startup, the app now auto-loads `Color\agentic_colors.md` if that file exists in the repository tree.
-- The main UI now uses tabs, with the color editor on the default `Colors` tab and a `UI Preview` tab for visual control testing.
-- Categories now contain fixed interaction-state subcategories: `Default`, `Selected`, `Pressed`, `MouseOver`, and `Disabled`.
-- Colors can be moved between those fixed subcategories by changing the state selector on each color item.
-- The color preview now opens an interactive popup picker for ARGB editing.
-- Color cards have been compacted for denser browsing of large color sets.
-- Repository indentation has been normalized to real tab characters for leading indentation.
-- Repository line endings have been normalized to `CRLF`.
-- Build and unit tests are passing after the latest preview class-label correction.
+- WPF desktop app scaffold is working with `AgenticColorCreator.App`, `AgenticColorCreator.Core`, and `AgenticColorCreator.Tests`.
+- The app can create, load, edit, validate, and save `agentic_colors.md` markdown files.
+- The main UI uses `Colors` and `UI Preview` tabs for editor work and themed control previewing.
+- Shared theme resources live in `AgenticColorCreator.App\Styles\CFDarkStyles.xaml` and use explicit `CF.` brush keys plus keyed `CF...` styles/templates.
+- Custom previewed controls currently include `CFTextBox`, `CFNumber`, and `CFTreeView`.
+- `CFTextBox` now supports delayed external value commits plus immediate validation feedback while typing.
+- `CFNumber` now uses `CFTextBox` as its delayed-commit text layer and applies actual integer validation through that shared control.
+- `Color\agentic_colors.md` remains the tracked UI color source, with the latest recorded source timestamp still `2026-05-20 13:18:33`.
 
 ## Active Issues
-- Descriptions are saved as a single canonical markdown line even if entered over multiple lines in the UI.
+- Rebuilding the full debug solution can fail while another process is locking `AgenticColorCreator.Core.dll`.
+- The new `CFTextBox` and `CFNumber` validation behavior has been build-verified but still needs manual visual confirmation in the running UI.
+- `CFTextBox` validation currently uses a direct red foreground override for invalid text, so final visual approval should confirm that this matches the intended theme.
+- Descriptions are still saved as a single canonical markdown line even if entered over multiple lines in the UI.
 - No drag/drop reordering or search/filtering yet.
-- Rebuilding the WPF app fails while the running executable is still open because the debug output DLL stays locked.
-- The latest preview class-label correction was validated by build and tests, but still needs manual visual confirmation in the running UI.
 
 ## Workarounds
-- Use the popup picker or the hex field with full `#AARRGGBB` values for color editing.
-- Use category expanders to organize larger color sets until search or filtering exists.
-- Close the running app before rebuilding the WPF project.
-- Use the currently running app instance to visually confirm scrollbar thumb default, hover, and pressed states after theme edits.
-- Use the `UI Preview` tab to inspect themed control states without leaving the main editor workflow.
+- Close the running app or other locking process before rebuilding the full debug solution.
+- Use `dotnet build "AgenticColorCreator.App\AgenticColorCreator.App.csproj" -c Release` when the debug solution build is blocked by the locked core DLL.
+- Use the `UI Preview` tab to manually confirm delayed commit timing and invalid-text red feedback for `CFTextBox` and `CFNumber`.
+- Use category expanders to manage larger color sets until search/filtering exists.
 
 ## Recent Important Changes
-- Moved the TreeView preview mock data ownership into `MainWindowViewModel` as a mutable `ObservableCollection<TreeViewSourceEntry>` containing only `Value` and `Type`, matching the intended flat source shape.
-- Updated `CFTreeView` so its `NodesSource` now binds to that flat observable collection, builds the visible hierarchy internally from slash-delimited `Value` paths, and maps `Type` to icons inside the control.
-- Kept the preview TreeView mutable at runtime by subscribing to the bound flat source collection and rebuilding the rendered tree when entries are added or removed.
-- Moved the TreeView-specific files into `AgenticColorCreator.App\UserControls\CFTreeViewControl\` and updated namespaces/XAML references so `CFTreeView`, `CFTreeViewItem`, `TreeViewIconMap`, `TreeViewNode`, and `TreeViewSourceEntry` now live together in a dedicated folder.
-- Added `AgenticColorCreator.App\UserControls\CFTreeViewControl\README.md` with usage documentation covering the public `CFTreeView` properties, required data structures, selection behavior, runtime update behavior, and the `TreeViewIconMap` responsibility.
-- Moved the shared application brushes, styles, and control templates into `AgenticColorCreator.App\Styles\CFDarkStyles.xaml`, and updated `App.xaml` to merge that new path instead of the old top-level `DarkStyles.xaml` file.
-- Added `AgenticColorCreator.App\UserControls\CFNumberControl\CFNumber.xaml` and `.xaml.cs` for a custom numeric input control with number-only text entry plus spinner up/down buttons.
-- Reevaluated UI colors after `Color\agentic_colors.md` changed at `2026-05-20 11:28:16` and added the new `Number` color mappings plus `CF.NumberTextBox` and `CF.NumberSpinnerButton` styles in `AgenticColorCreator.App\Styles\CFDarkStyles.xaml`.
-- Added a `CFNumber` preview card to the `UI Preview` tab in `MainWindow.xaml`, including enabled and disabled examples.
-- Added editable min/max fields to the `CFNumber` preview card and bound the preview control's `Minimum` and `Maximum` properties to those fields so the control's clamping behavior can be tested directly in the UI.
-- Set the root `CFNumber` control height explicitly to `24` so the control itself matches the target compact input height instead of relying on child sizing.
-- Reduced the spinner button heights inside `CFNumber` to fit within the fixed `24` control height while keeping the spinner column width unchanged.
-- Updated `CF.NumberSpinnerButton` to use the same pressed-over-hover trigger precedence as the regular `CF.Button` style, so the spinner buttons now show their pressed background/border instead of staying on the mouse-over colors.
-- Reevaluated the `Number` color mappings after `Color\agentic_colors.md` changed at `2026-05-20 13:18:33` and updated `CF.Number.Button.Default.Border` in `AgenticColorCreator.App\Styles\CFDarkStyles.xaml` from `#FF292929` to `#FF4C4C4C`.
-- Moved the `CFNumber` preview min/max helper inputs below both the enabled and disabled control examples so preview-only test inputs no longer sit between the actual controls.
-- Added a real `MainWindow`-owned bound value property for the `CFNumber` preview and a read-only display field under the control so value changes can be verified the same way the TreeView preview exposes its current selection state.
-- Added a real `MainWindow`-owned bound value property for the `TextBox` preview and a read-only display field under the control so text changes can be verified explicitly from the host window, matching the preview pattern used for `CFNumber` and TreeView, while keeping the original disabled `TextBox` example in the card.
-- Added `UserControls\CFTextBoxControl\CFTextBox` as a reusable delayed-commit text input that only pushes its externally bound `Value` on Enter, focus loss, or 1000ms idle, and corrected it so the 1000ms timer now commits while the control still has focus instead of waiting for focus loss. `CFNumber` now relies on that single delayed-commit layer instead of stacking a second timer on top.
-- Updated the preview card previously labeled as `TextBox` so it now explicitly previews `CFTextBox`, including the card title, class-name subtitle, and disabled example instance.
-- Corrected the preview subtitles for the custom controls so `CFTextBox`, `CFNumber`, and `CFTreeView` now display their custom control class paths using the shorter `App...` form instead of base WPF control names or longer assembly-style names.
-- Reevaluated the slider thumb mouse-over color after `Color\agentic_colors.md` changed at `2026-05-20 10:59:40` and updated `CF.Slider.MouseOver.Thumb` in `AgenticColorCreator.App\Styles\CFDarkStyles.xaml` from `#FF5E5E5E` to `#FF797979`.
-- Converted the remaining implicit control styles in `AgenticColorCreator.App\Styles\CFDarkStyles.xaml` into keyed `CF...` styles and updated `MainWindow.xaml`, `ColorPickerWindow.xaml`, and `CFTreeView.xaml` to opt into those styles explicitly instead of overriding all controls application-wide.
-- Added repository-level formatting enforcement with `.gitattributes` and `.editorconfig`, tightened `codestandards.md` and `AGENTS.md` to require explicit CRLF/tab verification for both edited and newly created files, and normalized the currently flagged files so the formatting audit is clean again.
-- Renamed the custom theme resource keys in `AgenticColorCreator.App\Styles\CFDarkStyles.xaml` to use a `CF` prefix such as `CFTextBox.Default.Background`, reducing the risk of collisions with existing or future non-project resource keys.
-- Re-normalized `AgenticColorCreator.App\Styles\CFDarkStyles.xaml` to `CRLF` after the resource-key rename and verified that file explicitly before rebuilding.
-- Corrected the radio button theme key prefix in `AgenticColorCreator.App\Styles\CFDarkStyles.xaml` from the mistaken `RadioCFButton.*` form to the intended `CFRadioButton.*` form.
-- Renamed the remaining custom `x:Key` style/template resources in `AgenticColorCreator.App\Styles\CFDarkStyles.xaml` to `CF...` names as well, such as `CFComboPopupItemStyle`, `CFComboBoxTemplate`, `CFOptionMarkFocusVisual`, and `CFFocusVisualScrollbar`.
-- Renamed the remaining missed scrollbar and slider keyed resources to `CF...` names too, including `CFRepeatButtonTransparent`, `CFScrollBarButton`, `CFScrollBarThumbVertical`, `CFScrollBarThumbHorizontal`, `CFScrollbar*Arrow`, `CFSliderThumbStyle`, and `CFHorizontalSliderTemplate`.
-- Added `Remove Last 4` and `Add Last 4` buttons under the `CFTreeView` preview selection field, backed by new `MainWindowViewModel` commands that remove and restore the final four `control` entries in `PreviewTreeViewNodes` for observable-collection update testing.
-- Added explicit `HorizontalContentAlignment` and `VerticalContentAlignment` setters to the `CFTreeViewItem` style to stop the inherited WPF ancestor bindings from spamming binding errors before items are attached to the visual tree.
-- Extracted the TreeView type-to-icon mapping into `AgenticColorCreator.App\Services\TreeViewIconMap.cs` so other user controls can reuse the same icon lookup instead of duplicating a local dictionary.
-- Added a bindable `SelectedValues` dependency property to `CFTreeView` so selection can now be driven externally by `Value`/path strings and kept in sync with click selection inside the control.
-- Added `Select Primary` and `Select Primary + Accent` preview buttons, backed by new `MainWindowViewModel` commands that update a bound `ObservableCollection<string>` of selected TreeView paths for external selection testing.
-- Switched the preview selection-button container to a `WrapPanel` so all four TreeView test buttons remain visible inside the fixed-width preview card.
-- Updated `CFTreeView` so external forced selection now uses normal single selection when the bound selected-values list contains one path and custom multi selection only when it contains multiple paths.
-- Rebuilt the internal selected-item list from forced selections during TreeView refresh, and updated manual click selection so externally forced selections are cleared before applying the click, preventing prior forced selection state from sticking.
-- Adjusted external selection handling so when the bound selected-values collection changes, that external update remains authoritative for the full update cycle instead of briefly falling back to the prior manual selection during `Clear()` plus `Add()` sequences.
-- Removed the unused Newtonsoft-based TreeView JSON implementation, including the package reference, JSON-only services/models, copied sample JSON files, and the tests that only covered that removed path.
-- Replaced the `CFTreeViewItem` expander `ToggleButton` with a minimal custom template so the default WPF blue border chrome no longer renders around the TreeView arrow button.
-- Reevaluated UI colors after `Color\agentic_colors.md` changed at `2026-05-11 11:50:19`, added the new `TreeView / Glyph`, `Glyph.Background`, and `Glyph.Border` mappings in `AgenticColorCreator.App\Styles\CFDarkStyles.xaml`, and applied them to the `CFTreeViewItem` expander toggle.
-- Reworked `CFTreeViewItem` styling to be an implicit style for the custom item type, so nested explicit `CFTreeViewItem` children use the same template without relying on `TreeView.ItemContainerStyle`.
-- Switched the custom `CFTreeViewItem` template back onto the normal WPF header/content pipeline with a `HeaderTemplate` plus `PART_Header`, while keeping the semantic icon/text, selected, and mouse-over visuals.
-- Verified the latest TreeView item template changes with `dotnet build AgenticColorCreator.sln` and `dotnet test AgenticColorCreator.Tests\AgenticColorCreator.Tests.csproj`.
-- Reevaluated the latest `TreeView Item` color update and confirmed the current `CFTreeViewItem` semantic resource values already match the new default, selected, and mouse-over entries in `Color\agentic_colors.md`.
-- Reevaluated UI colors after `Color\agentic_colors.md` changed at `2026-05-11 11:10:06` and refreshed `CFTreeViewItem` styling in `DarkStyles.xaml` to use the new default background/border plus the updated selected background, border, text, and icon colors.
-- Reevaluated UI colors after `Color\agentic_colors.md` changed at `2026-05-11 10:54:10` and updated `CFTreeViewItem` styling in `DarkStyles.xaml` so tree item icon/text visuals now use the new `TreeView Item` default, selected, and mouse-over colors.
-- Added `UserControls\CFTreeViewItem` as a custom `TreeViewItem` type with `Icon`, `Text`, and public `Value` properties, styled its header to show icon plus text, and updated the `CFTreeView` mock data to use the new item type.
-- Fixed the `CFTreeView` preview card layout so the full border remains visible and the preview uses a constrained inner height that allows the tree view scrollbars to handle expanded content.
-- Reevaluated UI colors after `Color\agentic_colors.md` changed at `2026-05-11 10:20:52`, added `UserControls\CFTreeView`, introduced a Microsoft-style-based `TreeView` theme in `DarkStyles.xaml`, and added the new tree view with mock data to the `UI Preview` tab.
-- Reevaluated UI colors after `Color\agentic_colors.md` changed at `2026-05-11 09:38:45` and updated the slider mouse-over thumb color in `DarkStyles.xaml` to match the latest `Slider / Thumb MouseOver` value.
-- Reevaluated UI colors after `Color\agentic_colors.md` changed at `2026-05-11 09:32:56`, added `Slider / Thumb.Border` mapping, and updated the slider thumb template so thumb border colors come from the new semantic slider border entries.
-- Reevaluated UI colors after `Color\agentic_colors.md` changed at `2026-05-11 09:16:07`, updated the slider default/disabled colors to the latest `Slider` values, and corrected the closed `ComboBox` disabled colors to match the current `ComboBox` category.
-- Expanded the `UI Preview` tab so every previewed control now also shows a disabled (`IsEnabled="False"`) example for state validation.
-- Reevaluated UI colors after `Color\agentic_colors.md` changed at `2026-05-11 08:45:34` and added a Microsoft-style-based `RadioButton` template in `DarkStyles.xaml`, mapped to the new `RadioButton` category colors.
-- Duplicated the `Checkbox` color definitions in `Color\agentic_colors.md` into a new `RadioButton` category as the starting point for future radio button theming.
-- Corrected stale checkbox resource values in `DarkStyles.xaml` so the checkbox glyph and mouse-over background now match the current `Checkbox` colors from `Color\agentic_colors.md`.
-- Reevaluated UI colors after `Color\agentic_colors.md` changed at `2026-05-10 15:39:32` and replaced the checkbox styling with a Microsoft-style-based `CheckBox` template in `DarkStyles.xaml`, mapped to the current checkbox background, border, text, and glyph colors.
-- Expanded the `UI Preview` tab with `CheckBox` and grouped `RadioButton` preview cards so those controls can be inspected before they get custom styling.
-- Renamed the UI interaction-state terminology from `Hovered` to `MouseOver` across the theme resources, color definitions, and documentation, while keeping parser support for older `Hovered` labels in existing markdown files.
-- Restructured the shared theme resources so color brushes are centralized near the top of `DarkStyles.xaml` and renamed to the `Category.State.Name` convention, for example `TextBox.Default.Background`.
-- Renamed the shared combo box template keys to remove the stale `Blue` prefix, so `BlueComboBoxTemplate` and `BlueComboBoxToggleButtonTemplate` are now `ComboBoxTemplate` and `ComboBoxToggleButtonTemplate`.
-- Corrected the combo box theming split in `DarkStyles.xaml` so the closed `ComboBox` uses `ComboBox` category resources while popup rows use separate `ComboBox Item` background, text, and border resources.
-- Updated the shared `ComboBox` template in `DarkStyles.xaml` so the popup and popup items keep a minimum width matching the closed combo box width.
-- Updated the shared `Button`, `TextBox`, and `ComboBox` styles in `DarkStyles.xaml` so all three controls now enforce `MinHeight="24"`.
-- Fixed the slider thumb template in `DarkStyles.xaml` after the style extraction so `SliderThumbBorder` now uses `CornerRadius="2"`, `Width="10"`, and `Height="18"`.
-- Added a `UI Preview` tab beside the main color editor and populated it with themed preview cards for `TextBox`, `Button`, `Slider`, and `ComboBox`, each labeled with its WPF control class name.
-- Added dark `TabControl` and `TabItem` styling so the new tabbed layout uses the same application theme as the rest of the editor.
-- Moved the shared application brushes, styles, and control templates out of `App.xaml` into `AgenticColorCreator.App/DarkStyles.xaml`, and reduced `App.xaml` to a merged resource dictionary wrapper.
-- Restored the slider thumb in `App.xaml` from the newer round shape back to the original square shape while keeping the semantic slider color mapping.
-- Reevaluated UI colors again after `Color\agentic_colors.md` changed at `2026-05-06 15:38:44`, corrected stale default scrollbar glyph/thumb mappings, and kept pressed thumb fill with the default thumb border.
-- Added `.gitignore`, `AGENTS.md`, and this `status.md` workflow file.
-- Added `codestandards.md` as the future location for generic syntax and code standards, and linked it into the required workflow in `AGENTS.md`.
-- Moved the generic indentation and line-ending rules out of `AGENTS.md` and into `codestandards.md` so those standards now live in the dedicated standards file.
-- Clarified that `codestandards.md` is enforced for code/config/test changes, but is not automatically forced onto `*.md` documentation files.
-- Clarified further that the `*.md` exemption also includes generic formatting rules from `codestandards.md`, such as indentation and line endings, unless explicitly stated otherwise.
-- Added a WPF editor UI with collapsible categories and editable color items.
-- Added an interactive popup color picker launched from the color swatch preview.
-- Fixed the color swatch button so the selected color is visible again after making the swatch clickable.
-- Tightened the color card layout: smaller first row, single-line description, less internal padding, and color plus hex shown first.
-- Refined compact layout alignment: the hex field now auto-sizes more tightly and the category name field aligns better with the category action buttons.
-- Updated dense-layout details: category header controls now share the same height/alignment, and new/default color values now use `#FF000000` with tighter hex input padding.
-- Reworked the category header layout to use a two-column grid so the name field stretches while `Add Color` and `Remove Category` can sit on the far right.
-- Updated the expander configuration to stretch header content across the full panel width so the category buttons can align to the far right edge.
-- Replaced the category header layout with a width-bound grid tied to the `Expander` width, reserving space for the expander glyph so the action buttons can be forced to the visual far right.
-- Increased header action button padding and spacing so `Add Color` and `Remove Category` display their full labels while keeping the corrected far-right alignment.
-- Converted leading groups of four spaces to real tabs across repository source and documentation files.
-- Converted repository source and documentation files to `CRLF` line endings.
-- Added startup default-document discovery so the editor auto-loads `Color\agentic_colors.md` when present.
-- Added a regression test for default document path discovery from nested app output directories.
-- Removed the document title label and toolbar input field from the main window header since the active file path already provides the document context.
-- Added fixed interaction-state subcategories to each category and updated markdown parsing/serialization to treat trailing state labels as structured data.
-- Added item-level state selection so colors can move between subcategories without deleting and recreating them.
-- Styled `ComboBox` controls to use the same blue-toned background and foreground treatment as the other editor inputs.
-- Styled the `ComboBox` dropdown popup and item containers so the open state list no longer falls back to the default white system background.
-- Fixed a WPF startup crash caused by attempting to set `ComboBox.Resources` through a style setter; dropdown theming is now applied through valid keyed resources and per-control popup resources.
-- Added a custom closed-state `ComboBox` template for the interaction-state selector so the visible selected item area also uses the blue-toned background instead of the default white surface.
-- Added `colors.md` to document how agents should map UI parts to `Color\agentic_colors.md`, including category-first lookup and same-category `Default` fallback behavior.
-- Clarified `colors.md` so agents distinguish between the closed `ComboBox` control surface and `ComboBox Item` popup rows.
-- Remapped the app theme resources toward the actual semantics in `Color\agentic_colors.md`, especially for combo box, text box, button, popup item, and accent usage.
-- Refreshed the app theme again after updated color definitions, including the new `Surface / Panel Default` value and a corrected `Text Box` category reference in `colors.md`.
-- Added `TextBox` state styling so hover uses `Text Box / Border MouseOver`, while focused/active editing falls back to `Text Box / Border Default` because no dedicated pressed/selected border color exists.
-- Clarified `colors.md` for focused input controls so active editing visuals follow the same state lookup and fallback rules as other controls.
-- Updated `TextBox` trigger precedence so a selected/focused text box uses `Text Box / Border Selected`, but selected plus mouse-over resolves to `Text Box / Border MouseOver` as instructed.
-- Replaced the default `TextBox` border rendering with an explicit control template so the visible border now uses the exact semantic colors from `agentic_colors.md`: selected `#61FF9600` and hovered `#FFFF9600`.
-- Refreshed the app again after a later color-file update so the explicit `TextBox` mouse-over border now uses the new `Text Box / Border MouseOver` value `#FF019600`, while selected remains `#61FF9600`.
-- Corrected a stale `colors.md` example to reference the real `Text Box` category name.
-- Replaced the default `Button` rendering with an explicit control template so the visible button surface now uses the semantic `Button` colors from `agentic_colors.md` for default, hovered, pressed, and disabled states.
-- Added timestamp-tracking workflow guidance in `AGENTS.md` for `Color\agentic_colors.md`, including the latest recorded color source timestamp used for UI color updates.
-- Reevaluated UI colors after `Color\agentic_colors.md` became newer than the last recorded source timestamp and mapped `Text Box / Text Selection Selected` to WPF `SelectionBrush`.
-- Updated the recorded UI color source timestamp in `AGENTS.md` to `2026-05-05 19:27:07`.
-- Reevaluated UI colors again after `Color\agentic_colors.md` changed at `2026-05-05 20:02:35` and refreshed `TextBox` hover/selection colors to the latest source values.
-- Clarified in `colors.md` that `MouseOver` means the active mouse-over state, not a past hover state.
-- Replaced the `ComboBoxItem` popup row rendering with an explicit template so dropdown rows now use the correct `ComboBox Item` hover colors while the mouse is currently over them.
-- Reevaluated UI colors again after `Color\agentic_colors.md` changed at `2026-05-06 08:50:54` and refreshed `TextBox` text selection highlight to the latest selected color value.
-- Reevaluated the old `Surface`-based background mapping after new top-level categories were introduced and aligned the app root/background guidance to the new `Application`, `Window`, `Panel`, and `Grid` categories.
-- Updated `colors.md` and `AGENTS.md` so reevaluation explicitly includes newly added top-level categories, not only changed values and newly added colors within existing categories.
-- Fixed the main window root layout so the outer window surface uses the `Window` background color and the inner app layout uses the `Application` background color without exposing a white default margin area.
-- Renamed the root application background resource to make it clear that only the app root surface uses the `Application` color, while panels continue to use the `Panel` color mapping.
-- Reevaluated UI colors again after `Color\agentic_colors.md` changed at `2026-05-06 10:51:53`, removed the obsolete `Application` root mapping, updated the window background to `#FF282828`, and now use `Panel` for all panel/root content surfaces.
-- Updated `colors.md` and `AGENTS.md` so reevaluation explicitly handles removed categories in addition to changed values, new colors, and new top-level categories.
-- Simplified the main window root structure so the `Window` itself owns the window color and the root content now uses a `Grid Margin="20"` with the `Panel` color, matching the intended layout structure.
-- Updated all application windows to set `Background="{StaticResource WindowBackgroundBrush}"` directly on the `Window` element instead of relying on the shared `Window` style alone.
-- Removed the background from the top-level `Grid Margin="20"` so only the actual child panels own the `Panel` background color.
-- Added `Expand All` and `Collapse All` buttons under the current file section in the top panel and wired them to expand or collapse every category in the main list.
-- Corrected the scrollbar theme mapping to use the actual `ScrollBar` category values from `agentic_colors.md` instead of the incorrect placeholder colors used in the first pass.
-- Reevaluated UI colors again after `Color\agentic_colors.md` changed at `2026-05-06 15:08:41`, refreshed the scrollbar thumb default color, and mapped the new `Slider` category onto the color picker sliders.
-- Added shared core models plus markdown serialization and validation logic.
-- Added unit tests for markdown parsing, serialization, duplicate detection, and hex validation.
-- Verified with `dotnet build AgenticColorCreator.sln` and `dotnet test AgenticColorCreator.Tests\AgenticColorCreator.Tests.csproj`.
+- Added reusable delayed-commit `CFTextBox` behavior so the externally bound `Value` commits on Enter, on focus loss, or after 1000ms idle while the control still has focus.
+- Reworked `CFNumber` to rely on that single `CFTextBox` delayed-commit layer instead of stacking a separate timer.
+- Added immediate `CFTextBox` validation modes for alphanumeric path input and actual integer input.
+- Updated `CFTextBox` so invalid text turns red while typing, valid text clears the local foreground override back to the normal themed style, and invalid text is not externally committed.
+- Updated `CFTextBox` external value application so bound value updates refresh the visible text and validation state without restarting the delayed commit cycle.
+- Configured `CFNumber` to use `ValidationMode="NumberOnly"` on its internal `CFTextBox`, with number validation now using real invariant integer parsing instead of character-only matching.
+- Restored `CFNumber` clamped delegated updates so when committed text is outside `Minimum` or `Maximum`, the visible text is updated back to the coerced in-range value.
+- Verified the current change with `dotnet build "AgenticColorCreator.App\AgenticColorCreator.App.csproj" -c Release` and `dotnet test "AgenticColorCreator.Tests\AgenticColorCreator.Tests.csproj"`.
+- Verified formatting for the touched files and normalized `AgenticColorCreator.App\UserControls\CFTextBoxControl\CFTextBox.xaml.cs` and `AgenticColorCreator.App\UserControls\CFNumberControl\CFNumber.xaml` back to `CRLF`.
 
 ## Notes For Next Contributor
 - Read this file before making changes.
-- Keep this file under 150 lines and remove stale information.
-- The canonical markdown format uses `# Agentic Colors`, a `## Metadata` section, and repeated `## Category:` plus `### Category / Color Name` entries.
-- The app project depends on the core library; tests should target `AgenticColorCreator.Core` instead of the WPF project directly.
+- For code, config, or test changes, read `codestandards.md` before editing.
+- Keep this file short and practical; remove stale entries instead of appending long history.
+- If the task touches UI colors, compare `Color\agentic_colors.md` against the recorded timestamp in `AGENTS.md` before changing mappings.
+- Manually verify the current `CFTextBox` and `CFNumber` validation behavior in the `UI Preview` tab before treating the UX as final.

@@ -1,4 +1,6 @@
 using System;
+using System.Globalization;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -8,6 +10,8 @@ namespace AgenticColorCreator.App.UserControls.CFTextBoxControl;
 
 public partial class CFTextBox : UserControl
 {
+	private static readonly Regex GeneralValidationRegex = new("^[A-Za-z0-9/._-]*$", RegexOptions.Compiled);
+
 	public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
 		nameof(Value),
 		typeof(string),
@@ -26,6 +30,12 @@ public partial class CFTextBox : UserControl
 		typeof(RoutedEventHandler),
 		typeof(CFTextBox));
 
+	public static readonly DependencyProperty ValidationModeProperty = DependencyProperty.Register(
+		nameof(ValidationMode),
+		typeof(CFTextBoxValidationMode),
+		typeof(CFTextBox),
+		new PropertyMetadata(CFTextBoxValidationMode.AlphaNumericPath, OnValidationModeChanged));
+
 	private readonly DispatcherTimer _commitTimer;
 	private bool _isApplyingExternalValue;
 
@@ -41,6 +51,7 @@ public partial class CFTextBox : UserControl
 
 		InnerTextBox.PreviewKeyDown += OnInnerTextBoxPreviewKeyDown;
 		InnerTextBox.LostKeyboardFocus += OnInnerTextBoxLostKeyboardFocus;
+		UpdateValidationVisual();
 	}
 
 	public string Value
@@ -61,6 +72,12 @@ public partial class CFTextBox : UserControl
 		remove => RemoveHandler(ValueCommittedEvent, value);
 	}
 
+	public CFTextBoxValidationMode ValidationMode
+	{
+		get => (CFTextBoxValidationMode)GetValue(ValidationModeProperty);
+		set => SetValue(ValidationModeProperty, value);
+	}
+
 	private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 	{
 		if (d is not CFTextBox textBox || textBox._isApplyingExternalValue)
@@ -68,7 +85,7 @@ public partial class CFTextBox : UserControl
 			return;
 		}
 
-		textBox.Text = e.NewValue as string ?? string.Empty;
+		textBox.ApplyExternalText(e.NewValue as string ?? string.Empty);
 	}
 
 	private static void OnTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -78,7 +95,18 @@ public partial class CFTextBox : UserControl
 			return;
 		}
 
+		textBox.UpdateValidationVisual();
 		textBox.RestartCommitTimer();
+	}
+
+	private static void OnValidationModeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+	{
+		if (d is not CFTextBox textBox)
+		{
+			return;
+		}
+
+		textBox.UpdateValidationVisual();
 	}
 
 	private void OnInnerTextBoxPreviewKeyDown(object sender, KeyEventArgs e)
@@ -113,20 +141,60 @@ public partial class CFTextBox : UserControl
 	{
 		_commitTimer.Stop();
 
+		if (!IsTextValid(Text))
+		{
+			return;
+		}
+
 		if (string.Equals(Value, Text, StringComparison.Ordinal))
 		{
 			return;
 		}
 
+		Value = Text;
+		RaiseEvent(new RoutedEventArgs(ValueCommittedEvent));
+	}
+
+	private void ApplyExternalText(string text)
+	{
+		_commitTimer.Stop();
+
 		_isApplyingExternalValue = true;
 		try
 		{
-			Value = Text;
-			RaiseEvent(new RoutedEventArgs(ValueCommittedEvent));
+			Text = text;
 		}
 		finally
 		{
 			_isApplyingExternalValue = false;
 		}
+
+		UpdateValidationVisual();
 	}
+
+	private void UpdateValidationVisual()
+	{
+		if (IsTextValid(Text))
+		{
+			InnerTextBox.ClearValue(TextBox.ForegroundProperty);
+			return;
+		}
+
+		InnerTextBox.Foreground = System.Windows.Media.Brushes.Red;
+	}
+
+	private bool IsTextValid(string text)
+	{
+		return ValidationMode switch
+		{
+			CFTextBoxValidationMode.NumberOnly => int.TryParse(text, NumberStyles.Integer, CultureInfo.InvariantCulture, out _),
+			_ => GeneralValidationRegex.IsMatch(text),
+		};
+	}
+}
+
+public enum CFTextBoxValidationMode
+{
+	AlphaNumericPath,
+	NumberOnly,
 }
