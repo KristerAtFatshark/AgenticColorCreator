@@ -3,43 +3,43 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace AgenticColorCreator.App.UserControls.CFNumberControl;
+namespace AgenticColorCreator.App.UserControls.CFIntControl;
 
-public partial class CFNumber : UserControl
+public partial class CFInt : UserControl
 {
 	public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
 		nameof(Value),
 		typeof(int),
-		typeof(CFNumber),
+		typeof(CFInt),
 		new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
 	public static readonly DependencyProperty MinimumProperty = DependencyProperty.Register(
 		nameof(Minimum),
 		typeof(int),
-		typeof(CFNumber),
+		typeof(CFInt),
 		new PropertyMetadata(int.MinValue));
 
 	public static readonly DependencyProperty MaximumProperty = DependencyProperty.Register(
 		nameof(Maximum),
 		typeof(int),
-		typeof(CFNumber),
+		typeof(CFInt),
 		new PropertyMetadata(int.MaxValue));
 
 	public static readonly DependencyProperty StepProperty = DependencyProperty.Register(
 		nameof(Step),
 		typeof(int),
-		typeof(CFNumber),
+		typeof(CFInt),
 		new PropertyMetadata(1));
 
 	public static readonly DependencyProperty TextValueProperty = DependencyProperty.Register(
 		nameof(TextValue),
 		typeof(string),
-		typeof(CFNumber),
+		typeof(CFInt),
 		new PropertyMetadata("0", OnTextValueChanged));
 
 	private bool _isApplyingValue;
 
-	public CFNumber()
+	public CFInt()
 	{
 		InitializeComponent();
 	}
@@ -76,7 +76,7 @@ public partial class CFNumber : UserControl
 
 	private static void OnTextValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 	{
-		if (d is not CFNumber numberControl || numberControl._isApplyingValue)
+		if (d is not CFInt numberControl || numberControl._isApplyingValue)
 		{
 			return;
 		}
