@@ -12,13 +12,13 @@
 - Color cards have been compacted for denser browsing of large color sets.
 - Repository indentation has been normalized to real tab characters for leading indentation.
 - Repository line endings have been normalized to `CRLF`.
-- Build and unit tests are passing after the latest `TextBox` preview restoration update.
+- Build and unit tests are passing after the latest preview class-label correction.
 
 ## Active Issues
 - Descriptions are saved as a single canonical markdown line even if entered over multiple lines in the UI.
 - No drag/drop reordering or search/filtering yet.
 - Rebuilding the WPF app fails while the running executable is still open because the debug output DLL stays locked.
-- The latest `TextBox` preview restoration update was validated by build and tests, but still needs manual visual confirmation in the running UI.
+- The latest preview class-label correction was validated by build and tests, but still needs manual visual confirmation in the running UI.
 
 ## Workarounds
 - Use the popup picker or the hex field with full `#AARRGGBB` values for color editing.
@@ -45,6 +45,9 @@
 - Moved the `CFNumber` preview min/max helper inputs below both the enabled and disabled control examples so preview-only test inputs no longer sit between the actual controls.
 - Added a real `MainWindow`-owned bound value property for the `CFNumber` preview and a read-only display field under the control so value changes can be verified the same way the TreeView preview exposes its current selection state.
 - Added a real `MainWindow`-owned bound value property for the `TextBox` preview and a read-only display field under the control so text changes can be verified explicitly from the host window, matching the preview pattern used for `CFNumber` and TreeView, while keeping the original disabled `TextBox` example in the card.
+- Added `UserControls\CFTextBoxControl\CFTextBox` as a reusable delayed-commit text input that only pushes its externally bound `Value` on Enter, focus loss, or 1000ms idle, and corrected it so the 1000ms timer now commits while the control still has focus instead of waiting for focus loss. `CFNumber` now relies on that single delayed-commit layer instead of stacking a second timer on top.
+- Updated the preview card previously labeled as `TextBox` so it now explicitly previews `CFTextBox`, including the card title, class-name subtitle, and disabled example instance.
+- Corrected the preview subtitles for the custom controls so `CFTextBox`, `CFNumber`, and `CFTreeView` now display their custom control class paths using the shorter `App...` form instead of base WPF control names or longer assembly-style names.
 - Reevaluated the slider thumb mouse-over color after `Color\agentic_colors.md` changed at `2026-05-20 10:59:40` and updated `CF.Slider.MouseOver.Thumb` in `AgenticColorCreator.App\Styles\CFDarkStyles.xaml` from `#FF5E5E5E` to `#FF797979`.
 - Converted the remaining implicit control styles in `AgenticColorCreator.App\Styles\CFDarkStyles.xaml` into keyed `CF...` styles and updated `MainWindow.xaml`, `ColorPickerWindow.xaml`, and `CFTreeView.xaml` to opt into those styles explicitly instead of overriding all controls application-wide.
 - Added repository-level formatting enforcement with `.gitattributes` and `.editorconfig`, tightened `codestandards.md` and `AGENTS.md` to require explicit CRLF/tab verification for both edited and newly created files, and normalized the currently flagged files so the formatting audit is clean again.

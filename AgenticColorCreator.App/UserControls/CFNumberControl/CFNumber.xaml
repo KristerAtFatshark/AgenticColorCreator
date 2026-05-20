@@ -3,6 +3,7 @@
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:textControls="clr-namespace:AgenticColorCreator.App.UserControls.CFTextBoxControl"
 			 mc:Ignorable="d"
 			 Height="24"
 			 Margin="0,2,0,2"
@@ -14,15 +15,10 @@
 			<ColumnDefinition Width="22" />
 		</Grid.ColumnDefinitions>
 
-		<TextBox x:Name="ValueTextBox"
-				 Grid.Column="0"
-				 Style="{StaticResource CF.NumberTextBox}"
-				 Margin="0"
-				 VerticalContentAlignment="Center"
-				 Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-				 PreviewTextInput="OnPreviewTextInput"
-				 PreviewKeyDown="OnPreviewKeyDown"
-				 LostFocus="OnValueTextBoxLostFocus" />
+		<textControls:CFTextBox x:Name="ValueTextBox"
+						 Grid.Column="0"
+						 Height="24"
+						 Value="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=TextValue, Mode=TwoWay}" />
 
 		<Grid Grid.Column="1"
 			  Height="24">

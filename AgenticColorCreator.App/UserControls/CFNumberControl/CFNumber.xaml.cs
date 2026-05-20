@@ -31,6 +31,14 @@ public partial class CFNumber : UserControl
 		typeof(CFNumber),
 		new PropertyMetadata(1));
 
+	public static readonly DependencyProperty TextValueProperty = DependencyProperty.Register(
+		nameof(TextValue),
+		typeof(string),
+		typeof(CFNumber),
+		new PropertyMetadata("0", OnTextValueChanged));
+
+	private bool _isApplyingValue;
+
 	public CFNumber()
 	{
 		InitializeComponent();
@@ -60,47 +68,44 @@ public partial class CFNumber : UserControl
 		set => SetValue(StepProperty, value);
 	}
 
+	public string TextValue
+	{
+		get => (string)GetValue(TextValueProperty);
+		set => SetValue(TextValueProperty, value);
+	}
+
+	private static void OnTextValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+	{
+		if (d is not CFNumber numberControl || numberControl._isApplyingValue)
+		{
+			return;
+		}
+
+		numberControl.CommitTextValue();
+	}
+
 	private void OnIncreaseClick(object sender, RoutedEventArgs e)
 	{
 		Value = CoerceValue(Value + Step);
+		TextValue = Value.ToString(CultureInfo.InvariantCulture);
 	}
 
 	private void OnDecreaseClick(object sender, RoutedEventArgs e)
 	{
 		Value = CoerceValue(Value - Step);
+		TextValue = Value.ToString(CultureInfo.InvariantCulture);
 	}
 
-	private void OnPreviewTextInput(object sender, TextCompositionEventArgs e)
+	private void CommitTextValue()
 	{
-		e.Handled = !IsTextAllowed(e.Text);
-	}
-
-	private void OnPreviewKeyDown(object sender, KeyEventArgs e)
-	{
-		if (e.Key == Key.Up)
+		if (!int.TryParse(TextValue, NumberStyles.Integer, CultureInfo.InvariantCulture, out var parsedValue))
 		{
-			Value = CoerceValue(Value + Step);
-			e.Handled = true;
-			return;
-		}
-
-		if (e.Key == Key.Down)
-		{
-			Value = CoerceValue(Value - Step);
-			e.Handled = true;
-		}
-	}
-
-	private void OnValueTextBoxLostFocus(object sender, RoutedEventArgs e)
-	{
-		if (!int.TryParse(ValueTextBox.Text, NumberStyles.Integer, CultureInfo.InvariantCulture, out var parsedValue))
-		{
-			ValueTextBox.Text = Value.ToString(CultureInfo.InvariantCulture);
+			TextValue = Value.ToString(CultureInfo.InvariantCulture);
 			return;
 		}
 
 		Value = CoerceValue(parsedValue);
-		ValueTextBox.Text = Value.ToString(CultureInfo.InvariantCulture);
+		TextValue = Value.ToString(CultureInfo.InvariantCulture);
 	}
 
 	private int CoerceValue(int value)
@@ -118,16 +123,28 @@ public partial class CFNumber : UserControl
 		return value;
 	}
 
-	private static bool IsTextAllowed(string text)
+	protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
 	{
-		foreach (var character in text)
+		base.OnPropertyChanged(e);
+
+		if (e.Property != ValueProperty)
 		{
-			if (!char.IsDigit(character) && character != '-')
-			{
-				return false;
-			}
+			return;
 		}
 
-		return true;
+		if (_isApplyingValue)
+		{
+			return;
+		}
+
+		_isApplyingValue = true;
+		try
+		{
+			TextValue = Value.ToString(CultureInfo.InvariantCulture);
+		}
+		finally
+		{
+			_isApplyingValue = false;
+		}
 	}
 }

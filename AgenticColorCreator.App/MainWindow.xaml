@@ -4,6 +4,7 @@
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:numberControls="clr-namespace:AgenticColorCreator.App.UserControls.CFNumberControl"
+		xmlns:textControls="clr-namespace:AgenticColorCreator.App.UserControls.CFTextBoxControl"
 		xmlns:userControls="clr-namespace:AgenticColorCreator.App.UserControls.CFTreeViewControl"
 		xmlns:viewModels="clr-namespace:AgenticColorCreator.App.ViewModels"
 		mc:Ignorable="d"
@@ -303,15 +304,13 @@
 									<RowDefinition Height="Auto" />
 									<RowDefinition Height="Auto" />
 								</Grid.RowDefinitions>
-								<TextBlock Style="{StaticResource CF.TextBlock}" FontSize="16" FontWeight="SemiBold" Text="TextBox" />
-								<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="1" Margin="0,2,0,14" Foreground="{StaticResource CF.Text.Selected.Foreground}" Text="System.Windows.Controls.TextBox" />
-								<TextBox Style="{StaticResource CF.TextBox}"
-										 Grid.Row="2"
-										 Text="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewTextBoxValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-								<TextBox Style="{StaticResource CF.TextBox}"
-										 Grid.Row="3"
-										 IsEnabled="False"
-										 Text="My Text" />
+								<TextBlock Style="{StaticResource CF.TextBlock}" FontSize="16" FontWeight="SemiBold" Text="CFTextBox" />
+								<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="1" Margin="0,2,0,14" Foreground="{StaticResource CF.Text.Selected.Foreground}" Text="App.UserControls.CFTextBoxControl.CFTextBox" />
+								<textControls:CFTextBox Grid.Row="2"
+												 Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewTextBoxValue, Mode=TwoWay}" />
+								<textControls:CFTextBox Grid.Row="3"
+												 IsEnabled="False"
+												 Value="My Text" />
 								<TextBox Style="{StaticResource CF.TextBox}"
 										 Grid.Row="4"
 										 IsReadOnly="True"
@@ -336,7 +335,7 @@
 									<RowDefinition Height="Auto" />
 								</Grid.RowDefinitions>
 								<TextBlock Style="{StaticResource CF.TextBlock}" FontSize="16" FontWeight="SemiBold" Text="CFNumber" />
-								<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="1" Margin="0,2,0,14" Foreground="{StaticResource CF.Text.Selected.Foreground}" Text="Custom numeric input with spinner buttons" />
+								<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="1" Margin="0,2,0,14" Foreground="{StaticResource CF.Text.Selected.Foreground}" Text="App.UserControls.CFNumberControl.CFNumber" />
 								<numberControls:CFNumber Grid.Row="2"
 												 Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewNumberValue, Mode=TwoWay}"
 												 Step="1"
@@ -504,7 +503,7 @@
 									<RowDefinition Height="Auto" />
 								</Grid.RowDefinitions>
 								<TextBlock Style="{StaticResource CF.TextBlock}" FontSize="16" FontWeight="SemiBold" Text="CFTreeView" />
-								<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="1" Margin="0,2,0,14" Foreground="{StaticResource CF.Text.Selected.Foreground}" Text="System.Windows.Controls.TreeView" />
+								<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="1" Margin="0,2,0,14" Foreground="{StaticResource CF.Text.Selected.Foreground}" Text="App.UserControls.CFTreeViewControl.CFTreeView" />
 								<userControls:CFTreeView Grid.Row="2"
 											 IsMultiSelect="True"
 											 NodesSource="{Binding PreviewTreeViewNodes}"
