@@ -109,7 +109,7 @@
 	<SolidColorBrush x:Key="CF.Slider.Default.Thumb" Color="#FF4C4C4C" />
 	<SolidColorBrush x:Key="CF.Slider.Default.Border" Color="#FF1E1E1E" />
 	<SolidColorBrush x:Key="CF.Slider.Default.ThumbBorder" Color="#FF1E1E1E" />
-	<SolidColorBrush x:Key="CF.Slider.MouseOver.Thumb" Color="#FF5E5E5E" />
+	<SolidColorBrush x:Key="CF.Slider.MouseOver.Thumb" Color="#FF797979" />
 	<SolidColorBrush x:Key="CF.Slider.Pressed.Thumb" Color="#FF555555" />
 	<SolidColorBrush x:Key="CF.Slider.Disabled.Track" Color="#FF2C2C2C" />
 	<SolidColorBrush x:Key="CF.Slider.Disabled.Thumb" Color="#FF2C2C2C" />

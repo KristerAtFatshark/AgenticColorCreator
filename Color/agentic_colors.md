@@ -273,7 +273,7 @@
 - description: 
 
 ### Slider / Thumb MouseOver
-- value: #FF5E5E5E
+- value: #FF797979
 - description: 
 
 ### Slider / Track Disabled

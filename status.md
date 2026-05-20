@@ -12,13 +12,13 @@
 - Color cards have been compacted for denser browsing of large color sets.
 - Repository indentation has been normalized to real tab characters for leading indentation.
 - Repository line endings have been normalized to `CRLF`.
-- Build and unit tests are passing after the latest `CFDarkStyles.xaml` move.
+- Build and unit tests are passing after the latest slider thumb mouse-over color update.
 
 ## Active Issues
 - Descriptions are saved as a single canonical markdown line even if entered over multiple lines in the UI.
 - No drag/drop reordering or search/filtering yet.
 - Rebuilding the WPF app fails while the running executable is still open because the debug output DLL stays locked.
-- The latest `CFDarkStyles.xaml` move was validated by build and tests, but still needs manual visual confirmation in the running UI.
+- The latest slider thumb mouse-over color update was validated by build and tests, but still needs manual visual confirmation in the running UI.
 
 ## Workarounds
 - Use the popup picker or the hex field with full `#AARRGGBB` values for color editing.
@@ -34,6 +34,7 @@
 - Moved the TreeView-specific files into `AgenticColorCreator.App\UserControls\CFTreeViewControl\` and updated namespaces/XAML references so `CFTreeView`, `CFTreeViewItem`, `TreeViewIconMap`, `TreeViewNode`, and `TreeViewSourceEntry` now live together in a dedicated folder.
 - Added `AgenticColorCreator.App\UserControls\CFTreeViewControl\README.md` with usage documentation covering the public `CFTreeView` properties, required data structures, selection behavior, runtime update behavior, and the `TreeViewIconMap` responsibility.
 - Moved the shared application brushes, styles, and control templates into `AgenticColorCreator.App\Styles\CFDarkStyles.xaml`, and updated `App.xaml` to merge that new path instead of the old top-level `DarkStyles.xaml` file.
+- Reevaluated the slider thumb mouse-over color after `Color\agentic_colors.md` changed at `2026-05-20 10:59:40` and updated `CF.Slider.MouseOver.Thumb` in `AgenticColorCreator.App\Styles\CFDarkStyles.xaml` from `#FF5E5E5E` to `#FF797979`.
 - Converted the remaining implicit control styles in `AgenticColorCreator.App\Styles\CFDarkStyles.xaml` into keyed `CF...` styles and updated `MainWindow.xaml`, `ColorPickerWindow.xaml`, and `CFTreeView.xaml` to opt into those styles explicitly instead of overriding all controls application-wide.
 - Added repository-level formatting enforcement with `.gitattributes` and `.editorconfig`, tightened `codestandards.md` and `AGENTS.md` to require explicit CRLF/tab verification for both edited and newly created files, and normalized the currently flagged files so the formatting audit is clean again.
 - Renamed the custom theme resource keys in `AgenticColorCreator.App\Styles\CFDarkStyles.xaml` to use a `CF` prefix such as `CFTextBox.Default.Background`, reducing the risk of collisions with existing or future non-project resource keys.
