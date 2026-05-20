@@ -12,13 +12,13 @@
 - Color cards have been compacted for denser browsing of large color sets.
 - Repository indentation has been normalized to real tab characters for leading indentation.
 - Repository line endings have been normalized to `CRLF`.
-- Build and unit tests are passing after the latest slider thumb mouse-over color update.
+- Build and unit tests are passing after the latest `TextBox` preview restoration update.
 
 ## Active Issues
 - Descriptions are saved as a single canonical markdown line even if entered over multiple lines in the UI.
 - No drag/drop reordering or search/filtering yet.
 - Rebuilding the WPF app fails while the running executable is still open because the debug output DLL stays locked.
-- The latest slider thumb mouse-over color update was validated by build and tests, but still needs manual visual confirmation in the running UI.
+- The latest `TextBox` preview restoration update was validated by build and tests, but still needs manual visual confirmation in the running UI.
 
 ## Workarounds
 - Use the popup picker or the hex field with full `#AARRGGBB` values for color editing.
@@ -34,6 +34,17 @@
 - Moved the TreeView-specific files into `AgenticColorCreator.App\UserControls\CFTreeViewControl\` and updated namespaces/XAML references so `CFTreeView`, `CFTreeViewItem`, `TreeViewIconMap`, `TreeViewNode`, and `TreeViewSourceEntry` now live together in a dedicated folder.
 - Added `AgenticColorCreator.App\UserControls\CFTreeViewControl\README.md` with usage documentation covering the public `CFTreeView` properties, required data structures, selection behavior, runtime update behavior, and the `TreeViewIconMap` responsibility.
 - Moved the shared application brushes, styles, and control templates into `AgenticColorCreator.App\Styles\CFDarkStyles.xaml`, and updated `App.xaml` to merge that new path instead of the old top-level `DarkStyles.xaml` file.
+- Added `AgenticColorCreator.App\UserControls\CFNumberControl\CFNumber.xaml` and `.xaml.cs` for a custom numeric input control with number-only text entry plus spinner up/down buttons.
+- Reevaluated UI colors after `Color\agentic_colors.md` changed at `2026-05-20 11:28:16` and added the new `Number` color mappings plus `CF.NumberTextBox` and `CF.NumberSpinnerButton` styles in `AgenticColorCreator.App\Styles\CFDarkStyles.xaml`.
+- Added a `CFNumber` preview card to the `UI Preview` tab in `MainWindow.xaml`, including enabled and disabled examples.
+- Added editable min/max fields to the `CFNumber` preview card and bound the preview control's `Minimum` and `Maximum` properties to those fields so the control's clamping behavior can be tested directly in the UI.
+- Set the root `CFNumber` control height explicitly to `24` so the control itself matches the target compact input height instead of relying on child sizing.
+- Reduced the spinner button heights inside `CFNumber` to fit within the fixed `24` control height while keeping the spinner column width unchanged.
+- Updated `CF.NumberSpinnerButton` to use the same pressed-over-hover trigger precedence as the regular `CF.Button` style, so the spinner buttons now show their pressed background/border instead of staying on the mouse-over colors.
+- Reevaluated the `Number` color mappings after `Color\agentic_colors.md` changed at `2026-05-20 13:18:33` and updated `CF.Number.Button.Default.Border` in `AgenticColorCreator.App\Styles\CFDarkStyles.xaml` from `#FF292929` to `#FF4C4C4C`.
+- Moved the `CFNumber` preview min/max helper inputs below both the enabled and disabled control examples so preview-only test inputs no longer sit between the actual controls.
+- Added a real `MainWindow`-owned bound value property for the `CFNumber` preview and a read-only display field under the control so value changes can be verified the same way the TreeView preview exposes its current selection state.
+- Added a real `MainWindow`-owned bound value property for the `TextBox` preview and a read-only display field under the control so text changes can be verified explicitly from the host window, matching the preview pattern used for `CFNumber` and TreeView, while keeping the original disabled `TextBox` example in the card.
 - Reevaluated the slider thumb mouse-over color after `Color\agentic_colors.md` changed at `2026-05-20 10:59:40` and updated `CF.Slider.MouseOver.Thumb` in `AgenticColorCreator.App\Styles\CFDarkStyles.xaml` from `#FF5E5E5E` to `#FF797979`.
 - Converted the remaining implicit control styles in `AgenticColorCreator.App\Styles\CFDarkStyles.xaml` into keyed `CF...` styles and updated `MainWindow.xaml`, `ColorPickerWindow.xaml`, and `CFTreeView.xaml` to opt into those styles explicitly instead of overriding all controls application-wide.
 - Added repository-level formatting enforcement with `.gitattributes` and `.editorconfig`, tightened `codestandards.md` and `AGENTS.md` to require explicit CRLF/tab verification for both edited and newly created files, and normalized the currently flagged files so the formatting audit is clean again.

@@ -10,6 +10,18 @@ namespace AgenticColorCreator.App;
 
 public partial class MainWindow : Window
 {
+	public static readonly DependencyProperty PreviewTextBoxValueProperty = DependencyProperty.Register(
+		nameof(PreviewTextBoxValue),
+		typeof(string),
+		typeof(MainWindow),
+		new PropertyMetadata("My Text"));
+
+	public static readonly DependencyProperty PreviewNumberValueProperty = DependencyProperty.Register(
+		nameof(PreviewNumberValue),
+		typeof(int),
+		typeof(MainWindow),
+		new PropertyMetadata(12));
+
 	public static readonly DependencyProperty SelectedPreviewTreeViewItemsProperty = DependencyProperty.Register(
 		nameof(SelectedPreviewTreeViewItems),
 		typeof(IReadOnlyList<CFTreeViewItem>),
@@ -39,6 +51,18 @@ public partial class MainWindow : Window
 	{
 		get => (IReadOnlyList<CFTreeViewItem>?)GetValue(SelectedPreviewTreeViewItemsProperty);
 		set => SetValue(SelectedPreviewTreeViewItemsProperty, value);
+	}
+
+	public string PreviewTextBoxValue
+	{
+		get => (string)GetValue(PreviewTextBoxValueProperty);
+		set => SetValue(PreviewTextBoxValueProperty, value);
+	}
+
+	public int PreviewNumberValue
+	{
+		get => (int)GetValue(PreviewNumberValueProperty);
+		set => SetValue(PreviewNumberValueProperty, value);
 	}
 
 	public ObservableCollection<string> SelectedPreviewTreeViewValues

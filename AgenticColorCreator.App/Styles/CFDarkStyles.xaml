@@ -116,6 +116,24 @@
 	<SolidColorBrush x:Key="CF.Slider.Disabled.Tickbar" Color="#FF2C2C2C" />
 	<SolidColorBrush x:Key="CF.Slider.Disabled.Border" Color="#FF4C4C4C" />
 	<SolidColorBrush x:Key="CF.Slider.Disabled.ThumbBorder" Color="#FF4C4C4C" />
+	<SolidColorBrush x:Key="CF.Number.TextBox.Default.Background" Color="#FF1E1E1E" />
+	<SolidColorBrush x:Key="CF.Number.TextBox.Default.Text" Color="#FFC8C8C8" />
+	<SolidColorBrush x:Key="CF.Number.TextBox.Default.Border" Color="#FF4C4C4C" />
+	<SolidColorBrush x:Key="CF.Number.Button.Default.Background" Color="#FF4C4C4C" />
+	<SolidColorBrush x:Key="CF.Number.Button.Default.Text" Color="#FFC8C8C8" />
+	<SolidColorBrush x:Key="CF.Number.Button.Default.Border" Color="#FF4C4C4C" />
+	<SolidColorBrush x:Key="CF.Number.TextBox.Selected.Border" Color="#61FF9600" />
+	<SolidColorBrush x:Key="CF.Number.TextBox.Selected.Selection" Color="#8FFF9600" />
+	<SolidColorBrush x:Key="CF.Number.Button.Pressed.Background" Color="#FF474747" />
+	<SolidColorBrush x:Key="CF.Number.Button.Pressed.Border" Color="#FF292929" />
+	<SolidColorBrush x:Key="CF.Number.TextBox.MouseOver.Border" Color="#FFFF9600" />
+	<SolidColorBrush x:Key="CF.Number.Button.MouseOver.Background" Color="#FF797979" />
+	<SolidColorBrush x:Key="CF.Number.Button.MouseOver.Text" Color="#FFFFFFFF" />
+	<SolidColorBrush x:Key="CF.Number.TextBox.Disabled.Text" Color="#FF7B7B7B" />
+	<SolidColorBrush x:Key="CF.Number.TextBox.Disabled.Background" Color="#FF2C2C2C" />
+	<SolidColorBrush x:Key="CF.Number.Button.Disabled.Text" Color="#FF7B7B7B" />
+	<SolidColorBrush x:Key="CF.Number.Button.Disabled.Background" Color="#FF2C2C2C" />
+	<SolidColorBrush x:Key="CF.Number.Button.Disabled.Border" Color="#FF4C4C4C" />
 
 	<Style x:Key="CF.Window" TargetType="Window">
 		<Setter Property="Background" Value="{StaticResource CF.Window.Default.Background}" />
@@ -561,6 +579,89 @@
 						<Trigger Property="IsChecked" Value="{x:Null}">
 							<Setter TargetName="optionMark" Property="Opacity" Value="0.56" />
 						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style x:Key="CF.NumberTextBox" TargetType="TextBox">
+		<Setter Property="Background" Value="{StaticResource CF.Number.TextBox.Default.Background}" />
+		<Setter Property="Foreground" Value="{StaticResource CF.Number.TextBox.Default.Text}" />
+		<Setter Property="BorderBrush" Value="{StaticResource CF.Number.TextBox.Default.Border}" />
+		<Setter Property="BorderThickness" Value="1" />
+		<Setter Property="MinHeight" Value="24" />
+		<Setter Property="SelectionBrush" Value="{StaticResource CF.Number.TextBox.Selected.Selection}" />
+		<Setter Property="Padding" Value="4,3" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="TextBox">
+					<Border x:Name="NumberTextBoxBorder"
+							Background="{TemplateBinding Background}"
+							BorderBrush="{TemplateBinding BorderBrush}"
+							BorderThickness="{TemplateBinding BorderThickness}">
+						<ScrollViewer x:Name="PART_ContentHost"
+									Margin="0"
+									Padding="{TemplateBinding Padding}" />
+					</Border>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsEnabled" Value="False">
+							<Setter TargetName="NumberTextBoxBorder" Property="Background" Value="{StaticResource CF.Number.TextBox.Disabled.Background}" />
+							<Setter Property="Foreground" Value="{StaticResource CF.Number.TextBox.Disabled.Text}" />
+						</Trigger>
+						<Trigger Property="IsKeyboardFocused" Value="True">
+							<Setter TargetName="NumberTextBoxBorder" Property="BorderBrush" Value="{StaticResource CF.Number.TextBox.Selected.Border}" />
+						</Trigger>
+						<Trigger Property="IsMouseOver" Value="True">
+							<Setter TargetName="NumberTextBoxBorder" Property="BorderBrush" Value="{StaticResource CF.Number.TextBox.MouseOver.Border}" />
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style x:Key="CF.NumberSpinnerButton" TargetType="Button">
+		<Setter Property="Background" Value="{StaticResource CF.Number.Button.Default.Background}" />
+		<Setter Property="Foreground" Value="{StaticResource CF.Number.Button.Default.Text}" />
+		<Setter Property="BorderBrush" Value="{StaticResource CF.Number.Button.Default.Border}" />
+		<Setter Property="BorderThickness" Value="1" />
+		<Setter Property="MinHeight" Value="0" />
+		<Setter Property="MinWidth" Value="0" />
+		<Setter Property="FontSize" Value="8" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="Button">
+					<Border x:Name="SpinnerButtonBorder"
+							Background="{TemplateBinding Background}"
+							BorderBrush="{TemplateBinding BorderBrush}"
+							BorderThickness="{TemplateBinding BorderThickness}">
+						<ContentPresenter HorizontalAlignment="Center"
+										VerticalAlignment="Center"
+										RecognizesAccessKey="True" />
+					</Border>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsEnabled" Value="False">
+							<Setter TargetName="SpinnerButtonBorder" Property="Background" Value="{StaticResource CF.Number.Button.Disabled.Background}" />
+							<Setter TargetName="SpinnerButtonBorder" Property="BorderBrush" Value="{StaticResource CF.Number.Button.Disabled.Border}" />
+							<Setter Property="Foreground" Value="{StaticResource CF.Number.Button.Disabled.Text}" />
+						</Trigger>
+						<Trigger Property="IsPressed" Value="True">
+							<Setter TargetName="SpinnerButtonBorder" Property="Background" Value="{StaticResource CF.Number.Button.Pressed.Background}" />
+							<Setter TargetName="SpinnerButtonBorder" Property="BorderBrush" Value="{StaticResource CF.Number.Button.Pressed.Border}" />
+						</Trigger>
+						<Trigger Property="IsMouseOver" Value="True">
+							<Setter TargetName="SpinnerButtonBorder" Property="Background" Value="{StaticResource CF.Number.Button.MouseOver.Background}" />
+							<Setter Property="Foreground" Value="{StaticResource CF.Number.Button.MouseOver.Text}" />
+						</Trigger>
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Property="IsPressed" Value="True" />
+								<Condition Property="IsMouseOver" Value="True" />
+							</MultiTrigger.Conditions>
+							<Setter TargetName="SpinnerButtonBorder" Property="Background" Value="{StaticResource CF.Number.Button.Pressed.Background}" />
+							<Setter TargetName="SpinnerButtonBorder" Property="BorderBrush" Value="{StaticResource CF.Number.Button.Pressed.Border}" />
+						</MultiTrigger>
 					</ControlTemplate.Triggers>
 				</ControlTemplate>
 			</Setter.Value>

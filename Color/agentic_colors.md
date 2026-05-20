@@ -446,4 +446,78 @@
 
 ### TreeView Item / Icon MouseOver
 - value: #FFFFFFFF
+- description: 
+
+## Category: Number
+
+### Number / TextBox.Background Default
+- value: #FF1E1E1E
+- description: 
+
+### Number / TextBox.Text Default
+- value: #FFC8C8C8
+- description: 
+
+### Number / TextBox.Border Default
+- value: #FF4C4C4C
+- description: 
+
+### Number / Button.Background Default
+- value: #FF4C4C4C
+- description: 
+
+### Number / Button.Text Default
+- value: #FFC8C8C8
+- description: 
+
+### Number / Button.Border Default
+- value: #FF4C4C4C
+- description: 
+
+### Number / TextBox.Border Selected
+- value: #61FF9600
+- description: 
+
+### Number / TextBox.Text.Selection Selected
+- value: #8FFF9600
+- description: 
+
+### Number / Button.Background Pressed
+- value: #FF474747
+- description: 
+
+### Number / Button.Border Pressed
+- value: #FF292929
+- description: 
+
+### Number / TextBox.Border MouseOver
+- value: #FFFF9600
+- description: 
+
+### Number / Button.Background MouseOver
+- value: #FF797979
+- description: 
+
+### Number / Button.Text MouseOver
+- value: #FFFFFFFF
+- description: 
+
+### Number / TextBox.Text Disabled
+- value: #FF7B7B7B
+- description: 
+
+### Number / TextBox.Background Disabled
+- value: #FF2C2C2C
+- description: 
+
+### Number / Button.Text Disabled
+- value: #FF7B7B7B
+- description: 
+
+### Number / Button.Background Disabled
+- value: #FF2C2C2C
+- description: 
+
+### Number / Button.Border Disabled
+- value: #FF4C4C4C
 - description:
