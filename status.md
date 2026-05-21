@@ -40,6 +40,8 @@
 - Updated the interactive color picker's hue ring to be exactly `20px` thick and kept the hue selector marker centered at the midpoint of that ring thickness.
 - Corrected the saturation/value selector marker positioning so the white square is centered on the chosen point instead of using that point as its top-left corner.
 - Fixed the color picker so RGB and alpha slider/text changes now refresh the visual picker surfaces and selector markers immediately instead of only updating the numeric/hex values.
+- Replaced the interactive color picker's selected-color preview placeholder blocks with a real tiled checkerboard background so transparent colors preview consistently with `CFColor`.
+- Removed the selected-color preview overlay inset so the color fill now exactly matches the checkerboard preview area instead of leaving a transparent 1px border.
 - Added immediate `CFTextBox` validation modes for alphanumeric path input and actual integer input.
 - Added float preview support in `MainWindow` with `PreviewFloatValue`, `PreviewFloatMinimum`, `PreviewFloatMaximum`, and `PreviewFloatDecimals` dependency properties plus a new `CFFloat` preview card and decimals test input in the `UI Preview` tab.
 - Added `PreviewColorValue` plus a new `CFColor` preview card in `MainWindow` so the custom color well and upgraded picker can be tested from the `UI Preview` tab.

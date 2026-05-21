@@ -11,6 +11,21 @@
 		ShowInTaskbar="False">
 	<Window.Resources>
 		<Style BasedOn="{StaticResource CF.ScrollBar}" TargetType="ScrollBar" />
+		<DrawingBrush x:Key="CheckerBrush"
+					  TileMode="Tile"
+					  Viewport="0,0,16,16"
+					  ViewportUnits="Absolute"
+					  Viewbox="0,0,16,16"
+					  ViewboxUnits="Absolute"
+					  Stretch="None">
+			<DrawingBrush.Drawing>
+				<DrawingGroup>
+					<GeometryDrawing Brush="#FFD2D2D2" Geometry="M 0,0 H 16 V 16 H 0 Z" />
+					<GeometryDrawing Brush="#FF8C8C8C" Geometry="M 0,0 H 8 V 8 H 0 Z" />
+					<GeometryDrawing Brush="#FF8C8C8C" Geometry="M 8,8 H 16 V 16 H 8 Z" />
+				</DrawingGroup>
+			</DrawingBrush.Drawing>
+		</DrawingBrush>
 	</Window.Resources>
 	<Grid Margin="18">
 		<Grid.ColumnDefinitions>
@@ -102,14 +117,12 @@
 						<ColumnDefinition Width="*" />
 					</Grid.ColumnDefinitions>
 					<Border Height="72"
-							Background="#FFB0B0B0"
+							Background="{StaticResource CheckerBrush}"
 							BorderBrush="{StaticResource CF.Border.Default.Border}"
 							BorderThickness="1"
 							CornerRadius="6">
 						<Grid>
-							<Rectangle Fill="#FFD0D0D0" HorizontalAlignment="Left" Width="48" />
-							<Rectangle Fill="#FF8F8F8F" HorizontalAlignment="Right" Width="48" />
-							<Border Background="{Binding PreviewBrush}" CornerRadius="5" Margin="1" />
+							<Border Background="{Binding PreviewBrush}" CornerRadius="5" />
 						</Grid>
 					</Border>
 					<StackPanel Grid.Column="1" Margin="14,0,0,0" VerticalAlignment="Center">
