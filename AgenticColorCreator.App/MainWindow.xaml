@@ -4,6 +4,7 @@
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:intControls="clr-namespace:AgenticColorCreator.App.UserControls.CFIntControl"
+		xmlns:floatControls="clr-namespace:AgenticColorCreator.App.UserControls.CFFloatControl"
 		xmlns:textControls="clr-namespace:AgenticColorCreator.App.UserControls.CFTextBoxControl"
 		xmlns:userControls="clr-namespace:AgenticColorCreator.App.UserControls.CFTreeViewControl"
 		xmlns:viewModels="clr-namespace:AgenticColorCreator.App.ViewModels"
@@ -334,17 +335,100 @@
 									<RowDefinition Height="Auto" />
 									<RowDefinition Height="Auto" />
 								</Grid.RowDefinitions>
+								<TextBlock Style="{StaticResource CF.TextBlock}" FontSize="16" FontWeight="SemiBold" Text="CFFloat" />
+								<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="1" Margin="0,2,0,14" Foreground="{StaticResource CF.Text.Selected.Foreground}" Text="App.UserControls.CFFloatControl.CFFloat" />
+								<floatControls:CFFloat Grid.Row="2"
+												   Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatValue, Mode=TwoWay}"
+												   Step="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatStep}"
+												   Decimals="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatDecimals}"
+												   Minimum="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatMinimum}"
+												   Maximum="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatMaximum}" />
+								<floatControls:CFFloat Grid.Row="3"
+												   IsEnabled="False"
+												   Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatValue}"
+												   Step="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatStep}"
+												   Decimals="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatDecimals}"
+												   Minimum="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatMinimum}"
+												   Maximum="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatMaximum}" />
+								<TextBox Style="{StaticResource CF.TextBox}"
+										 Grid.Row="4"
+										 Margin="0,8,0,0"
+										 IsReadOnly="True"
+										 Text="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatValue, StringFormat=Value: {0}}" />
+								<Grid Grid.Row="5" Margin="0,8,0,0">
+									<Grid.RowDefinitions>
+										<RowDefinition Height="Auto" />
+										<RowDefinition Height="Auto" />
+									</Grid.RowDefinitions>
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="Auto" />
+										<ColumnDefinition Width="90" />
+										<ColumnDefinition Width="Auto" />
+										<ColumnDefinition Width="90" />
+										<ColumnDefinition Width="Auto" />
+										<ColumnDefinition Width="90" />
+										<ColumnDefinition Width="Auto" />
+										<ColumnDefinition Width="90" />
+									</Grid.ColumnDefinitions>
+									<TextBlock Style="{StaticResource CF.TextBlock}" VerticalAlignment="Center" Text="Min" />
+									<floatControls:CFFloat Grid.Column="1"
+														   Margin="8,0,12,0"
+														   Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatMinimum, Mode=TwoWay}"
+														   Step="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatStep}"
+														   Decimals="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatDecimals}" />
+									<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Column="2" VerticalAlignment="Center" Text="Max" />
+									<floatControls:CFFloat Grid.Column="3"
+														   Margin="8,0,12,0"
+														   Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatMaximum, Mode=TwoWay}"
+														   Step="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatStep}"
+														   Decimals="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatDecimals}" />
+									<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="1" VerticalAlignment="Center" Text="Step" />
+									<floatControls:CFFloat Grid.Row="1"
+														   Grid.Column="1"
+														   Margin="8,8,12,0"
+														   Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatStep, Mode=TwoWay}"
+														   Step="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatStep}"
+														   Decimals="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatDecimals}"
+														   Minimum="0"
+														   Maximum="100" />
+									<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" Text="Decimals" />
+									<intControls:CFInt Grid.Row="1" Grid.Column="3"
+													   Margin="8,0,0,0"
+													   Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatDecimals, Mode=TwoWay}"
+													   Minimum="0"
+													   Maximum="6"
+													   Step="1" />
+								</Grid>
+							</Grid>
+						</Border>
+
+						<Border Margin="0,0,18,18"
+								Padding="16"
+								Width="300"
+								Background="{StaticResource CF.Panel.Default.Background}"
+								BorderBrush="{StaticResource CF.Border.Default.Border}"
+								BorderThickness="1"
+								CornerRadius="10">
+							<Grid>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+								</Grid.RowDefinitions>
 								<TextBlock Style="{StaticResource CF.TextBlock}" FontSize="16" FontWeight="SemiBold" Text="CFInt" />
 								<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="1" Margin="0,2,0,14" Foreground="{StaticResource CF.Text.Selected.Foreground}" Text="App.UserControls.CFIntControl.CFInt" />
 								<intControls:CFInt Grid.Row="2"
 												 Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewNumberValue, Mode=TwoWay}"
-												 Step="1"
+												 Step="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewIntStep}"
 												 Minimum="{Binding ElementName=PreviewNumberMinTextBox, Path=Text}"
 												 Maximum="{Binding ElementName=PreviewNumberMaxTextBox, Path=Text}" />
 								<intControls:CFInt Grid.Row="3"
 												 IsEnabled="False"
 												 Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewNumberValue}"
-												 Step="1"
+												 Step="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewIntStep}"
 												 Minimum="{Binding ElementName=PreviewNumberMinTextBox, Path=Text}"
 												 Maximum="{Binding ElementName=PreviewNumberMaxTextBox, Path=Text}" />
 								<TextBox Style="{StaticResource CF.TextBox}"
@@ -353,6 +437,10 @@
 										 IsReadOnly="True"
 										 Text="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewNumberValue, StringFormat=Value: {0}}" />
 								<Grid Grid.Row="5" Margin="0,8,0,0">
+									<Grid.RowDefinitions>
+										<RowDefinition Height="Auto" />
+										<RowDefinition Height="Auto" />
+									</Grid.RowDefinitions>
 									<Grid.ColumnDefinitions>
 										<ColumnDefinition Width="Auto" />
 										<ColumnDefinition Width="70" />
@@ -371,6 +459,14 @@
 											 Grid.Column="3"
 											 Margin="8,0,0,0"
 											 Text="100" />
+									<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="1" VerticalAlignment="Center" Text="Step" />
+									<intControls:CFInt Grid.Row="1"
+												   Grid.Column="1"
+												   Margin="8,8,12,0"
+												   Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewIntStep, Mode=TwoWay}"
+												   Minimum="0"
+												   Maximum="100"
+												   Step="1" />
 								</Grid>
 							</Grid>
 						</Border>

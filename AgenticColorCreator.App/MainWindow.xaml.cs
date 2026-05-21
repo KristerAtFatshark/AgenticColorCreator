@@ -22,6 +22,42 @@ public partial class MainWindow : Window
 		typeof(MainWindow),
 		new PropertyMetadata(12));
 
+	public static readonly DependencyProperty PreviewIntStepProperty = DependencyProperty.Register(
+		nameof(PreviewIntStep),
+		typeof(int),
+		typeof(MainWindow),
+		new PropertyMetadata(1));
+
+	public static readonly DependencyProperty PreviewFloatValueProperty = DependencyProperty.Register(
+		nameof(PreviewFloatValue),
+		typeof(float),
+		typeof(MainWindow),
+		new PropertyMetadata(12.5f));
+
+	public static readonly DependencyProperty PreviewFloatMinimumProperty = DependencyProperty.Register(
+		nameof(PreviewFloatMinimum),
+		typeof(float),
+		typeof(MainWindow),
+		new PropertyMetadata(0f));
+
+	public static readonly DependencyProperty PreviewFloatMaximumProperty = DependencyProperty.Register(
+		nameof(PreviewFloatMaximum),
+		typeof(float),
+		typeof(MainWindow),
+		new PropertyMetadata(100f));
+
+	public static readonly DependencyProperty PreviewFloatDecimalsProperty = DependencyProperty.Register(
+		nameof(PreviewFloatDecimals),
+		typeof(int),
+		typeof(MainWindow),
+		new PropertyMetadata(2));
+
+	public static readonly DependencyProperty PreviewFloatStepProperty = DependencyProperty.Register(
+		nameof(PreviewFloatStep),
+		typeof(float),
+		typeof(MainWindow),
+		new PropertyMetadata(0.25f));
+
 	public static readonly DependencyProperty SelectedPreviewTreeViewItemsProperty = DependencyProperty.Register(
 		nameof(SelectedPreviewTreeViewItems),
 		typeof(IReadOnlyList<CFTreeViewItem>),
@@ -63,6 +99,42 @@ public partial class MainWindow : Window
 	{
 		get => (int)GetValue(PreviewNumberValueProperty);
 		set => SetValue(PreviewNumberValueProperty, value);
+	}
+
+	public int PreviewIntStep
+	{
+		get => (int)GetValue(PreviewIntStepProperty);
+		set => SetValue(PreviewIntStepProperty, value);
+	}
+
+	public float PreviewFloatValue
+	{
+		get => (float)GetValue(PreviewFloatValueProperty);
+		set => SetValue(PreviewFloatValueProperty, value);
+	}
+
+	public float PreviewFloatMinimum
+	{
+		get => (float)GetValue(PreviewFloatMinimumProperty);
+		set => SetValue(PreviewFloatMinimumProperty, value);
+	}
+
+	public float PreviewFloatMaximum
+	{
+		get => (float)GetValue(PreviewFloatMaximumProperty);
+		set => SetValue(PreviewFloatMaximumProperty, value);
+	}
+
+	public int PreviewFloatDecimals
+	{
+		get => (int)GetValue(PreviewFloatDecimalsProperty);
+		set => SetValue(PreviewFloatDecimalsProperty, value);
+	}
+
+	public float PreviewFloatStep
+	{
+		get => (float)GetValue(PreviewFloatStepProperty);
+		set => SetValue(PreviewFloatStepProperty, value);
 	}
 
 	public ObservableCollection<string> SelectedPreviewTreeViewValues

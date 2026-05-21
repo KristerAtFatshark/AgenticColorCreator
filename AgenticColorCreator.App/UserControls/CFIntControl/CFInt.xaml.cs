@@ -42,6 +42,7 @@ public partial class CFInt : UserControl
 	public CFInt()
 	{
 		InitializeComponent();
+		PreviewKeyDown += OnPreviewKeyDown;
 	}
 
 	public int Value
@@ -94,6 +95,26 @@ public partial class CFInt : UserControl
 	{
 		Value = CoerceValue(Value - Step);
 		TextValue = Value.ToString(CultureInfo.InvariantCulture);
+	}
+
+	private void OnPreviewKeyDown(object sender, KeyEventArgs e)
+	{
+		if (!IsEnabled)
+		{
+			return;
+		}
+
+		switch (e.Key)
+		{
+			case Key.Up:
+				OnIncreaseClick(this, new RoutedEventArgs());
+				e.Handled = true;
+				break;
+			case Key.Down:
+				OnDecreaseClick(this, new RoutedEventArgs());
+				e.Handled = true;
+				break;
+		}
 	}
 
 	private void CommitTextValue()

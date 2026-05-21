@@ -11,6 +11,7 @@ namespace AgenticColorCreator.App.UserControls.CFTextBoxControl;
 public partial class CFTextBox : UserControl
 {
 	private static readonly Regex GeneralValidationRegex = new("^[A-Za-z0-9/._-]*$", RegexOptions.Compiled);
+	private static readonly Regex FloatValidationRegex = new("^-?\\d*\\.?\\d*$", RegexOptions.Compiled);
 
 	public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
 		nameof(Value),
@@ -35,6 +36,12 @@ public partial class CFTextBox : UserControl
 		typeof(CFTextBoxValidationMode),
 		typeof(CFTextBox),
 		new PropertyMetadata(CFTextBoxValidationMode.AlphaNumericPath, OnValidationModeChanged));
+
+	public static readonly DependencyProperty DecimalPlacesProperty = DependencyProperty.Register(
+		nameof(DecimalPlaces),
+		typeof(int),
+		typeof(CFTextBox),
+		new PropertyMetadata(2, OnDecimalPlacesChanged));
 
 	private readonly DispatcherTimer _commitTimer;
 	private bool _isApplyingExternalValue;
@@ -78,6 +85,12 @@ public partial class CFTextBox : UserControl
 		set => SetValue(ValidationModeProperty, value);
 	}
 
+	public int DecimalPlaces
+	{
+		get => (int)GetValue(DecimalPlacesProperty);
+		set => SetValue(DecimalPlacesProperty, value);
+	}
+
 	private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 	{
 		if (d is not CFTextBox textBox || textBox._isApplyingExternalValue)
@@ -100,6 +113,16 @@ public partial class CFTextBox : UserControl
 	}
 
 	private static void OnValidationModeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+	{
+		if (d is not CFTextBox textBox)
+		{
+			return;
+		}
+
+		textBox.UpdateValidationVisual();
+	}
+
+	private static void OnDecimalPlacesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 	{
 		if (d is not CFTextBox textBox)
 		{
@@ -188,8 +211,37 @@ public partial class CFTextBox : UserControl
 		return ValidationMode switch
 		{
 			CFTextBoxValidationMode.NumberOnly => int.TryParse(text, NumberStyles.Integer, CultureInfo.InvariantCulture, out _),
+			CFTextBoxValidationMode.FloatNumber => IsFloatTextValid(text),
 			_ => GeneralValidationRegex.IsMatch(text),
 		};
+	}
+
+	private bool IsFloatTextValid(string text)
+	{
+		if (string.IsNullOrWhiteSpace(text) || !FloatValidationRegex.IsMatch(text))
+		{
+			return false;
+		}
+
+		if (text is "-" or "." or "-.")
+		{
+			return false;
+		}
+
+		if (!float.TryParse(text, NumberStyles.Float, CultureInfo.InvariantCulture, out _))
+		{
+			return false;
+		}
+
+		var decimalSeparatorIndex = text.IndexOf('.');
+		if (decimalSeparatorIndex < 0)
+		{
+			return true;
+		}
+
+		var allowedDecimalPlaces = Math.Max(0, DecimalPlaces);
+		var decimalDigits = text.Length - decimalSeparatorIndex - 1;
+		return decimalDigits <= allowedDecimalPlaces;
 	}
 }
 
@@ -197,4 +249,5 @@ public enum CFTextBoxValidationMode
 {
 	AlphaNumericPath,
 	NumberOnly,
+	FloatNumber,
 }
