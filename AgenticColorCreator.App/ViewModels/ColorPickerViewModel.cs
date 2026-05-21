@@ -1,77 +1,144 @@
 using System;
 using System.Globalization;
+using System.Windows;
 using System.Windows.Media;
+using AgenticColorCreator.App.Dialogs;
 using AgenticColorCreator.Core.Services;
 
 namespace AgenticColorCreator.App.ViewModels;
 
 public sealed class ColorPickerViewModel : ViewModelBase
 {
-	private bool _isUpdatingFromHex;
+	private const double HueWheelOuterRadius = 120d;
+	private const double HueWheelInnerRadius = 100d;
+	private const double HueWheelCenter = 130d;
+	private const double SaturationValueSize = 128d;
+	private const double HueSelectorSize = 14d;
+	private const double SaturationValueSelectorSize = 10d;
+
+	private bool _isSynchronizing;
 	private int _alpha;
 	private int _red;
 	private int _green;
 	private int _blue;
+	private double _hue;
+	private double _saturation;
+	private double _value;
 	private string _hexValue;
+	private readonly Brush _hueWheelBrush;
 
 	public ColorPickerViewModel(string initialHexValue)
 	{
+		_hueWheelBrush = HueWheelBrushFactory.Create(260, HueWheelOuterRadius, HueWheelInnerRadius);
 		_hexValue = ColorHexParser.TryParseArgb(initialHexValue, out var color)
 			? ColorHexParser.Normalize(initialHexValue)
 			: "#FFFFFFFF";
 
-		_alpha = color.A;
-		_red = color.R;
-		_green = color.G;
-		_blue = color.B;
+		ApplyArgb(color.A, color.R, color.G, color.B, true);
 	}
 
 	public int Alpha
 	{
 		get => _alpha;
-		set => SetChannel(ref _alpha, value, nameof(Alpha), nameof(AlphaText));
+		set => SetRgbChannel(ref _alpha, value, nameof(Alpha), nameof(AlphaText), false);
 	}
 
 	public int Red
 	{
 		get => _red;
-		set => SetChannel(ref _red, value, nameof(Red), nameof(RedText));
+		set => SetRgbChannel(ref _red, value, nameof(Red), nameof(RedText), true);
 	}
 
 	public int Green
 	{
 		get => _green;
-		set => SetChannel(ref _green, value, nameof(Green), nameof(GreenText));
+		set => SetRgbChannel(ref _green, value, nameof(Green), nameof(GreenText), true);
 	}
 
 	public int Blue
 	{
 		get => _blue;
-		set => SetChannel(ref _blue, value, nameof(Blue), nameof(BlueText));
+		set => SetRgbChannel(ref _blue, value, nameof(Blue), nameof(BlueText), true);
+	}
+
+	public double Hue
+	{
+		get => _hue;
+		set
+		{
+			var normalized = value % 360d;
+			if (normalized < 0)
+			{
+				normalized += 360d;
+			}
+
+			if (!SetProperty(ref _hue, normalized))
+			{
+				return;
+			}
+
+			if (_isSynchronizing)
+			{
+				RaiseVisualProperties();
+				return;
+			}
+
+			UpdateFromHsv();
+		}
+	}
+
+	public double Saturation
+	{
+		get => _saturation;
+		set => SetHsvChannel(ref _saturation, Math.Clamp(value, 0d, 1d), nameof(Saturation), nameof(SaturationText));
+	}
+
+	public double ValueComponent
+	{
+		get => _value;
+		set => SetHsvChannel(ref _value, Math.Clamp(value, 0d, 1d), nameof(ValueComponent), nameof(ValueText));
 	}
 
 	public string AlphaText
 	{
 		get => Alpha.ToString(CultureInfo.InvariantCulture);
-		set => SetTextChannel(value, channel => Alpha = channel);
+		set => SetByteTextChannel(value, channel => Alpha = channel);
 	}
 
 	public string RedText
 	{
 		get => Red.ToString(CultureInfo.InvariantCulture);
-		set => SetTextChannel(value, channel => Red = channel);
+		set => SetByteTextChannel(value, channel => Red = channel);
 	}
 
 	public string GreenText
 	{
 		get => Green.ToString(CultureInfo.InvariantCulture);
-		set => SetTextChannel(value, channel => Green = channel);
+		set => SetByteTextChannel(value, channel => Green = channel);
 	}
 
 	public string BlueText
 	{
 		get => Blue.ToString(CultureInfo.InvariantCulture);
-		set => SetTextChannel(value, channel => Blue = channel);
+		set => SetByteTextChannel(value, channel => Blue = channel);
+	}
+
+	public string HueText
+	{
+		get => Hue.ToString("0.##", CultureInfo.InvariantCulture);
+		set => SetDoubleTextChannel(value, parsed => Hue = parsed);
+	}
+
+	public string SaturationText
+	{
+		get => (Saturation * 100d).ToString("0.##", CultureInfo.InvariantCulture);
+		set => SetPercentageTextChannel(value, parsed => Saturation = parsed / 100d);
+	}
+
+	public string ValueText
+	{
+		get => (ValueComponent * 100d).ToString("0.##", CultureInfo.InvariantCulture);
+		set => SetPercentageTextChannel(value, parsed => ValueComponent = parsed / 100d);
 	}
 
 	public string HexValue
@@ -84,30 +151,178 @@ public sealed class ColorPickerViewModel : ViewModelBase
 				return;
 			}
 
-			if (_isUpdatingFromHex)
+			if (_isSynchronizing)
 			{
-				OnPropertyChanged(nameof(PreviewBrush));
+				RaiseVisualProperties();
 				return;
 			}
 
-			if (ColorHexParser.TryParseArgb(value, out var color))
+			if (!ColorHexParser.TryParseArgb(value, out var color))
 			{
-				_isUpdatingFromHex = true;
-				_alpha = color.A;
-				_red = color.R;
-				_green = color.G;
-				_blue = color.B;
-				RaiseAllChannelProperties();
-				_isUpdatingFromHex = false;
+				RaiseVisualProperties();
+				return;
 			}
 
-			OnPropertyChanged(nameof(PreviewBrush));
+			ApplyArgb(color.A, color.R, color.G, color.B, true);
 		}
 	}
 
 	public Brush PreviewBrush => new SolidColorBrush(Color.FromArgb((byte)Alpha, (byte)Red, (byte)Green, (byte)Blue));
 
-	private void RaiseAllChannelProperties()
+	public Brush HueWheelBrush => _hueWheelBrush;
+
+	public Brush AlphaOverlayBrush => new SolidColorBrush(Color.FromArgb((byte)Alpha, (byte)Red, (byte)Green, (byte)Blue));
+
+	public Brush SaturationValueBrush
+	{
+		get
+		{
+			var rgb = ColorSpaceConverter.HsvToRgb(Hue, 1d, 1d);
+			var brush = new LinearGradientBrush
+			{
+				StartPoint = new Point(0, 0.5),
+				EndPoint = new Point(1, 0.5),
+			};
+			brush.GradientStops.Add(new GradientStop(Colors.White, 0));
+			brush.GradientStops.Add(new GradientStop(Color.FromRgb(rgb.Red, rgb.Green, rgb.Blue), 1));
+			brush.Freeze();
+			return brush;
+		}
+	}
+
+	public Point HueSelectorPoint
+	{
+		get
+		{
+			var angle = (Hue - 90d) * Math.PI / 180d;
+			var radius = (HueWheelOuterRadius + HueWheelInnerRadius) / 2d;
+			return new Point(
+				HueWheelCenter + (Math.Cos(angle) * radius) - (HueSelectorSize / 2d),
+				HueWheelCenter + (Math.Sin(angle) * radius) - (HueSelectorSize / 2d));
+		}
+	}
+
+	public Point SaturationValueSelectorPoint => new(
+		(Saturation * SaturationValueSize) - (SaturationValueSelectorSize / 2d),
+		((1d - ValueComponent) * SaturationValueSize) - (SaturationValueSelectorSize / 2d));
+
+	public void UpdateHueFromPoint(Point point, Size renderSize)
+	{
+		var center = new Point(renderSize.Width / 2d, renderSize.Height / 2d);
+		var angle = Math.Atan2(point.Y - center.Y, point.X - center.X) * 180d / Math.PI;
+		Hue = angle + 90d;
+	}
+
+	public void UpdateSaturationValueFromPoint(Point point, Size renderSize)
+	{
+		if (renderSize.Width <= 0 || renderSize.Height <= 0)
+		{
+			return;
+		}
+
+		Saturation = Math.Clamp(point.X / renderSize.Width, 0d, 1d);
+		ValueComponent = Math.Clamp(1d - (point.Y / renderSize.Height), 0d, 1d);
+	}
+
+	private void SetRgbChannel(ref int field, int value, string propertyName, string textPropertyName, bool updateHsv)
+	{
+		value = Math.Clamp(value, 0, 255);
+
+		if (!SetProperty(ref field, value, propertyName))
+		{
+			return;
+		}
+
+		OnPropertyChanged(textPropertyName);
+
+		if (_isSynchronizing)
+		{
+			RaiseVisualProperties();
+			return;
+		}
+
+		if (updateHsv)
+		{
+			UpdateHsvFromRgb();
+		}
+
+		UpdateHexFromChannels();
+		RaiseVisualProperties();
+	}
+
+	private void SetHsvChannel(ref double field, double value, string propertyName, string textPropertyName)
+	{
+		if (!SetProperty(ref field, value, propertyName))
+		{
+			return;
+		}
+
+		OnPropertyChanged(textPropertyName);
+
+		if (_isSynchronizing)
+		{
+			RaiseVisualProperties();
+			return;
+		}
+
+		UpdateFromHsv();
+	}
+
+	private void UpdateFromHsv()
+	{
+		var rgb = ColorSpaceConverter.HsvToRgb(Hue, Saturation, ValueComponent);
+		_isSynchronizing = true;
+		try
+		{
+			_red = rgb.Red;
+			_green = rgb.Green;
+			_blue = rgb.Blue;
+			RaiseRgbProperties();
+			UpdateHexFromChannels();
+		}
+		finally
+		{
+			_isSynchronizing = false;
+		}
+
+		RaiseVisualProperties();
+	}
+
+	private void ApplyArgb(byte alpha, byte red, byte green, byte blue, bool normalizeHex)
+	{
+		_isSynchronizing = true;
+		try
+		{
+			_alpha = alpha;
+			_red = red;
+			_green = green;
+			_blue = blue;
+			UpdateHsvFromRgb();
+			RaiseRgbProperties();
+			if (normalizeHex)
+			{
+				_hexValue = $"#{alpha:X2}{red:X2}{green:X2}{blue:X2}";
+				OnPropertyChanged(nameof(HexValue));
+			}
+		}
+		finally
+		{
+			_isSynchronizing = false;
+		}
+
+		RaiseVisualProperties();
+	}
+
+	private void UpdateHsvFromRgb()
+	{
+		var hsv = ColorSpaceConverter.RgbToHsv((byte)Red, (byte)Green, (byte)Blue);
+		_hue = hsv.Hue;
+		_saturation = hsv.Saturation;
+		_value = hsv.Value;
+		RaiseHsvProperties();
+	}
+
+	private void RaiseRgbProperties()
 	{
 		OnPropertyChanged(nameof(Alpha));
 		OnPropertyChanged(nameof(Red));
@@ -119,20 +334,27 @@ public sealed class ColorPickerViewModel : ViewModelBase
 		OnPropertyChanged(nameof(BlueText));
 	}
 
-	private void SetChannel(ref int field, int value, string propertyName, string textPropertyName)
+	private void RaiseHsvProperties()
 	{
-		value = Math.Clamp(value, 0, 255);
-
-		if (!SetProperty(ref field, value, propertyName))
-		{
-			return;
-		}
-
-		OnPropertyChanged(textPropertyName);
-		UpdateHexFromChannels();
+		OnPropertyChanged(nameof(Hue));
+		OnPropertyChanged(nameof(Saturation));
+		OnPropertyChanged(nameof(ValueComponent));
+		OnPropertyChanged(nameof(HueText));
+		OnPropertyChanged(nameof(SaturationText));
+		OnPropertyChanged(nameof(ValueText));
 	}
 
-	private void SetTextChannel(string value, Action<int> setter)
+	private void RaiseVisualProperties()
+	{
+		OnPropertyChanged(nameof(PreviewBrush));
+		OnPropertyChanged(nameof(HueWheelBrush));
+		OnPropertyChanged(nameof(AlphaOverlayBrush));
+		OnPropertyChanged(nameof(SaturationValueBrush));
+		OnPropertyChanged(nameof(HueSelectorPoint));
+		OnPropertyChanged(nameof(SaturationValueSelectorPoint));
+	}
+
+	private void SetByteTextChannel(string value, Action<int> setter)
 	{
 		if (int.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out var parsed))
 		{
@@ -140,11 +362,25 @@ public sealed class ColorPickerViewModel : ViewModelBase
 		}
 	}
 
+	private void SetDoubleTextChannel(string value, Action<double> setter)
+	{
+		if (double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out var parsed))
+		{
+			setter(parsed);
+		}
+	}
+
+	private void SetPercentageTextChannel(string value, Action<double> setter)
+	{
+		if (double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out var parsed))
+		{
+			setter(Math.Clamp(parsed, 0d, 100d));
+		}
+	}
+
 	private void UpdateHexFromChannels()
 	{
-		_isUpdatingFromHex = true;
-		HexValue = $"#{Alpha:X2}{Red:X2}{Green:X2}{Blue:X2}";
-		_isUpdatingFromHex = false;
-		OnPropertyChanged(nameof(PreviewBrush));
+		_hexValue = $"#{Alpha:X2}{Red:X2}{Green:X2}{Blue:X2}";
+		OnPropertyChanged(nameof(HexValue));
 	}
 }

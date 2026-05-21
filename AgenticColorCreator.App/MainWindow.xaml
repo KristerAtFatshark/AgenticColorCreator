@@ -5,6 +5,7 @@
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:intControls="clr-namespace:AgenticColorCreator.App.UserControls.CFIntControl"
 		xmlns:floatControls="clr-namespace:AgenticColorCreator.App.UserControls.CFFloatControl"
+		xmlns:colorControls="clr-namespace:AgenticColorCreator.App.UserControls.CFColorControl"
 		xmlns:textControls="clr-namespace:AgenticColorCreator.App.UserControls.CFTextBoxControl"
 		xmlns:userControls="clr-namespace:AgenticColorCreator.App.UserControls.CFTreeViewControl"
 		xmlns:viewModels="clr-namespace:AgenticColorCreator.App.ViewModels"
@@ -290,16 +291,46 @@
 			<TabItem Style="{StaticResource CF.TabItem}" Header="UI Preview">
 				<ScrollViewer VerticalScrollBarVisibility="Auto">
 					<WrapPanel Margin="0" ItemWidth="320">
-						<Border Margin="0,0,18,18"
-								Padding="16"
-								Width="300"
-								Background="{StaticResource CF.Panel.Default.Background}"
-								BorderBrush="{StaticResource CF.Border.Default.Border}"
-								BorderThickness="1"
-								CornerRadius="10">
-							<Grid>
-								<Grid.RowDefinitions>
-									<RowDefinition Height="Auto" />
+					<Border Margin="0,0,18,18"
+							Padding="16"
+							Width="300"
+							Background="{StaticResource CF.Panel.Default.Background}"
+							BorderBrush="{StaticResource CF.Border.Default.Border}"
+							BorderThickness="1"
+							CornerRadius="10">
+						<Grid>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto" />
+								<RowDefinition Height="Auto" />
+								<RowDefinition Height="Auto" />
+								<RowDefinition Height="Auto" />
+								<RowDefinition Height="Auto" />
+							</Grid.RowDefinitions>
+							<TextBlock Style="{StaticResource CF.TextBlock}" FontSize="16" FontWeight="SemiBold" Text="CFColor" />
+							<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="1" Margin="0,2,0,14" Foreground="{StaticResource CF.Text.Selected.Foreground}" Text="App.UserControls.CFColorControl.CFColor" />
+							<colorControls:CFColor Grid.Row="2"
+											 Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewColorValue, Mode=TwoWay}" />
+							<colorControls:CFColor Grid.Row="3"
+											 IsEnabled="False"
+											 Value="#80FF6600" />
+							<TextBox Style="{StaticResource CF.TextBox}"
+									 Grid.Row="4"
+									 Margin="0,8,0,0"
+									 IsReadOnly="True"
+									 Text="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewColorValue, StringFormat=Value: {0}}" />
+						</Grid>
+					</Border>
+
+					<Border Margin="0,0,18,18"
+							Padding="16"
+							Width="300"
+							Background="{StaticResource CF.Panel.Default.Background}"
+							BorderBrush="{StaticResource CF.Border.Default.Border}"
+							BorderThickness="1"
+							CornerRadius="10">
+						<Grid>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto" />
 									<RowDefinition Height="Auto" />
 									<RowDefinition Height="Auto" />
 									<RowDefinition Height="Auto" />

@@ -16,6 +16,12 @@ public partial class MainWindow : Window
 		typeof(MainWindow),
 		new PropertyMetadata("My Text"));
 
+	public static readonly DependencyProperty PreviewColorValueProperty = DependencyProperty.Register(
+		nameof(PreviewColorValue),
+		typeof(string),
+		typeof(MainWindow),
+		new PropertyMetadata("#80FF6600"));
+
 	public static readonly DependencyProperty PreviewNumberValueProperty = DependencyProperty.Register(
 		nameof(PreviewNumberValue),
 		typeof(int),
@@ -93,6 +99,12 @@ public partial class MainWindow : Window
 	{
 		get => (string)GetValue(PreviewTextBoxValueProperty);
 		set => SetValue(PreviewTextBoxValueProperty, value);
+	}
+
+	public string PreviewColorValue
+	{
+		get => (string)GetValue(PreviewColorValueProperty);
+		set => SetValue(PreviewColorValueProperty, value);
 	}
 
 	public int PreviewNumberValue

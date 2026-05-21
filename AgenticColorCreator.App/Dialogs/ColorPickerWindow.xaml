@@ -4,8 +4,8 @@
 		Title="Pick Color"
 		Style="{StaticResource CF.Window}"
 		Background="{StaticResource CF.Window.Default.Background}"
-		Width="420"
-		Height="440"
+		Width="760"
+		Height="540"
 		WindowStartupLocation="CenterOwner"
 		ResizeMode="NoResize"
 		ShowInTaskbar="False">
@@ -13,28 +13,114 @@
 		<Style BasedOn="{StaticResource CF.ScrollBar}" TargetType="ScrollBar" />
 	</Window.Resources>
 	<Grid Margin="18">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="320" />
+			<ColumnDefinition Width="18" />
+			<ColumnDefinition Width="*" />
+		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto" />
 			<RowDefinition Height="Auto" />
 			<RowDefinition Height="*" />
 			<RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
 
 		<TextBlock Style="{StaticResource CF.TextBlock}"
+				   Grid.ColumnSpan="3"
 				   FontSize="18"
 				   FontWeight="SemiBold"
 				   Foreground="{StaticResource CF.Text.Default.Foreground}"
 				   Text="Interactive Color Picker" />
 
-		<Border Grid.Row="1"
-				Margin="0,14,0,14"
-				Height="92"
-				CornerRadius="8"
-				BorderBrush="{StaticResource CF.Border.Default.Border}"
-				BorderThickness="1"
-				Background="{Binding PreviewBrush}" />
+		<Grid Grid.Row="1">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="260" />
+				<RowDefinition Height="Auto" />
+			</Grid.RowDefinitions>
 
-		<Grid Grid.Row="2">
+			<Grid Width="260"
+				  Height="260"
+				  HorizontalAlignment="Center"
+				  VerticalAlignment="Top">
+				<Ellipse Fill="{Binding HueWheelBrush}" />
+				<Ellipse Margin="30" Fill="{StaticResource CF.Window.Default.Background}" />
+
+				<Canvas x:Name="HueRingCanvas"
+						Width="260"
+						Height="260"
+						Background="Transparent"
+						MouseLeftButtonDown="HueRingCanvas_MouseLeftButtonDown"
+						MouseMove="HueRingCanvas_MouseMove"
+						MouseLeftButtonUp="PickerSurface_MouseLeftButtonUp">
+					<Ellipse Width="14"
+							 Height="14"
+							 Stroke="Black"
+						 StrokeThickness="2"
+						 Fill="Transparent"
+						 Canvas.Left="{Binding HueSelectorPoint.X}"
+						 Canvas.Top="{Binding HueSelectorPoint.Y}" />
+				</Canvas>
+
+				<Grid Width="128"
+					  Height="128"
+					  HorizontalAlignment="Center"
+					  VerticalAlignment="Center">
+					<Border Background="{Binding SaturationValueBrush}" />
+					<Rectangle>
+						<Rectangle.Fill>
+							<LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+								<GradientStop Color="#00FFFFFF" Offset="0" />
+								<GradientStop Color="#FF000000" Offset="1" />
+							</LinearGradientBrush>
+						</Rectangle.Fill>
+					</Rectangle>
+					<Canvas x:Name="SaturationValueCanvas"
+							Background="Transparent"
+							MouseLeftButtonDown="SaturationValueCanvas_MouseLeftButtonDown"
+							MouseMove="SaturationValueCanvas_MouseMove"
+							MouseLeftButtonUp="PickerSurface_MouseLeftButtonUp">
+						<Rectangle Width="10"
+								 Height="10"
+								 Stroke="White"
+								 StrokeThickness="1.5"
+								 Fill="Transparent"
+								 Canvas.Left="{Binding SaturationValueSelectorPoint.X}"
+								 Canvas.Top="{Binding SaturationValueSelectorPoint.Y}" />
+					</Canvas>
+				</Grid>
+			</Grid>
+
+			<Border Grid.Row="1"
+					Margin="0,18,0,0"
+					Padding="12"
+					Background="{StaticResource CF.Panel.Default.Background}"
+					BorderBrush="{StaticResource CF.Border.Default.Border}"
+					BorderThickness="1"
+					CornerRadius="8">
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="96" />
+						<ColumnDefinition Width="*" />
+					</Grid.ColumnDefinitions>
+					<Border Height="72"
+							Background="#FFB0B0B0"
+							BorderBrush="{StaticResource CF.Border.Default.Border}"
+							BorderThickness="1"
+							CornerRadius="6">
+						<Grid>
+							<Rectangle Fill="#FFD0D0D0" HorizontalAlignment="Left" Width="48" />
+							<Rectangle Fill="#FF8F8F8F" HorizontalAlignment="Right" Width="48" />
+							<Border Background="{Binding PreviewBrush}" CornerRadius="5" Margin="1" />
+						</Grid>
+					</Border>
+					<StackPanel Grid.Column="1" Margin="14,0,0,0" VerticalAlignment="Center">
+						<TextBlock Style="{StaticResource CF.TextBlock}" FontWeight="SemiBold" Text="Selected Color" />
+						<TextBox Style="{StaticResource CF.TextBox}" Margin="0,8,0,0" Text="{Binding HexValue, UpdateSourceTrigger=PropertyChanged}" />
+					</StackPanel>
+				</Grid>
+			</Border>
+		</Grid>
+
+		<Grid Grid.Row="1" Grid.Column="2">
 			<Grid.RowDefinitions>
 				<RowDefinition Height="Auto" />
 				<RowDefinition Height="Auto" />
@@ -43,66 +129,55 @@
 				<RowDefinition Height="Auto" />
 			</Grid.RowDefinitions>
 			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="22" />
+				<ColumnDefinition Width="24" />
 				<ColumnDefinition Width="*" />
-				<ColumnDefinition Width="56" />
+				<ColumnDefinition Width="72" />
 			</Grid.ColumnDefinitions>
 
-			<TextBlock VerticalAlignment="Center" Text="A" />
-			<Slider Style="{StaticResource CF.Slider}" Grid.Column="1"
-					Minimum="0"
-					Maximum="255"
-					Value="{Binding Alpha, UpdateSourceTrigger=PropertyChanged}" />
-			<TextBox Style="{StaticResource CF.TextBox}" Grid.Column="2"
-					 Margin="10,0,0,0"
-					 Text="{Binding AlphaText, UpdateSourceTrigger=PropertyChanged}" />
+			<TextBlock Style="{StaticResource CF.TextBlock}" VerticalAlignment="Center" Text="A" />
+			<Slider Style="{StaticResource CF.Slider}" Grid.Column="1" Minimum="0" Maximum="255" Value="{Binding Alpha, UpdateSourceTrigger=PropertyChanged}" />
+			<TextBox Style="{StaticResource CF.TextBox}" Grid.Column="2" Margin="10,0,0,0" Text="{Binding AlphaText, UpdateSourceTrigger=PropertyChanged}" />
 
 			<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="1" VerticalAlignment="Center" Text="R" />
-			<Slider Style="{StaticResource CF.Slider}" Grid.Row="1"
-					Grid.Column="1"
-					Minimum="0"
-					Maximum="255"
-					Value="{Binding Red, UpdateSourceTrigger=PropertyChanged}" />
-			<TextBox Style="{StaticResource CF.TextBox}" Grid.Row="1"
-					 Grid.Column="2"
-					 Margin="10,0,0,0"
-					 Text="{Binding RedText, UpdateSourceTrigger=PropertyChanged}" />
+			<Slider Style="{StaticResource CF.Slider}" Grid.Row="1" Grid.Column="1" Minimum="0" Maximum="255" Value="{Binding Red, UpdateSourceTrigger=PropertyChanged}" />
+			<TextBox Style="{StaticResource CF.TextBox}" Grid.Row="1" Grid.Column="2" Margin="10,0,0,0" Text="{Binding RedText, UpdateSourceTrigger=PropertyChanged}" />
 
 			<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="2" VerticalAlignment="Center" Text="G" />
-			<Slider Style="{StaticResource CF.Slider}" Grid.Row="2"
-					Grid.Column="1"
-					Minimum="0"
-					Maximum="255"
-					Value="{Binding Green, UpdateSourceTrigger=PropertyChanged}" />
-			<TextBox Style="{StaticResource CF.TextBox}" Grid.Row="2"
-					 Grid.Column="2"
-					 Margin="10,0,0,0"
-					 Text="{Binding GreenText, UpdateSourceTrigger=PropertyChanged}" />
+			<Slider Style="{StaticResource CF.Slider}" Grid.Row="2" Grid.Column="1" Minimum="0" Maximum="255" Value="{Binding Green, UpdateSourceTrigger=PropertyChanged}" />
+			<TextBox Style="{StaticResource CF.TextBox}" Grid.Row="2" Grid.Column="2" Margin="10,0,0,0" Text="{Binding GreenText, UpdateSourceTrigger=PropertyChanged}" />
 
 			<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="3" VerticalAlignment="Center" Text="B" />
-			<Slider Style="{StaticResource CF.Slider}" Grid.Row="3"
-					Grid.Column="1"
-					Minimum="0"
-					Maximum="255"
-					Value="{Binding Blue, UpdateSourceTrigger=PropertyChanged}" />
-			<TextBox Style="{StaticResource CF.TextBox}" Grid.Row="3"
-					 Grid.Column="2"
-					 Margin="10,0,0,0"
-					 Text="{Binding BlueText, UpdateSourceTrigger=PropertyChanged}" />
+			<Slider Style="{StaticResource CF.Slider}" Grid.Row="3" Grid.Column="1" Minimum="0" Maximum="255" Value="{Binding Blue, UpdateSourceTrigger=PropertyChanged}" />
+			<TextBox Style="{StaticResource CF.TextBox}" Grid.Row="3" Grid.Column="2" Margin="10,0,0,0" Text="{Binding BlueText, UpdateSourceTrigger=PropertyChanged}" />
 
-			<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="4"
-				   Margin="0,14,0,0"
-					   VerticalAlignment="Center"
-					   FontWeight="SemiBold"
-					   Text="Hex" />
-			<TextBox Style="{StaticResource CF.TextBox}" Grid.Row="4"
-					 Grid.Column="1"
-					 Grid.ColumnSpan="2"
-					 Margin="0,14,0,0"
-					 Text="{Binding HexValue, UpdateSourceTrigger=PropertyChanged}" />
+			<Grid Grid.Row="4" Grid.ColumnSpan="3" Margin="0,18,0,0">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+				</Grid.RowDefinitions>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="24" />
+					<ColumnDefinition Width="*" />
+					<ColumnDefinition Width="72" />
+				</Grid.ColumnDefinitions>
+
+				<TextBlock Style="{StaticResource CF.TextBlock}" VerticalAlignment="Center" Text="H" />
+				<TextBox Style="{StaticResource CF.TextBox}" Grid.Column="1" Text="{Binding HueText, UpdateSourceTrigger=PropertyChanged}" />
+				<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Column="2" Margin="10,0,0,0" VerticalAlignment="Center" Text="degrees" />
+
+				<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="1" VerticalAlignment="Center" Text="S" />
+				<TextBox Style="{StaticResource CF.TextBox}" Grid.Row="1" Grid.Column="1" Text="{Binding SaturationText, UpdateSourceTrigger=PropertyChanged}" />
+				<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="1" Grid.Column="2" Margin="10,0,0,0" VerticalAlignment="Center" Text="%" />
+
+				<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="2" VerticalAlignment="Center" Text="V" />
+				<TextBox Style="{StaticResource CF.TextBox}" Grid.Row="2" Grid.Column="1" Text="{Binding ValueText, UpdateSourceTrigger=PropertyChanged}" />
+				<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="2" Grid.Column="2" Margin="10,0,0,0" VerticalAlignment="Center" Text="%" />
+			</Grid>
 		</Grid>
 
-		<StackPanel Grid.Row="3"
+		<StackPanel Grid.Row="2"
+					Grid.ColumnSpan="3"
 					Margin="0,18,0,0"
 					Orientation="Horizontal"
 					HorizontalAlignment="Right">
