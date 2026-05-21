@@ -63,7 +63,7 @@
 	<SolidColorBrush x:Key="CF.RadioButton.Disabled.Glyph" Color="#FF7B7B7B" />
 	<SolidColorBrush x:Key="CF.RadioButton.Disabled.Foreground" Color="#FF7B7B7B" />
 	<SolidColorBrush x:Key="CF.TreeView.Default.Background" Color="#FF202020" />
-	<SolidColorBrush x:Key="CF.TreeView.Default.Border" Color="#FF828790" />
+	<SolidColorBrush x:Key="CF.TreeView.Default.Border" Color="#FF4C4C4C" />
 	<SolidColorBrush x:Key="CF.TreeView.Default.Text" Color="#FFC8C8C8" />
 	<SolidColorBrush x:Key="CF.TreeView.Default.Glyph" Color="#FFC8C8C8" />
 	<SolidColorBrush x:Key="CF.TreeView.Default.GlyphBackground" Color="#00000000" />

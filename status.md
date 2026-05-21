@@ -9,7 +9,7 @@
 - `CFTextBox` now supports delayed external value commits plus immediate validation feedback while typing.
 - `CFInt` now uses `CFTextBox` as its delayed-commit text layer and applies actual integer validation through that shared control.
 - `CFFloat` now uses `CFTextBox` as its delayed-commit text layer and applies invariant float validation with configurable decimal-place limits.
-- `Color\agentic_colors.md` remains the tracked UI color source, with the latest recorded source timestamp still `2026-05-20 13:18:33`.
+- `Color\agentic_colors.md` remains the tracked UI color source, with the latest recorded source timestamp now `2026-05-21 10:22:00`.
 
 ## Active Issues
 - Rebuilding the full debug solution can fail while another process is locking `AgenticColorCreator.Core.dll`.
@@ -33,6 +33,7 @@
 - Added float preview support in `MainWindow` with `PreviewFloatValue`, `PreviewFloatMinimum`, `PreviewFloatMaximum`, and `PreviewFloatDecimals` dependency properties plus a new `CFFloat` preview card and decimals test input in the `UI Preview` tab.
 - Updated `CFInt` and `CFFloat` so the keyboard up/down arrow keys now use each control's configured `Step` value, matching the spinner button behavior.
 - Added `PreviewIntStep` and `PreviewFloatStep` dependency properties plus new `Step` test inputs on the `CFInt` and `CFFloat` preview cards so step-size behavior can be tested directly from the preview page.
+- Reevaluated UI colors after `Color\agentic_colors.md` changed at `2026-05-21 10:22:00` and updated `CF.TreeView.Default.Border` in `AgenticColorCreator.App\Styles\CFDarkStyles.xaml` from `#FF828790` to `#FF4C4C4C` to match the latest `TreeView / Border Default` value.
 - Updated `CFTextBox` so invalid text turns red while typing, valid text clears the local foreground override back to the normal themed style, and invalid text is not externally committed.
 - Updated `CFTextBox` external value application so bound value updates refresh the visible text and validation state without restarting the delayed commit cycle.
 - Configured `CFInt` to use `ValidationMode="NumberOnly"` on its internal `CFTextBox`, with number validation now using real invariant integer parsing instead of character-only matching.
