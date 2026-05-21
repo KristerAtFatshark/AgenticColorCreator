@@ -379,7 +379,7 @@
 - description: 
 
 ### TreeView / Border Default
-- value: #FF828790
+- value: #FF4C4C4C
 - description: 
 
 ### TreeView / Text Default

@@ -29,10 +29,10 @@
 					</Grid.ColumnDefinitions>
 
 					<TextBlock Style="{StaticResource CF.TextBlock}"
-							   VerticalAlignment="Center"
-							   FontWeight="SemiBold"
-						   Foreground="{StaticResource CF.Text.Default.Foreground}"
-							   Text="{Binding DisplayName}" />
+							VerticalAlignment="Center"
+							FontWeight="SemiBold"
+						Foreground="{StaticResource CF.Text.Default.Foreground}"
+							Text="{Binding DisplayName}" />
 					<Button Style="{StaticResource CF.Button}"
 							Grid.Column="1"
 							Margin="0"
@@ -66,7 +66,7 @@
 
 					<Button Style="{StaticResource CF.Button}"
 							Grid.Row="0"
-							 Grid.Column="0"
+							Grid.Column="0"
 							Width="44"
 							Height="26"
 							Margin="0,0,8,6"
@@ -85,30 +85,30 @@
 					</Button>
 
 					<TextBox Style="{StaticResource CF.TextBox}"
-							 Grid.Row="0"
-							 Grid.Column="1"
-							 Margin="0,0,8,6"
-							 Padding="5,4"
-							 VerticalContentAlignment="Center"
-							 Text="{Binding HexValue, UpdateSourceTrigger=PropertyChanged}" />
+							Grid.Row="0"
+							Grid.Column="1"
+							Margin="0,0,8,6"
+							Padding="5,4"
+							VerticalContentAlignment="Center"
+							Text="{Binding HexValue, UpdateSourceTrigger=PropertyChanged}" />
 
 					<TextBox Style="{StaticResource CF.TextBox}"
-							 Grid.Row="0"
-							 Grid.Column="2"
-							 Margin="0,0,8,6"
-							 VerticalContentAlignment="Center"
-							 Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+							Grid.Row="0"
+							Grid.Column="2"
+							Margin="0,0,8,6"
+							VerticalContentAlignment="Center"
+							Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
 
 					<ComboBox Style="{StaticResource CF.ComboBox}"
-							  Grid.Row="0"
-							  Grid.Column="3"
-							  Width="92"
-							  Margin="0,0,8,6"
-					  Template="{StaticResource CF.ComboBoxTemplate}"
-							  VerticalContentAlignment="Center"
-							  ItemContainerStyle="{StaticResource CF.ComboPopupItemStyle}"
-							  ItemsSource="{Binding AvailableStates}"
-							  SelectedItem="{Binding State, UpdateSourceTrigger=PropertyChanged}">
+							 Grid.Row="0"
+							 Grid.Column="3"
+							 Width="92"
+							 Margin="0,0,8,6"
+					 Template="{StaticResource CF.ComboBoxTemplate}"
+							 VerticalContentAlignment="Center"
+							 ItemContainerStyle="{StaticResource CF.ComboPopupItemStyle}"
+							 ItemsSource="{Binding AvailableStates}"
+							 SelectedItem="{Binding State, UpdateSourceTrigger=PropertyChanged}">
 						<ComboBox.Resources>
 							<SolidColorBrush x:Key="{x:Static SystemColors.WindowBrushKey}" Color="#FF4C4C4C" />
 							<SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#8BFF9600" />
@@ -128,18 +128,18 @@
 							Content="Remove" />
 
 					<TextBox Style="{StaticResource CF.TextBox}"
-							 Grid.Row="1"
-							 Grid.Column="0"
-							 Grid.ColumnSpan="5"
-							 Margin="0"
-							 Padding="8,4"
-							 Height="28"
-							 AcceptsReturn="False"
-							 TextWrapping="NoWrap"
-							 VerticalContentAlignment="Center"
-							 HorizontalScrollBarVisibility="Auto"
-							 VerticalScrollBarVisibility="Disabled"
-							 Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" />
+							Grid.Row="1"
+							Grid.Column="0"
+							Grid.ColumnSpan="5"
+							Margin="0"
+							Padding="8,4"
+							Height="28"
+							AcceptsReturn="False"
+							TextWrapping="NoWrap"
+							VerticalContentAlignment="Center"
+							HorizontalScrollBarVisibility="Auto"
+							VerticalScrollBarVisibility="Disabled"
+							Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" />
 				</Grid>
 			</Border>
 		</DataTemplate>
@@ -178,26 +178,26 @@
 							</StackPanel>
 
 							<TextBlock Style="{StaticResource CF.TextBlock}"
-									   Grid.Row="0"
-									   Grid.Column="1"
-									   VerticalAlignment="Center"
-									   FontWeight="SemiBold"
-								   Foreground="{StaticResource CF.Text.Selected.Foreground}"
-									   Text="{Binding StatusMessage}" />
+									Grid.Row="0"
+									Grid.Column="1"
+									VerticalAlignment="Center"
+									FontWeight="SemiBold"
+								Foreground="{StaticResource CF.Text.Selected.Foreground}"
+									Text="{Binding StatusMessage}" />
 
 							<TextBlock Style="{StaticResource CF.TextBlock}"
-									   Grid.Row="1"
-									   Grid.ColumnSpan="2"
-									   Margin="0,12,0,0"
-									   Text="{Binding CurrentFileDisplay}" />
+									Grid.Row="1"
+									Grid.ColumnSpan="2"
+									Margin="0,12,0,0"
+									Text="{Binding CurrentFileDisplay}" />
 
 							<StackPanel Grid.Row="1"
 										Grid.Column="1"
 										Margin="0,12,0,0"
 										Orientation="Horizontal"
 										HorizontalAlignment="Right">
-								<Button Style="{StaticResource CF.Button}" Command="{Binding ExpandAllCategoriesCommand}" Content="Expand All" />
-								<Button Style="{StaticResource CF.Button}" Command="{Binding CollapseAllCategoriesCommand}" Content="Collapse All" />
+								<Button Style="{StaticResource CF.Button}" Command="{Binding ExpandAllCategoriesCommand}" Content="Expand All"/>
+								<Button Style="{StaticResource CF.Button}" Command="{Binding CollapseAllCategoriesCommand}" Content="Collapse All"/>
 							</StackPanel>
 						</Grid>
 					</Border>
@@ -212,9 +212,9 @@
 							Visibility="{Binding HasValidationErrors, Converter={StaticResource BooleanToVisibilityConverter}}">
 						<StackPanel>
 							<TextBlock Style="{StaticResource CF.TextBlock}"
-									   FontWeight="Bold"
-									   Foreground="{StaticResource CF.Text.Selected.Foreground}"
-									   Text="Validation Issues" />
+									FontWeight="Bold"
+									Foreground="{StaticResource CF.Text.Selected.Foreground}"
+									Text="Validation Issues" />
 							<ItemsControl ItemsSource="{Binding ValidationErrors}">
 								<ItemsControl.ItemTemplate>
 									<DataTemplate>
@@ -230,12 +230,12 @@
 							<ItemsControl.ItemTemplate>
 								<DataTemplate DataType="{x:Type viewModels:CategoryViewModel}">
 									<Expander Style="{StaticResource CF.Expander}"
-											  IsExpanded="{Binding IsExpanded}"
-											  HorizontalContentAlignment="Stretch"
-										  Background="{StaticResource CF.Panel.Default.Background}">
+											 IsExpanded="{Binding IsExpanded}"
+											 HorizontalContentAlignment="Stretch"
+										 Background="{StaticResource CF.Panel.Default.Background}">
 										<Expander.Header>
 											<Grid HorizontalAlignment="Stretch"
-												  Width="{Binding RelativeSource={RelativeSource AncestorType=Expander}, Path=ActualWidth}">
+												 Width="{Binding RelativeSource={RelativeSource AncestorType=Expander}, Path=ActualWidth}">
 												<Grid.ColumnDefinitions>
 													<ColumnDefinition Width="*" />
 													<ColumnDefinition Width="Auto" />
@@ -246,16 +246,16 @@
 												</Grid.Margin>
 
 												<TextBox Style="{StaticResource CF.TextBox}"
-														 Grid.Column="0"
-														 MinWidth="220"
-														 Margin="0"
-														 Padding="5,0,5,0"
-														 VerticalContentAlignment="Center"
-														 VerticalAlignment="Center"
-														 Height="30"
-														 FontSize="14"
-														 FontWeight="Bold"
-														 Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+														Grid.Column="0"
+														MinWidth="220"
+														Margin="0"
+														Padding="5,0,5,0"
+														VerticalContentAlignment="Center"
+														VerticalAlignment="Center"
+														Height="30"
+														FontSize="14"
+														FontWeight="Bold"
+														Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
 
 												<StackPanel Grid.Column="1" Width="239"
 														Orientation="Horizontal"
@@ -308,14 +308,16 @@
 								<TextBlock Style="{StaticResource CF.TextBlock}" FontSize="16" FontWeight="SemiBold" Text="CFTextBox" />
 								<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="1" Margin="0,2,0,14" Foreground="{StaticResource CF.Text.Selected.Foreground}" Text="App.UserControls.CFTextBoxControl.CFTextBox" />
 								<textControls:CFTextBox Grid.Row="2"
-												 Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewTextBoxValue, Mode=TwoWay}" />
-								<textControls:CFTextBox Grid.Row="3"
-												 IsEnabled="False"
-												 Value="My Text" />
+										Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewTextBoxValue, Mode=TwoWay}"
+										Margin="0,2,0,2"/>
+								<textControls:CFTextBox Grid.Row="3" 
+										IsEnabled="False"
+										Value="My Text" 
+										Margin="0,2,0,2"/>
 								<TextBox Style="{StaticResource CF.TextBox}"
-										 Grid.Row="4"
-										 IsReadOnly="True"
-										 Text="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewTextBoxValue, StringFormat=Value: {0}}" />
+										Grid.Row="4"
+										IsReadOnly="True"
+										Text="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewTextBoxValue, StringFormat=Value: {0}}" />
 							</Grid>
 						</Border>
 
@@ -338,66 +340,68 @@
 								<TextBlock Style="{StaticResource CF.TextBlock}" FontSize="16" FontWeight="SemiBold" Text="CFFloat" />
 								<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="1" Margin="0,2,0,14" Foreground="{StaticResource CF.Text.Selected.Foreground}" Text="App.UserControls.CFFloatControl.CFFloat" />
 								<floatControls:CFFloat Grid.Row="2"
-												   Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatValue, Mode=TwoWay}"
-												   Step="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatStep}"
-												   Decimals="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatDecimals}"
-												   Minimum="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatMinimum}"
-												   Maximum="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatMaximum}" />
-								<floatControls:CFFloat Grid.Row="3"
-												   IsEnabled="False"
-												   Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatValue}"
-												   Step="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatStep}"
-												   Decimals="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatDecimals}"
-												   Minimum="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatMinimum}"
-												   Maximum="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatMaximum}" />
+										Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatValue, Mode=TwoWay}"
+										Step="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatStep}"
+										Decimals="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatDecimals}"
+										Minimum="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatMinimum}"
+										Maximum="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatMaximum}" 
+										Margin="0,2,0,2"/>
+								<floatControls:CFFloat Grid.Row="3" 
+										IsEnabled="False"
+										Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatValue}"
+										Step="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatStep}"
+										Decimals="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatDecimals}"
+										Minimum="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatMinimum}"
+										Maximum="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatMaximum}"
+										Margin="0,2,0,2" />
 								<TextBox Style="{StaticResource CF.TextBox}"
-										 Grid.Row="4"
-										 Margin="0,8,0,0"
-										 IsReadOnly="True"
-										 Text="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatValue, StringFormat=Value: {0}}" />
-								<Grid Grid.Row="5" Margin="0,8,0,0">
+										Grid.Row="4"
+										Margin="0,8,0,0"
+										IsReadOnly="True"
+										Text="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatValue, StringFormat=Value: {0}}" />
+								<Grid Grid.Row="5" Margin="5">
 									<Grid.RowDefinitions>
 										<RowDefinition Height="Auto" />
 										<RowDefinition Height="Auto" />
 									</Grid.RowDefinitions>
 									<Grid.ColumnDefinitions>
 										<ColumnDefinition Width="Auto" />
-										<ColumnDefinition Width="90" />
+										<ColumnDefinition Width="80" />
 										<ColumnDefinition Width="Auto" />
-										<ColumnDefinition Width="90" />
+										<ColumnDefinition Width="80" />
 										<ColumnDefinition Width="Auto" />
-										<ColumnDefinition Width="90" />
+										<ColumnDefinition Width="80" />
 										<ColumnDefinition Width="Auto" />
-										<ColumnDefinition Width="90" />
+										<ColumnDefinition Width="80" />
 									</Grid.ColumnDefinitions>
-									<TextBlock Style="{StaticResource CF.TextBlock}" VerticalAlignment="Center" Text="Min" />
+									<TextBlock Style="{StaticResource CF.TextBlock}" VerticalAlignment="Center" Text="Min" Margin="5"/>
 									<floatControls:CFFloat Grid.Column="1"
-														   Margin="8,0,12,0"
-														   Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatMinimum, Mode=TwoWay}"
-														   Step="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatStep}"
-														   Decimals="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatDecimals}" />
-									<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Column="2" VerticalAlignment="Center" Text="Max" />
+														Margin="5"
+														Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatMinimum, Mode=TwoWay}"
+														Step="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatStep}"
+														Decimals="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatDecimals}" />
+									<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Column="2" VerticalAlignment="Center" Text="Max" Margin="5"/>
 									<floatControls:CFFloat Grid.Column="3"
-														   Margin="8,0,12,0"
-														   Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatMaximum, Mode=TwoWay}"
-														   Step="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatStep}"
-														   Decimals="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatDecimals}" />
-									<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="1" VerticalAlignment="Center" Text="Step" />
+														Margin="5"
+														Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatMaximum, Mode=TwoWay}"
+														Step="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatStep}"
+														Decimals="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatDecimals}" />
+									<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="1" VerticalAlignment="Center" Text="Step" Margin="5"/>
 									<floatControls:CFFloat Grid.Row="1"
-														   Grid.Column="1"
-														   Margin="8,8,12,0"
-														   Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatStep, Mode=TwoWay}"
-														   Step="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatStep}"
-														   Decimals="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatDecimals}"
-														   Minimum="0"
-														   Maximum="100" />
-									<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" Text="Decimals" />
+														Grid.Column="1"
+														Margin="5"
+														Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatStep, Mode=TwoWay}"
+														Step="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatStep}"
+														Decimals="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatDecimals}"
+														Minimum="0"
+														Maximum="100" />
+									<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" Text="Decimals" Margin="5"/>
 									<intControls:CFInt Grid.Row="1" Grid.Column="3"
-													   Margin="8,0,0,0"
-													   Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatDecimals, Mode=TwoWay}"
-													   Minimum="0"
-													   Maximum="6"
-													   Step="1" />
+													Margin="5"
+													Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatDecimals, Mode=TwoWay}"
+													Minimum="0"
+													Maximum="6"
+													Step="1" />
 								</Grid>
 							</Grid>
 						</Border>
@@ -421,52 +425,54 @@
 								<TextBlock Style="{StaticResource CF.TextBlock}" FontSize="16" FontWeight="SemiBold" Text="CFInt" />
 								<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="1" Margin="0,2,0,14" Foreground="{StaticResource CF.Text.Selected.Foreground}" Text="App.UserControls.CFIntControl.CFInt" />
 								<intControls:CFInt Grid.Row="2"
-												 Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewNumberValue, Mode=TwoWay}"
-												 Step="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewIntStep}"
-												 Minimum="{Binding ElementName=PreviewNumberMinTextBox, Path=Text}"
-												 Maximum="{Binding ElementName=PreviewNumberMaxTextBox, Path=Text}" />
+												Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewNumberValue, Mode=TwoWay}"
+												Step="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewIntStep}"
+												Minimum="{Binding ElementName=PreviewNumberMinTextBox, Path=Text}"
+												Maximum="{Binding ElementName=PreviewNumberMaxTextBox, Path=Text}"
+												Margin="0,2,0,2"/>
 								<intControls:CFInt Grid.Row="3"
-												 IsEnabled="False"
-												 Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewNumberValue}"
-												 Step="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewIntStep}"
-												 Minimum="{Binding ElementName=PreviewNumberMinTextBox, Path=Text}"
-												 Maximum="{Binding ElementName=PreviewNumberMaxTextBox, Path=Text}" />
+												IsEnabled="False"
+												Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewNumberValue}"
+												Step="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewIntStep}"
+												Minimum="{Binding ElementName=PreviewNumberMinTextBox, Path=Text}"
+												Maximum="{Binding ElementName=PreviewNumberMaxTextBox, Path=Text}"
+												Margin="0,2,0,2"/>
 								<TextBox Style="{StaticResource CF.TextBox}"
-										 Grid.Row="4"
-										 Margin="0,8,0,0"
-										 IsReadOnly="True"
-										 Text="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewNumberValue, StringFormat=Value: {0}}" />
-								<Grid Grid.Row="5" Margin="0,8,0,0">
+										Grid.Row="4"
+										Margin="0,8,0,0"
+										IsReadOnly="True"
+										Text="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewNumberValue, StringFormat=Value: {0}}" />
+								<Grid Grid.Row="5" Margin="5">
 									<Grid.RowDefinitions>
 										<RowDefinition Height="Auto" />
 										<RowDefinition Height="Auto" />
 									</Grid.RowDefinitions>
 									<Grid.ColumnDefinitions>
 										<ColumnDefinition Width="Auto" />
-										<ColumnDefinition Width="70" />
+										<ColumnDefinition Width="80" />
 										<ColumnDefinition Width="Auto" />
-										<ColumnDefinition Width="70" />
+										<ColumnDefinition Width="80" />
 									</Grid.ColumnDefinitions>
-									<TextBlock Style="{StaticResource CF.TextBlock}" VerticalAlignment="Center" Text="Min" />
+									<TextBlock Style="{StaticResource CF.TextBlock}" VerticalAlignment="Center" Text="Min" Margin="5"/>
 									<TextBox x:Name="PreviewNumberMinTextBox"
-											 Style="{StaticResource CF.TextBox}"
-											 Grid.Column="1"
-											 Margin="8,0,12,0"
-											 Text="0" />
-									<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Column="2" VerticalAlignment="Center" Text="Max" />
+											Style="{StaticResource CF.TextBox}"
+											Grid.Column="1"
+											Margin="5"
+											Text="0" />
+									<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Column="2" VerticalAlignment="Center" Text="Max" Margin="5"/>
 									<TextBox x:Name="PreviewNumberMaxTextBox"
-											 Style="{StaticResource CF.TextBox}"
-											 Grid.Column="3"
-											 Margin="8,0,0,0"
-											 Text="100" />
-									<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="1" VerticalAlignment="Center" Text="Step" />
+											Style="{StaticResource CF.TextBox}"
+											Grid.Column="3"
+											Margin="5"
+											Text="100" />
+									<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="1" VerticalAlignment="Center" Text="Step" Margin="5"/>
 									<intControls:CFInt Grid.Row="1"
-												   Grid.Column="1"
-												   Margin="8,8,12,0"
-												   Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewIntStep, Mode=TwoWay}"
-												   Minimum="0"
-												   Maximum="100"
-												   Step="1" />
+												Grid.Column="1"
+												Margin="5"
+												Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewIntStep, Mode=TwoWay}"
+												Minimum="0"
+												Maximum="100"
+												Step="1" />
 								</Grid>
 							</Grid>
 						</Border>
@@ -481,8 +487,8 @@
 							<StackPanel>
 								<TextBlock Style="{StaticResource CF.TextBlock}" FontSize="16" FontWeight="SemiBold" Text="Button" />
 								<TextBlock Style="{StaticResource CF.TextBlock}" Margin="0,2,0,14" Foreground="{StaticResource CF.Text.Selected.Foreground}" Text="System.Windows.Controls.Button" />
-								<Button Style="{StaticResource CF.Button}" HorizontalAlignment="Left" Content="Button 1" />
-								<Button Style="{StaticResource CF.Button}" HorizontalAlignment="Left" IsEnabled="False" Content="Button 1" />
+								<Button Style="{StaticResource CF.Button}" HorizontalAlignment="Left" Content="Button 1" Margin="0,2,0,2"/>
+								<Button Style="{StaticResource CF.Button}" HorizontalAlignment="Left" IsEnabled="False" Content="Button 1" Margin="0,2,0,2"/>
 							</StackPanel>
 						</Border>
 
@@ -496,8 +502,8 @@
 							<StackPanel>
 								<TextBlock Style="{StaticResource CF.TextBlock}" FontSize="16" FontWeight="SemiBold" Text="Slider" />
 								<TextBlock Style="{StaticResource CF.TextBlock}" Margin="0,2,0,14" Foreground="{StaticResource CF.Text.Selected.Foreground}" Text="System.Windows.Controls.Slider" />
-								<Slider Style="{StaticResource CF.Slider}" Minimum="0" Maximum="100" Value="75" />
-								<Slider Style="{StaticResource CF.Slider}" IsEnabled="False" Minimum="0" Maximum="100" Value="75" />
+								<Slider Style="{StaticResource CF.Slider}" Minimum="0" Maximum="100" Value="75" Margin="0,2,0,2"/>
+								<Slider Style="{StaticResource CF.Slider}" IsEnabled="False" Minimum="0" Maximum="100" Value="75" Margin="0,2,0,2"/>
 							</StackPanel>
 						</Border>
 
@@ -512,9 +518,11 @@
 								<TextBlock Style="{StaticResource CF.TextBlock}" FontSize="16" FontWeight="SemiBold" Text="ComboBox" />
 								<TextBlock Style="{StaticResource CF.TextBlock}" Margin="0,2,0,14" Foreground="{StaticResource CF.Text.Selected.Foreground}" Text="System.Windows.Controls.ComboBox" />
 								<ComboBox Style="{StaticResource CF.ComboBox}"
-										  Template="{StaticResource CF.ComboBoxTemplate}"
-										  ItemContainerStyle="{StaticResource CF.ComboPopupItemStyle}"
-										  SelectedIndex="0">
+										 Template="{StaticResource CF.ComboBoxTemplate}"
+										 ItemContainerStyle="{StaticResource CF.ComboPopupItemStyle}"
+										 SelectedIndex="0"
+										 Margin="0,2,0,2"
+										 >
 									<ComboBox.Resources>
 										<SolidColorBrush x:Key="{x:Static SystemColors.WindowBrushKey}" Color="#FF4C4C4C" />
 										<SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#8BFF9600" />
@@ -528,10 +536,12 @@
 									<ComboBoxItem Content="Item 3" />
 								</ComboBox>
 								<ComboBox Style="{StaticResource CF.ComboBox}"
-										  IsEnabled="False"
-										  Template="{StaticResource CF.ComboBoxTemplate}"
-										  ItemContainerStyle="{StaticResource CF.ComboPopupItemStyle}"
-										  SelectedIndex="0">
+										 IsEnabled="False"
+										 Template="{StaticResource CF.ComboBoxTemplate}"
+										 ItemContainerStyle="{StaticResource CF.ComboPopupItemStyle}"
+										 SelectedIndex="0"
+										 Margin="0,2,0,2"
+										 >
 									<ComboBox.Resources>
 										<SolidColorBrush x:Key="{x:Static SystemColors.WindowBrushKey}" Color="#FF4C4C4C" />
 										<SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#8BFF9600" />
@@ -557,12 +567,12 @@
 							<StackPanel>
 								<TextBlock Style="{StaticResource CF.TextBlock}" FontSize="16" FontWeight="SemiBold" Text="CheckBox" />
 								<TextBlock Style="{StaticResource CF.TextBlock}" Margin="0,2,0,14" Foreground="{StaticResource CF.Text.Selected.Foreground}" Text="System.Windows.Controls.CheckBox" />
-								<CheckBox Style="{StaticResource CF.CheckBox}" IsThreeState="True" IsChecked="True" Content="Checked" />
-								<CheckBox Style="{StaticResource CF.CheckBox}" IsThreeState="True" IsChecked="False" Content="Unchecked" />
-								<CheckBox Style="{StaticResource CF.CheckBox}" IsThreeState="True" IsChecked="{x:Null}" Content="Indeterminate" />
-								<CheckBox Style="{StaticResource CF.CheckBox}" IsEnabled="False" IsThreeState="True" IsChecked="True" Content="Checked" />
-								<CheckBox Style="{StaticResource CF.CheckBox}" IsEnabled="False" IsThreeState="True" IsChecked="False" Content="Unchecked" />
-								<CheckBox Style="{StaticResource CF.CheckBox}" IsEnabled="False" IsThreeState="True" IsChecked="{x:Null}" Content="Indeterminate" />
+								<CheckBox Style="{StaticResource CF.CheckBox}" IsThreeState="True" IsChecked="True" Content="Checked" Margin="0,2,0,2"/>
+								<CheckBox Style="{StaticResource CF.CheckBox}" IsThreeState="True" IsChecked="False" Content="Unchecked" Margin="0,2,0,2"/>
+								<CheckBox Style="{StaticResource CF.CheckBox}" IsThreeState="True" IsChecked="{x:Null}" Content="Indeterminate" Margin="0,2,0,2"/>
+								<CheckBox Style="{StaticResource CF.CheckBox}" IsEnabled="False" IsThreeState="True" IsChecked="True" Content="Checked" Margin="0,2,0,2"/>
+								<CheckBox Style="{StaticResource CF.CheckBox}" IsEnabled="False" IsThreeState="True" IsChecked="False" Content="Unchecked" Margin="0,2,0,2"/>
+								<CheckBox Style="{StaticResource CF.CheckBox}" IsEnabled="False" IsThreeState="True" IsChecked="{x:Null}" Content="Indeterminate" Margin="0,2,0,2"/>
 							</StackPanel>
 						</Border>
 
@@ -576,10 +586,10 @@
 							<StackPanel>
 								<TextBlock Style="{StaticResource CF.TextBlock}" FontSize="16" FontWeight="SemiBold" Text="RadioButton" />
 								<TextBlock Style="{StaticResource CF.TextBlock}" Margin="0,2,0,14" Foreground="{StaticResource CF.Text.Selected.Foreground}" Text="System.Windows.Controls.RadioButton" />
-								<RadioButton Style="{StaticResource CF.RadioButton}" GroupName="PreviewRadioGroup" IsChecked="True" Content="Option 1" />
-								<RadioButton Style="{StaticResource CF.RadioButton}" GroupName="PreviewRadioGroup" Content="Option 2" />
-								<RadioButton Style="{StaticResource CF.RadioButton}" GroupName="PreviewRadioGroupDisabled" IsEnabled="False" IsChecked="True" Content="Option 1" />
-								<RadioButton Style="{StaticResource CF.RadioButton}" GroupName="PreviewRadioGroupDisabled" IsEnabled="False" Content="Option 2" />
+								<RadioButton Style="{StaticResource CF.RadioButton}" GroupName="PreviewRadioGroup" IsChecked="True" Content="Option 1" Margin="0,2,0,2"/>
+								<RadioButton Style="{StaticResource CF.RadioButton}" GroupName="PreviewRadioGroup" Content="Option 2" Margin="0,2,0,2"/>
+								<RadioButton Style="{StaticResource CF.RadioButton}" GroupName="PreviewRadioGroupDisabled" IsEnabled="False" IsChecked="True" Content="Option 1" Margin="0,2,0,2"/>
+								<RadioButton Style="{StaticResource CF.RadioButton}" GroupName="PreviewRadioGroupDisabled" IsEnabled="False" Content="Option 2" Margin="0,2,0,2"/>
 							</StackPanel>
 						</Border>
 
@@ -601,20 +611,20 @@
 								<TextBlock Style="{StaticResource CF.TextBlock}" FontSize="16" FontWeight="SemiBold" Text="CFTreeView" />
 								<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="1" Margin="0,2,0,14" Foreground="{StaticResource CF.Text.Selected.Foreground}" Text="App.UserControls.CFTreeViewControl.CFTreeView" />
 								<userControls:CFTreeView Grid.Row="2"
-											 IsMultiSelect="True"
-											 NodesSource="{Binding PreviewTreeViewNodes}"
-											 SelectedValues="{Binding PreviewSelectedTreeViewValues}"
-											 SelectedTreeViewItems="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=SelectedPreviewTreeViewItems, Mode=OneWayToSource}" />
+											IsMultiSelect="True"
+											NodesSource="{Binding PreviewTreeViewNodes}"
+											SelectedValues="{Binding PreviewSelectedTreeViewValues}"
+											SelectedTreeViewItems="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=SelectedPreviewTreeViewItems, Mode=OneWayToSource}" />
 								<TextBox Style="{StaticResource CF.TextBox}" Grid.Row="3"
-										 Margin="0,8,0,0"
-										 Height="72"
-										 AcceptsReturn="True"
-										 IsReadOnly="True"
-										 TextWrapping="Wrap"
-										 VerticalScrollBarVisibility="Auto"
-										 Text="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=SelectedPreviewTreeViewDetails}" />
+										Margin="0,8,0,0"
+										Height="72"
+										AcceptsReturn="True"
+										IsReadOnly="True"
+										TextWrapping="Wrap"
+										VerticalScrollBarVisibility="Auto"
+										Text="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=SelectedPreviewTreeViewDetails}" />
 								<WrapPanel Grid.Row="4"
-										   Margin="0,8,0,0">
+										Margin="0,8,0,0">
 									<Button Style="{StaticResource CF.Button}" Command="{Binding RemovePreviewTreeViewTailCommand}"
 											Content="Remove Last 4" />
 									<Button Style="{StaticResource CF.Button}" Command="{Binding AddPreviewTreeViewTailCommand}"

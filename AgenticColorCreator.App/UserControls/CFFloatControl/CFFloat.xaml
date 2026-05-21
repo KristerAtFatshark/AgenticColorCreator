@@ -6,7 +6,6 @@
 			 xmlns:textControls="clr-namespace:AgenticColorCreator.App.UserControls.CFTextBoxControl"
 			 mc:Ignorable="d"
 			 Height="24"
-			 Margin="0,2,0,2"
 			 d:DesignHeight="24"
 			 d:DesignWidth="120">
 	<Grid>

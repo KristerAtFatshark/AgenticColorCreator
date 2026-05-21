@@ -157,7 +157,6 @@
 		<Setter Property="MinHeight" Value="24" />
 		<Setter Property="SelectionBrush" Value="{StaticResource CF.TextBox.Selected.Selection}" />
 		<Setter Property="Padding" Value="4,3" />
-		<Setter Property="Margin" Value="0,2,0,2" />
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="TextBox">
@@ -220,7 +219,6 @@
 		<Setter Property="BorderBrush" Value="{StaticResource CF.ComboBox.Default.Border}" />
 		<Setter Property="MinHeight" Value="24" />
 		<Setter Property="Padding" Value="4,3" />
-		<Setter Property="Margin" Value="0,2,0,2" />
 		<Style.Triggers>
 			<Trigger Property="IsEnabled" Value="False">
 				<Setter Property="Background" Value="{StaticResource CF.ComboBox.Disabled.Background}" />
@@ -334,7 +332,6 @@
 		<Setter Property="BorderThickness" Value="1" />
 		<Setter Property="MinHeight" Value="24" />
 		<Setter Property="Padding" Value="6,2" />
-		<Setter Property="Margin" Value="0,0,8,8" />
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="Button">
@@ -410,7 +407,6 @@
 		<Setter Property="BorderBrush" Value="{StaticResource CF.CheckBox.Default.Border}" />
 		<Setter Property="Foreground" Value="{StaticResource CF.CheckBox.Default.Foreground}" />
 		<Setter Property="BorderThickness" Value="1" />
-		<Setter Property="Margin" Value="0,2,0,2" />
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="CheckBox">
@@ -520,7 +516,6 @@
 		<Setter Property="BorderBrush" Value="{StaticResource CF.RadioButton.Default.Border}" />
 		<Setter Property="Foreground" Value="{StaticResource CF.RadioButton.Default.Foreground}" />
 		<Setter Property="BorderThickness" Value="1" />
-		<Setter Property="Margin" Value="0,2,0,2" />
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="RadioButton">
@@ -1299,7 +1294,7 @@
 	</Style>
 
 	<ControlTemplate x:Key="CF.HorizontalSliderTemplate" TargetType="Slider">
-		<Grid Margin="0,2">
+		<Grid>
 			<Border Background="{StaticResource CF.Slider.Default.Background}"
 					BorderBrush="{TemplateBinding BorderBrush}"
 					BorderThickness="1"
