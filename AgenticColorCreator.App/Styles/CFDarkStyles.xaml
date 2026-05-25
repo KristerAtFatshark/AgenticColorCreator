@@ -18,6 +18,14 @@
 	<SolidColorBrush x:Key="CF.TextBox.Disabled.Background" Color="#FF2C2C2C" />
 	<SolidColorBrush x:Key="CF.TextBox.Disabled.Foreground" Color="#FF7B7B7B" />
 	<SolidColorBrush x:Key="CF.TextBox.Disabled.Border" Color="#FF4C4C4C" />
+	<SolidColorBrush x:Key="CF.CFColor.Default.Background" Color="#FF1E1E1E" />
+	<SolidColorBrush x:Key="CF.CFColor.Default.Foreground" Color="#FFC8C8C8" />
+	<SolidColorBrush x:Key="CF.CFColor.Default.Border" Color="#FF4C4C4C" />
+	<SolidColorBrush x:Key="CF.CFColor.Selected.Border" Color="#61FF9600" />
+	<SolidColorBrush x:Key="CF.CFColor.Selected.Selection" Color="#8FFF9600" />
+	<SolidColorBrush x:Key="CF.CFColor.MouseOver.Border" Color="#FFFF9600" />
+	<SolidColorBrush x:Key="CF.CFColor.Disabled.Foreground" Color="#FF7B7B7B" />
+	<SolidColorBrush x:Key="CF.CFColor.Disabled.Background" Color="#FF2C2C2C" />
 	<SolidColorBrush x:Key="CF.Button.Default.Background" Color="#FF4C4C4C" />
 	<SolidColorBrush x:Key="CF.Button.Default.Foreground" Color="#FFC8C8C8" />
 	<SolidColorBrush x:Key="CF.Button.Default.Border" Color="#FF292929" />

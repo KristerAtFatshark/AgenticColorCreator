@@ -26,6 +26,7 @@ public partial class CFColor : UserControl
 	{
 		InitializeComponent();
 		RefreshVisuals();
+		IsEnabledChanged += OnControlIsEnabledChanged;
 	}
 
 	public string Value
@@ -97,18 +98,65 @@ public partial class CFColor : UserControl
 	private void RefreshVisuals()
 	{
 		CheckerBorder.Background = TransparentBrush;
+		UpdateBorderVisuals();
 
 		if (ColorHexParser.TryParseArgb(Value, out var color))
 		{
 			var brush = new SolidColorBrush(Color.FromArgb(color.A, color.R, color.G, color.B));
 			brush.Freeze();
 			ColorOverlayBorder.Background = brush;
-			HexTextBlock.Text = ColorHexParser.Normalize(Value);
 			return;
 		}
 
 		ColorOverlayBorder.Background = Brushes.Transparent;
-		HexTextBlock.Text = Value;
+	}
+
+	private void UpdateBorderVisuals()
+	{
+		if (!IsEnabled)
+		{
+			CheckerBorder.BorderBrush = (Brush)FindResource("CF.TextBox.Disabled.Border");
+			HexTextBox.Background = (Brush)FindResource("CF.CFColor.Disabled.Background");
+			HexTextBox.Foreground = (Brush)FindResource("CF.CFColor.Disabled.Foreground");
+			return;
+		}
+
+		HexTextBox.Background = (Brush)FindResource("CF.CFColor.Default.Background");
+		HexTextBox.Foreground = (Brush)FindResource("CF.CFColor.Default.Foreground");
+
+		if (HexTextBox.IsKeyboardFocused)
+		{
+			CheckerBorder.BorderBrush = (Brush)FindResource("CF.CFColor.Selected.Border");
+			return;
+		}
+
+		if (HexTextBox.IsMouseOver || OpenPickerButton.IsMouseOver)
+		{
+			CheckerBorder.BorderBrush = (Brush)FindResource("CF.CFColor.MouseOver.Border");
+			return;
+		}
+
+		CheckerBorder.BorderBrush = (Brush)FindResource("CF.CFColor.Default.Border");
+	}
+
+	private void OnControlIsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
+	{
+		UpdateBorderVisuals();
+	}
+
+	private void OnSwatchInteractionChanged(object sender, RoutedEventArgs e)
+	{
+		UpdateBorderVisuals();
+	}
+
+	private void OnTextInteractionChanged(object sender, RoutedEventArgs e)
+	{
+		UpdateBorderVisuals();
+	}
+
+	private void OnTextInteractionChanged(object sender, DependencyPropertyChangedEventArgs e)
+	{
+		UpdateBorderVisuals();
 	}
 
 	private void OpenPickerButton_Click(object sender, RoutedEventArgs e)

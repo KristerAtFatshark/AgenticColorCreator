@@ -6,34 +6,52 @@
 			 mc:Ignorable="d"
 			 d:DesignHeight="28"
 			 d:DesignWidth="180">
-	<Button x:Name="OpenPickerButton"
-			Style="{StaticResource CF.Button}"
-			Padding="6,4"
-			Click="OpenPickerButton_Click">
-		<Grid>
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="36" />
-				<ColumnDefinition Width="*" />
-			</Grid.ColumnDefinitions>
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="auto" />
+			<ColumnDefinition Width="5" />
+			<ColumnDefinition Width="*" />
+		</Grid.ColumnDefinitions>
 
+		<Button x:Name="OpenPickerButton"
+				Grid.Column="0"
+				Padding="0"
+				Background="Transparent"
+				BorderBrush="Transparent"
+				IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=IsEnabled}"
+				MouseEnter="OnSwatchInteractionChanged"
+				MouseLeave="OnSwatchInteractionChanged"
+				Click="OpenPickerButton_Click">
+			<Button.Template>
+				<ControlTemplate TargetType="Button">
+					<ContentPresenter />
+				</ControlTemplate>
+			</Button.Template>
 			<Border x:Name="CheckerBorder"
-					Grid.Column="0"
-					Height="20"
+					Height="24"
+					Width="45"
 					CornerRadius="3"
-					BorderBrush="{StaticResource CF.Border.Default.Border}"
+					BorderBrush="{StaticResource CF.CFColor.Default.Border}"
 					BorderThickness="1"
 					Background="Transparent">
 				<Border x:Name="ColorOverlayBorder"
 						Background="Transparent"
 						CornerRadius="2" />
 			</Border>
+		</Button>
 
-			<TextBlock x:Name="HexTextBlock"
-					   Grid.Column="1"
-					   Margin="10,0,0,0"
-					   VerticalAlignment="Center"
-					   Foreground="{StaticResource CF.Text.Default.Foreground}"
-					   Text="" />
-		</Grid>
-	</Button>
+		<TextBox x:Name="HexTextBox"
+				 Grid.Column="2"
+				 Style="{StaticResource CF.TextBox}"
+				 Background="{StaticResource CF.CFColor.Default.Background}"
+				 Foreground="{StaticResource CF.CFColor.Default.Foreground}"
+				 BorderBrush="{StaticResource CF.CFColor.Default.Border}"
+				 SelectionBrush="{StaticResource CF.CFColor.Selected.Selection}"
+				 IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=IsEnabled}"
+				 IsKeyboardFocusedChanged="OnTextInteractionChanged"
+				 MouseEnter="OnTextInteractionChanged"
+				 MouseLeave="OnTextInteractionChanged"
+				 VerticalContentAlignment="Center"
+				 Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+	</Grid>
 </UserControl>

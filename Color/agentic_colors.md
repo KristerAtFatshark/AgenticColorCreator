@@ -520,4 +520,38 @@
 
 ### Number / Button.Border Disabled
 - value: #FF4C4C4C
+- description: 
+
+## Category: CFColor
+
+### CFColor / Text Background Default
+- value: #FF1E1E1E
+- description: 
+
+### CFColor / Text Default
+- value: #FFC8C8C8
+- description: 
+
+### CFColor / Border Default
+- value: #FF4C4C4C
+- description: 
+
+### CFColor / Border Selected
+- value: #61FF9600
+- description: 
+
+### CFColor / Text Selection Selected
+- value: #8FFF9600
+- description: 
+
+### CFColor / Border MouseOver
+- value: #FFFF9600
+- description: 
+
+### CFColor / Text Disabled
+- value: #FF7B7B7B
+- description: 
+
+### CFColor / Text Background Disabled
+- value: #FF2C2C2C
 - description:

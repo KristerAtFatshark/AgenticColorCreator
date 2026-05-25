@@ -10,8 +10,10 @@
 - `CFInt` now uses `CFTextBox` as its delayed-commit text layer and applies actual integer validation through that shared control.
 - `CFFloat` now uses `CFTextBox` as its delayed-commit text layer and applies invariant float validation with configurable decimal-place limits.
 - `CFColor` now provides a reusable color-well control with hex display, transparent checker preview, mouse-over border feedback, and picker-dialog integration.
+- `CFColor` now uses a far-left swatch button to open the picker and an inline editable hex text field so copy/paste/direct hex editing lives inside the control itself.
+- `CFColor` swatch opening still uses a button, but now with a minimal local template so the shared button chrome no longer obscures the visible color well.
 - `CFColor` still binds through hex `Value`, and now also exposes public RGB/HSV conversion helpers plus XAML converters so code-behind and bindings can work with RGB(A) and HSV(A) representations.
-- `Color\agentic_colors.md` remains the tracked UI color source, with the latest recorded source timestamp now `2026-05-21 10:22:00`.
+- `Color\agentic_colors.md` remains the tracked UI color source, with the latest recorded source timestamp now `2026-05-25 13:16:25`.
 
 ## Active Issues
 - Rebuilding the full debug solution can fail while another process is locking `AgenticColorCreator.Core.dll`.
@@ -46,6 +48,8 @@
 - Replaced the interactive color picker's left-side negative margin hack with equivalent parent/right-column spacing so the interactive section keeps the same position without relying on a brittle negative offset.
 - Added `CFColorValueTypes.cs`, `CFColorConverters.cs`, and new public static helpers on `CFColor` so color values can be converted between hex, RGB(A), and HSV(A) from both code-behind and XAML bindings.
 - Extended the `CFColor` preview card in `MainWindow` so it now shows synchronized hex, RGB(A), and HSV(A) readouts for the same preview value.
+- Reevaluated UI colors after `Color\agentic_colors.md` changed at `2026-05-25 13:16:25` and added dedicated `CF.CFColor...` theme resources so the `CFColor` swatch/text visuals follow the new `CFColor` source values.
+- Updated `CFColor` so the swatch rectangle now mirrors the hex text field's border-state behavior for default, hover, focus, and disabled states.
 - Added immediate `CFTextBox` validation modes for alphanumeric path input and actual integer input.
 - Added float preview support in `MainWindow` with `PreviewFloatValue`, `PreviewFloatMinimum`, `PreviewFloatMaximum`, and `PreviewFloatDecimals` dependency properties plus a new `CFFloat` preview card and decimals test input in the `UI Preview` tab.
 - Added `PreviewColorValue` plus a new `CFColor` preview card in `MainWindow` so the custom color well and upgraded picker can be tested from the `UI Preview` tab.
