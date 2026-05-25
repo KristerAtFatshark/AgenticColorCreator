@@ -19,6 +19,8 @@
 		MinWidth="980">
 	<Window.Resources>
 		<BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+		<colorControls:CFColorHexToRgbConverter x:Key="CFColorHexToRgbConverter" />
+		<colorControls:CFColorHexToHsvConverter x:Key="CFColorHexToHsvConverter" />
 		<Style BasedOn="{StaticResource CF.ScrollBar}" TargetType="ScrollBar" />
 
 		<DataTemplate DataType="{x:Type viewModels:StateGroupViewModel}">
@@ -305,6 +307,8 @@
 								<RowDefinition Height="Auto" />
 								<RowDefinition Height="Auto" />
 								<RowDefinition Height="Auto" />
+								<RowDefinition Height="Auto" />
+								<RowDefinition Height="Auto" />
 							</Grid.RowDefinitions>
 							<TextBlock Style="{StaticResource CF.TextBlock}" FontSize="16" FontWeight="SemiBold" Text="CFColor" />
 							<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="1" Margin="0,2,0,14" Foreground="{StaticResource CF.Text.Selected.Foreground}" Text="App.UserControls.CFColorControl.CFColor" />
@@ -317,7 +321,17 @@
 									 Grid.Row="4"
 									 Margin="0,8,0,0"
 									 IsReadOnly="True"
-									 Text="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewColorValue, StringFormat=Value: {0}}" />
+									 Text="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewColorValue, StringFormat=Hex: {0}}" />
+							<TextBox Style="{StaticResource CF.TextBox}"
+									 Grid.Row="5"
+									 Margin="0,8,0,0"
+									 IsReadOnly="True"
+									 Text="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewColorValueRgbText}" />
+							<TextBox Style="{StaticResource CF.TextBox}"
+									 Grid.Row="6"
+									 Margin="0,8,0,0"
+									 IsReadOnly="True"
+									 Text="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewColorValueHsvText}" />
 						</Grid>
 					</Border>
 

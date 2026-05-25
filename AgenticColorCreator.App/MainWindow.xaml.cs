@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.ComponentModel;
 using System.Windows;
+using AgenticColorCreator.App.UserControls.CFColorControl;
 using AgenticColorCreator.App.UserControls.CFTreeViewControl;
 using AgenticColorCreator.App.ViewModels;
 
@@ -20,7 +21,19 @@ public partial class MainWindow : Window
 		nameof(PreviewColorValue),
 		typeof(string),
 		typeof(MainWindow),
-		new PropertyMetadata("#80FF6600"));
+		new PropertyMetadata("#80FF6600", OnPreviewColorValueChanged));
+
+	public static readonly DependencyProperty PreviewColorValueRgbTextProperty = DependencyProperty.Register(
+		nameof(PreviewColorValueRgbText),
+		typeof(string),
+		typeof(MainWindow),
+		new PropertyMetadata("RGBA: 255, 102, 0, 128"));
+
+	public static readonly DependencyProperty PreviewColorValueHsvTextProperty = DependencyProperty.Register(
+		nameof(PreviewColorValueHsvText),
+		typeof(string),
+		typeof(MainWindow),
+		new PropertyMetadata("HSVA: 24, 1, 1, 128"));
 
 	public static readonly DependencyProperty PreviewNumberValueProperty = DependencyProperty.Register(
 		nameof(PreviewNumberValue),
@@ -107,6 +120,18 @@ public partial class MainWindow : Window
 		set => SetValue(PreviewColorValueProperty, value);
 	}
 
+	public string PreviewColorValueRgbText
+	{
+		get => (string)GetValue(PreviewColorValueRgbTextProperty);
+		set => SetValue(PreviewColorValueRgbTextProperty, value);
+	}
+
+	public string PreviewColorValueHsvText
+	{
+		get => (string)GetValue(PreviewColorValueHsvTextProperty);
+		set => SetValue(PreviewColorValueHsvTextProperty, value);
+	}
+
 	public int PreviewNumberValue
 	{
 		get => (int)GetValue(PreviewNumberValueProperty);
@@ -177,6 +202,32 @@ public partial class MainWindow : Window
 		window.SelectedPreviewTreeViewDetails = string.Join(
 			Environment.NewLine,
 			selectedItems.Select(item => $"Text: {item.Text} | Value: {item.Value}"));
+	}
+
+	private static void OnPreviewColorValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+	{
+		if (d is not MainWindow window)
+		{
+			return;
+		}
+
+		if (CFColor.TryConvertHexToRgb(window.PreviewColorValue, out var rgb))
+		{
+			window.PreviewColorValueRgbText = $"RGBA: {rgb.Red}, {rgb.Green}, {rgb.Blue}, {rgb.Alpha}";
+		}
+		else
+		{
+			window.PreviewColorValueRgbText = "RGBA: invalid";
+		}
+
+		if (CFColor.TryConvertHexToHsv(window.PreviewColorValue, out var hsv))
+		{
+			window.PreviewColorValueHsvText = $"HSVA: {hsv.Hue:0.##}, {hsv.Saturation:0.###}, {hsv.Value:0.###}, {hsv.Alpha}";
+		}
+		else
+		{
+			window.PreviewColorValueHsvText = "HSVA: invalid";
+		}
 	}
 
 	private void OnClosing(object? sender, CancelEventArgs e)

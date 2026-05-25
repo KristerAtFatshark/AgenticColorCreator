@@ -40,6 +40,44 @@ public partial class CFColor : UserControl
 		remove => RemoveHandler(ValueChangedEvent, value);
 	}
 
+	public static bool TryConvertHexToRgb(string? hexValue, out CFColorRgb rgb)
+	{
+		rgb = default;
+
+		if (!ColorHexParser.TryParseArgb(hexValue, out var color))
+		{
+			return false;
+		}
+
+		rgb = new CFColorRgb(color.R, color.G, color.B, color.A);
+		return true;
+	}
+
+	public static bool TryConvertHexToHsv(string? hexValue, out CFColorHsv hsv)
+	{
+		hsv = default;
+
+		if (!ColorHexParser.TryParseArgb(hexValue, out var color))
+		{
+			return false;
+		}
+
+		var hsvColor = ColorSpaceConverter.RgbToHsv(color.R, color.G, color.B);
+		hsv = new CFColorHsv(hsvColor.Hue, hsvColor.Saturation, hsvColor.Value, color.A);
+		return true;
+	}
+
+	public static string ConvertRgbToHex(CFColorRgb rgb)
+	{
+		return $"#{rgb.Alpha:X2}{rgb.Red:X2}{rgb.Green:X2}{rgb.Blue:X2}";
+	}
+
+	public static string ConvertHsvToHex(CFColorHsv hsv)
+	{
+		var rgb = ColorSpaceConverter.HsvToRgb(hsv.Hue, hsv.Saturation, hsv.Value);
+		return $"#{hsv.Alpha:X2}{rgb.Red:X2}{rgb.Green:X2}{rgb.Blue:X2}";
+	}
+
 	private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 	{
 		if (d is not CFColor colorControl)
