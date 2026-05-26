@@ -55,6 +55,15 @@
 - Constrained the HDR `Stops` numeric inputs in both `CFHdrColor` and `HdrColorPickerWindow` to the range `-4` through `4`.
 - Reworked the HDR picker summary block so the SDR and HDR preview wells sit side by side, the HDR well includes an `HDR` label, and the `Stops` control now has both a slider and numeric `CFFloat` input beneath the hex field.
 - Adjusted the HDR preview well label so the `HDR` text now sits in a small badge instead of tinting the full well, preserving the actual HDR preview color.
+- Added explicit black inner and outer outline strokes around the hue ring in both the standard and HDR color pickers.
+- Adjusted the hue ring outer outline inward so it aligns with the actual painted ring edge instead of the full container bounds.
+- Reduced both color picker wheels to `220x220` and increased the hue ring outline thickness to `3px`, updating the view-model ring geometry so the thicker outer border remains fully visible.
+- Shifted the outer hue ring outline slightly outward so the `3px` black stroke sits outside the colored ring instead of cutting into it and leaving a colored fringe beyond the border.
+- Recomputed the hue selector marker radius against the current inner and outer outline positions so the black selection circle stays centered within the visible ring thickness.
+- Nudged the hue selector marker slightly outward relative to the ring midpoint so the correction is visibly reflected in both pickers after the thicker ring border changes.
+- Reversed that hue selector radius adjustment so the marker moves inward toward the center of the visible ring thickness rather than hugging the outer edge.
+- Reduced the saturation/value square in both pickers to `108x108` so it fits inside the smaller `220x220` hue wheel after the wheel size reduction.
+- Reduced the saturation/value square in both pickers again to `98x98` for additional spacing inside the hue ring.
 - Added `PreviewHdrColorValue`, `PreviewHdrColorStops`, `PreviewHdrColorValueRgbText`, and `PreviewHdrColorValueHsvText` to `MainWindow` and a new `CFHdrColor` preview card in the `UI Preview` tab.
 - Reevaluated UI colors after `Color\agentic_colors.md` changed at `2026-05-25 13:16:25` and added dedicated `CF.CFColor...` theme resources so the `CFColor` swatch/text visuals follow the new `CFColor` source values.
 - Updated `CFColor` so the swatch rectangle now mirrors the hex text field's border-state behavior for default, hover, focus, and disabled states.

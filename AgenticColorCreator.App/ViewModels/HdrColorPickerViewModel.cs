@@ -10,10 +10,13 @@ namespace AgenticColorCreator.App.ViewModels;
 
 public sealed class HdrColorPickerViewModel : ViewModelBase
 {
-	private const double HueWheelOuterRadius = 120d;
-	private const double HueWheelInnerRadius = 100d;
-	private const double HueWheelCenter = 130d;
-	private const double SaturationValueSize = 128d;
+	private const double HueWheelOuterRadius = 100d;
+	private const double HueWheelInnerRadius = 80d;
+	private const double HueWheelCenter = 110d;
+	private const double HueWheelOuterOutlineMargin = 8.5d;
+	private const double HueWheelInnerOutlineMargin = 30d;
+	private const double HueSelectorRadiusOffset = -1.5d;
+	private const double SaturationValueSize = 98d;
 	private const double HueSelectorSize = 14d;
 	private const double SaturationValueSelectorSize = 10d;
 
@@ -31,7 +34,7 @@ public sealed class HdrColorPickerViewModel : ViewModelBase
 
 	public HdrColorPickerViewModel(string initialHexValue, double initialStops)
 	{
-		_hueWheelBrush = HueWheelBrushFactory.Create(260, HueWheelOuterRadius, HueWheelInnerRadius);
+		_hueWheelBrush = HueWheelBrushFactory.Create(220, HueWheelOuterRadius, HueWheelInnerRadius);
 		_stops = initialStops;
 		_hexValue = ColorHexParser.TryParseArgb(initialHexValue, out var color)
 			? ColorHexParser.Normalize(initialHexValue)
@@ -233,7 +236,9 @@ public sealed class HdrColorPickerViewModel : ViewModelBase
 		get
 		{
 			var angle = (Hue - 90d) * Math.PI / 180d;
-			var radius = (HueWheelOuterRadius + HueWheelInnerRadius) / 2d;
+			var outerOutlineRadius = HueWheelCenter - HueWheelOuterOutlineMargin;
+			var innerOutlineRadius = HueWheelCenter - HueWheelInnerOutlineMargin;
+			var radius = ((outerOutlineRadius + innerOutlineRadius) / 2d) + HueSelectorRadiusOffset;
 			return new Point(
 				HueWheelCenter + (Math.Cos(angle) * radius) - (HueSelectorSize / 2d),
 				HueWheelCenter + (Math.Sin(angle) * radius) - (HueSelectorSize / 2d));

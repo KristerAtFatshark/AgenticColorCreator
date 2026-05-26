@@ -5,7 +5,7 @@
 		Title="Pick HDR Color"
 		Style="{StaticResource CF.Window}"
 		Background="{StaticResource CF.Window.Default.Background}"
-		Width="600"
+		Width="560"
 		Height="425"
 		WindowStartupLocation="CenterOwner"
 		ResizeMode="NoResize"
@@ -13,12 +13,12 @@
 	<Window.Resources>
 		<Style BasedOn="{StaticResource CF.ScrollBar}" TargetType="ScrollBar" />
 		<DrawingBrush x:Key="CheckerBrush"
-					  TileMode="Tile"
-					  Viewport="0,0,16,16"
-					  ViewportUnits="Absolute"
-					  Viewbox="0,0,16,16"
-					  ViewboxUnits="Absolute"
-					  Stretch="None">
+					TileMode="Tile"
+					Viewport="0,0,16,16"
+					ViewportUnits="Absolute"
+					Viewbox="0,0,16,16"
+					ViewboxUnits="Absolute"
+					Stretch="None">
 			<DrawingBrush.Drawing>
 				<DrawingGroup>
 					<GeometryDrawing Brush="#FFD2D2D2" Geometry="M 0,0 H 16 V 16 H 0 Z" />
@@ -28,10 +28,10 @@
 			</DrawingBrush.Drawing>
 		</DrawingBrush>
 	</Window.Resources>
-	<Grid Margin="15,5,15,15">
+	<Grid Margin="3,5,10,10">
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="240" />
-			<ColumnDefinition Width="18" />
+			<ColumnDefinition Width="220" />
+			<ColumnDefinition Width="5" />
 			<ColumnDefinition Width="*" />
 		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
@@ -44,16 +44,18 @@
 				<RowDefinition Height="260" />
 			</Grid.RowDefinitions>
 
-			<Grid Width="260"
-				  Height="260"
+			<Grid Width="220"
+				  Height="220"
 				  HorizontalAlignment="Center"
 				  VerticalAlignment="Top">
 				<Ellipse Fill="{Binding HueWheelBrush}" />
+				<Ellipse Margin="8.5" Stroke="Black" StrokeThickness="3" />
 				<Ellipse Margin="30" Fill="{StaticResource CF.Window.Default.Background}" />
+				<Ellipse Margin="30" Stroke="Black" StrokeThickness="3" />
 
 				<Canvas x:Name="HueRingCanvas"
-						Width="260"
-						Height="260"
+						Width="220"
+						Height="220"
 						Background="Transparent"
 						MouseLeftButtonDown="HueRingCanvas_MouseLeftButtonDown"
 						MouseMove="HueRingCanvas_MouseMove"
@@ -67,8 +69,8 @@
 							 Canvas.Top="{Binding HueSelectorPoint.Y}" />
 				</Canvas>
 
-				<Grid Width="128"
-					  Height="128"
+				<Grid Width="98"
+					  Height="98"
 					  HorizontalAlignment="Center"
 					  VerticalAlignment="Center">
 					<Border Background="{Binding SaturationValueBrush}" />
@@ -85,8 +87,8 @@
 							MouseLeftButtonDown="SaturationValueCanvas_MouseLeftButtonDown"
 							MouseMove="SaturationValueCanvas_MouseMove"
 							MouseLeftButtonUp="PickerSurface_MouseLeftButtonUp">
-						<Rectangle Width="10"
-								 Height="10"
+						<Rectangle Width="8"
+								 Height="8"
 								 Stroke="White"
 								 StrokeThickness="1.5"
 								 Fill="Transparent"
@@ -252,7 +254,7 @@
 					Orientation="Horizontal"
 					HorizontalAlignment="Right">
 			<Button Style="{StaticResource CF.Button}" MinWidth="80" IsDefault="True" Click="OkButton_Click" Content="OK" />
-			<Button Style="{StaticResource CF.Button}" MinWidth="80" IsCancel="True" Click="CancelButton_Click" Content="Cancel" />
+			<Button Style="{StaticResource CF.Button}" Margin="5,0,0,0" MinWidth="80" IsCancel="True" Click="CancelButton_Click" Content="Cancel" />
 		</StackPanel>
 	</Grid>
 </Window>
