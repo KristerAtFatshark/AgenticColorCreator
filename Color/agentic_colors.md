@@ -127,7 +127,7 @@
 ## Category: ComboBox Item
 
 ### ComboBox Item / Background Default
-- value: #FF4C4C4C
+- value: #FF3C3C3C
 - description: 
 
 ### ComboBox Item / Text Default

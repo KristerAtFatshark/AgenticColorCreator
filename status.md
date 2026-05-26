@@ -14,7 +14,7 @@
 - `CFColor` now uses a far-left swatch button to open the picker and an inline editable hex text field so copy/paste/direct hex editing lives inside the control itself.
 - `CFColor` swatch opening still uses a button, but now with a minimal local template so the shared button chrome no longer obscures the visible color well.
 - `CFColor` still binds through hex `Value`, and now also exposes public RGB/HSV conversion helpers plus XAML converters so code-behind and bindings can work with RGB(A) and HSV(A) representations.
-- `Color\agentic_colors.md` remains the tracked UI color source, with the latest recorded source timestamp now `2026-05-25 13:16:25`.
+- `Color\agentic_colors.md` remains the tracked UI color source, with the latest recorded source timestamp now `2026-05-26 12:42:52`.
 
 ## Active Issues
 - Rebuilding the full debug solution can fail while another process is locking `AgenticColorCreator.Core.dll`.
@@ -67,6 +67,7 @@
 - Added `PreviewHdrColorValue`, `PreviewHdrColorStops`, `PreviewHdrColorValueRgbText`, and `PreviewHdrColorValueHsvText` to `MainWindow` and a new `CFHdrColor` preview card in the `UI Preview` tab.
 - Reevaluated UI colors after `Color\agentic_colors.md` changed at `2026-05-25 13:16:25` and added dedicated `CF.CFColor...` theme resources so the `CFColor` swatch/text visuals follow the new `CFColor` source values.
 - Updated `CFColor` so the swatch rectangle now mirrors the hex text field's border-state behavior for default, hover, focus, and disabled states.
+- Reevaluated `ComboBox Item` colors after `Color\agentic_colors.md` changed at `2026-05-26 12:42:52` and updated `CF.ComboBoxItem.Default.Background` to `#FF3C3C3C` plus `CF.ComboBoxItem.MouseOver.Background` to `#94FF9600` in `AgenticColorCreator.App\Styles\CFDarkStyles.xaml`.
 - Added immediate `CFTextBox` validation modes for alphanumeric path input and actual integer input.
 - Added float preview support in `MainWindow` with `PreviewFloatValue`, `PreviewFloatMinimum`, `PreviewFloatMaximum`, and `PreviewFloatDecimals` dependency properties plus a new `CFFloat` preview card and decimals test input in the `UI Preview` tab.
 - Added `PreviewColorValue` plus a new `CFColor` preview card in `MainWindow` so the custom color well and upgraded picker can be tested from the `UI Preview` tab.

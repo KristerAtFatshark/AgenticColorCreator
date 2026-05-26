@@ -44,10 +44,10 @@
 	<SolidColorBrush x:Key="CF.ComboBox.Disabled.Foreground" Color="#FF7B7B7B" />
 	<SolidColorBrush x:Key="CF.ComboBox.Disabled.Border" Color="#FF4C4C4C" />
 	<SolidColorBrush x:Key="CF.ComboBox.Disabled.Icon" Color="#FF7B7B7B" />
-	<SolidColorBrush x:Key="CF.ComboBoxItem.Default.Background" Color="#FF4C4C4C" />
+	<SolidColorBrush x:Key="CF.ComboBoxItem.Default.Background" Color="#FF3C3C3C" />
 	<SolidColorBrush x:Key="CF.ComboBoxItem.Default.Foreground" Color="#FFC8C8C8" />
 	<SolidColorBrush x:Key="CF.ComboBoxItem.Default.Border" Color="#FF3C3C3C" />
-	<SolidColorBrush x:Key="CF.ComboBoxItem.MouseOver.Background" Color="#8BFF9600" />
+	<SolidColorBrush x:Key="CF.ComboBoxItem.MouseOver.Background" Color="#94FF9600" />
 	<SolidColorBrush x:Key="CF.ComboBoxItem.MouseOver.Foreground" Color="#FFFFFFFF" />
 	<SolidColorBrush x:Key="CF.ComboBoxItem.MouseOver.Border" Color="#FF0C0C0C" />
 	<SolidColorBrush x:Key="CF.ComboBoxItem.Selected.Background" Color="#51FF9600" />

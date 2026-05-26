@@ -218,7 +218,7 @@ public partial class CFTreeView : UserControl
 
 		_selectedTreeViewItems.Clear();
 
-		if (NodesSource is not null)
+		if (NodesSource != null)
 		{
 			foreach (var rootNode in BuildTreeViewNodes(NodesSource))
 			{
@@ -233,7 +233,7 @@ public partial class CFTreeView : UserControl
 
 	private HashSet<string> GetSelectedValueSet()
 	{
-		if (SelectedValues is not null && (_hasExternalSelectionState || _isApplyingExternalSelection))
+		if (SelectedValues != null && (_hasExternalSelectionState || _isApplyingExternalSelection))
 		{
 			return SelectedValues.ToHashSet(StringComparer.OrdinalIgnoreCase);
 		}
@@ -385,7 +385,7 @@ public partial class CFTreeView : UserControl
 
 	private void ApplySelectionFromValues()
 	{
-		if (SelectedValues is null)
+		if (SelectedValues == null)
 		{
 			_isApplyingExternalSelection = false;
 			_hasExternalSelectionState = false;
@@ -406,7 +406,7 @@ public partial class CFTreeView : UserControl
 
 	private void SyncSelectedValuesFromItems()
 	{
-		if (SelectedValues is null)
+		if (SelectedValues == null)
 		{
 			return;
 		}
@@ -444,7 +444,7 @@ public partial class CFTreeView : UserControl
 
 		_selectedTreeViewItems.Clear();
 
-		if (SelectedValues is null)
+		if (SelectedValues == null)
 		{
 			return;
 		}
@@ -488,11 +488,11 @@ public partial class CFTreeView : UserControl
 		var current = dependencyObject;
 
 		while (current is not null)
-		{
-			if (current is T match)
 			{
-				return match;
-			}
+				if (current is T match)
+				{
+					return match;
+				}
 
 			current = VisualTreeHelper.GetParent(current);
 		}
