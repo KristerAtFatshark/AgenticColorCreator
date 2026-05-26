@@ -4,6 +4,7 @@ using System.Linq;
 using System.ComponentModel;
 using System.Windows;
 using AgenticColorCreator.App.UserControls.CFColorControl;
+using AgenticColorCreator.App.UserControls.CFHdrColorControl;
 using AgenticColorCreator.App.UserControls.CFTreeViewControl;
 using AgenticColorCreator.App.ViewModels;
 
@@ -34,6 +35,30 @@ public partial class MainWindow : Window
 		typeof(string),
 		typeof(MainWindow),
 		new PropertyMetadata("HSVA: 24, 1, 1, 128"));
+
+	public static readonly DependencyProperty PreviewHdrColorValueProperty = DependencyProperty.Register(
+		nameof(PreviewHdrColorValue),
+		typeof(string),
+		typeof(MainWindow),
+		new PropertyMetadata("#80FF6600", OnPreviewHdrColorChanged));
+
+	public static readonly DependencyProperty PreviewHdrColorStopsProperty = DependencyProperty.Register(
+		nameof(PreviewHdrColorStops),
+		typeof(double),
+		typeof(MainWindow),
+		new PropertyMetadata(1d, OnPreviewHdrColorChanged));
+
+	public static readonly DependencyProperty PreviewHdrColorValueRgbTextProperty = DependencyProperty.Register(
+		nameof(PreviewHdrColorValueRgbText),
+		typeof(string),
+		typeof(MainWindow),
+		new PropertyMetadata("HDR RGBA: 255, 204, 0, 128 | Stops: 1"));
+
+	public static readonly DependencyProperty PreviewHdrColorValueHsvTextProperty = DependencyProperty.Register(
+		nameof(PreviewHdrColorValueHsvText),
+		typeof(string),
+		typeof(MainWindow),
+		new PropertyMetadata("HDR HSVA: 24, 1, 1, 128 | Stops: 1"));
 
 	public static readonly DependencyProperty PreviewNumberValueProperty = DependencyProperty.Register(
 		nameof(PreviewNumberValue),
@@ -132,6 +157,30 @@ public partial class MainWindow : Window
 		set => SetValue(PreviewColorValueHsvTextProperty, value);
 	}
 
+	public string PreviewHdrColorValue
+	{
+		get => (string)GetValue(PreviewHdrColorValueProperty);
+		set => SetValue(PreviewHdrColorValueProperty, value);
+	}
+
+	public double PreviewHdrColorStops
+	{
+		get => (double)GetValue(PreviewHdrColorStopsProperty);
+		set => SetValue(PreviewHdrColorStopsProperty, value);
+	}
+
+	public string PreviewHdrColorValueRgbText
+	{
+		get => (string)GetValue(PreviewHdrColorValueRgbTextProperty);
+		set => SetValue(PreviewHdrColorValueRgbTextProperty, value);
+	}
+
+	public string PreviewHdrColorValueHsvText
+	{
+		get => (string)GetValue(PreviewHdrColorValueHsvTextProperty);
+		set => SetValue(PreviewHdrColorValueHsvTextProperty, value);
+	}
+
 	public int PreviewNumberValue
 	{
 		get => (int)GetValue(PreviewNumberValueProperty);
@@ -227,6 +276,32 @@ public partial class MainWindow : Window
 		else
 		{
 			window.PreviewColorValueHsvText = "HSVA: invalid";
+		}
+	}
+
+	private static void OnPreviewHdrColorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+	{
+		if (d is not MainWindow window)
+		{
+			return;
+		}
+
+		if (CFHdrColor.TryConvertHexToRgb(window.PreviewHdrColorValue, window.PreviewHdrColorStops, out var rgb))
+		{
+			window.PreviewHdrColorValueRgbText = $"HDR RGBA: {rgb.Red}, {rgb.Green}, {rgb.Blue}, {rgb.Alpha} | Stops: {rgb.Stops:0.00}";
+		}
+		else
+		{
+			window.PreviewHdrColorValueRgbText = "HDR RGBA: invalid";
+		}
+
+		if (CFHdrColor.TryConvertHexToHsv(window.PreviewHdrColorValue, window.PreviewHdrColorStops, out var hsv))
+		{
+			window.PreviewHdrColorValueHsvText = $"HDR HSVA: {hsv.Hue:0.##}, {hsv.Saturation:0.###}, {hsv.Value:0.###}, {hsv.Alpha} | Stops: {hsv.Stops:0.00}";
+		}
+		else
+		{
+			window.PreviewHdrColorValueHsvText = "HDR HSVA: invalid";
 		}
 	}
 

@@ -5,11 +5,12 @@
 - The app can create, load, edit, validate, and save `agentic_colors.md` markdown files.
 - The main UI uses `Colors` and `UI Preview` tabs for editor work and themed control previewing.
 - Shared theme resources live in `AgenticColorCreator.App\Styles\CFDarkStyles.xaml` and use explicit `CF.` brush keys plus keyed `CF...` styles/templates.
-- Custom previewed controls currently include `CFTextBox`, `CFInt`, `CFFloat`, `CFColor`, and `CFTreeView`.
+- Custom previewed controls currently include `CFTextBox`, `CFInt`, `CFFloat`, `CFColor`, `CFHdrColor`, and `CFTreeView`.
 - `CFTextBox` now supports delayed external value commits plus immediate validation feedback while typing.
 - `CFInt` now uses `CFTextBox` as its delayed-commit text layer and applies actual integer validation through that shared control.
 - `CFFloat` now uses `CFTextBox` as its delayed-commit text layer and applies invariant float validation with configurable decimal-place limits.
 - `CFColor` now provides a reusable color-well control with hex display, transparent checker preview, mouse-over border feedback, and picker-dialog integration.
+- `CFHdrColor` now provides an HDR-aware color-well control that keeps hex `Value` plus a separate `Stops` double and uses HDR/SDR conversion helpers to preview and edit HDR-adjusted color output.
 - `CFColor` now uses a far-left swatch button to open the picker and an inline editable hex text field so copy/paste/direct hex editing lives inside the control itself.
 - `CFColor` swatch opening still uses a button, but now with a minimal local template so the shared button chrome no longer obscures the visible color well.
 - `CFColor` still binds through hex `Value`, and now also exposes public RGB/HSV conversion helpers plus XAML converters so code-behind and bindings can work with RGB(A) and HSV(A) representations.
@@ -48,6 +49,13 @@
 - Replaced the interactive color picker's left-side negative margin hack with equivalent parent/right-column spacing so the interactive section keeps the same position without relying on a brittle negative offset.
 - Added `CFColorValueTypes.cs`, `CFColorConverters.cs`, and new public static helpers on `CFColor` so color values can be converted between hex, RGB(A), and HSV(A) from both code-behind and XAML bindings.
 - Extended the `CFColor` preview card in `MainWindow` so it now shows synchronized hex, RGB(A), and HSV(A) readouts for the same preview value.
+- Added `AgenticColorCreator.App\UserControls\CFHdrColorControl\` with `CFHdrColor.xaml`, `.xaml.cs`, `CFHdrColorValueTypes.cs`, `CFHdrColorConverters.cs`, and moved `ColorOperations.cs` into that folder so HDR color editing and conversion logic live together.
+- Added `HdrColorPickerWindow.xaml`, `HdrColorPickerWindow.xaml.cs`, and `HdrColorPickerViewModel.cs` to provide an HDR-specific picker flow with a `Stops` field plus both current SDR and HDR-adjusted preview swatches.
+- Replaced the HDR `Stops` text inputs in both `CFHdrColor` and `HdrColorPickerWindow` with `CFFloat` so stops is edited as a decimal numeric control with two decimals and `0.1` step behavior.
+- Constrained the HDR `Stops` numeric inputs in both `CFHdrColor` and `HdrColorPickerWindow` to the range `-4` through `4`.
+- Reworked the HDR picker summary block so the SDR and HDR preview wells sit side by side, the HDR well includes an `HDR` label, and the `Stops` control now has both a slider and numeric `CFFloat` input beneath the hex field.
+- Adjusted the HDR preview well label so the `HDR` text now sits in a small badge instead of tinting the full well, preserving the actual HDR preview color.
+- Added `PreviewHdrColorValue`, `PreviewHdrColorStops`, `PreviewHdrColorValueRgbText`, and `PreviewHdrColorValueHsvText` to `MainWindow` and a new `CFHdrColor` preview card in the `UI Preview` tab.
 - Reevaluated UI colors after `Color\agentic_colors.md` changed at `2026-05-25 13:16:25` and added dedicated `CF.CFColor...` theme resources so the `CFColor` swatch/text visuals follow the new `CFColor` source values.
 - Updated `CFColor` so the swatch rectangle now mirrors the hex text field's border-state behavior for default, hover, focus, and disabled states.
 - Added immediate `CFTextBox` validation modes for alphanumeric path input and actual integer input.

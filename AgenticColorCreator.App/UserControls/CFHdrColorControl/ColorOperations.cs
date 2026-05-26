@@ -1,9 +1,9 @@
 using System;
 using WpfColor = System.Windows.Media.Color;
 
-namespace AgenticColorCreator.App.UserControls.CFColorControl
+namespace AgenticColorCreator.App.UserControls.CFHdrColorControl
 {
-	internal class ColorOperations
+	public static class ColorOperations
 	{
 		public static WpfColor WpfColorToHdr(WpfColor color, double stops)
 		{

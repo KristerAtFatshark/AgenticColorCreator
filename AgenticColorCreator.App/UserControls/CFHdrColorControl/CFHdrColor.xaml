@@ -1,0 +1,75 @@
+<UserControl x:Class="AgenticColorCreator.App.UserControls.CFHdrColorControl.CFHdrColor"
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:floatControls="clr-namespace:AgenticColorCreator.App.UserControls.CFFloatControl"
+			 mc:Ignorable="d"
+			 d:DesignHeight="28"
+			 d:DesignWidth="180">
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="Auto" />
+			<ColumnDefinition Width="5" />
+			<ColumnDefinition Width="*" />
+		</Grid.ColumnDefinitions>
+
+		<Button x:Name="OpenPickerButton"
+				Grid.Column="0"
+				Padding="0"
+				Background="Transparent"
+				BorderBrush="Transparent"
+				IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=IsEnabled}"
+				MouseEnter="OnSwatchInteractionChanged"
+				MouseLeave="OnSwatchInteractionChanged"
+				Click="OpenPickerButton_Click">
+			<Button.Template>
+				<ControlTemplate TargetType="Button">
+					<ContentPresenter />
+				</ControlTemplate>
+			</Button.Template>
+			<Border x:Name="CheckerBorder"
+					Height="24"
+					Width="45"
+					CornerRadius="3"
+					BorderBrush="{StaticResource CF.CFColor.Default.Border}"
+					BorderThickness="1"
+					Background="Transparent">
+				<Border x:Name="ColorOverlayBorder"
+						Background="Transparent"
+						CornerRadius="2" />
+			</Border>
+		</Button>
+
+		<Grid Grid.Column="2">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="5" />
+				<ColumnDefinition Width="60" />
+			</Grid.ColumnDefinitions>
+
+			<TextBox x:Name="HexTextBox"
+					 Grid.Column="0"
+					 Style="{StaticResource CF.TextBox}"
+					 Background="{StaticResource CF.CFColor.Default.Background}"
+					 Foreground="{StaticResource CF.CFColor.Default.Foreground}"
+					 BorderBrush="{StaticResource CF.CFColor.Default.Border}"
+					 SelectionBrush="{StaticResource CF.CFColor.Selected.Selection}"
+					 IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=IsEnabled}"
+					 IsKeyboardFocusedChanged="OnTextInteractionChanged"
+					 MouseEnter="OnTextInteractionChanged"
+					 MouseLeave="OnTextInteractionChanged"
+					 VerticalContentAlignment="Center"
+					 Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+			<floatControls:CFFloat x:Name="StopsInput"
+							 Grid.Column="2"
+							 IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=IsEnabled}"
+							 Value="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Stops, Mode=TwoWay}"
+							 Step="0.1"
+							 Decimals="2"
+							 Minimum="-4"
+							 Maximum="4" />
+		</Grid>
+	</Grid>
+</UserControl>
