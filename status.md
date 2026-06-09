@@ -7,6 +7,7 @@
 - Shared theme resources live in `AgenticColorCreator.App\Styles\CFDarkStyles.xaml` and use explicit `CF.` brush keys plus keyed `CF...` styles/templates.
 - Custom previewed controls currently include `CFTextBox`, `CFInt`, `CFFloat`, `CFColor`, `CFHdrColor`, and `CFTreeView`.
 - `CFTextBox` now supports delayed external value commits plus immediate validation feedback while typing.
+- `CFTextBox` now also commits valid pending edits immediately on focus loss, so tab-out and click-outside behave the same as Enter for textbox-based controls.
 - `CFInt` now uses `CFTextBox` as its delayed-commit text layer and mixed-state implementation, applying actual integer validation through that shared control.
 - `CFFloat` now uses `CFTextBox` as its delayed-commit text layer and mixed-state implementation, applying invariant float validation with configurable decimal-place limits.
 - `CFColor` now provides a reusable color-well control with hex display, transparent checker preview, mouse-over border feedback, and picker-dialog integration.
@@ -72,6 +73,7 @@
 - Added immediate `CFTextBox` validation modes for alphanumeric path input and actual integer input.
 - Removed the abandoned generic mixed-state base-class experiment and kept the reusable solution centered on `CFTextBox`, with `CFInt` and `CFFloat` reusing that single mixed-state implementation through composition.
 - Reworked `CFColor` and `CFHdrColor` mixed-state UX so the overlay no longer blocks picker interaction, both controls use temporary opaque black (`#FF000000`) as the mixed/default swatch color, and mixed mode only commits when the picker result differs from that default color.
+- Fixed `CFTextBox` focus-loss behavior so valid edits commit on `LostKeyboardFocus` instead of waiting for the idle timeout; this also improves `CFInt` and `CFFloat` because they reuse `CFTextBox` for text entry.
 - Added float preview support in `MainWindow` with `PreviewFloatValue`, `PreviewFloatMinimum`, `PreviewFloatMaximum`, and `PreviewFloatDecimals` dependency properties plus a new `CFFloat` preview card and decimals test input in the `UI Preview` tab.
 - Added `PreviewColorValue` plus a new `CFColor` preview card in `MainWindow` so the custom color well and upgraded picker can be tested from the `UI Preview` tab.
 - Updated `CFInt` and `CFFloat` so the keyboard up/down arrow keys now use each control's configured `Step` value, matching the spinner button behavior.

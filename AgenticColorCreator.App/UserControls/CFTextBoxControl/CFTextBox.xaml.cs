@@ -244,7 +244,20 @@ public partial class CFTextBox : UserControl
 
 	private void OnInnerTextBoxLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
 	{
+		_commitTimer.Stop();
 		IsEditing = false;
+
+		if (!IsMixedState)
+		{
+			CommitText();
+			return;
+		}
+
+		if (DisplayedText != DefaultTextValue)
+		{
+			CommitText();
+			return;
+		}
 
 		if (IsMixedState)
 		{
