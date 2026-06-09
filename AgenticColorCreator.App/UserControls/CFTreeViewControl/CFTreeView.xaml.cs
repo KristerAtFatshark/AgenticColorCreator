@@ -16,17 +16,6 @@ namespace ClownFishUi.CFUserControls.CFTreeViewControl
 {
 	public partial class CFTreeView : UserControl
 	{
-	public static readonly DependencyProperty IsMixedStateProperty = DependencyProperty.Register(
-		nameof(IsMixedState),
-		typeof(bool),
-		typeof(CFTreeView),
-		new PropertyMetadata(false));
-	public bool IsMixedState
-	{
-		get => (bool)GetValue(IsMixedStateProperty);
-		set => SetValue(IsMixedStateProperty, value);
-	}
-
 	public static readonly DependencyProperty IsMultiSelectProperty = DependencyProperty.Register(
 		nameof(IsMultiSelect),
 		typeof(bool),
@@ -133,7 +122,6 @@ namespace ClownFishUi.CFUserControls.CFTreeViewControl
 			return;
 		}
 
-		IsMixedState = false;
 		if (IsMultiSelect)
 		{
 			return;
@@ -273,7 +261,11 @@ namespace ClownFishUi.CFUserControls.CFTreeViewControl
 
 		foreach (var sourceEntry in sourceEntries)
 		{
-			var segments = sourceEntry.Value.Split('/', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+			var segments = sourceEntry.Value
+				.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries)
+				.Select(segment => segment.Trim())
+				.Where(segment => segment.Length > 0)
+				.ToArray();
 			if (segments.Length == 0)
 			{
 				continue;
@@ -500,10 +492,12 @@ namespace ClownFishUi.CFUserControls.CFTreeViewControl
 			return;
 		}
 
-		Dispatcher.BeginInvoke(() =>
-		{
-			selectedItem.BringIntoView();
-		}, DispatcherPriority.Loaded);
+		Dispatcher.BeginInvoke(
+			DispatcherPriority.Loaded,
+			new Action(() =>
+			{
+				selectedItem.BringIntoView();
+			}));
 	}
 
 	private CFTreeViewItem FindSelectedTreeViewItem(string selectedValue)

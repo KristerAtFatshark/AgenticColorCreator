@@ -16,10 +16,12 @@
 - The `CFTreeView` preview now includes 200 deterministic randomized sample entries in addition to the original hand-picked nodes so large-item behavior can be tested directly in the `UI Preview` tab.
 - `CFTreeView` now scrolls the first externally selected item into view after `SelectedValues` changes, so preview actions like `Select Primary` also move the scrollbar to the correct position.
 - `CFTreeView` performance was improved while keeping all nodes expanded by default: virtualization/recycling is enabled at the tree and item levels, and external selection updates now reuse the existing visual tree instead of rebuilding it.
+- `CFTreeView` no longer exposes or previews a mixed-state mode; the control now behaves as a plain selectable tree without any `IsMixedState` surface or overlay.
 - Treeview cleanup removed dead code paths, including the unused `PreviewTreeView_LostFocus` handler and the unused `TreeViewNode.Type` field, keeping the helper model focused on values, icons, and children only.
 - `TreeViewIconMap` now falls back to the `default` icon mapping instead of throwing when an unknown type is encountered.
 - The `CFTreeView` control family namespace was renamed from `AgenticColorCreator.App.UserControls.CFTreeViewControl` to `ClownFishUi.CFUserControls.CFTreeViewControl`, with all XAML and code references updated to match.
 - All C# files in `AgenticColorCreator.App\UserControls\CFTreeViewControl\` were rewritten to avoid post-C# 7.3 language features, including converting file-scoped namespaces to block-scoped namespaces and locally suppressing only the nullable-analysis warnings needed to keep the folder clean under the current project settings.
+- `CFTreeView.xaml.cs` no longer depends on newer framework APIs such as `StringSplitOptions.TrimEntries` or the newer `Dispatcher.BeginInvoke` overload shape, using explicit trim/filter logic and the older delegate-based dispatcher call instead.
 - `CFColor` now uses a far-left swatch button to open the picker and an inline editable hex text field so copy/paste/direct hex editing lives inside the control itself.
 - `CFColor` swatch opening still uses a button, but now with a minimal local template so the shared button chrome no longer obscures the visible color well.
 - `CFColor` still binds through hex `Value`, and now also exposes public RGB/HSV conversion helpers plus XAML converters so code-behind and bindings can work with RGB(A) and HSV(A) representations.
@@ -91,6 +93,8 @@
 - Updated `TreeViewIconMap.GetIcon()` so unsupported or newly introduced types degrade gracefully to the default icon instead of crashing the tree build path.
 - Renamed the treeview control namespace across `CFTreeView`, `CFTreeViewItem`, `TreeViewNode`, `TreeViewSourceEntry`, `TreeViewIconMap`, `MainWindow`, `MainWindowViewModel`, and `CFDarkStyles.xaml` so the control now lives under `ClownFishUi.CFUserControls.CFTreeViewControl`.
 - Replaced treeview-folder newer C# syntax such as file-scoped namespaces, nullable reference annotations, `is not`, and collection-expression-style initializers with C# 7.3-compatible equivalents.
+- Replaced the remaining post-.NET Framework convenience APIs in `CFTreeView.xaml.cs` that still blocked older-target compatibility even after the language-syntax cleanup.
+- Removed the treeview mixed-state property, overlay, and preview toggle/binding from `CFTreeView`, `MainWindow.xaml`, and `MainWindow.xaml.cs` because treeview mixed state is no longer part of the intended UX.
 - Added float preview support in `MainWindow` with `PreviewFloatValue`, `PreviewFloatMinimum`, `PreviewFloatMaximum`, and `PreviewFloatDecimals` dependency properties plus a new `CFFloat` preview card and decimals test input in the `UI Preview` tab.
 - Added `PreviewColorValue` plus a new `CFColor` preview card in `MainWindow` so the custom color well and upgraded picker can be tested from the `UI Preview` tab.
 - Updated `CFInt` and `CFFloat` so the keyboard up/down arrow keys now use each control's configured `Step` value, matching the spinner button behavior.

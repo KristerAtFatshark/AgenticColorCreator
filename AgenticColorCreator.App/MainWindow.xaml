@@ -724,11 +724,7 @@
 								</Grid.RowDefinitions>
 								<TextBlock Style="{StaticResource CF.TextBlock}" FontSize="16" FontWeight="SemiBold" Text="CFTreeView" />
 								<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="1" Margin="0,2,0,14" Foreground="{StaticResource CF.Text.Selected.Foreground}" Text="App.UserControls.CFTreeViewControl.CFTreeView" />
-								<CheckBox Style="{StaticResource CF.CheckBox}" Grid.Row="0" HorizontalAlignment="Right" Margin="0,0,0,0"
-								Content="Mixed State" 
-								IsChecked="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewCFTreeViewIsMixed, Mode=TwoWay}" />
 								<userControls:CFTreeView Grid.Row="2"
-											IsMixedState="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewCFTreeViewIsMixed, Mode=TwoWay}"
 											IsMultiSelect="True"
 											NodesSource="{Binding PreviewTreeViewNodes}"
 											SelectedValues="{Binding PreviewSelectedTreeViewValues}"

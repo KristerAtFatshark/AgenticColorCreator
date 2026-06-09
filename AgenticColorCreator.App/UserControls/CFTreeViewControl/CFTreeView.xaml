@@ -7,9 +7,6 @@
 			 mc:Ignorable="d"
 			 d:DesignHeight="220"
 			 d:DesignWidth="260">
-	<UserControl.Resources>
-		<BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-	</UserControl.Resources>
 	<Grid>
 		<TreeView x:Name="PreviewTreeView"
 			  Style="{StaticResource CF.TreeViewStyle}"
@@ -17,14 +14,5 @@
 			  SelectedItemChanged="OnSelectedItemChanged"
 			  PreviewMouseLeftButtonDown="OnPreviewTreeViewMouseLeftButtonDown"
 			  />
-		<Border Background="#80AAAAAA"
-				 Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=IsMixedState, Converter={StaticResource BooleanToVisibilityConverter}}"
-				 VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-			<TextBlock Text="– Mixed –"
-					Foreground="Black" FontWeight="Bold"
-					Opacity="0.8" FontSize="12"
-					HorizontalAlignment="Center" VerticalAlignment="Center"
-					TextWrapping="NoWrap"/>
-		</Border>
 	</Grid>
 </UserControl>

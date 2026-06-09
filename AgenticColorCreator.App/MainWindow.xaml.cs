@@ -28,10 +28,6 @@ public partial class MainWindow : Window
 	public static readonly DependencyProperty PreviewCFHdrColorIsMixedProperty =
 		DependencyProperty.Register(
 			nameof(PreviewCFHdrColorIsMixed), typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
-	public static readonly DependencyProperty PreviewCFTreeViewIsMixedProperty =
-		DependencyProperty.Register(
-			nameof(PreviewCFTreeViewIsMixed), typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
-
 	public static readonly DependencyProperty PreviewTextBoxValueProperty = DependencyProperty.Register(
 		nameof(PreviewTextBoxValue),
 		typeof(string),
@@ -179,12 +175,6 @@ public partial class MainWindow : Window
 		get => (bool)GetValue(PreviewCFHdrColorIsMixedProperty);
 		set => SetValue(PreviewCFHdrColorIsMixedProperty, value);
 	}
-	public bool PreviewCFTreeViewIsMixed
-	{
-		get => (bool)GetValue(PreviewCFTreeViewIsMixedProperty);
-		set => SetValue(PreviewCFTreeViewIsMixedProperty, value);
-	}
-
 	public string PreviewTextBoxValue
 	{
 		get => (string)GetValue(PreviewTextBoxValueProperty);
