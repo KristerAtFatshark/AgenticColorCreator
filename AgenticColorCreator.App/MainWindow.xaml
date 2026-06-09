@@ -8,7 +8,7 @@
 		xmlns:colorControls="clr-namespace:AgenticColorCreator.App.UserControls.CFColorControl"
 		xmlns:hdrColorControls="clr-namespace:AgenticColorCreator.App.UserControls.CFHdrColorControl"
 		xmlns:textControls="clr-namespace:AgenticColorCreator.App.UserControls.CFTextBoxControl"
-		xmlns:userControls="clr-namespace:AgenticColorCreator.App.UserControls.CFTreeViewControl"
+		xmlns:userControls="clr-namespace:ClownFishUi.CFUserControls.CFTreeViewControl"
 		xmlns:viewModels="clr-namespace:AgenticColorCreator.App.ViewModels"
 		mc:Ignorable="d"
 		Title="Agentic Color Creator"

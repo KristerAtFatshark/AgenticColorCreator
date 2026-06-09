@@ -1,4 +1,4 @@
-namespace AgenticColorCreator.App.UserControls.CFTreeViewControl;
+namespace ClownFishUi.CFUserControls.CFTreeViewControl;
 
 public sealed class TreeViewSourceEntry
 {

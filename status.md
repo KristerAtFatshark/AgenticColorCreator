@@ -18,6 +18,7 @@
 - `CFTreeView` performance was improved while keeping all nodes expanded by default: virtualization/recycling is enabled at the tree and item levels, and external selection updates now reuse the existing visual tree instead of rebuilding it.
 - Treeview cleanup removed dead code paths, including the unused `PreviewTreeView_LostFocus` handler and the unused `TreeViewNode.Type` field, keeping the helper model focused on values, icons, and children only.
 - `TreeViewIconMap` now falls back to the `default` icon mapping instead of throwing when an unknown type is encountered.
+- The `CFTreeView` control family namespace was renamed from `AgenticColorCreator.App.UserControls.CFTreeViewControl` to `ClownFishUi.CFUserControls.CFTreeViewControl`, with all XAML and code references updated to match.
 - `CFColor` now uses a far-left swatch button to open the picker and an inline editable hex text field so copy/paste/direct hex editing lives inside the control itself.
 - `CFColor` swatch opening still uses a button, but now with a minimal local template so the shared button chrome no longer obscures the visible color well.
 - `CFColor` still binds through hex `Value`, and now also exposes public RGB/HSV conversion helpers plus XAML converters so code-behind and bindings can work with RGB(A) and HSV(A) representations.
@@ -87,6 +88,7 @@
 - Updated `CFTreeView` external-selection sync to maintain a value-to-item lookup and apply selection changes in place instead of rebuilding the whole tree for `SelectedValues` updates.
 - Removed stale treeview code that no longer affected runtime behavior after the recent selection/performance refactors.
 - Updated `TreeViewIconMap.GetIcon()` so unsupported or newly introduced types degrade gracefully to the default icon instead of crashing the tree build path.
+- Renamed the treeview control namespace across `CFTreeView`, `CFTreeViewItem`, `TreeViewNode`, `TreeViewSourceEntry`, `TreeViewIconMap`, `MainWindow`, `MainWindowViewModel`, and `CFDarkStyles.xaml` so the control now lives under `ClownFishUi.CFUserControls.CFTreeViewControl`.
 - Added float preview support in `MainWindow` with `PreviewFloatValue`, `PreviewFloatMinimum`, `PreviewFloatMaximum`, and `PreviewFloatDecimals` dependency properties plus a new `CFFloat` preview card and decimals test input in the `UI Preview` tab.
 - Added `PreviewColorValue` plus a new `CFColor` preview card in `MainWindow` so the custom color well and upgraded picker can be tested from the `UI Preview` tab.
 - Updated `CFInt` and `CFFloat` so the keyboard up/down arrow keys now use each control's configured `Step` value, matching the spinner button behavior.

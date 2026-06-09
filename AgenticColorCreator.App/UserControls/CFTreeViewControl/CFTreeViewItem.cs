@@ -1,7 +1,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace AgenticColorCreator.App.UserControls.CFTreeViewControl;
+namespace ClownFishUi.CFUserControls.CFTreeViewControl;
 
 public class CFTreeViewItem : TreeViewItem
 {

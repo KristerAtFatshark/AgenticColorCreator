@@ -5,7 +5,7 @@ using System.ComponentModel;
 using System.Windows;
 using AgenticColorCreator.App.UserControls.CFColorControl;
 using AgenticColorCreator.App.UserControls.CFHdrColorControl;
-using AgenticColorCreator.App.UserControls.CFTreeViewControl;
+using ClownFishUi.CFUserControls.CFTreeViewControl;
 using AgenticColorCreator.App.ViewModels;
 
 namespace AgenticColorCreator.App;

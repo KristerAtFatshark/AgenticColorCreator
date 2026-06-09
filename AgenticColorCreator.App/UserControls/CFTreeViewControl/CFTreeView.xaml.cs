@@ -10,7 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 
-namespace AgenticColorCreator.App.UserControls.CFTreeViewControl;
+namespace ClownFishUi.CFUserControls.CFTreeViewControl;
 
 public partial class CFTreeView : UserControl
 {
