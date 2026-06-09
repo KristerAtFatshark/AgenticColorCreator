@@ -291,14 +291,12 @@ public partial class CFTreeView : UserControl
 					{
 						Text = segment,
 						Value = currentPath,
-						Type = nodeType,
 						Icon = TreeViewIconMap.GetIcon(nodeType),
 					};
 					currentNodes.Add(existingNode);
 				}
 				else if (isLeaf)
 				{
-					existingNode.Type = sourceEntry.Type;
 					existingNode.Icon = TreeViewIconMap.GetIcon(sourceEntry.Type);
 				}
 
@@ -600,8 +598,4 @@ public partial class CFTreeView : UserControl
 		return null;
 	}
 
-	private void PreviewTreeView_LostFocus(object sender, RoutedEventArgs e)
-	{
-		// Mixed state must now be set externally only
-	}
 }

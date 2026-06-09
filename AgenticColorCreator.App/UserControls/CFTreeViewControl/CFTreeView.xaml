@@ -16,7 +16,6 @@
 			  ItemContainerStyle="{StaticResource CF.TreeViewItem}"
 			  SelectedItemChanged="OnSelectedItemChanged"
 			  PreviewMouseLeftButtonDown="OnPreviewTreeViewMouseLeftButtonDown"
-			  LostFocus="PreviewTreeView_LostFocus"
 			  />
 		<Border Background="#80AAAAAA"
 				 Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=IsMixedState, Converter={StaticResource BooleanToVisibilityConverter}}"
