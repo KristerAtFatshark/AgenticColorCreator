@@ -17,6 +17,7 @@
 		<textControls:CFTextBox x:Name="ValueTextBox"
 						 Grid.Column="0"
 						 Height="24"
+						 IsMixedState="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=IsMixedState, Mode=TwoWay}"
 						 ValidationMode="NumberOnly"
 						 Value="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=TextValue, Mode=TwoWay}" />
 

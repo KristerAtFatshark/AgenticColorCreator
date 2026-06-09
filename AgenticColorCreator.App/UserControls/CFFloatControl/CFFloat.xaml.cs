@@ -8,11 +8,17 @@ namespace AgenticColorCreator.App.UserControls.CFFloatControl;
 
 public partial class CFFloat : UserControl
 {
+	public static readonly DependencyProperty IsMixedStateProperty = DependencyProperty.Register(
+		nameof(IsMixedState),
+		typeof(bool),
+		typeof(CFFloat),
+		new PropertyMetadata(false));
+
 	public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
 		nameof(Value),
 		typeof(float),
 		typeof(CFFloat),
-		new FrameworkPropertyMetadata(0f, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+		new FrameworkPropertyMetadata(0f, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnValueChanged));
 
 	public static readonly DependencyProperty MinimumProperty = DependencyProperty.Register(
 		nameof(Minimum),
@@ -50,6 +56,13 @@ public partial class CFFloat : UserControl
 	{
 		InitializeComponent();
 		PreviewKeyDown += OnPreviewKeyDown;
+		Loaded += OnLoaded;
+	}
+
+	public bool IsMixedState
+	{
+		get => (bool)GetValue(IsMixedStateProperty);
+		set => SetValue(IsMixedStateProperty, value);
 	}
 
 	public float Value
@@ -95,7 +108,17 @@ public partial class CFFloat : UserControl
 			return;
 		}
 
-		floatControl.ApplyValue(floatControl.Value);
+		floatControl.SyncTextValue();
+	}
+
+	private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+	{
+		if (d is not CFFloat floatControl || floatControl._isApplyingValue)
+		{
+			return;
+		}
+
+		floatControl.SyncTextValue();
 	}
 
 	private static void OnTextValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -111,11 +134,13 @@ public partial class CFFloat : UserControl
 	private void OnIncreaseClick(object sender, RoutedEventArgs e)
 	{
 		ApplyValue(Value + Step);
+		IsMixedState = false;
 	}
 
 	private void OnDecreaseClick(object sender, RoutedEventArgs e)
 	{
 		ApplyValue(Value - Step);
+		IsMixedState = false;
 	}
 
 	private void OnPreviewKeyDown(object sender, KeyEventArgs e)
@@ -142,17 +167,18 @@ public partial class CFFloat : UserControl
 	{
 		if (!float.TryParse(TextValue, NumberStyles.Float, CultureInfo.InvariantCulture, out var parsedValue))
 		{
-			TextValue = FormatValue(Value);
+			SyncTextValue();
 			return;
 		}
 
 		ApplyValue(parsedValue);
+		IsMixedState = false;
 	}
 
 	private void ApplyValue(float value)
 	{
 		Value = CoerceValue(RoundValue(value));
-		TextValue = FormatValue(Value);
+		SyncTextValue();
 	}
 
 	private float CoerceValue(float value)
@@ -189,20 +215,13 @@ public partial class CFFloat : UserControl
 		return roundedValue.ToString($"0.{new string('#', decimals)}", CultureInfo.InvariantCulture);
 	}
 
-	protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+	private void OnLoaded(object sender, RoutedEventArgs e)
 	{
-		base.OnPropertyChanged(e);
+		SyncTextValue();
+	}
 
-		if (e.Property != ValueProperty)
-		{
-			return;
-		}
-
-		if (_isApplyingValue)
-		{
-			return;
-		}
-
+	private void SyncTextValue()
+	{
 		_isApplyingValue = true;
 		try
 		{

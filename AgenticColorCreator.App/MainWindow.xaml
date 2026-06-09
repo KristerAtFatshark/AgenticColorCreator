@@ -315,9 +315,13 @@
 							</Grid.RowDefinitions>
 							<TextBlock Style="{StaticResource CF.TextBlock}" FontSize="16" FontWeight="SemiBold" Text="CFHdrColor" />
 							<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="1" Margin="0,2,0,14" Foreground="{StaticResource CF.Text.Selected.Foreground}" Text="App.UserControls.CFHdrColorControl.CFHdrColor" />
-							<hdrColorControls:CFHdrColor Grid.Row="2" Margin="0,2,0,2"
-											Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewHdrColorValue, Mode=TwoWay}"
-											Stops="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewHdrColorStops, Mode=TwoWay}" />
+							<CheckBox Style="{StaticResource CF.CheckBox}" Grid.Row="0" HorizontalAlignment="Right" Margin="0,0,0,0"
+								Content="Mixed State" 
+								IsChecked="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewCFHdrColorIsMixed, Mode=TwoWay}" />
+								<hdrColorControls:CFHdrColor Grid.Row="2" Margin="0,2,0,2"
+										IsMixedState="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewCFHdrColorIsMixed, Mode=TwoWay}"
+										Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewHdrColorValue, Mode=TwoWay}"
+										Stops="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewHdrColorStops, Mode=TwoWay}" />
 							<hdrColorControls:CFHdrColor Grid.Row="3" Margin="0,2,0,2"
 											IsEnabled="False"
 											Value="#80FF6600"
@@ -359,8 +363,12 @@
 							</Grid.RowDefinitions>
 							<TextBlock Style="{StaticResource CF.TextBlock}" FontSize="16" FontWeight="SemiBold" Text="CFColor" />
 							<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="1" Margin="0,2,0,14" Foreground="{StaticResource CF.Text.Selected.Foreground}" Text="App.UserControls.CFColorControl.CFColor" />
-							<colorControls:CFColor Grid.Row="2" Margin="0,2,0,2"
-									Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewColorValue, Mode=TwoWay}" />
+<CheckBox Style="{StaticResource CF.CheckBox}" Grid.Row="0" HorizontalAlignment="Right" Margin="0,0,0,0"
+								Content="Mixed State" 
+								IsChecked="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewCFColorIsMixed, Mode=TwoWay}" />
+								<colorControls:CFColor Grid.Row="2" Margin="0,2,0,2"
+										IsMixedState="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewCFColorIsMixed, Mode=TwoWay}"
+										Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewColorValue, Mode=TwoWay}" />
 							<colorControls:CFColor Grid.Row="3" Margin="0,2,0,2"
 									IsEnabled="False"
 									Value="#80FF6600" />
@@ -400,7 +408,11 @@
 								</Grid.RowDefinitions>
 								<TextBlock Style="{StaticResource CF.TextBlock}" FontSize="16" FontWeight="SemiBold" Text="CFTextBox" />
 								<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="1" Margin="0,2,0,14" Foreground="{StaticResource CF.Text.Selected.Foreground}" Text="App.UserControls.CFTextBoxControl.CFTextBox" />
+								<CheckBox Style="{StaticResource CF.CheckBox}" Grid.Row="0" HorizontalAlignment="Right" Margin="0,0,0,0"
+								Content="Mixed State" 
+								IsChecked="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewCFTextBoxIsMixed, Mode=TwoWay}" />
 								<textControls:CFTextBox Grid.Row="2"
+										IsMixedState="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewCFTextBoxIsMixed, Mode=TwoWay}"
 										Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewTextBoxValue, Mode=TwoWay}"
 										Margin="0,2,0,2"/>
 								<textControls:CFTextBox Grid.Row="3" 
@@ -433,7 +445,11 @@
 								</Grid.RowDefinitions>
 								<TextBlock Style="{StaticResource CF.TextBlock}" FontSize="16" FontWeight="SemiBold" Text="CFFloat" />
 								<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="1" Margin="0,2,0,14" Foreground="{StaticResource CF.Text.Selected.Foreground}" Text="App.UserControls.CFFloatControl.CFFloat" />
+								<CheckBox Style="{StaticResource CF.CheckBox}" Grid.Row="0" HorizontalAlignment="Right" Margin="0,0,0,0"
+								Content="Mixed State" 
+								IsChecked="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewCFFloatIsMixed, Mode=TwoWay}" />
 								<floatControls:CFFloat Grid.Row="2"
+										IsMixedState="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewCFFloatIsMixed, Mode=TwoWay}"
 										Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatValue, Mode=TwoWay}"
 										Step="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatStep}"
 										Decimals="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewFloatDecimals}"
@@ -518,7 +534,11 @@
 								</Grid.RowDefinitions>
 								<TextBlock Style="{StaticResource CF.TextBlock}" FontSize="16" FontWeight="SemiBold" Text="CFInt" />
 								<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="1" Margin="0,2,0,14" Foreground="{StaticResource CF.Text.Selected.Foreground}" Text="App.UserControls.CFIntControl.CFInt" />
+								<CheckBox Style="{StaticResource CF.CheckBox}" Grid.Row="0" HorizontalAlignment="Right" Margin="0,0,0,0"
+								Content="Mixed State" 
+								IsChecked="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewCFIntIsMixed, Mode=TwoWay}" />
 								<intControls:CFInt Grid.Row="2"
+												IsMixedState="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewCFIntIsMixed, Mode=TwoWay}"
 												Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewNumberValue, Mode=TwoWay}"
 												Step="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewIntStep}"
 												Minimum="{Binding ElementName=PreviewNumberMinTextBox, Path=Text}"
@@ -704,7 +724,11 @@
 								</Grid.RowDefinitions>
 								<TextBlock Style="{StaticResource CF.TextBlock}" FontSize="16" FontWeight="SemiBold" Text="CFTreeView" />
 								<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="1" Margin="0,2,0,14" Foreground="{StaticResource CF.Text.Selected.Foreground}" Text="App.UserControls.CFTreeViewControl.CFTreeView" />
+								<CheckBox Style="{StaticResource CF.CheckBox}" Grid.Row="0" HorizontalAlignment="Right" Margin="0,0,0,0"
+								Content="Mixed State" 
+								IsChecked="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewCFTreeViewIsMixed, Mode=TwoWay}" />
 								<userControls:CFTreeView Grid.Row="2"
+											IsMixedState="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewCFTreeViewIsMixed, Mode=TwoWay}"
 											IsMultiSelect="True"
 											NodesSource="{Binding PreviewTreeViewNodes}"
 											SelectedValues="{Binding PreviewSelectedTreeViewValues}"

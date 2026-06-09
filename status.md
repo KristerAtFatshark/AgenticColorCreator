@@ -7,10 +7,11 @@
 - Shared theme resources live in `AgenticColorCreator.App\Styles\CFDarkStyles.xaml` and use explicit `CF.` brush keys plus keyed `CF...` styles/templates.
 - Custom previewed controls currently include `CFTextBox`, `CFInt`, `CFFloat`, `CFColor`, `CFHdrColor`, and `CFTreeView`.
 - `CFTextBox` now supports delayed external value commits plus immediate validation feedback while typing.
-- `CFInt` now uses `CFTextBox` as its delayed-commit text layer and applies actual integer validation through that shared control.
-- `CFFloat` now uses `CFTextBox` as its delayed-commit text layer and applies invariant float validation with configurable decimal-place limits.
+- `CFInt` now uses `CFTextBox` as its delayed-commit text layer and mixed-state implementation, applying actual integer validation through that shared control.
+- `CFFloat` now uses `CFTextBox` as its delayed-commit text layer and mixed-state implementation, applying invariant float validation with configurable decimal-place limits.
 - `CFColor` now provides a reusable color-well control with hex display, transparent checker preview, mouse-over border feedback, and picker-dialog integration.
 - `CFHdrColor` now provides an HDR-aware color-well control that keeps hex `Value` plus a separate `Stops` double and uses HDR/SDR conversion helpers to preview and edit HDR-adjusted color output.
+- `CFColor` and `CFHdrColor` mixed state now hide their text-entry fields behind a `- Mixed -` overlay while keeping the swatch/picker interactive; in mixed mode the picker starts from temporary opaque black and only exits mixed mode if the user picks a non-default black color.
 - `CFColor` now uses a far-left swatch button to open the picker and an inline editable hex text field so copy/paste/direct hex editing lives inside the control itself.
 - `CFColor` swatch opening still uses a button, but now with a minimal local template so the shared button chrome no longer obscures the visible color well.
 - `CFColor` still binds through hex `Value`, and now also exposes public RGB/HSV conversion helpers plus XAML converters so code-behind and bindings can work with RGB(A) and HSV(A) representations.
@@ -18,7 +19,7 @@
 
 ## Active Issues
 - Rebuilding the full debug solution can fail while another process is locking `AgenticColorCreator.Core.dll`.
-- The new `CFTextBox`, `CFInt`, `CFFloat`, `CFColor`, and upgraded color-picker behavior have been build-verified but still need manual visual confirmation in the running UI.
+- The refactored `CFTextBox`, `CFInt`, `CFFloat`, `CFColor`, and upgraded color-picker behavior have been build-verified but still need manual visual confirmation in the running UI.
 - `CFTextBox` validation currently uses a direct red foreground override for invalid text, so final visual approval should confirm that this matches the intended theme.
 - Descriptions are still saved as a single canonical markdown line even if entered over multiple lines in the UI.
 - No drag/drop reordering or search/filtering yet.
@@ -69,6 +70,8 @@
 - Updated `CFColor` so the swatch rectangle now mirrors the hex text field's border-state behavior for default, hover, focus, and disabled states.
 - Reevaluated `ComboBox Item` colors after `Color\agentic_colors.md` changed at `2026-05-26 12:42:52` and updated `CF.ComboBoxItem.Default.Background` to `#FF3C3C3C` plus `CF.ComboBoxItem.MouseOver.Background` to `#94FF9600` in `AgenticColorCreator.App\Styles\CFDarkStyles.xaml`.
 - Added immediate `CFTextBox` validation modes for alphanumeric path input and actual integer input.
+- Removed the abandoned generic mixed-state base-class experiment and kept the reusable solution centered on `CFTextBox`, with `CFInt` and `CFFloat` reusing that single mixed-state implementation through composition.
+- Reworked `CFColor` and `CFHdrColor` mixed-state UX so the overlay no longer blocks picker interaction, both controls use temporary opaque black (`#FF000000`) as the mixed/default swatch color, and mixed mode only commits when the picker result differs from that default color.
 - Added float preview support in `MainWindow` with `PreviewFloatValue`, `PreviewFloatMinimum`, `PreviewFloatMaximum`, and `PreviewFloatDecimals` dependency properties plus a new `CFFloat` preview card and decimals test input in the `UI Preview` tab.
 - Added `PreviewColorValue` plus a new `CFColor` preview card in `MainWindow` so the custom color well and upgraded picker can be tested from the `UI Preview` tab.
 - Updated `CFInt` and `CFFloat` so the keyboard up/down arrow keys now use each control's configured `Step` value, matching the spinner button behavior.
@@ -87,3 +90,4 @@
 - Keep this file short and practical; remove stale entries instead of appending long history.
 - If the task touches UI colors, compare `Color\agentic_colors.md` against the recorded timestamp in `AGENTS.md` before changing mappings.
 - Manually verify the current `CFTextBox`, `CFInt`, `CFFloat`, `CFColor`, and upgraded color-picker behavior in the `UI Preview` tab before treating the UX as final.
+- For future mixed-state reuse, prefer composing `CFTextBox` inside wrapper controls before introducing another base class; color pickers will likely need a separate composite pattern because their editable surface is not just a single text box.

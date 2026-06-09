@@ -8,13 +8,27 @@ namespace AgenticColorCreator.App.UserControls.CFColorControl;
 
 public partial class CFColor : UserControl
 {
+	private const string DefaultColorValue = "#FF000000";
+
+	public static readonly DependencyProperty IsMixedStateProperty = DependencyProperty.Register(
+		nameof(IsMixedState),
+		typeof(bool),
+		typeof(CFColor),
+		new PropertyMetadata(false, OnIsMixedStateChanged));
+
+	public bool IsMixedState
+	{
+		get => (bool)GetValue(IsMixedStateProperty);
+		set => SetValue(IsMixedStateProperty, value);
+	}
+
 	private static readonly Brush TransparentBrush = TransparentCheckerBrushFactory.Create();
 
 	public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
 		nameof(Value),
 		typeof(string),
 		typeof(CFColor),
-		new FrameworkPropertyMetadata("#FFFFFFFF", FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnValueChanged));
+		new FrameworkPropertyMetadata(DefaultColorValue, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnValueChanged));
 
 	public static readonly RoutedEvent ValueChangedEvent = EventManager.RegisterRoutedEvent(
 		nameof(ValueChanged),
@@ -39,6 +53,16 @@ public partial class CFColor : UserControl
 	{
 		add => AddHandler(ValueChangedEvent, value);
 		remove => RemoveHandler(ValueChangedEvent, value);
+	}
+
+	private static void OnIsMixedStateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+	{
+		if (d is not CFColor colorControl)
+		{
+			return;
+		}
+
+		colorControl.RefreshVisuals();
 	}
 
 	public static bool TryConvertHexToRgb(string? hexValue, out CFColorRgb rgb)
@@ -100,7 +124,7 @@ public partial class CFColor : UserControl
 		CheckerBorder.Background = TransparentBrush;
 		UpdateBorderVisuals();
 
-		if (ColorHexParser.TryParseArgb(Value, out var color))
+		if (ColorHexParser.TryParseArgb(GetDisplayValue(), out var color))
 		{
 			var brush = new SolidColorBrush(Color.FromArgb(color.A, color.R, color.G, color.B));
 			brush.Freeze();
@@ -163,11 +187,42 @@ public partial class CFColor : UserControl
 	{
 		var owner = Window.GetWindow(this) ?? Application.Current?.MainWindow;
 		var dialogService = new ColorPickerDialogService();
-		var selectedColor = dialogService.PickColor(Value, owner);
+		var selectedColor = dialogService.PickColor(GetDisplayValue(), owner);
 
 		if (!string.IsNullOrWhiteSpace(selectedColor))
 		{
+			if (IsMixedState)
+			{
+				if (!string.Equals(selectedColor, DefaultColorValue, System.StringComparison.OrdinalIgnoreCase))
+				{
+					Value = selectedColor;
+					IsMixedState = false;
+				}
+
+				return;
+			}
+
 			Value = selectedColor;
 		}
+	}
+
+	private void HexTextBox_TextChanged(object sender, TextChangedEventArgs e)
+	{
+		IsMixedState = false;
+	}
+
+	private void HexTextBox_LostFocus(object sender, RoutedEventArgs e)
+	{
+		// Mixed state now only set externally
+	}
+
+	private string GetDisplayValue()
+	{
+		if (IsMixedState)
+		{
+			return DefaultColorValue;
+		}
+
+		return ColorHexParser.TryParseArgb(Value, out _) ? Value : DefaultColorValue;
 	}
 }

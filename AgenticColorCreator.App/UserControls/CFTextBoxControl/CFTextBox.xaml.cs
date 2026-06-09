@@ -10,8 +10,23 @@ namespace AgenticColorCreator.App.UserControls.CFTextBoxControl;
 
 public partial class CFTextBox : UserControl
 {
-	private static readonly Regex GeneralValidationRegex = new("^[A-Za-z0-9/._-]*$", RegexOptions.Compiled);
-	private static readonly Regex FloatValidationRegex = new("^-?\\d*\\.?\\d*$", RegexOptions.Compiled);
+	public static readonly DependencyProperty IsMixedStateProperty = DependencyProperty.Register(
+		nameof(IsMixedState),
+		typeof(bool),
+		typeof(CFTextBox),
+		new PropertyMetadata(false, OnIsMixedStateChanged));
+
+	public static readonly DependencyProperty IsEditingProperty = DependencyProperty.Register(
+		nameof(IsEditing),
+		typeof(bool),
+		typeof(CFTextBox),
+		new PropertyMetadata(false));
+
+	public static readonly DependencyProperty DisplayedTextProperty = DependencyProperty.Register(
+		nameof(DisplayedText),
+		typeof(string),
+		typeof(CFTextBox),
+		new FrameworkPropertyMetadata(string.Empty, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnDisplayedTextChanged));
 
 	public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
 		nameof(Value),
@@ -43,6 +58,10 @@ public partial class CFTextBox : UserControl
 		typeof(CFTextBox),
 		new PropertyMetadata(2, OnDecimalPlacesChanged));
 
+	private static readonly Regex GeneralValidationRegex = new("^[A-Za-z0-9/._-]*$", RegexOptions.Compiled);
+	private static readonly Regex FloatValidationRegex = new("^-?\\d*\\.?\\d*$", RegexOptions.Compiled);
+	private static readonly string DefaultTextValue = string.Empty;
+
 	private readonly DispatcherTimer _commitTimer;
 	private bool _isApplyingExternalValue;
 
@@ -58,7 +77,27 @@ public partial class CFTextBox : UserControl
 
 		InnerTextBox.PreviewKeyDown += OnInnerTextBoxPreviewKeyDown;
 		InnerTextBox.LostKeyboardFocus += OnInnerTextBoxLostKeyboardFocus;
+		Loaded += OnLoaded;
+
 		UpdateValidationVisual();
+	}
+
+	public bool IsMixedState
+	{
+		get => (bool)GetValue(IsMixedStateProperty);
+		set => SetValue(IsMixedStateProperty, value);
+	}
+
+	public bool IsEditing
+	{
+		get => (bool)GetValue(IsEditingProperty);
+		set => SetValue(IsEditingProperty, value);
+	}
+
+	public string DisplayedText
+	{
+		get => (string)GetValue(DisplayedTextProperty);
+		set => SetValue(DisplayedTextProperty, value);
 	}
 
 	public string Value
@@ -73,12 +112,6 @@ public partial class CFTextBox : UserControl
 		set => SetValue(TextProperty, value);
 	}
 
-	public event RoutedEventHandler ValueCommitted
-	{
-		add => AddHandler(ValueCommittedEvent, value);
-		remove => RemoveHandler(ValueCommittedEvent, value);
-	}
-
 	public CFTextBoxValidationMode ValidationMode
 	{
 		get => (CFTextBoxValidationMode)GetValue(ValidationModeProperty);
@@ -91,6 +124,53 @@ public partial class CFTextBox : UserControl
 		set => SetValue(DecimalPlacesProperty, value);
 	}
 
+	public event RoutedEventHandler ValueCommitted
+	{
+		add => AddHandler(ValueCommittedEvent, value);
+		remove => RemoveHandler(ValueCommittedEvent, value);
+	}
+
+	public override void OnApplyTemplate()
+	{
+		base.OnApplyTemplate();
+
+		if (!IsMixedState && DisplayedText != Value)
+		{
+			DisplayedText = Value;
+		}
+	}
+
+	private static void OnDisplayedTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+	{
+		if (d is not CFTextBox textBox)
+		{
+			return;
+		}
+
+		textBox.Text = e.NewValue as string ?? string.Empty;
+	}
+
+	private static void OnIsMixedStateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+	{
+		if (d is not CFTextBox textBox)
+		{
+			return;
+		}
+
+		var nextMixed = (bool)e.NewValue;
+		if (nextMixed)
+		{
+			if (textBox.DisplayedText == textBox.Value)
+			{
+				textBox.DisplayedText = DefaultTextValue;
+			}
+
+			return;
+		}
+
+		textBox.DisplayedText = textBox.Value;
+	}
+
 	private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 	{
 		if (d is not CFTextBox textBox || textBox._isApplyingExternalValue)
@@ -98,7 +178,13 @@ public partial class CFTextBox : UserControl
 			return;
 		}
 
-		textBox.ApplyExternalText(e.NewValue as string ?? string.Empty);
+		var newValue = e.NewValue as string ?? string.Empty;
+		if (!textBox.IsMixedState)
+		{
+			textBox.DisplayedText = newValue;
+		}
+
+		textBox.ApplyExternalText(newValue);
 	}
 
 	private static void OnTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -132,20 +218,38 @@ public partial class CFTextBox : UserControl
 		textBox.UpdateValidationVisual();
 	}
 
+	private void OnLoaded(object sender, RoutedEventArgs e)
+	{
+		if (!IsMixedState && DisplayedText != Value)
+		{
+			DisplayedText = Value;
+		}
+	}
+
 	private void OnInnerTextBoxPreviewKeyDown(object sender, KeyEventArgs e)
 	{
-		if (e.Key != Key.Enter)
+		if (!IsEditing)
 		{
-			return;
+			IsEditing = true;
 		}
 
-		CommitText();
-		e.Handled = true;
+		_commitTimer.Stop();
+
+		if (e.Key == Key.Enter)
+		{
+			CommitText();
+			e.Handled = true;
+		}
 	}
 
 	private void OnInnerTextBoxLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
 	{
-		CommitText();
+		IsEditing = false;
+
+		if (IsMixedState)
+		{
+			DisplayedText = DefaultTextValue;
+		}
 	}
 
 	private void OnCommitTimerTick(object? sender, EventArgs e)
@@ -164,17 +268,28 @@ public partial class CFTextBox : UserControl
 	{
 		_commitTimer.Stop();
 
-		if (!IsTextValid(Text))
+		if (!IsTextValid(DisplayedText))
 		{
 			return;
 		}
 
-		if (string.Equals(Value, Text, StringComparison.Ordinal))
+		if (IsMixedState)
 		{
-			return;
+			if (DisplayedText != DefaultTextValue)
+			{
+				Value = DisplayedText;
+				IsMixedState = false;
+			}
+			else
+			{
+				DisplayedText = DefaultTextValue;
+			}
+		}
+		else if (DisplayedText != Value)
+		{
+			Value = DisplayedText;
 		}
 
-		Value = Text;
 		RaiseEvent(new RoutedEventArgs(ValueCommittedEvent));
 	}
 

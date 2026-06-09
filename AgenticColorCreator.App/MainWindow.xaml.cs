@@ -12,6 +12,26 @@ namespace AgenticColorCreator.App;
 
 public partial class MainWindow : Window
 {
+	// Mixed state preview toggles for all custom controls
+	public static readonly DependencyProperty PreviewCFTextBoxIsMixedProperty =
+		DependencyProperty.Register(
+			nameof(PreviewCFTextBoxIsMixed), typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
+	public static readonly DependencyProperty PreviewCFIntIsMixedProperty =
+		DependencyProperty.Register(
+			nameof(PreviewCFIntIsMixed), typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
+	public static readonly DependencyProperty PreviewCFFloatIsMixedProperty =
+		DependencyProperty.Register(
+			nameof(PreviewCFFloatIsMixed), typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
+	public static readonly DependencyProperty PreviewCFColorIsMixedProperty =
+		DependencyProperty.Register(
+			nameof(PreviewCFColorIsMixed), typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
+	public static readonly DependencyProperty PreviewCFHdrColorIsMixedProperty =
+		DependencyProperty.Register(
+			nameof(PreviewCFHdrColorIsMixed), typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
+	public static readonly DependencyProperty PreviewCFTreeViewIsMixedProperty =
+		DependencyProperty.Register(
+			nameof(PreviewCFTreeViewIsMixed), typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
+
 	public static readonly DependencyProperty PreviewTextBoxValueProperty = DependencyProperty.Register(
 		nameof(PreviewTextBoxValue),
 		typeof(string),
@@ -131,6 +151,38 @@ public partial class MainWindow : Window
 	{
 		get => (IReadOnlyList<CFTreeViewItem>?)GetValue(SelectedPreviewTreeViewItemsProperty);
 		set => SetValue(SelectedPreviewTreeViewItemsProperty, value);
+	}
+
+	// CLR wrappers for mixed state preview toggles
+	public bool PreviewCFTextBoxIsMixed
+	{
+		get => (bool)GetValue(PreviewCFTextBoxIsMixedProperty);
+		set => SetValue(PreviewCFTextBoxIsMixedProperty, value);
+	}
+	public bool PreviewCFIntIsMixed
+	{
+		get => (bool)GetValue(PreviewCFIntIsMixedProperty);
+		set => SetValue(PreviewCFIntIsMixedProperty, value);
+	}
+	public bool PreviewCFFloatIsMixed
+	{
+		get => (bool)GetValue(PreviewCFFloatIsMixedProperty);
+		set => SetValue(PreviewCFFloatIsMixedProperty, value);
+	}
+	public bool PreviewCFColorIsMixed
+	{
+		get => (bool)GetValue(PreviewCFColorIsMixedProperty);
+		set => SetValue(PreviewCFColorIsMixedProperty, value);
+	}
+	public bool PreviewCFHdrColorIsMixed
+	{
+		get => (bool)GetValue(PreviewCFHdrColorIsMixedProperty);
+		set => SetValue(PreviewCFHdrColorIsMixedProperty, value);
+	}
+	public bool PreviewCFTreeViewIsMixed
+	{
+		get => (bool)GetValue(PreviewCFTreeViewIsMixedProperty);
+		set => SetValue(PreviewCFTreeViewIsMixedProperty, value);
 	}
 
 	public string PreviewTextBoxValue

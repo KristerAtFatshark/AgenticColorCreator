@@ -13,6 +13,17 @@ namespace AgenticColorCreator.App.UserControls.CFTreeViewControl;
 
 public partial class CFTreeView : UserControl
 {
+	public static readonly DependencyProperty IsMixedStateProperty = DependencyProperty.Register(
+		nameof(IsMixedState),
+		typeof(bool),
+		typeof(CFTreeView),
+		new PropertyMetadata(false));
+	public bool IsMixedState
+	{
+		get => (bool)GetValue(IsMixedStateProperty);
+		set => SetValue(IsMixedStateProperty, value);
+	}
+
 	public static readonly DependencyProperty IsMultiSelectProperty = DependencyProperty.Register(
 		nameof(IsMultiSelect),
 		typeof(bool),
@@ -109,6 +120,7 @@ public partial class CFTreeView : UserControl
 
 	private void OnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
 	{
+		IsMixedState = false;
 		if (IsMultiSelect)
 		{
 			return;
@@ -498,5 +510,10 @@ public partial class CFTreeView : UserControl
 		}
 
 		return null;
+	}
+
+	private void PreviewTreeView_LostFocus(object sender, RoutedEventArgs e)
+	{
+		// Mixed state must now be set externally only
 	}
 }

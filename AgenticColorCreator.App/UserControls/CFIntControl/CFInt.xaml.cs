@@ -7,11 +7,17 @@ namespace AgenticColorCreator.App.UserControls.CFIntControl;
 
 public partial class CFInt : UserControl
 {
+	public static readonly DependencyProperty IsMixedStateProperty = DependencyProperty.Register(
+		nameof(IsMixedState),
+		typeof(bool),
+		typeof(CFInt),
+		new PropertyMetadata(false));
+
 	public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
 		nameof(Value),
 		typeof(int),
 		typeof(CFInt),
-		new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+		new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnValueChanged));
 
 	public static readonly DependencyProperty MinimumProperty = DependencyProperty.Register(
 		nameof(Minimum),
@@ -43,6 +49,13 @@ public partial class CFInt : UserControl
 	{
 		InitializeComponent();
 		PreviewKeyDown += OnPreviewKeyDown;
+		Loaded += OnLoaded;
+	}
+
+	public bool IsMixedState
+	{
+		get => (bool)GetValue(IsMixedStateProperty);
+		set => SetValue(IsMixedStateProperty, value);
 	}
 
 	public int Value
@@ -75,6 +88,16 @@ public partial class CFInt : UserControl
 		set => SetValue(TextValueProperty, value);
 	}
 
+	private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+	{
+		if (d is not CFInt intControl || intControl._isApplyingValue)
+		{
+			return;
+		}
+
+		intControl.SyncTextValue();
+	}
+
 	private static void OnTextValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 	{
 		if (d is not CFInt numberControl || numberControl._isApplyingValue)
@@ -88,13 +111,13 @@ public partial class CFInt : UserControl
 	private void OnIncreaseClick(object sender, RoutedEventArgs e)
 	{
 		Value = CoerceValue(Value + Step);
-		TextValue = Value.ToString(CultureInfo.InvariantCulture);
+		IsMixedState = false;
 	}
 
 	private void OnDecreaseClick(object sender, RoutedEventArgs e)
 	{
 		Value = CoerceValue(Value - Step);
-		TextValue = Value.ToString(CultureInfo.InvariantCulture);
+		IsMixedState = false;
 	}
 
 	private void OnPreviewKeyDown(object sender, KeyEventArgs e)
@@ -121,12 +144,18 @@ public partial class CFInt : UserControl
 	{
 		if (!int.TryParse(TextValue, NumberStyles.Integer, CultureInfo.InvariantCulture, out var parsedValue))
 		{
-			TextValue = Value.ToString(CultureInfo.InvariantCulture);
+			SyncTextValue();
 			return;
 		}
 
-		Value = CoerceValue(parsedValue);
-		TextValue = Value.ToString(CultureInfo.InvariantCulture);
+		var coercedValue = CoerceValue(parsedValue);
+		if (Value != coercedValue)
+		{
+			Value = coercedValue;
+		}
+
+		IsMixedState = false;
+		SyncTextValue();
 	}
 
 	private int CoerceValue(int value)
@@ -144,20 +173,13 @@ public partial class CFInt : UserControl
 		return value;
 	}
 
-	protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+	private void OnLoaded(object sender, RoutedEventArgs e)
 	{
-		base.OnPropertyChanged(e);
+		SyncTextValue();
+	}
 
-		if (e.Property != ValueProperty)
-		{
-			return;
-		}
-
-		if (_isApplyingValue)
-		{
-			return;
-		}
-
+	private void SyncTextValue()
+	{
 		_isApplyingValue = true;
 		try
 		{

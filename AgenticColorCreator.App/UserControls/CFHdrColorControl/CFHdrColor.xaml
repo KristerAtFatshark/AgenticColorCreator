@@ -7,6 +7,9 @@
 			 mc:Ignorable="d"
 			 d:DesignHeight="28"
 			 d:DesignWidth="180">
+	<UserControl.Resources>
+		<BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+	</UserControl.Resources>
 	<Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="Auto" />
@@ -49,27 +52,56 @@
 			</Grid.ColumnDefinitions>
 
 			<TextBox x:Name="HexTextBox"
-					 Grid.Column="0"
-					 Style="{StaticResource CF.TextBox}"
-					 Background="{StaticResource CF.CFColor.Default.Background}"
-					 Foreground="{StaticResource CF.CFColor.Default.Foreground}"
-					 BorderBrush="{StaticResource CF.CFColor.Default.Border}"
-					 SelectionBrush="{StaticResource CF.CFColor.Selected.Selection}"
-					 IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=IsEnabled}"
-					 IsKeyboardFocusedChanged="OnTextInteractionChanged"
-					 MouseEnter="OnTextInteractionChanged"
-					 MouseLeave="OnTextInteractionChanged"
-					 VerticalContentAlignment="Center"
-					 Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+				 Grid.Column="0"
+				 Background="{StaticResource CF.CFColor.Default.Background}"
+				 Foreground="{StaticResource CF.CFColor.Default.Foreground}"
+				 BorderBrush="{StaticResource CF.CFColor.Default.Border}"
+				 SelectionBrush="{StaticResource CF.CFColor.Selected.Selection}"
+				 IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=IsEnabled}"
+				 IsKeyboardFocusedChanged="OnTextInteractionChanged"
+				 MouseEnter="OnTextInteractionChanged"
+				 MouseLeave="OnTextInteractionChanged"
+				 VerticalContentAlignment="Center"
+				 LostFocus="HexTextBox_LostFocus"
+				 TextChanged="HexTextBox_TextChanged"
+				 Text="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+				<TextBox.Style>
+					<Style TargetType="TextBox" BasedOn="{StaticResource CF.TextBox}">
+						<Setter Property="Visibility" Value="Visible" />
+						<Style.Triggers>
+							<DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=IsMixedState}" Value="True">
+								<Setter Property="Visibility" Value="Collapsed" />
+							</DataTrigger>
+						</Style.Triggers>
+					</Style>
+				</TextBox.Style>
+			</TextBox>
 
 			<floatControls:CFFloat x:Name="StopsInput"
-							 Grid.Column="2"
-							 IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=IsEnabled}"
-							 Value="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Stops, Mode=TwoWay}"
-							 Step="0.1"
-							 Decimals="2"
-							 Minimum="-4"
-							 Maximum="4" />
+						 Grid.Column="2"
+						 IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=IsEnabled}"
+						 Value="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Stops, Mode=TwoWay}"
+						 Step="0.1"
+						 Decimals="2"
+						 Minimum="-4"
+						 Maximum="4">
+				<Control.Style>
+					<Style TargetType="floatControls:CFFloat">
+						<Setter Property="Visibility" Value="Visible" />
+						<Style.Triggers>
+							<DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=IsMixedState}" Value="True">
+								<Setter Property="Visibility" Value="Collapsed" />
+							</DataTrigger>
+						</Style.Triggers>
+					</Style>
+				</Control.Style>
+			</floatControls:CFFloat>
 		</Grid>
+		<Border Background="#80AAAAAA"
+					 Grid.Column="2"
+					 Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=IsMixedState, Converter={StaticResource BooleanToVisibilityConverter}}"
+					 VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+			<TextBlock Text="– Mixed –" Foreground="Black" FontWeight="Bold" Opacity="0.8" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="NoWrap"/>
+		</Border>
 	</Grid>
 </UserControl>
