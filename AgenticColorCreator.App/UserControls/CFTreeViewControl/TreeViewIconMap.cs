@@ -7,7 +7,13 @@ public static class TreeViewIconMap
 {
 	private static readonly IReadOnlyDictionary<string, string> TypeIconMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
 	{
+		["default"] = "🧩",
 		["folder"] = "📁",
+		["level"] = "🏠",
+		["material"] = "🎨",
+		["unit"] = "🧩",
+		["item"] = "🎁",
+		["vfx"] = "🎉",
 		["control"] = "🧩",
 		["palette"] = "🎨",
 	};
@@ -19,6 +25,6 @@ public static class TreeViewIconMap
 			return icon;
 		}
 
-		throw new InvalidOperationException($"No icon mapping was found for TreeView type '{type}'.");
+		return TypeIconMap["default"];
 	}
 }
