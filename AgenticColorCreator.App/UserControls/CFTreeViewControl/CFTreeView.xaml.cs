@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace AgenticColorCreator.App.UserControls.CFTreeViewControl;
 
@@ -407,6 +408,7 @@ public partial class CFTreeView : UserControl
 		_hasExternalSelectionState = true;
 
 		RebuildTreeViewItems();
+		ScrollFirstExternallySelectedItemIntoView();
 
 		if (SelectedValues.Count == 0)
 		{
@@ -414,6 +416,61 @@ public partial class CFTreeView : UserControl
 		}
 
 		_isApplyingExternalSelection = false;
+	}
+
+	private void ScrollFirstExternallySelectedItemIntoView()
+	{
+		if (SelectedValues == null || SelectedValues.Count == 0)
+		{
+			return;
+		}
+
+		var selectedItem = SelectedValues
+			.Select(FindSelectedTreeViewItem)
+			.FirstOrDefault(item => item is not null);
+
+		if (selectedItem == null)
+		{
+			return;
+		}
+
+		Dispatcher.BeginInvoke(() =>
+		{
+			selectedItem.BringIntoView();
+		}, DispatcherPriority.Loaded);
+	}
+
+	private CFTreeViewItem? FindSelectedTreeViewItem(string selectedValue)
+	{
+		foreach (var rootItem in PreviewTreeView.Items.OfType<CFTreeViewItem>())
+		{
+			var matchingItem = FindTreeViewItem(rootItem, selectedValue);
+			if (matchingItem != null)
+			{
+				return matchingItem;
+			}
+		}
+
+		return null;
+	}
+
+	private static CFTreeViewItem? FindTreeViewItem(CFTreeViewItem currentItem, string selectedValue)
+	{
+		if (string.Equals(currentItem.Value, selectedValue, StringComparison.OrdinalIgnoreCase))
+		{
+			return currentItem;
+		}
+
+		foreach (var childItem in currentItem.Items.OfType<CFTreeViewItem>())
+		{
+			var matchingItem = FindTreeViewItem(childItem, selectedValue);
+			if (matchingItem != null)
+			{
+				return matchingItem;
+			}
+		}
+
+		return null;
 	}
 
 	private void SyncSelectedValuesFromItems()

@@ -13,6 +13,8 @@
 - `CFColor` now provides a reusable color-well control with hex display, transparent checker preview, mouse-over border feedback, and picker-dialog integration.
 - `CFHdrColor` now provides an HDR-aware color-well control that keeps hex `Value` plus a separate `Stops` double and uses HDR/SDR conversion helpers to preview and edit HDR-adjusted color output.
 - `CFColor` and `CFHdrColor` mixed state now hide their text-entry fields behind a `- Mixed -` overlay while keeping the swatch/picker interactive; in mixed mode the picker starts from temporary opaque black and only exits mixed mode if the user picks a non-default black color.
+- The `CFTreeView` preview now includes 200 deterministic randomized sample entries in addition to the original hand-picked nodes so large-item behavior can be tested directly in the `UI Preview` tab.
+- `CFTreeView` now scrolls the first externally selected item into view after `SelectedValues` changes, so preview actions like `Select Primary` also move the scrollbar to the correct position.
 - `CFColor` now uses a far-left swatch button to open the picker and an inline editable hex text field so copy/paste/direct hex editing lives inside the control itself.
 - `CFColor` swatch opening still uses a button, but now with a minimal local template so the shared button chrome no longer obscures the visible color well.
 - `CFColor` still binds through hex `Value`, and now also exposes public RGB/HSV conversion helpers plus XAML converters so code-behind and bindings can work with RGB(A) and HSV(A) representations.
@@ -74,6 +76,9 @@
 - Removed the abandoned generic mixed-state base-class experiment and kept the reusable solution centered on `CFTextBox`, with `CFInt` and `CFFloat` reusing that single mixed-state implementation through composition.
 - Reworked `CFColor` and `CFHdrColor` mixed-state UX so the overlay no longer blocks picker interaction, both controls use temporary opaque black (`#FF000000`) as the mixed/default swatch color, and mixed mode only commits when the picker result differs from that default color.
 - Fixed `CFTextBox` focus-loss behavior so valid edits commit on `LostKeyboardFocus` instead of waiting for the idle timeout; this also improves `CFInt` and `CFFloat` because they reuse `CFTextBox` for text entry.
+- Expanded the preview `CFTreeView` dataset in `MainWindowViewModel` with 200 generated entries across multiple roots and depths to support large-tree scrolling, expansion, and selection testing.
+- Corrected the generated `CFTreeView` preview entries to use only supported icon-map types (`folder`, `control`, `palette`) after the first pass introduced unsupported `group`/`asset` types.
+- Updated `CFTreeView` external-selection sync so it calls `BringIntoView()` on the first selected item after rebuilding the tree, making command-driven selection changes visible immediately.
 - Added float preview support in `MainWindow` with `PreviewFloatValue`, `PreviewFloatMinimum`, `PreviewFloatMaximum`, and `PreviewFloatDecimals` dependency properties plus a new `CFFloat` preview card and decimals test input in the `UI Preview` tab.
 - Added `PreviewColorValue` plus a new `CFColor` preview card in `MainWindow` so the custom color well and upgraded picker can be tested from the `UI Preview` tab.
 - Updated `CFInt` and `CFFloat` so the keyboard up/down arrow keys now use each control's configured `Step` value, matching the spinner button behavior.

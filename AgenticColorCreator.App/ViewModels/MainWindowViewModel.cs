@@ -280,8 +280,50 @@ public sealed class MainWindowViewModel : ViewModelBase
 			new TreeViewSourceEntry { Value = "palette/primary", Type = "palette" },
 			new TreeViewSourceEntry { Value = "palette/secondary", Type = "palette" },
 			new TreeViewSourceEntry { Value = "palette/accent", Type = "palette" },
+			..CreatePreviewTreeStressEntries(),
 			..CreatePreviewTreeViewTailEntries(),
 		];
+	}
+
+	private static IReadOnlyList<TreeViewSourceEntry> CreatePreviewTreeStressEntries()
+	{
+		var random = new Random(12345);
+		var roots = new[] { "library", "project", "themes", "assets", "plugins" };
+		var branches = new[] { "core", "editor", "preview", "runtime", "shared", "layout", "inputs", "colors" };
+		var leaves = new[] { "panel", "button", "textbox", "combobox", "treeview", "slider", "badge", "dialog", "accent", "surface" };
+		var types = new[] { "control", "palette", "folder" };
+		var entries = new List<TreeViewSourceEntry>(200);
+		var usedValues = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+		while (entries.Count < 200)
+		{
+			var depth = random.Next(2, 6);
+			var segments = new List<string>(depth)
+			{
+				roots[random.Next(roots.Length)],
+			};
+
+			for (var index = 1; index < depth - 1; index++)
+			{
+				segments.Add($"{branches[random.Next(branches.Length)]}-{random.Next(1, 10)}");
+			}
+
+			segments.Add($"{leaves[random.Next(leaves.Length)]}-{entries.Count + 1:000}");
+			var value = string.Join("/", segments);
+
+			if (!usedValues.Add(value))
+			{
+				continue;
+			}
+
+			entries.Add(new TreeViewSourceEntry
+			{
+				Value = value,
+				Type = types[random.Next(types.Length)],
+			});
+		}
+
+		return entries;
 	}
 
 	private static IReadOnlyList<TreeViewSourceEntry> CreatePreviewTreeViewTailEntries()
