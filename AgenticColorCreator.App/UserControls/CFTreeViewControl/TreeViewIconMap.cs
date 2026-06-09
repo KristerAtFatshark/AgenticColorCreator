@@ -1,30 +1,38 @@
 using System;
 using System.Collections.Generic;
 
-namespace ClownFishUi.CFUserControls.CFTreeViewControl;
+#pragma warning disable CS8600
 
-public static class TreeViewIconMap
+
+namespace ClownFishUi.CFUserControls.CFTreeViewControl
+
 {
-	private static readonly IReadOnlyDictionary<string, string> TypeIconMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+	public static class TreeViewIconMap
 	{
-		["default"] = "🧩",
-		["folder"] = "📁",
-		["level"] = "🏠",
-		["material"] = "🎨",
-		["unit"] = "🧩",
-		["item"] = "🎁",
-		["vfx"] = "🎉",
-		["control"] = "🧩",
-		["palette"] = "🎨",
-	};
-
-	public static string GetIcon(string type)
-	{
-		if (TypeIconMap.TryGetValue(type, out var icon))
+		private static readonly IReadOnlyDictionary<string, string> TypeIconMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
 		{
-			return icon;
-		}
+			["default"] = "🧩",
+			["folder"] = "📁",
+			["level"] = "🏠",
+			["material"] = "🎨",
+			["unit"] = "🧩",
+			["item"] = "🎁",
+			["vfx"] = "🎉",
+			["control"] = "🧩",
+			["palette"] = "🎨",
+		};
 
-		return TypeIconMap["default"];
+		public static string GetIcon(string type)
+		{
+			string icon;
+			if (TypeIconMap.TryGetValue(type, out icon))
+			{
+				return icon;
+			}
+
+			return TypeIconMap["default"];
+		}
 	}
 }
+
+#pragma warning restore CS8600

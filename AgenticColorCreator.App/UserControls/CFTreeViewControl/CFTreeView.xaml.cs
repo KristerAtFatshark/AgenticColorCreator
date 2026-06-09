@@ -10,10 +10,12 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 
-namespace ClownFishUi.CFUserControls.CFTreeViewControl;
+#pragma warning disable CS8600, CS8603, CS8604, CS8618, CS8622, CS8625
 
-public partial class CFTreeView : UserControl
+namespace ClownFishUi.CFUserControls.CFTreeViewControl
 {
+	public partial class CFTreeView : UserControl
+	{
 	public static readonly DependencyProperty IsMixedStateProperty = DependencyProperty.Register(
 		nameof(IsMixedState),
 		typeof(bool),
@@ -49,10 +51,10 @@ public partial class CFTreeView : UserControl
 		typeof(CFTreeView),
 		new PropertyMetadata(null, OnSelectedValuesChanged));
 
-	private ObservableCollection<TreeViewSourceEntry>? _subscribedSource;
-	private ObservableCollection<string>? _subscribedSelectedValues;
-	private readonly List<CFTreeViewItem> _selectedTreeViewItems = [];
-	private readonly Dictionary<string, CFTreeViewItem> _treeViewItemsByValue = new(StringComparer.OrdinalIgnoreCase);
+	private ObservableCollection<TreeViewSourceEntry> _subscribedSource;
+	private ObservableCollection<string> _subscribedSelectedValues;
+	private readonly List<CFTreeViewItem> _selectedTreeViewItems = new List<CFTreeViewItem>();
+	private readonly Dictionary<string, CFTreeViewItem> _treeViewItemsByValue = new Dictionary<string, CFTreeViewItem>(StringComparer.OrdinalIgnoreCase);
 	private bool _isApplyingExternalSelection;
 	private bool _hasExternalSelectionState;
 	private bool _isUpdatingSelectedValues;
@@ -69,27 +71,28 @@ public partial class CFTreeView : UserControl
 		set => SetValue(IsMultiSelectProperty, value);
 	}
 
-	public ObservableCollection<TreeViewSourceEntry>? NodesSource
+	public ObservableCollection<TreeViewSourceEntry> NodesSource
 	{
-		get => (ObservableCollection<TreeViewSourceEntry>?)GetValue(NodesSourceProperty);
+		get => (ObservableCollection<TreeViewSourceEntry>)GetValue(NodesSourceProperty);
 		set => SetValue(NodesSourceProperty, value);
 	}
 
-	public IReadOnlyList<CFTreeViewItem>? SelectedTreeViewItems
+	public IReadOnlyList<CFTreeViewItem> SelectedTreeViewItems
 	{
-		get => (IReadOnlyList<CFTreeViewItem>?)GetValue(SelectedTreeViewItemsProperty);
+		get => (IReadOnlyList<CFTreeViewItem>)GetValue(SelectedTreeViewItemsProperty);
 		set => SetValue(SelectedTreeViewItemsProperty, value);
 	}
 
-	public ObservableCollection<string>? SelectedValues
+	public ObservableCollection<string> SelectedValues
 	{
-		get => (ObservableCollection<string>?)GetValue(SelectedValuesProperty);
+		get => (ObservableCollection<string>)GetValue(SelectedValuesProperty);
 		set => SetValue(SelectedValuesProperty, value);
 	}
 
 	private static void OnIsMultiSelectChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 	{
-		if (d is not CFTreeView treeView)
+		var treeView = d as CFTreeView;
+		if (treeView == null)
 		{
 			return;
 		}
@@ -99,7 +102,8 @@ public partial class CFTreeView : UserControl
 
 	private static void OnNodesSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 	{
-		if (d is not CFTreeView treeView)
+		var treeView = d as CFTreeView;
+		if (treeView == null)
 		{
 			return;
 		}
@@ -111,7 +115,8 @@ public partial class CFTreeView : UserControl
 
 	private static void OnSelectedValuesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 	{
-		if (d is not CFTreeView treeView)
+		var treeView = d as CFTreeView;
+		if (treeView == null)
 		{
 			return;
 		}
@@ -156,13 +161,13 @@ public partial class CFTreeView : UserControl
 			return;
 		}
 
-		if (FindAncestor<ToggleButton>(e.OriginalSource as DependencyObject) is not null)
+		if (FindAncestor<ToggleButton>(e.OriginalSource as DependencyObject) != null)
 		{
 			return;
 		}
 
 		var clickedItem = FindAncestor<CFTreeViewItem>(e.OriginalSource as DependencyObject);
-		if (clickedItem is null)
+		if (clickedItem == null)
 		{
 			return;
 		}
@@ -285,7 +290,7 @@ public partial class CFTreeView : UserControl
 				var nodeType = isLeaf ? sourceEntry.Type : "folder";
 
 				var existingNode = currentNodes.FirstOrDefault(node => string.Equals(node.Value, currentPath, StringComparison.OrdinalIgnoreCase));
-				if (existingNode is null)
+				if (existingNode == null)
 				{
 					existingNode = new TreeViewNode
 					{
@@ -320,7 +325,7 @@ public partial class CFTreeView : UserControl
 		}
 	}
 
-	private static CFTreeViewItem CreateTreeViewItem(TreeViewNode treeViewNode, IReadOnlySet<string> selectedValues, bool useMultipleSelection, Style? treeViewItemStyle, IDictionary<string, CFTreeViewItem> treeViewItemsByValue)
+	private static CFTreeViewItem CreateTreeViewItem(TreeViewNode treeViewNode, IReadOnlyCollection<string> selectedValues, bool useMultipleSelection, Style treeViewItemStyle, IDictionary<string, CFTreeViewItem> treeViewItemsByValue)
 	{
 		var isSelected = selectedValues.Contains(treeViewNode.Value);
 		var treeViewItem = new CFTreeViewItem
@@ -344,9 +349,9 @@ public partial class CFTreeView : UserControl
 		return treeViewItem;
 	}
 
-	private void SubscribeToSource(ObservableCollection<TreeViewSourceEntry>? source)
+	private void SubscribeToSource(ObservableCollection<TreeViewSourceEntry> source)
 	{
-		if (source is null)
+		if (source == null)
 		{
 			return;
 		}
@@ -355,9 +360,9 @@ public partial class CFTreeView : UserControl
 		source.CollectionChanged += OnSourceCollectionChanged;
 	}
 
-	private void SubscribeToSelectedValues(ObservableCollection<string>? selectedValues)
+	private void SubscribeToSelectedValues(ObservableCollection<string> selectedValues)
 	{
-		if (selectedValues is null)
+		if (selectedValues == null)
 		{
 			return;
 		}
@@ -368,7 +373,7 @@ public partial class CFTreeView : UserControl
 
 	private void ResetNodeSubscription()
 	{
-		if (_subscribedSource is null)
+		if (_subscribedSource == null)
 		{
 			return;
 		}
@@ -379,7 +384,7 @@ public partial class CFTreeView : UserControl
 
 	private void ResetSelectedValuesSubscription()
 	{
-		if (_subscribedSelectedValues is null)
+		if (_subscribedSelectedValues == null)
 		{
 			return;
 		}
@@ -388,12 +393,12 @@ public partial class CFTreeView : UserControl
 		_subscribedSelectedValues = null;
 	}
 
-	private void OnSourceCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+	private void OnSourceCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
 	{
 		RebuildTreeViewItems();
 	}
 
-	private void OnSelectedValuesCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+	private void OnSelectedValuesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
 	{
 		if (_isUpdatingSelectedValues)
 		{
@@ -444,11 +449,15 @@ public partial class CFTreeView : UserControl
 				return;
 			}
 
-			var matchingItems = SelectedValues
-				.Select(selectedValue => _treeViewItemsByValue.GetValueOrDefault(selectedValue))
-				.Where(item => item != null)
-				.Cast<CFTreeViewItem>()
-				.ToList();
+			var matchingItems = new List<CFTreeViewItem>();
+			foreach (var selectedValue in SelectedValues)
+			{
+				CFTreeViewItem matchingItem;
+				if (_treeViewItemsByValue.TryGetValue(selectedValue, out matchingItem) && matchingItem != null)
+				{
+					matchingItems.Add(matchingItem);
+				}
+			}
 
 			if (IsMultiSelect && matchingItems.Count > 1)
 			{
@@ -484,7 +493,7 @@ public partial class CFTreeView : UserControl
 
 		var selectedItem = SelectedValues
 			.Select(FindSelectedTreeViewItem)
-			.FirstOrDefault(item => item is not null);
+			.FirstOrDefault(item => item != null);
 
 		if (selectedItem == null)
 		{
@@ -497,9 +506,10 @@ public partial class CFTreeView : UserControl
 		}, DispatcherPriority.Loaded);
 	}
 
-	private CFTreeViewItem? FindSelectedTreeViewItem(string selectedValue)
+	private CFTreeViewItem FindSelectedTreeViewItem(string selectedValue)
 	{
-		return _treeViewItemsByValue.GetValueOrDefault(selectedValue);
+		CFTreeViewItem treeViewItem;
+		return _treeViewItemsByValue.TryGetValue(selectedValue, out treeViewItem) ? treeViewItem : null;
 	}
 
 	private void SyncSelectedValuesFromItems()
@@ -567,7 +577,8 @@ public partial class CFTreeView : UserControl
 
 		_selectedTreeViewItems.Clear();
 
-		if (PreviewTreeView.SelectedItem is CFTreeViewItem selectedItem)
+		var selectedItem = PreviewTreeView.SelectedItem as CFTreeViewItem;
+		if (selectedItem != null)
 		{
 			if (IsMultiSelect)
 			{
@@ -580,17 +591,18 @@ public partial class CFTreeView : UserControl
 		UpdateSelectedTreeViewItems();
 	}
 
-	private static T? FindAncestor<T>(DependencyObject? dependencyObject)
+	private static T FindAncestor<T>(DependencyObject dependencyObject)
 		where T : DependencyObject
 	{
 		var current = dependencyObject;
 
-		while (current is not null)
+		while (current != null)
+		{
+			var match = current as T;
+			if (match != null)
 			{
-				if (current is T match)
-				{
-					return match;
-				}
+				return match;
+			}
 
 			current = VisualTreeHelper.GetParent(current);
 		}
@@ -598,4 +610,7 @@ public partial class CFTreeView : UserControl
 		return null;
 	}
 
+ 	}
 }
+
+#pragma warning restore CS8600, CS8603, CS8604, CS8618, CS8622, CS8625
