@@ -677,6 +677,16 @@
 		<Setter Property="BorderBrush" Value="{StaticResource CF.TreeViewItem.Default.Border}" />
 		<Setter Property="HorizontalContentAlignment" Value="Stretch" />
 		<Setter Property="VerticalContentAlignment" Value="Center" />
+		<Setter Property="VirtualizingPanel.IsVirtualizing" Value="True" />
+		<Setter Property="VirtualizingPanel.VirtualizationMode" Value="Recycling" />
+		<Setter Property="ScrollViewer.CanContentScroll" Value="True" />
+		<Setter Property="ItemsPanel">
+			<Setter.Value>
+				<ItemsPanelTemplate>
+					<VirtualizingStackPanel />
+				</ItemsPanelTemplate>
+			</Setter.Value>
+		</Setter>
 		<Setter Property="Tag" Value="{StaticResource CF.TreeViewItem.Default.Icon}" />
 		<Setter Property="HeaderTemplate">
 			<Setter.Value>
@@ -795,11 +805,21 @@
 		<Setter Property="BorderThickness" Value="1" />
 		<Setter Property="Padding" Value="1" />
 		<Setter Property="Foreground" Value="{StaticResource CF.TreeView.Default.Text}" />
+		<Setter Property="ScrollViewer.CanContentScroll" Value="True" />
 		<Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
 		<Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
 		<Setter Property="ScrollViewer.PanningMode" Value="Both" />
+		<Setter Property="VirtualizingPanel.IsVirtualizing" Value="True" />
+		<Setter Property="VirtualizingPanel.VirtualizationMode" Value="Recycling" />
 		<Setter Property="Stylus.IsFlicksEnabled" Value="False" />
 		<Setter Property="VerticalContentAlignment" Value="Center" />
+		<Setter Property="ItemsPanel">
+			<Setter.Value>
+				<ItemsPanelTemplate>
+					<VirtualizingStackPanel />
+				</ItemsPanelTemplate>
+			</Setter.Value>
+		</Setter>
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="TreeView">
@@ -809,7 +829,7 @@
 							SnapsToDevicePixels="True">
 						<ScrollViewer x:Name="_tv_scrollviewer_"
 									Background="{TemplateBinding Background}"
-									CanContentScroll="False"
+									CanContentScroll="{TemplateBinding ScrollViewer.CanContentScroll}"
 									Focusable="False"
 									HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
 									Padding="{TemplateBinding Padding}"
@@ -822,24 +842,10 @@
 						<Trigger Property="IsEnabled" Value="False">
 							<Setter TargetName="Bd" Property="Background" Value="{StaticResource CF.TreeView.Disabled.Background}" />
 						</Trigger>
-						<Trigger Property="VirtualizingPanel.IsVirtualizing" Value="True">
-							<Setter TargetName="_tv_scrollviewer_" Property="CanContentScroll" Value="True" />
-						</Trigger>
 					</ControlTemplate.Triggers>
 				</ControlTemplate>
 			</Setter.Value>
 		</Setter>
-		<Style.Triggers>
-			<Trigger Property="VirtualizingPanel.IsVirtualizing" Value="True">
-				<Setter Property="ItemsPanel">
-					<Setter.Value>
-						<ItemsPanelTemplate>
-							<VirtualizingStackPanel />
-						</ItemsPanelTemplate>
-					</Setter.Value>
-				</Setter>
-			</Trigger>
-		</Style.Triggers>
 	</Style>
 
 	<Style x:Key="CF.Expander" TargetType="Expander">

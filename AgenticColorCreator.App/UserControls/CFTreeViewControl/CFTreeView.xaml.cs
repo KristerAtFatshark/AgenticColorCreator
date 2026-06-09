@@ -52,9 +52,11 @@ public partial class CFTreeView : UserControl
 	private ObservableCollection<TreeViewSourceEntry>? _subscribedSource;
 	private ObservableCollection<string>? _subscribedSelectedValues;
 	private readonly List<CFTreeViewItem> _selectedTreeViewItems = [];
+	private readonly Dictionary<string, CFTreeViewItem> _treeViewItemsByValue = new(StringComparer.OrdinalIgnoreCase);
 	private bool _isApplyingExternalSelection;
 	private bool _hasExternalSelectionState;
 	private bool _isUpdatingSelectedValues;
+	private bool _suppressSelectedItemChanged;
 
 	public CFTreeView()
 	{
@@ -121,6 +123,11 @@ public partial class CFTreeView : UserControl
 
 	private void OnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
 	{
+		if (_suppressSelectedItemChanged)
+		{
+			return;
+		}
+
 		IsMixedState = false;
 		if (IsMultiSelect)
 		{
@@ -223,6 +230,7 @@ public partial class CFTreeView : UserControl
 		var treeViewItemStyle = PreviewTreeView.TryFindResource("CF.TreeViewItem") as Style;
 
 		PreviewTreeView.Items.Clear();
+		_treeViewItemsByValue.Clear();
 
 		foreach (var item in _selectedTreeViewItems)
 		{
@@ -235,7 +243,7 @@ public partial class CFTreeView : UserControl
 		{
 			foreach (var rootNode in BuildTreeViewNodes(NodesSource))
 			{
-				var treeViewItem = CreateTreeViewItem(rootNode, selectedValues, useMultipleSelection, treeViewItemStyle);
+				var treeViewItem = CreateTreeViewItem(rootNode, selectedValues, useMultipleSelection, treeViewItemStyle, _treeViewItemsByValue);
 				PreviewTreeView.Items.Add(treeViewItem);
 				CollectSelectedTreeViewItems(treeViewItem);
 			}
@@ -314,7 +322,7 @@ public partial class CFTreeView : UserControl
 		}
 	}
 
-	private static CFTreeViewItem CreateTreeViewItem(TreeViewNode treeViewNode, IReadOnlySet<string> selectedValues, bool useMultipleSelection, Style? treeViewItemStyle)
+	private static CFTreeViewItem CreateTreeViewItem(TreeViewNode treeViewNode, IReadOnlySet<string> selectedValues, bool useMultipleSelection, Style? treeViewItemStyle, IDictionary<string, CFTreeViewItem> treeViewItemsByValue)
 	{
 		var isSelected = selectedValues.Contains(treeViewNode.Value);
 		var treeViewItem = new CFTreeViewItem
@@ -328,9 +336,11 @@ public partial class CFTreeView : UserControl
 			Style = treeViewItemStyle,
 		};
 
+		treeViewItemsByValue[treeViewNode.Value] = treeViewItem;
+
 		foreach (var childNode in treeViewNode.Children)
 		{
-			treeViewItem.Items.Add(CreateTreeViewItem(childNode, selectedValues, useMultipleSelection, treeViewItemStyle));
+			treeViewItem.Items.Add(CreateTreeViewItem(childNode, selectedValues, useMultipleSelection, treeViewItemStyle, treeViewItemsByValue));
 		}
 
 		return treeViewItem;
@@ -406,8 +416,7 @@ public partial class CFTreeView : UserControl
 		}
 
 		_hasExternalSelectionState = true;
-
-		RebuildTreeViewItems();
+		ApplySelectionFromValuesInPlace();
 		ScrollFirstExternallySelectedItemIntoView();
 
 		if (SelectedValues.Count == 0)
@@ -416,6 +425,56 @@ public partial class CFTreeView : UserControl
 		}
 
 		_isApplyingExternalSelection = false;
+	}
+
+	private void ApplySelectionFromValuesInPlace()
+	{
+		_suppressSelectedItemChanged = true;
+		try
+		{
+			foreach (var item in _selectedTreeViewItems)
+			{
+				item.IsMultiSelected = false;
+				item.IsSelected = false;
+			}
+
+			_selectedTreeViewItems.Clear();
+
+			if (SelectedValues == null)
+			{
+				UpdateSelectedTreeViewItems();
+				return;
+			}
+
+			var matchingItems = SelectedValues
+				.Select(selectedValue => _treeViewItemsByValue.GetValueOrDefault(selectedValue))
+				.Where(item => item != null)
+				.Cast<CFTreeViewItem>()
+				.ToList();
+
+			if (IsMultiSelect && matchingItems.Count > 1)
+			{
+				foreach (var matchingItem in matchingItems)
+				{
+					matchingItem.IsMultiSelected = true;
+					matchingItem.IsSelected = false;
+					_selectedTreeViewItems.Add(matchingItem);
+				}
+			}
+			else if (matchingItems.Count > 0)
+			{
+				var selectedItem = matchingItems[0];
+				selectedItem.IsMultiSelected = false;
+				selectedItem.IsSelected = true;
+				_selectedTreeViewItems.Add(selectedItem);
+			}
+
+			UpdateSelectedTreeViewItems();
+		}
+		finally
+		{
+			_suppressSelectedItemChanged = false;
+		}
 	}
 
 	private void ScrollFirstExternallySelectedItemIntoView()
@@ -442,35 +501,7 @@ public partial class CFTreeView : UserControl
 
 	private CFTreeViewItem? FindSelectedTreeViewItem(string selectedValue)
 	{
-		foreach (var rootItem in PreviewTreeView.Items.OfType<CFTreeViewItem>())
-		{
-			var matchingItem = FindTreeViewItem(rootItem, selectedValue);
-			if (matchingItem != null)
-			{
-				return matchingItem;
-			}
-		}
-
-		return null;
-	}
-
-	private static CFTreeViewItem? FindTreeViewItem(CFTreeViewItem currentItem, string selectedValue)
-	{
-		if (string.Equals(currentItem.Value, selectedValue, StringComparison.OrdinalIgnoreCase))
-		{
-			return currentItem;
-		}
-
-		foreach (var childItem in currentItem.Items.OfType<CFTreeViewItem>())
-		{
-			var matchingItem = FindTreeViewItem(childItem, selectedValue);
-			if (matchingItem != null)
-			{
-				return matchingItem;
-			}
-		}
-
-		return null;
+		return _treeViewItemsByValue.GetValueOrDefault(selectedValue);
 	}
 
 	private void SyncSelectedValuesFromItems()
