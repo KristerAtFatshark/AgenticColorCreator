@@ -724,7 +724,8 @@
 								</Grid.RowDefinitions>
 								<TextBlock Style="{StaticResource CF.TextBlock}" FontSize="16" FontWeight="SemiBold" Text="CFTreeView" />
 								<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="1" Margin="0,2,0,14" Foreground="{StaticResource CF.Text.Selected.Foreground}" Text="App.UserControls.CFTreeViewControl.CFTreeView" />
-								<userControls:CFTreeView Grid.Row="2"
+								<userControls:CFTreeView x:Name="PreviewTreeViewControl"
+											Grid.Row="2"
 											IsMultiSelect="True"
 											NodesSource="{Binding PreviewTreeViewNodes}"
 											SelectedValues="{Binding PreviewSelectedTreeViewValues}"
@@ -747,6 +748,12 @@
 											Content="Select Primary" />
 									<Button Style="{StaticResource CF.Button}" Command="{Binding SelectPreviewPrimaryAndAccentCommand}"
 											Content="Select Primary + Accent" />
+									<Button Style="{StaticResource CF.Button}"
+											Click="OnCollapseTreeViewToSelectedParentsClick"
+											Content="Collapse To Selected" />
+									<Button Style="{StaticResource CF.Button}"
+											Click="OnCollapseTreeViewAllClick"
+											Content="Collapse All" />
 								</WrapPanel>
 							</Grid>
 						</Border>

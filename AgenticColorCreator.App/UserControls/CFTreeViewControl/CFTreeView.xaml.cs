@@ -78,6 +78,29 @@ namespace ClownFishUi.CFUserControls.CFTreeViewControl
 		set => SetValue(SelectedValuesProperty, value);
 	}
 
+	public void CollapseAllExceptSelectedItemParents()
+	{
+		var expandedValues = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+		foreach (var selectedItem in _selectedTreeViewItems)
+		{
+			AddParentPaths(expandedValues, selectedItem.Value);
+		}
+
+		foreach (var rootItem in PreviewTreeView.Items.OfType<CFTreeViewItem>())
+		{
+			ApplyExpansionState(rootItem, expandedValues);
+		}
+	}
+
+	public void CollapseAll()
+	{
+		foreach (var rootItem in PreviewTreeView.Items.OfType<CFTreeViewItem>())
+		{
+			CollapseItemAndChildren(rootItem);
+		}
+	}
+
 	private static void OnIsMultiSelectChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 	{
 		var treeView = d as CFTreeView;
@@ -243,6 +266,47 @@ namespace ClownFishUi.CFUserControls.CFTreeViewControl
 		}
 
 		UpdateSelectedTreeViewItems();
+	}
+
+	private static void AddParentPaths(ISet<string> expandedValues, string value)
+	{
+		if (string.IsNullOrWhiteSpace(value))
+		{
+			return;
+		}
+
+		var currentValue = value;
+		while (true)
+		{
+			var separatorIndex = currentValue.LastIndexOf('/');
+			if (separatorIndex <= 0)
+			{
+				break;
+			}
+
+			currentValue = currentValue.Substring(0, separatorIndex);
+			expandedValues.Add(currentValue);
+		}
+	}
+
+	private static void ApplyExpansionState(CFTreeViewItem treeViewItem, ISet<string> expandedValues)
+	{
+		treeViewItem.IsExpanded = expandedValues.Contains(treeViewItem.Value);
+
+		foreach (var childItem in treeViewItem.Items.OfType<CFTreeViewItem>())
+		{
+			ApplyExpansionState(childItem, expandedValues);
+		}
+	}
+
+	private static void CollapseItemAndChildren(CFTreeViewItem treeViewItem)
+	{
+		treeViewItem.IsExpanded = false;
+
+		foreach (var childItem in treeViewItem.Items.OfType<CFTreeViewItem>())
+		{
+			CollapseItemAndChildren(childItem);
+		}
 	}
 
 	private HashSet<string> GetSelectedValueSet()

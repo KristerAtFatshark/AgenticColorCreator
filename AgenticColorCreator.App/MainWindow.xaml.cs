@@ -359,4 +359,14 @@ public partial class MainWindow : Window
 			e.Cancel = true;
 		}
 	}
+
+	private void OnCollapseTreeViewToSelectedParentsClick(object sender, RoutedEventArgs e)
+	{
+		PreviewTreeViewControl.CollapseAllExceptSelectedItemParents();
+	}
+
+	private void OnCollapseTreeViewAllClick(object sender, RoutedEventArgs e)
+	{
+		PreviewTreeViewControl.CollapseAll();
+	}
 }
