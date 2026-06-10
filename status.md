@@ -18,6 +18,8 @@
 - `CFTreeView` performance was improved while keeping all nodes expanded by default: virtualization/recycling is enabled at the tree and item levels, and external selection updates now reuse the existing visual tree instead of rebuilding it.
 - `CFTreeView` no longer exposes or previews a mixed-state mode; the control now behaves as a plain selectable tree without any `IsMixedState` surface or overlay.
 - `CFTreeView` now exposes public `CollapseAll()` and `CollapseAllExceptSelectedItemParents()` helpers so hosts can quickly collapse the tree either fully or down to just the ancestor paths of the current selection.
+- Treeview items now show their full `Value` path in a tooltip, making it easier to inspect the underlying item path without selecting or expanding additional UI.
+- Tooltip colors were reevaluated against the updated `Color\agentic_colors.md` source and now use dedicated tooltip background, text, and border theme resources plus a shared `ToolTip` style.
 - The `UI Preview` treeview card now includes `Collapse To Selected` and `Collapse All` buttons that call those new public helpers directly on the preview control for manual testing.
 - Treeview cleanup removed dead code paths, including the unused `PreviewTreeView_LostFocus` handler and the unused `TreeViewNode.Type` field, keeping the helper model focused on values, icons, and children only.
 - `TreeViewIconMap` now falls back to the `default` icon mapping instead of throwing when an unknown type is encountered.
@@ -99,6 +101,8 @@
 - Removed the treeview mixed-state property, overlay, and preview toggle/binding from `CFTreeView`, `MainWindow.xaml`, and `MainWindow.xaml.cs` because treeview mixed state is no longer part of the intended UX.
 - Added public treeview expansion helpers that traverse the existing rendered `CFTreeViewItem` hierarchy and set `IsExpanded` in place rather than rebuilding the tree.
 - Added preview-only `MainWindow` button handlers wired to the treeview instance so the new collapse APIs can be exercised interactively from the `UI Preview` tab.
+- Added a `ToolTip` setter to `CF.TreeViewItem` so every rendered treeview item exposes its bound `Value` path on hover.
+- Added `CF.ToolTip.Default.Background`, `CF.ToolTip.Default.Foreground`, and `CF.ToolTip.Default.Border` resources plus a shared `ToolTip` style in `CFDarkStyles.xaml`, based on the tooltip entries added to `Color\agentic_colors.md`.
 - Added float preview support in `MainWindow` with `PreviewFloatValue`, `PreviewFloatMinimum`, `PreviewFloatMaximum`, and `PreviewFloatDecimals` dependency properties plus a new `CFFloat` preview card and decimals test input in the `UI Preview` tab.
 - Added `PreviewColorValue` plus a new `CFColor` preview card in `MainWindow` so the custom color well and upgraded picker can be tested from the `UI Preview` tab.
 - Updated `CFInt` and `CFFloat` so the keyboard up/down arrow keys now use each control's configured `Step` value, matching the spinner button behavior.

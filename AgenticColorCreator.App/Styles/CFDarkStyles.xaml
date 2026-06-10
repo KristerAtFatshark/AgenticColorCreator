@@ -90,6 +90,9 @@
 	<SolidColorBrush x:Key="CF.TreeViewItem.Selected.Icon" Color="#FFFFFFFF" />
 	<SolidColorBrush x:Key="CF.TreeViewItem.MouseOver.Text" Color="#FFFFFFFF" />
 	<SolidColorBrush x:Key="CF.TreeViewItem.MouseOver.Icon" Color="#FFFFFFFF" />
+	<SolidColorBrush x:Key="CF.ToolTip.Default.Background" Color="#FF333333" />
+	<SolidColorBrush x:Key="CF.ToolTip.Default.Foreground" Color="#FFC8C8C8" />
+	<SolidColorBrush x:Key="CF.ToolTip.Default.Border" Color="#FF4C4C4C" />
 	<SolidColorBrush x:Key="CF.TabItem.Default.Background" Color="#FF2C2C2C" />
 	<SolidColorBrush x:Key="CF.TabItem.MouseOver.Background" Color="#FF4C4C4C" />
 	<SolidColorBrush x:Key="CF.TabItem.Selected.Background" Color="#FF333333" />
@@ -155,6 +158,14 @@
 
 	<Style x:Key="CF.TextBlock" TargetType="TextBlock">
 		<Setter Property="Foreground" Value="{StaticResource CF.Text.Default.Foreground}" />
+	</Style>
+
+	<Style TargetType="ToolTip">
+		<Setter Property="Background" Value="{StaticResource CF.ToolTip.Default.Background}" />
+		<Setter Property="Foreground" Value="{StaticResource CF.ToolTip.Default.Foreground}" />
+		<Setter Property="BorderBrush" Value="{StaticResource CF.ToolTip.Default.Border}" />
+		<Setter Property="BorderThickness" Value="1" />
+		<Setter Property="Padding" Value="6,4" />
 	</Style>
 
 	<Style x:Key="CF.TextBox" TargetType="TextBox">
@@ -675,6 +686,7 @@
 		<Setter Property="Foreground" Value="{StaticResource CF.TreeViewItem.Default.Text}" />
 		<Setter Property="Background" Value="{StaticResource CF.TreeViewItem.Default.Background}" />
 		<Setter Property="BorderBrush" Value="{StaticResource CF.TreeViewItem.Default.Border}" />
+		<Setter Property="ToolTip" Value="{Binding Value, RelativeSource={RelativeSource Self}}" />
 		<Setter Property="HorizontalContentAlignment" Value="Stretch" />
 		<Setter Property="VerticalContentAlignment" Value="Center" />
 		<Setter Property="VirtualizingPanel.IsVirtualizing" Value="True" />

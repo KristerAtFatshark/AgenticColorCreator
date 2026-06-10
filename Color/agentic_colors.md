@@ -554,4 +554,18 @@
 
 ### CFColor / Text Background Disabled
 - value: #FF2C2C2C
+- description: 
+
+## Category: Tooltip
+
+### Tooltip / Background Default
+- value: #FF333333
+- description: 
+
+### Tooltip / Text Default
+- value: #FFC8C8C8
+- description: 
+
+### Tooltip / Border Default
+- value: #FF4C4C4C
 - description:
