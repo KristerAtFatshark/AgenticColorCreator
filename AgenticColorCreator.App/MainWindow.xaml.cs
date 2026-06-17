@@ -23,6 +23,9 @@ public partial class MainWindow : Window
 	public static readonly DependencyProperty PreviewCFFloatIsMixedProperty =
 		DependencyProperty.Register(
 			nameof(PreviewCFFloatIsMixed), typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
+	public static readonly DependencyProperty PreviewCFSliderIsMixedProperty =
+		DependencyProperty.Register(
+			nameof(PreviewCFSliderIsMixed), typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
 	public static readonly DependencyProperty PreviewCFColorIsMixedProperty =
 		DependencyProperty.Register(
 			nameof(PreviewCFColorIsMixed), typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
@@ -207,6 +210,11 @@ public partial class MainWindow : Window
 	{
 		get => (bool)GetValue(PreviewCFFloatIsMixedProperty);
 		set => SetValue(PreviewCFFloatIsMixedProperty, value);
+	}
+	public bool PreviewCFSliderIsMixed
+	{
+		get => (bool)GetValue(PreviewCFSliderIsMixedProperty);
+		set => SetValue(PreviewCFSliderIsMixedProperty, value);
 	}
 	public bool PreviewCFColorIsMixed
 	{

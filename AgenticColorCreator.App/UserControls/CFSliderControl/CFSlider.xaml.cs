@@ -9,6 +9,12 @@ namespace AgenticColorCreator.App.UserControls.CFSliderControl;
 
 public partial class CFSlider : UserControl
 {
+	public static readonly DependencyProperty IsMixedStateProperty = DependencyProperty.Register(
+		nameof(IsMixedState),
+		typeof(bool),
+		typeof(CFSlider),
+		new PropertyMetadata(false));
+
 	public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
 		nameof(Value),
 		typeof(float),
@@ -73,6 +79,12 @@ public partial class CFSlider : UserControl
 	{
 		get => (float)GetValue(ValueProperty);
 		set => SetValue(ValueProperty, CoerceValue(value));
+	}
+
+	public bool IsMixedState
+	{
+		get => (bool)GetValue(IsMixedStateProperty);
+		set => SetValue(IsMixedStateProperty, value);
 	}
 
 	public float Minimum

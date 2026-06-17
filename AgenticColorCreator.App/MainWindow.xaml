@@ -621,10 +621,16 @@
 									<RowDefinition Height="Auto" />
 									<RowDefinition Height="Auto" />
 									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
 								</Grid.RowDefinitions>
-								<TextBlock Style="{StaticResource CF.TextBlock}" FontSize="16" FontWeight="SemiBold" Text="CFSlider" />
-								<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="1" Margin="0,2,0,14" Foreground="{StaticResource CF.Text.Selected.Foreground}" Text="App.UserControls.CFSliderControl.CFSlider" />
-								<sliderControls:CFSlider Grid.Row="2"
+								<CheckBox Style="{StaticResource CF.CheckBox}"
+										  HorizontalAlignment="Right"
+										  Content="Mixed State"
+										  IsChecked="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewCFSliderIsMixed, Mode=TwoWay}" />
+								<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="1" FontSize="16" FontWeight="SemiBold" Text="CFSlider" />
+								<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="2" Margin="0,2,0,14" Foreground="{StaticResource CF.Text.Selected.Foreground}" Text="App.UserControls.CFSliderControl.CFSlider" />
+								<sliderControls:CFSlider Grid.Row="3"
+												IsMixedState="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewCFSliderIsMixed, Mode=TwoWay}"
 												Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewSliderValue, Mode=TwoWay}"
 												Minimum="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewSliderMinimum}"
 												Maximum="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewSliderMaximum}"
@@ -632,9 +638,9 @@
 												TickFrequency="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewSliderTickFrequency}"
 												TickPlacement="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewSliderTickPlacement}"
 												Decimals="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewSliderDecimals}" />
-								<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="3" Margin="0,8,0,6"
+								<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="4" Margin="0,8,0,6"
 										   Text="Slider Settings" />
-								<Grid Grid.Row="4">
+								<Grid Grid.Row="5">
 									<Grid.RowDefinitions>
 										<RowDefinition Height="Auto" />
 										<RowDefinition Height="Auto" />

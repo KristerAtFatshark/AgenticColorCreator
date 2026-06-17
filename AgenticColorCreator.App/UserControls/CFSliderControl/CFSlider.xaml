@@ -8,6 +8,9 @@
 			 Height="24"
 			 d:DesignHeight="24"
 			 d:DesignWidth="220">
+	<UserControl.Resources>
+		<BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+	</UserControl.Resources>
 	<Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="*" />
@@ -15,20 +18,47 @@
 			<ColumnDefinition MinWidth="50" Width="auto" />
 		</Grid.ColumnDefinitions>
 
-		<Slider Grid.Column="0"
-				Style="{StaticResource CF.Slider}"
-				Minimum="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Minimum}"
-				Maximum="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Maximum}"
-				SmallChange="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Step}"
-				LargeChange="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Step}"
-				TickFrequency="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=TickFrequency}"
-				TickPlacement="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=TickPlacement}"
-				Ticks="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Ticks}"
-				IsSnapToTickEnabled="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=IsSnapToTickEnabled}"
-				Value="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Value, Mode=TwoWay}" />
+		<Grid Grid.Column="0">
+			<Slider
+					Minimum="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Minimum}"
+					Maximum="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Maximum}"
+					SmallChange="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Step}"
+					LargeChange="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Step}"
+					TickFrequency="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=TickFrequency}"
+					TickPlacement="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=TickPlacement}"
+					Ticks="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Ticks}"
+					IsSnapToTickEnabled="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=IsSnapToTickEnabled}"
+					Value="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Value, Mode=TwoWay}">
+				<Slider.Style>
+					<Style TargetType="Slider" BasedOn="{StaticResource CF.Slider}">
+						<Setter Property="Visibility" Value="Visible" />
+						<Style.Triggers>
+							<DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=IsMixedState}" Value="True">
+								<Setter Property="Visibility" Value="Collapsed" />
+							</DataTrigger>
+						</Style.Triggers>
+					</Style>
+				</Slider.Style>
+			</Slider>
+
+			<Border Background="#80AAAAAA"
+					Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=IsMixedState, Converter={StaticResource BooleanToVisibilityConverter}}"
+					VerticalAlignment="Stretch"
+					HorizontalAlignment="Stretch">
+				<TextBlock Text="– Mixed –"
+						Foreground="Black"
+						FontWeight="Bold"
+						Opacity="0.8"
+						FontSize="12"
+						HorizontalAlignment="Center"
+						VerticalAlignment="Center"
+						TextWrapping="NoWrap" />
+			</Border>
+		</Grid>
 
 		<floatControls:CFFloat x:Name="ValueEditor"
 							Grid.Column="2"
+							IsMixedState="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=IsMixedState, Mode=TwoWay}"
 							Value="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Value, Mode=TwoWay}"
 							Minimum="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Minimum}"
 							Maximum="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Maximum}"
