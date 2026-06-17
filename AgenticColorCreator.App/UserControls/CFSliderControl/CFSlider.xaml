@@ -1,0 +1,38 @@
+<UserControl x:Class="AgenticColorCreator.App.UserControls.CFSliderControl.CFSlider"
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:floatControls="clr-namespace:AgenticColorCreator.App.UserControls.CFFloatControl"
+			 mc:Ignorable="d"
+			 Height="24"
+			 d:DesignHeight="24"
+			 d:DesignWidth="220">
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*" />
+			<ColumnDefinition Width="8" />
+			<ColumnDefinition MinWidth="50" Width="auto" />
+		</Grid.ColumnDefinitions>
+
+		<Slider Grid.Column="0"
+				Style="{StaticResource CF.Slider}"
+				Minimum="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Minimum}"
+				Maximum="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Maximum}"
+				SmallChange="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Step}"
+				LargeChange="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Step}"
+				TickFrequency="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=TickFrequency}"
+				TickPlacement="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=TickPlacement}"
+				Ticks="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Ticks}"
+				IsSnapToTickEnabled="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=IsSnapToTickEnabled}"
+				Value="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Value, Mode=TwoWay}" />
+
+		<floatControls:CFFloat x:Name="ValueEditor"
+							Grid.Column="2"
+							Value="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Value, Mode=TwoWay}"
+							Minimum="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Minimum}"
+							Maximum="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Maximum}"
+							Step="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Step}"
+							Decimals="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Decimals}" />
+	</Grid>
+</UserControl>

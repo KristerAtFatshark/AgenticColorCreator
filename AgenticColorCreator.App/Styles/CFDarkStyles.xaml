@@ -117,6 +117,7 @@
 	<SolidColorBrush x:Key="CF.Scrollbar.Disabled.Glyph" Color="#FFD4D4D4" />
 	<SolidColorBrush x:Key="CF.Slider.Default.Background" Color="#FF292929" />
 	<SolidColorBrush x:Key="CF.Slider.Default.Track" Color="#FF4C4C4C" />
+	<SolidColorBrush x:Key="CF.Slider.Default.Tickbar" Color="#FF787878" />
 	<SolidColorBrush x:Key="CF.Slider.Default.Thumb" Color="#FF4C4C4C" />
 	<SolidColorBrush x:Key="CF.Slider.Default.Border" Color="#FF1E1E1E" />
 	<SolidColorBrush x:Key="CF.Slider.Default.ThumbBorder" Color="#FF1E1E1E" />
@@ -963,9 +964,7 @@
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="RepeatButton">
-					<Rectangle Fill="{TemplateBinding Background}"
-							   Height="{TemplateBinding Height}"
-							   Width="{TemplateBinding Width}" />
+					<Rectangle Fill="{TemplateBinding Background}" />
 				</ControlTemplate>
 			</Setter.Value>
 		</Setter>
@@ -1320,15 +1319,40 @@
 	</Style>
 
 	<ControlTemplate x:Key="CF.HorizontalSliderTemplate" TargetType="Slider">
-		<Grid>
+		<Grid VerticalAlignment="Center">
+			<Grid.RowDefinitions>
+				<RowDefinition x:Name="TopTickRow" Height="0" />
+				<RowDefinition Height="Auto" />
+				<RowDefinition x:Name="BottomTickRow" Height="0" />
+			</Grid.RowDefinitions>
+
+			<TickBar x:Name="TopTick"
+					 Grid.Row="0"
+					 Fill="{StaticResource CF.Slider.Default.Tickbar}"
+					 Height="4"
+					 Margin="4,0,4,2"
+					 Placement="Top"
+					 SnapsToDevicePixels="True"
+					 Visibility="Collapsed"
+					 Minimum="{TemplateBinding Minimum}"
+					 Maximum="{TemplateBinding Maximum}"
+					 TickFrequency="{TemplateBinding TickFrequency}"
+					 Ticks="{TemplateBinding Ticks}"
+					 IsSelectionRangeEnabled="False"
+					 IsDirectionReversed="False" />
+
 			<Border Background="{StaticResource CF.Slider.Default.Background}"
+					Grid.Row="1"
 					BorderBrush="{TemplateBinding BorderBrush}"
 					BorderThickness="1"
 					CornerRadius="3"
 					Height="10"
 					VerticalAlignment="Center" />
 			<Track x:Name="PART_Track"
-				   VerticalAlignment="Center">
+				   Grid.Row="1"
+				   Focusable="False"
+				   VerticalAlignment="Center"
+				   Margin="0,0,0,0">
 				<Track.DecreaseRepeatButton>
 						<RepeatButton Style="{StaticResource CF.RepeatButtonTransparent}">
 							<RepeatButton.Template>
@@ -1353,7 +1377,7 @@
 								<ControlTemplate TargetType="RepeatButton">
 									<Border x:Name="IncreaseTrack"
 											Background="{StaticResource CF.Slider.Disabled.Tickbar}"
-											CornerRadius="3"
+											CornerRadius="0,3,3,0"
 											Height="6"
 											VerticalAlignment="Center" />
 									<ControlTemplate.Triggers>
@@ -1369,7 +1393,42 @@
 					<Thumb Style="{StaticResource CF.SliderThumbStyle}" />
 				</Track.Thumb>
 			</Track>
+
+			<TickBar x:Name="BottomTick"
+					 Grid.Row="2"
+					 Fill="{StaticResource CF.Slider.Default.Tickbar}"
+					 Height="4"
+					 Margin="4,2,4,0"
+					 Placement="Bottom"
+					 SnapsToDevicePixels="True"
+					 Visibility="Collapsed"
+					 Minimum="{TemplateBinding Minimum}"
+					 Maximum="{TemplateBinding Maximum}"
+					 TickFrequency="{TemplateBinding TickFrequency}"
+					 Ticks="{TemplateBinding Ticks}"
+					 IsSelectionRangeEnabled="False"
+					 IsDirectionReversed="False" />
 		</Grid>
+		<ControlTemplate.Triggers>
+			<Trigger Property="TickPlacement" Value="TopLeft">
+				<Setter TargetName="TopTickRow" Property="RowDefinition.Height" Value="Auto" />
+				<Setter TargetName="TopTick" Property="Visibility" Value="Visible" />
+			</Trigger>
+			<Trigger Property="TickPlacement" Value="BottomRight">
+				<Setter TargetName="BottomTickRow" Property="RowDefinition.Height" Value="Auto" />
+				<Setter TargetName="BottomTick" Property="Visibility" Value="Visible" />
+			</Trigger>
+			<Trigger Property="TickPlacement" Value="Both">
+				<Setter TargetName="TopTickRow" Property="RowDefinition.Height" Value="Auto" />
+				<Setter TargetName="BottomTickRow" Property="RowDefinition.Height" Value="Auto" />
+				<Setter TargetName="TopTick" Property="Visibility" Value="Visible" />
+				<Setter TargetName="BottomTick" Property="Visibility" Value="Visible" />
+			</Trigger>
+			<Trigger Property="IsEnabled" Value="False">
+				<Setter TargetName="TopTick" Property="Fill" Value="{StaticResource CF.Slider.Disabled.Tickbar}" />
+				<Setter TargetName="BottomTick" Property="Fill" Value="{StaticResource CF.Slider.Disabled.Tickbar}" />
+			</Trigger>
+		</ControlTemplate.Triggers>
 	</ControlTemplate>
 
 	<Style x:Key="CF.Slider" TargetType="Slider">

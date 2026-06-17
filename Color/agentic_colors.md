@@ -257,7 +257,7 @@
 - description: 
 
 ### Slider / Tickbar Default
-- value: #FF555555
+- value: #FF787878
 - description: 
 
 ### Slider / Border Default

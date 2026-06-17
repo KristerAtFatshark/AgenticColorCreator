@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Controls.Primitives;
 using AgenticColorCreator.App.UserControls.CFColorControl;
 using AgenticColorCreator.App.UserControls.CFHdrColorControl;
 using ClownFishUi.CFUserControls.CFTreeViewControl;
@@ -117,6 +118,48 @@ public partial class MainWindow : Window
 		typeof(float),
 		typeof(MainWindow),
 		new PropertyMetadata(0.25f));
+
+	public static readonly DependencyProperty PreviewSliderValueProperty = DependencyProperty.Register(
+		nameof(PreviewSliderValue),
+		typeof(float),
+		typeof(MainWindow),
+		new PropertyMetadata(75f));
+
+	public static readonly DependencyProperty PreviewSliderMinimumProperty = DependencyProperty.Register(
+		nameof(PreviewSliderMinimum),
+		typeof(float),
+		typeof(MainWindow),
+		new PropertyMetadata(0f));
+
+	public static readonly DependencyProperty PreviewSliderMaximumProperty = DependencyProperty.Register(
+		nameof(PreviewSliderMaximum),
+		typeof(float),
+		typeof(MainWindow),
+		new PropertyMetadata(100f));
+
+	public static readonly DependencyProperty PreviewSliderStepProperty = DependencyProperty.Register(
+		nameof(PreviewSliderStep),
+		typeof(int),
+		typeof(MainWindow),
+		new PropertyMetadata(1));
+
+	public static readonly DependencyProperty PreviewSliderDecimalsProperty = DependencyProperty.Register(
+		nameof(PreviewSliderDecimals),
+		typeof(int),
+		typeof(MainWindow),
+		new PropertyMetadata(2));
+
+	public static readonly DependencyProperty PreviewSliderTickFrequencyProperty = DependencyProperty.Register(
+		nameof(PreviewSliderTickFrequency),
+		typeof(double),
+		typeof(MainWindow),
+		new PropertyMetadata(10d));
+
+	public static readonly DependencyProperty PreviewSliderTickPlacementProperty = DependencyProperty.Register(
+		nameof(PreviewSliderTickPlacement),
+		typeof(TickPlacement),
+		typeof(MainWindow),
+		new PropertyMetadata(TickPlacement.BottomRight));
 
 	public static readonly DependencyProperty SelectedPreviewTreeViewItemsProperty = DependencyProperty.Register(
 		nameof(SelectedPreviewTreeViewItems),
@@ -265,6 +308,48 @@ public partial class MainWindow : Window
 		set => SetValue(PreviewFloatStepProperty, value);
 	}
 
+	public float PreviewSliderValue
+	{
+		get => (float)GetValue(PreviewSliderValueProperty);
+		set => SetValue(PreviewSliderValueProperty, value);
+	}
+
+	public float PreviewSliderMinimum
+	{
+		get => (float)GetValue(PreviewSliderMinimumProperty);
+		set => SetValue(PreviewSliderMinimumProperty, value);
+	}
+
+	public float PreviewSliderMaximum
+	{
+		get => (float)GetValue(PreviewSliderMaximumProperty);
+		set => SetValue(PreviewSliderMaximumProperty, value);
+	}
+
+	public int PreviewSliderStep
+	{
+		get => (int)GetValue(PreviewSliderStepProperty);
+		set => SetValue(PreviewSliderStepProperty, value);
+	}
+
+	public int PreviewSliderDecimals
+	{
+		get => (int)GetValue(PreviewSliderDecimalsProperty);
+		set => SetValue(PreviewSliderDecimalsProperty, value);
+	}
+
+	public double PreviewSliderTickFrequency
+	{
+		get => (double)GetValue(PreviewSliderTickFrequencyProperty);
+		set => SetValue(PreviewSliderTickFrequencyProperty, value);
+	}
+
+	public TickPlacement PreviewSliderTickPlacement
+	{
+		get => (TickPlacement)GetValue(PreviewSliderTickPlacementProperty);
+		set => SetValue(PreviewSliderTickPlacementProperty, value);
+	}
+
 	public ObservableCollection<string> SelectedPreviewTreeViewValues
 	{
 		get => (ObservableCollection<string>)GetValue(SelectedPreviewTreeViewValuesProperty);
@@ -368,5 +453,25 @@ public partial class MainWindow : Window
 	private void OnCollapseTreeViewAllClick(object sender, RoutedEventArgs e)
 	{
 		PreviewTreeViewControl.CollapseAll();
+	}
+
+	private void OnSliderTicksNoneClick(object sender, RoutedEventArgs e)
+	{
+		PreviewSliderTickPlacement = TickPlacement.None;
+	}
+
+	private void OnSliderTicksBottomClick(object sender, RoutedEventArgs e)
+	{
+		PreviewSliderTickPlacement = TickPlacement.BottomRight;
+	}
+
+	private void OnSliderTicksTopClick(object sender, RoutedEventArgs e)
+	{
+		PreviewSliderTickPlacement = TickPlacement.TopLeft;
+	}
+
+	private void OnSliderTicksBothClick(object sender, RoutedEventArgs e)
+	{
+		PreviewSliderTickPlacement = TickPlacement.Both;
 	}
 }

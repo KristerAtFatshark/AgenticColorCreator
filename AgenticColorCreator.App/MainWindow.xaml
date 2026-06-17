@@ -5,6 +5,7 @@
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:intControls="clr-namespace:AgenticColorCreator.App.UserControls.CFIntControl"
 		xmlns:floatControls="clr-namespace:AgenticColorCreator.App.UserControls.CFFloatControl"
+		xmlns:sliderControls="clr-namespace:AgenticColorCreator.App.UserControls.CFSliderControl"
 		xmlns:colorControls="clr-namespace:AgenticColorCreator.App.UserControls.CFColorControl"
 		xmlns:hdrColorControls="clr-namespace:AgenticColorCreator.App.UserControls.CFHdrColorControl"
 		xmlns:textControls="clr-namespace:AgenticColorCreator.App.UserControls.CFTextBoxControl"
@@ -613,12 +614,76 @@
 								BorderBrush="{StaticResource CF.Border.Default.Border}"
 								BorderThickness="1"
 								CornerRadius="10">
-							<StackPanel>
-								<TextBlock Style="{StaticResource CF.TextBlock}" FontSize="16" FontWeight="SemiBold" Text="Slider" />
-								<TextBlock Style="{StaticResource CF.TextBlock}" Margin="0,2,0,14" Foreground="{StaticResource CF.Text.Selected.Foreground}" Text="System.Windows.Controls.Slider" />
-								<Slider Style="{StaticResource CF.Slider}" Minimum="0" Maximum="100" Value="75" Margin="0,2,0,2"/>
-								<Slider Style="{StaticResource CF.Slider}" IsEnabled="False" Minimum="0" Maximum="100" Value="75" Margin="0,2,0,2"/>
-							</StackPanel>
+							<Grid>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+								</Grid.RowDefinitions>
+								<TextBlock Style="{StaticResource CF.TextBlock}" FontSize="16" FontWeight="SemiBold" Text="CFSlider" />
+								<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="1" Margin="0,2,0,14" Foreground="{StaticResource CF.Text.Selected.Foreground}" Text="App.UserControls.CFSliderControl.CFSlider" />
+								<sliderControls:CFSlider Grid.Row="2"
+												Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewSliderValue, Mode=TwoWay}"
+												Minimum="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewSliderMinimum}"
+												Maximum="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewSliderMaximum}"
+												Step="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewSliderStep}"
+												TickFrequency="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewSliderTickFrequency}"
+												TickPlacement="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewSliderTickPlacement}"
+												Decimals="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewSliderDecimals}" />
+								<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="3" Margin="0,8,0,6"
+										   Text="Slider Settings" />
+								<Grid Grid.Row="4">
+									<Grid.RowDefinitions>
+										<RowDefinition Height="Auto" />
+										<RowDefinition Height="Auto" />
+										<RowDefinition Height="Auto" />
+										<RowDefinition Height="Auto" />
+										<RowDefinition Height="Auto" />
+										<RowDefinition Height="Auto" />
+										<RowDefinition Height="Auto" />
+										<RowDefinition Height="Auto" />
+									</Grid.RowDefinitions>
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="Auto" />
+										<ColumnDefinition Width="*" />
+									</Grid.ColumnDefinitions>
+
+									<TextBlock Style="{StaticResource CF.TextBlock}" VerticalAlignment="Center" Margin="0,0,6,0" Text="Min" />
+									<floatControls:CFFloat Grid.Column="1"
+													Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewSliderMinimum, Mode=TwoWay}"
+													Step="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewSliderSmallChange}"
+													Decimals="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewSliderDecimals}" />
+									<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="1" VerticalAlignment="Center" Margin="0,8,6,0" Text="Max" />
+									<floatControls:CFFloat Grid.Row="1" Grid.Column="1"
+													Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewSliderMaximum, Mode=TwoWay}"
+													Step="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewSliderSmallChange}"
+													Decimals="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewSliderDecimals}" />
+									<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="2" VerticalAlignment="Center" Margin="0,8,6,0" Text="Step" />
+									<intControls:CFInt Grid.Row="2" Grid.Column="1"
+													Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewSliderStep, Mode=TwoWay}"
+													Step="1"/>
+									<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="3" VerticalAlignment="Center" Margin="0,8,6,0" Text="Decimals" />
+									<intControls:CFInt Grid.Row="3" Grid.Column="1"
+												 Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewSliderDecimals, Mode=TwoWay}"
+												 Minimum="0"
+												 Maximum="6"
+												 Step="1" />
+									<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="4" VerticalAlignment="Center" Margin="0,8,6,0" Text="Tick Freq" />
+									<floatControls:CFFloat Grid.Row="4" Grid.Column="1"
+													Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewSliderTickFrequency, Mode=TwoWay}"
+													Step="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewSliderStep}"
+													Decimals="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewSliderDecimals}" />
+									<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="5" VerticalAlignment="Center" Margin="0,8,6,0" Text="Tick Placement" />
+									<WrapPanel Grid.Row="5" Grid.Column="1" Margin="0,8,0,0">
+										<Button Style="{StaticResource CF.Button}" Margin="0,0,6,0" Click="OnSliderTicksNoneClick" Content="None" />
+										<Button Style="{StaticResource CF.Button}" Margin="0,0,6,0" Click="OnSliderTicksBottomClick" Content="Bottom" />
+										<Button Style="{StaticResource CF.Button}" Margin="0,0,6,0" Click="OnSliderTicksTopClick" Content="Top" />
+										<Button Style="{StaticResource CF.Button}" Click="OnSliderTicksBothClick" Content="Both" />
+									</WrapPanel>
+								</Grid>
+							</Grid>
 						</Border>
 
 						<Border Margin="0,0,18,18"

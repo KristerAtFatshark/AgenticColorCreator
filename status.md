@@ -5,11 +5,20 @@
 - The app can create, load, edit, validate, and save `agentic_colors.md` markdown files.
 - The main UI uses `Colors` and `UI Preview` tabs for editor work and themed control previewing.
 - Shared theme resources live in `AgenticColorCreator.App\Styles\CFDarkStyles.xaml` and use explicit `CF.` brush keys plus keyed `CF...` styles/templates.
-- Custom previewed controls currently include `CFTextBox`, `CFInt`, `CFFloat`, `CFColor`, `CFHdrColor`, and `CFTreeView`.
+- Custom previewed controls currently include `CFTextBox`, `CFInt`, `CFFloat`, `CFSlider`, `CFColor`, `CFHdrColor`, and `CFTreeView`.
 - `CFTextBox` now supports delayed external value commits plus immediate validation feedback while typing.
 - `CFTextBox` now also commits valid pending edits immediately on focus loss, so tab-out and click-outside behave the same as Enter for textbox-based controls.
 - `CFInt` now uses `CFTextBox` as its delayed-commit text layer and mixed-state implementation, applying actual integer validation through that shared control.
 - `CFFloat` now uses `CFTextBox` as its delayed-commit text layer and mixed-state implementation, applying invariant float validation with configurable decimal-place limits.
+- `CFSlider` now provides a reusable slider + editable numeric textbox control, with the textbox reusing `CFFloat` behavior so slider drags and manual numeric edits stay synchronized.
+- `CFSlider` now calculates a deterministic fixed width for its embedded `CFFloat` editor based on the wider of the formatted `Minimum`/`Maximum` values plus the spinner/padding allowance, instead of relying on `Auto` width.
+- `CFSlider` no longer exposes separate `SmallChange` and `LargeChange` host properties; it now uses the single exposed `Step` value for both slider paging and numeric editing because that is the only increment concept needed in this app.
+- The `CFSlider` preview card layout now uses a compact vertical settings form plus a wider `420px` preview card, which was necessary to keep the `CFFloat`/`CFInt` spinner buttons visible in the `MainWindow` preview without regressing slider usability.
+- The shared slider template now restores clickable track paging and visible tick rendering, and `CFSlider` now surfaces `TickFrequency`, `TickPlacement`, `Ticks`, and `IsSnapToTickEnabled` so it preserves more of the stock WPF slider behavior.
+- The slider template’s original visual proportions were restored after the track-click fix: the repeat-button visuals now keep their prior centered `Height` values while the hit area remains large enough for track paging.
+- The slider template now collapses the tick rows completely when `TickPlacement=None`, so sliders without ticks stay vertically centered and do not reserve empty space above or below the track.
+- The `CFSlider` preview no longer uses a temporary tick-placement dropdown; it now uses explicit buttons for `None`, `Bottom`, `Top`, and `Both`, avoiding the preview regression caused by the earlier enum-combobox experiment.
+- The root grid of `CF.HorizontalSliderTemplate` is now vertically centered as well, so collapsing tick rows actually centers the no-ticks slider instead of leaving the content aligned to the top of the control slot.
 - `CFColor` now provides a reusable color-well control with hex display, transparent checker preview, mouse-over border feedback, and picker-dialog integration.
 - `CFHdrColor` now provides an HDR-aware color-well control that keeps hex `Value` plus a separate `Stops` double and uses HDR/SDR conversion helpers to preview and edit HDR-adjusted color output.
 - `CFColor` and `CFHdrColor` mixed state now hide their text-entry fields behind a `- Mixed -` overlay while keeping the swatch/picker interactive; in mixed mode the picker starts from temporary opaque black and only exits mixed mode if the user picks a non-default black color.
@@ -20,6 +29,7 @@
 - `CFTreeView` now exposes public `CollapseAll()` and `CollapseAllExceptSelectedItemParents()` helpers so hosts can quickly collapse the tree either fully or down to just the ancestor paths of the current selection.
 - Treeview items now show their full `Value` path in a tooltip, making it easier to inspect the underlying item path without selecting or expanding additional UI.
 - Tooltip colors were reevaluated against the updated `Color\agentic_colors.md` source and now use dedicated tooltip background, text, and border theme resources plus a shared `ToolTip` style.
+- Slider tick bars now use their own dedicated default brush from `Color\agentic_colors.md` instead of reusing the slider track color.
 - The `UI Preview` treeview card now includes `Collapse To Selected` and `Collapse All` buttons that call those new public helpers directly on the preview control for manual testing.
 - Treeview cleanup removed dead code paths, including the unused `PreviewTreeView_LostFocus` handler and the unused `TreeViewNode.Type` field, keeping the helper model focused on values, icons, and children only.
 - `TreeViewIconMap` now falls back to the `default` icon mapping instead of throwing when an unknown type is encountered.
@@ -102,7 +112,19 @@
 - Added public treeview expansion helpers that traverse the existing rendered `CFTreeViewItem` hierarchy and set `IsExpanded` in place rather than rebuilding the tree.
 - Added preview-only `MainWindow` button handlers wired to the treeview instance so the new collapse APIs can be exercised interactively from the `UI Preview` tab.
 - Added a `ToolTip` setter to `CF.TreeViewItem` so every rendered treeview item exposes its bound `Value` path on hover.
+- Added `AgenticColorCreator.App\UserControls\CFSliderControl\CFSlider.xaml` and `.xaml.cs` for a composite slider control that hosts a styled `Slider` plus a right-side editable `CFFloat` value field.
+- Added deterministic `CFFloat` width calculation inside `CFSlider.xaml.cs` using `FormattedText`, current decimals, and the formatted range bounds so the slider value editor width adapts predictably to the configured numeric range.
+- Simplified the `CFSlider` API and preview wiring by removing the dedicated `SmallChange`/`LargeChange` host properties and using the single `Step` value as the slider increment source.
+- Replaced the old plain slider preview card in `MainWindow` with `CFSlider` and added test inputs for `Min`, `Max`, `SmallChange`, `LargeChange`, `Step`, and `Decimals`, with the numeric editor step sharing the slider `SmallChange` value as requested.
+- Refined the `CFSlider` preview layout in `MainWindow.xaml` after confirming the remaining clipping issue was in the preview card width rather than the `CFSlider` user control itself.
+- Updated `CF.HorizontalSliderTemplate` in `CFDarkStyles.xaml` so the track repeat buttons fill their hit area again and added top/bottom `TickBar` elements that respond to `TickPlacement`, `TickFrequency`, and `Ticks`.
+- Adjusted the repeat-button visual elements in `CF.HorizontalSliderTemplate` back to their original centered heights so the slider track no longer appears visually thicker than before.
+- Extended the `CFSlider` preview card with `Tick Freq` and `Ticks` (`TickPlacement`) controls so the restored slider behaviors can be tested directly in the `UI Preview` tab.
+- Updated the slider template row definitions so tick rows expand only when tick bars are visible, eliminating the empty vertical reservation when `TickPlacement` is `None`.
+- Updated the slider template root grid alignment so the centered track/tick content block no longer stretches to the full template height when only the middle slider row is visible.
+- Replaced the preview `TickPlacement` dropdown with explicit buttons after the dropdown-based test UI caused an unrelated visual regression and complicated debugging.
 - Added `CF.ToolTip.Default.Background`, `CF.ToolTip.Default.Foreground`, and `CF.ToolTip.Default.Border` resources plus a shared `ToolTip` style in `CFDarkStyles.xaml`, based on the tooltip entries added to `Color\agentic_colors.md`.
+- Added `CF.Slider.Default.Tickbar` and mapped the slider template tick bars to it so the tick color follows the dedicated `Slider / Tickbar Default` source entry.
 - Added float preview support in `MainWindow` with `PreviewFloatValue`, `PreviewFloatMinimum`, `PreviewFloatMaximum`, and `PreviewFloatDecimals` dependency properties plus a new `CFFloat` preview card and decimals test input in the `UI Preview` tab.
 - Added `PreviewColorValue` plus a new `CFColor` preview card in `MainWindow` so the custom color well and upgraded picker can be tested from the `UI Preview` tab.
 - Updated `CFInt` and `CFFloat` so the keyboard up/down arrow keys now use each control's configured `Step` value, matching the spinner button behavior.
