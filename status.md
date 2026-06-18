@@ -16,6 +16,7 @@
 - `CFSlider` now supports mixed state: the slider portion shows a `- Mixed -` overlay like `CFColor`, while the embedded `CFFloat` simply inherits the same `IsMixedState` binding so its existing mixed-state behavior is reused directly.
 - When `CFSlider` enters mixed state, the actual `Slider` control is now collapsed underneath the overlay instead of remaining visible behind it, matching the `CFColor` pattern where the editable surface is hidden while mixed.
 - The `CFSlider` preview mixed-state checkbox in `MainWindow` now sits on its own row so it is no longer overlapped by the title text and is clickable again.
+- The `CFSlider` preview card now also includes a disabled `CFSlider` instance directly beneath the active one, matching the enabled/disabled preview pattern used by the other cards.
 - The `CFSlider` preview card layout now uses a compact vertical settings form plus a wider `420px` preview card, which was necessary to keep the `CFFloat`/`CFInt` spinner buttons visible in the `MainWindow` preview without regressing slider usability.
 - The shared slider template now restores clickable track paging and visible tick rendering, and `CFSlider` now surfaces `TickFrequency`, `TickPlacement`, `Ticks`, and `IsSnapToTickEnabled` so it preserves more of the stock WPF slider behavior.
 - The slider template’s original visual proportions were restored after the track-click fix: the repeat-button visuals now keep their prior centered `Height` values while the hit area remains large enough for track paging.
@@ -121,6 +122,7 @@
 - Added `IsMixedState` to `CFSlider`, bound it through to the embedded `CFFloat`, and overlaid the slider region itself with the same mixed-state visual treatment used by `CFColor`.
 - Updated `CFSlider.xaml` so the inner `Slider` uses a `BasedOn` inline style with a `DataTrigger` that collapses it whenever `IsMixedState` is true.
 - Adjusted the `CFSlider` preview card row assignments in `MainWindow.xaml` so the preview checkbox, title, description, slider, and settings no longer overlap.
+- Added a second preview `CFSlider` in `MainWindow.xaml` with `IsEnabled="False"`, bound to the same preview values, so the disabled visual state can be verified next to the active control.
 - Replaced the old plain slider preview card in `MainWindow` with `CFSlider` and added test inputs for `Min`, `Max`, `SmallChange`, `LargeChange`, `Step`, and `Decimals`, with the numeric editor step sharing the slider `SmallChange` value as requested.
 - Refined the `CFSlider` preview layout in `MainWindow.xaml` after confirming the remaining clipping issue was in the preview card width rather than the `CFSlider` user control itself.
 - Updated `CF.HorizontalSliderTemplate` in `CFDarkStyles.xaml` so the track repeat buttons fill their hit area again and added top/bottom `TickBar` elements that respond to `TickPlacement`, `TickFrequency`, and `Ticks`.

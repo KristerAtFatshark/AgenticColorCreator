@@ -400,8 +400,9 @@
 							BorderThickness="1"
 							CornerRadius="10">
 						<Grid>
-							<Grid.RowDefinitions>
-								<RowDefinition Height="Auto" />
+								<Grid.RowDefinitions>
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
 									<RowDefinition Height="Auto" />
 									<RowDefinition Height="Auto" />
 									<RowDefinition Height="Auto" />
@@ -638,9 +639,19 @@
 												TickFrequency="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewSliderTickFrequency}"
 												TickPlacement="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewSliderTickPlacement}"
 												Decimals="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewSliderDecimals}" />
-								<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="4" Margin="0,8,0,6"
+								<sliderControls:CFSlider Grid.Row="4"
+												IsEnabled="False"
+												Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewSliderValue}"
+												Minimum="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewSliderMinimum}"
+												Maximum="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewSliderMaximum}"
+												Step="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewSliderStep}"
+												TickFrequency="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewSliderTickFrequency}"
+												TickPlacement="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewSliderTickPlacement}"
+												Decimals="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewSliderDecimals}"
+												Margin="0,2,0,2" />
+								<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="5" Margin="0,8,0,6"
 										   Text="Slider Settings" />
-								<Grid Grid.Row="5">
+								<Grid Grid.Row="6">
 									<Grid.RowDefinitions>
 										<RowDefinition Height="Auto" />
 										<RowDefinition Height="Auto" />
