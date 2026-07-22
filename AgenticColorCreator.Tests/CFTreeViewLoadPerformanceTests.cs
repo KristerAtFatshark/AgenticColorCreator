@@ -152,7 +152,7 @@ public sealed class CFTreeViewLoadPerformanceTests
 			_ = new Application();
 		}
 
-		const string stylesUri = "pack://application:,,,/AgenticColorCreator.App;component/Styles/CFDarkStyles.xaml";
+		const string stylesUri = "pack://application:,,,/AgenticColorCreator.App;component/CFStyles/CFDarkStyles.xaml";
 		var appResources = Application.Current!.Resources;
 		var alreadyMerged = false;
 		foreach (var dict in appResources.MergedDictionaries)
