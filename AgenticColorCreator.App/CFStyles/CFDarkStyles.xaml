@@ -4,7 +4,7 @@
 					xmlns:local="clr-namespace:ClownFishUi.CFUserControls.CFTreeViewControl">
 
 	<ResourceDictionary.MergedDictionaries>
-		<ResourceDictionary Source="/Shared/Styles/EditorIconGlyphs.xaml" />
+		<ResourceDictionary Source="/AgenticColorCreator.App;component/Shared/Styles/EditorIconGlyphs.xaml" />
 	</ResourceDictionary.MergedDictionaries>
 
 	<SolidColorBrush x:Key="CF.Window.Default.Background" Color="#FF282828" />
