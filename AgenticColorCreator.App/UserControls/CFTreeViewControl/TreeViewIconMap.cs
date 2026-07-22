@@ -11,15 +11,21 @@ namespace ClownFishUi.CFUserControls.CFTreeViewControl
 	{
 		private static readonly IReadOnlyDictionary<string, string> TypeIconMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
 		{
-			["default"] = "🧩",
-			["folder"] = "📁",
-			["level"] = "🏠",
-			["material"] = "🎨",
-			["unit"] = "🧩",
-			["item"] = "🎁",
-			["vfx"] = "🎉",
-			["control"] = "🧩",
-			["palette"] = "🎨",
+			["default"] = "icon-resource_default",
+			["folder"] = "icon-folder",
+			["level"] = "icon-resource_level",
+			["unit"] = "icon-resource_unit",
+			["wwise_bank"] = "icon-resource_wwise_bank",
+			["wwise_event"] = "icon-resource_wwise_event",
+			["state_machine"] = "icon-resource_state_machine",
+			["material"] = "icon-resource_material",
+			["texture"] = "icon-resource_texture",
+			["shading_environment"] = "icon-resource_shading_environment",
+			["item"] = "icon-resource_item",
+			["template_definition"] = "icon-resource_template_definition",
+			["particles"] = "icon-resource_particles",
+			["control"] = "icon-resource_default",
+			["palette"] = "icon-resource_default",
 		};
 
 		public static string GetIcon(string type)

@@ -131,7 +131,7 @@ The custom item container used inside the tree. Derives from `TreeViewItem`.
 Public properties:
 
 - `Icon` (DP, `string`)
-  - The icon glyph text shown for the item (see `TreeViewIconMap`).
+  - Resource key for the icon glyph, resolved through `EditorIconGlyphs.xaml` and rendered with the `fs-editor-icons` font (see `TreeViewIconMap`). This is populated for you when items are built from `NodesSource`; you normally do not set it directly.
 
 - `Text` (DP, `string`)
   - The visible label shown for the item.
@@ -189,27 +189,49 @@ Notes:
 
 ### `TreeViewIconMap`
 
-Static type-to-icon lookup used by the control.
+Static type-to-icon lookup used by the control. The lookup no longer returns literal emoji glyphs; it returns a **resource key** into the shared `EditorIconGlyphs.xaml` dictionary (vendored via `AgenticColorCreator.App\Shared\Styles\EditorIconGlyphs.xaml`), and the treeview `DataTemplate` resolves that key to an actual glyph string through the `StringToResourceConverter` and renders it with the `fs-editor-icons` font via the `CF.IconTextBlock` style.
 
-Current mappings:
+Current mappings (`source Type` → `resource key`):
 
-- `default` → `🧩`
-- `folder`  → `📁`
-- `level`   → `🏠`
-- `material`→ `🎨`
-- `unit`    → `🧩`
-- `item`    → `🎁`
-- `vfx`     → `🎉`
-- `control` → `🧩`
-- `palette` → `🎨`
+- `default`              → `icon-resource_default`
+- `folder`               → `icon-folder`
+- `level`                → `icon-resource_level`
+- `unit`                 → `icon-resource_unit`
+- `wwise_bank`           → `icon-resource_wwise_bank`
+- `wwise_event`          → `icon-resource_wwise_event`
+- `state_machine`        → `icon-resource_state_machine`
+- `material`             → `icon-resource_material`
+- `texture`              → `icon-resource_texture`
+- `shading_environment`  → `icon-resource_shading_environment`
+- `item`                 → `icon-resource_item`
+- `template_definition`  → `icon-resource_template_definition`
+- `particles`            → `icon-resource_particles`
+- `control`              → `icon-resource_default`
+- `palette`              → `icon-resource_default`
 
 Usage inside the control:
 
 ```csharp
-var icon = TreeViewIconMap.GetIcon(type);
+var iconResourceKey = TreeViewIconMap.GetIcon(type);
 ```
 
-If the requested `type` is missing, `GetIcon` falls back to the `default` entry instead of throwing.
+Lookup rules:
+
+- Lookup is ordinal-ignore-case on the source `Type`.
+- If the requested `Type` is missing from the map, `GetIcon` falls back to the `default` entry instead of throwing.
+- If the returned resource key is missing from `EditorIconGlyphs.xaml` at runtime, `StringToResourceConverter` falls back to the character `"\uE903"` so the treeview cell still renders something with the icon font.
+
+Rendering pipeline (roughly):
+
+1. `TreeViewIconMap.GetIcon(type)` → resource-key string (e.g. `icon-resource_level`).
+2. Treeview `DataTemplate` binds that string through `StringToResourceConverter`, which does an `Application.Current.TryFindResource(key)` against the merged `EditorIconGlyphs.xaml` and returns the mapped glyph character.
+3. The `TextBlock` uses the `CF.IconTextBlock` style, whose `FontFamily` is set to `/AgenticColorCreator.App;component/Shared/Fonts/#fs-editor-icons` so the returned character renders as the intended icon.
+
+Notes for callers adding new types:
+
+- Add the source `Type` string on the `TreeViewSourceEntry` side.
+- Add the corresponding entry in `TreeViewIconMap` mapping it to a resource key that already exists in `EditorIconGlyphs.xaml`. Never edit `EditorIconGlyphs.xaml` inside this repository — that file is vendored from another project and is regenerated externally from `fs-editor-icons.css`. If a needed glyph is missing there, that has to be resolved in the upstream project first.
+- The `default` entry acts as the fallback for every unmapped source `Type`, so unknown types render a generic resource icon rather than throwing.
 
 ## How To Bind It
 

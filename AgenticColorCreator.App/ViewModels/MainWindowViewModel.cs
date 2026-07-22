@@ -360,7 +360,7 @@ public sealed class MainWindowViewModel : ViewModelBase
 		var roots = new[] { "library", "project", "themes", "assets", "plugins" };
 		var branches = new[] { "core", "editor", "preview", "runtime", "shared", "layout", "inputs", "colors" };
 		var leaves = new[] { "panel", "button", "textbox", "combobox", "treeview", "slider", "badge", "dialog", "accent", "surface" };
-		var types = new[] { "control", "palette", "folder" };
+		var types = new[] { "level", "unit", "folder" };
 		var entries = new List<TreeViewSourceEntry>(count);
 		var usedValues = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 

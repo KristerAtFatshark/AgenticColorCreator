@@ -12,4 +12,13 @@
 		<UseWPF>true</UseWPF>
 	</PropertyGroup>
 
+	<ItemGroup>
+		<!--
+		Font files must be explicitly compiled into the assembly as a WPF Resource so the
+		"/AgenticColorCreator.App;component/Shared/Fonts/#..." pack URI can locate them at
+		runtime. The WPF SDK default globs pick up .xaml automatically but not .ttf.
+		-->
+		<Resource Include="Shared\Fonts\*.ttf" />
+	</ItemGroup>
+
 </Project>

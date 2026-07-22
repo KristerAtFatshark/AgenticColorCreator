@@ -13,6 +13,18 @@ Before making any UI color changes, always check the timestamp of `Color/agentic
 
 After completing any change, always update `status.md`.
 
+## Vendored Shared Folder
+
+`AgenticColorCreator.App/Shared/` is a vendored copy from another project. Its contents are never edited inside this repository.
+
+Rules:
+- Do not modify, rename, reformat, or delete any file inside `AgenticColorCreator.App/Shared/` unless the user explicitly asks for it in the current request.
+- Do not apply repository-wide formatting or code-standard passes (CRLF, tab indentation, nullable annotations, style cleanup, warning suppression, etc.) to files inside this folder, even when touching neighboring files.
+- Do not add, remove, or restructure subfolders inside `AgenticColorCreator.App/Shared/`.
+- Treat any code-analysis warnings originating from files inside `AgenticColorCreator.App/Shared/` as out of scope; suppress them project-wide or ignore them rather than editing the shared source.
+- When a bug is traced into a file under `AgenticColorCreator.App/Shared/`, prefer fixing it in this repository by wrapping, adapting, or configuring the shared code from the outside; only edit inside the folder when the user explicitly authorizes it in the same request.
+- Referencing files inside `AgenticColorCreator.App/Shared/` from XAML, code, or `.csproj` is expected and allowed; the restriction is on editing the folder's contents, not on consuming them.
+
 ## status.md Requirements
 
 `status.md` must be used as the short operational memory for this repository.
