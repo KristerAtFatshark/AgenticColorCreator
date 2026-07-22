@@ -206,6 +206,84 @@ namespace ClownFishUi.CFUserControls.CFTreeViewControl
 		}
 	}
 
+	/// <summary>
+	/// Selects the first root item currently in the tree, brings it into view, moves keyboard
+	/// focus to the control, and returns the selected item (or <c>null</c> if the tree is empty).
+	/// Selection is applied through the same code path used by manual clicks, so
+	/// <see cref="SelectedValues"/> and <see cref="SelectedTreeViewItems"/> are both updated and
+	/// any bound host will observe the change.
+	/// </summary>
+	public CFTreeViewItem SelectFirstItemAndFocus()
+	{
+		CFTreeViewItem firstItem = null;
+		foreach (var rootItem in GetRootTreeViewItems())
+		{
+			firstItem = rootItem;
+			break;
+		}
+
+		if (firstItem == null)
+		{
+			return null;
+		}
+
+		// Clear any prior forced/manual selection state before applying the new one so
+		// SelectedValues does not accumulate stale entries.
+		if (_hasExternalSelectionState)
+		{
+			ClearForcedSelectionState();
+			_hasExternalSelectionState = false;
+		}
+
+		if (IsMultiSelect)
+		{
+			SelectSingleItem(firstItem);
+		}
+		else
+		{
+			// Non-multi-select mode uses the built-in TreeView selection. Setting IsSelected
+			// routes through OnSelectedItemChanged, which updates SelectedTreeViewItems and
+			// SelectedValues.
+			foreach (var item in _selectedTreeViewItems)
+			{
+				item.IsMultiSelected = false;
+			}
+
+			_selectedTreeViewItems.Clear();
+			firstItem.IsSelected = true;
+		}
+
+		firstItem.BringIntoView();
+
+		// Focus has to happen after the item container is fully in the visual tree. When the
+		// tree was just rebuilt the container may not yet have completed layout, so defer the
+		// focus call one dispatcher tick at Loaded priority. Both Focus() and Keyboard.Focus()
+		// can throw InvalidOperationException if the target is not currently focusable (item not
+		// yet realized, not loaded, IsEnabled=false, etc.), so we guard the call.
+		Dispatcher.BeginInvoke(
+			DispatcherPriority.Loaded,
+			new Action(() =>
+			{
+				try
+				{
+					if (!firstItem.IsLoaded || !firstItem.Focusable || !firstItem.IsVisible)
+					{
+						return;
+					}
+
+					firstItem.Focus();
+				}
+				catch (InvalidOperationException)
+				{
+					// Focus was rejected by the framework (usually because the container was
+					// virtualized away or torn down between BringIntoView and this callback).
+					// Swallow: the visual selection is still correct, the user can click.
+				}
+			}));
+
+		return firstItem;
+	}
+
 	private IEnumerable<CFTreeViewItem> GetRootTreeViewItems()
 	{
 		if (PreviewTreeView.ItemsSource is IEnumerable<CFTreeViewItem> typedSource)
@@ -326,6 +404,83 @@ namespace ClownFishUi.CFUserControls.CFTreeViewControl
 
 		clickedItem.Focus();
 		e.Handled = true;
+	}
+
+	private void OnPreviewTreeViewPreviewKeyDown(object sender, KeyEventArgs e)
+	{
+		if (e.Key != Key.Enter)
+		{
+			return;
+		}
+
+		// Only react when a CFTreeViewItem currently has keyboard focus. This is normally the
+		// case after the user navigates with the arrow keys because TreeView moves focus to the
+		// container on each arrow press.
+		var focusedItem = Keyboard.FocusedElement as CFTreeViewItem
+			?? FindAncestor<CFTreeViewItem>(Keyboard.FocusedElement as DependencyObject);
+		if (focusedItem == null)
+		{
+			return;
+		}
+
+		if (_hasExternalSelectionState)
+		{
+			ClearForcedSelectionState();
+			_hasExternalSelectionState = false;
+		}
+
+		if (IsMultiSelect && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+		{
+			// Ctrl+Enter toggles multi-selection the same way Ctrl+Click does. We intentionally
+			// do not force IsSelected on this branch because a toggled-off item should not remain
+			// the TreeView's current-selection anchor either.
+			ToggleItemSelection(focusedItem);
+		}
+		else
+		{
+			CommitKeyboardSingleSelection(focusedItem);
+		}
+
+		// The focused item already has keyboard focus (that is how we found it), so we do not
+		// need to call Focus() again. Doing so during a selection-change reentry can trip
+		// InvalidOperationException from PresentationCore because focus routing is temporarily
+		// locked while the built-in TreeView is updating its own selection anchor.
+		e.Handled = true;
+	}
+
+	private void CommitKeyboardSingleSelection(CFTreeViewItem focusedItem)
+	{
+		// SelectSingleItem intentionally leaves IsSelected = false so the built-in TreeView
+		// blue-highlight does not paint on top of the CF multi-selection visual. That is fine
+		// for mouse clicks, but for keyboard commit it breaks arrow-key navigation: WPF's
+		// TreeView uses IsSelected as the anchor for the next arrow keystroke, so with no
+		// selected item present the arrow keys jump back to the first root.
+		//
+		// The CF style already renders identical visuals for IsSelected and IsMultiSelected, so
+		// leaving both true after a keyboard commit is safe. We clear the visuals on the
+		// previous items ourselves, then set both flags on the focused item and record it in the
+		// selection sink.
+		foreach (var item in _selectedTreeViewItems)
+		{
+			if (ReferenceEquals(item, focusedItem))
+			{
+				continue;
+			}
+
+			item.IsMultiSelected = false;
+			item.IsSelected = false;
+		}
+
+		_selectedTreeViewItems.Clear();
+
+		if (IsMultiSelect)
+		{
+			focusedItem.IsMultiSelected = true;
+		}
+
+		focusedItem.IsSelected = true;
+		_selectedTreeViewItems.Add(focusedItem);
+		UpdateSelectedTreeViewItems();
 	}
 
 	private void SelectSingleItem(CFTreeViewItem clickedItem)

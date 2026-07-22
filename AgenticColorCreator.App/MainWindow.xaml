@@ -868,6 +868,9 @@
 									<Button Style="{StaticResource CF.Button}"
 											Click="OnCollapseTreeViewAllClick"
 											Content="Collapse All" />
+									<Button Style="{StaticResource CF.Button}"
+											Click="OnSelectFirstTreeViewItemClick"
+											Content="Select First + Focus" />
 								</WrapPanel>
 							</Grid>
 						</Border>

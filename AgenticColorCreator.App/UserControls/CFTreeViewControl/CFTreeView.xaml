@@ -13,6 +13,7 @@
 			  ItemContainerStyle="{StaticResource CF.TreeViewItem}"
 			  SelectedItemChanged="OnSelectedItemChanged"
 			  PreviewMouseLeftButtonDown="OnPreviewTreeViewMouseLeftButtonDown"
+			  PreviewKeyDown="OnPreviewTreeViewPreviewKeyDown"
 			  />
 	</Grid>
 </UserControl>

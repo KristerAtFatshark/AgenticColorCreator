@@ -499,6 +499,11 @@ public partial class MainWindow : Window
 		PreviewTreeViewControl.CollapseAll();
 	}
 
+	private void OnSelectFirstTreeViewItemClick(object sender, RoutedEventArgs e)
+	{
+		PreviewTreeViewControl.SelectFirstItemAndFocus();
+	}
+
 	private void OnSliderTicksNoneClick(object sender, RoutedEventArgs e)
 	{
 		PreviewSliderTickPlacement = TickPlacement.None;
