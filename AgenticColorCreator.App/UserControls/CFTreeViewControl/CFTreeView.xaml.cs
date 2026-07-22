@@ -407,8 +407,7 @@ namespace ClownFishUi.CFUserControls.CFTreeViewControl
 	}
 
 	private void OnPreviewTreeViewPreviewKeyDown(object sender, KeyEventArgs e)
-	{
-		if (e.Key != Key.Enter)
+	{		if (e.Key != Key.Enter)
 		{
 			return;
 		}
@@ -446,6 +445,30 @@ namespace ClownFishUi.CFUserControls.CFTreeViewControl
 		// InvalidOperationException from PresentationCore because focus routing is temporarily
 		// locked while the built-in TreeView is updating its own selection anchor.
 		e.Handled = true;
+	}
+
+	private void OnPreviewTreeViewKeyDown(object sender, KeyEventArgs e)
+	{
+		// The inner TreeView handles arrow keys, PageUp/PageDown, Home and End in its own
+		// OnKeyDown override to move the focused item. When there is nowhere left to move
+		// (e.g. the user hit Down on the last visible row) the framework leaves the event
+		// unhandled and it bubbles up to any ancestor ScrollViewer, which then scrolls the
+		// whole preview page. From this control's perspective navigation keys always belong to
+		// the tree, so we swallow them here (on the bubbling KeyDown, after TreeView had its
+		// turn) to prevent the outer ScrollViewer from ever seeing them.
+		switch (e.Key)
+		{
+			case Key.Up:
+			case Key.Down:
+			case Key.Left:
+			case Key.Right:
+			case Key.PageUp:
+			case Key.PageDown:
+			case Key.Home:
+			case Key.End:
+				e.Handled = true;
+				break;
+		}
 	}
 
 	private void CommitKeyboardSingleSelection(CFTreeViewItem focusedItem)
