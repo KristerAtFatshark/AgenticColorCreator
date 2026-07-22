@@ -86,8 +86,8 @@ Public dependency properties:
 - `EnableLazyChildMaterialization`
   - Type: `bool`
   - Default: `false`
-  - When `true`, subtrees at or below `LazyChildMaterializationDepth` are not built up front. A single sentinel object is inserted into the parent's `Items` so WPF still renders the expand chevron, and the real `CFTreeViewItem` children are created on first `Expanded`.
-  - Deeper subtrees keep deferring: when a lazy parent is expanded, its immediate children are materialized, but any of *their* children that are still at or below the lazy depth get their own sentinel placeholder.
+  - When `true`, subtrees at or below `LazyChildMaterializationDepth` are not built up front. A single `TreeViewItem` sentinel with `Visibility=Collapsed`, `Focusable=false` and `IsEnabled=false` is inserted into the parent's `Items` so WPF still renders the expand chevron without showing a placeholder row, and the real `CFTreeViewItem` children are created on first `Expanded`.
+  - Expansion reveals **one layer at a time**. When a lazy parent is expanded, its immediate children are materialized in a collapsed state so their own lazy sentinels stay in place until the user expands them explicitly. This prevents the whole subtree from cascade-materializing in a single click.
   - Lazy is automatically **skipped** when the current rebuild would not start collapsed — that is, when `NodesSource.Count <= CollapseAllThresholdItemCount`. In that scenario everything is visible-expanded anyway, so there is no collapse state to defer work behind.
   - Ancestor items of any value in `SelectedValues` are always force-materialized eagerly, so external selection continues to land on a real item.
 
@@ -97,11 +97,17 @@ Public dependency properties:
   - Zero-based node depth at which lazy materialization becomes active. Root items are depth `0`. A value of `2` means depths `0` and `1` are always materialized eagerly, and every subtree rooted at depth `2` or deeper defers its children until first expansion.
   - Only meaningful when `EnableLazyChildMaterialization` is `true`.
 
+Public events:
+
+- `RebuildCompleted`
+  - Type: `EventHandler`
+  - Raised on the UI thread after each rebuild finishes, including the `NodesSource == null` clear path. Useful for hosts and tests that need to await the async rebuild pipeline before inspecting the visual tree.
+
 Public methods:
 
 - `BeginUpdate()` / `EndUpdate()`
   - Reference-counted batch pair; nesting is supported.
-  - While `_updateSuppressionCount > 0`, source-triggered rebuilds are suppressed and only marked as pending.
+  - While the suppression counter is non-zero, source-triggered rebuilds are suppressed and only marked as pending.
   - The outermost `EndUpdate` triggers exactly one rebuild if any were pending.
   - Useful for hosts that mutate `NodesSource` across multiple dispatcher frames (e.g. an async load that awaits between mutations), where the automatic same-frame coalescer can't help.
   - Call only from the UI thread.
@@ -111,6 +117,12 @@ Public methods:
 
 - `CollapseAllExceptSelectedItemParents()`
   - Collapses every item except the ancestor paths of the currently-selected items, so the selection stays visible while everything else is collapsed.
+
+- `SelectFirstItemAndFocus()`
+  - Selects the first root item, brings it into view, and focuses it on the next `DispatcherPriority.Loaded` tick so the container has time to realize before focus is moved.
+  - Returns the selected `CFTreeViewItem` or `null` if the tree is empty.
+  - Uses the same forced-selection-clear + `SelectSingleItem` code path as a manual click in multi-select mode, so `SelectedValues` and `SelectedTreeViewItems` update the same way as a user-driven selection.
+  - The deferred focus call is guarded (`IsLoaded` / `Focusable` / `IsVisible`) and swallows `InvalidOperationException` from `PresentationCore` in case the container was virtualized away between `BringIntoView` and the callback.
 
 ### `CFTreeViewItem`
 
@@ -130,6 +142,14 @@ Public properties:
 
 - `IsMultiSelected` (DP, `bool`)
   - Internal custom selection flag used for multi-selection visuals.
+
+Internal (not part of the public API, but visible to the surrounding control code):
+
+- `SourceNode` (`TreeViewNode`)
+  - Back-reference to the intermediate node used by the lazy-materialization path.
+
+- `HasLazyPlaceholder` (`bool`)
+  - Marks the item as still holding a lazy sentinel child. Cleared by the control when the sentinel is swapped for real materialized children on first `Expanded`.
 
 The item also gets a `ToolTip` bound to its `Value` in the shared `CF.TreeViewItem` style, so hovering shows the full path.
 
@@ -201,6 +221,8 @@ Typical usage:
     SelectedValues="{Binding PreviewSelectedTreeViewValues}"
     SelectedTreeViewItems="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=SelectedPreviewTreeViewItems, Mode=OneWayToSource}"
     CollapseAllThresholdItemCount="100"
+    EnableLazyChildMaterialization="False"
+    LazyChildMaterializationDepth="2"
     IsMultiSelect="True" />
 ```
 
@@ -247,6 +269,15 @@ Important note:
 - Forced selection and manual selection are treated as separate modes.
 - Manual clicking overrides a forced selection.
 - Updating `SelectedValues` from outside overrides any previous manual selection.
+
+## Keyboard Behavior
+
+- Arrow keys (`Up`/`Down`/`Left`/`Right`) navigate between items using the built-in `TreeView` navigation. Focus moves to each traversed item container.
+- `Enter` commits the focused item as the current selection. It routes through the same forced-selection-clear + selection path as a mouse click, but keeps the item's built-in `IsSelected` flag set (in addition to the CF `IsMultiSelected` flag when multi-select is active). Both flags render the same selected visual in the CF item style, and keeping `IsSelected` set is what lets subsequent arrow keys continue from the just-selected row instead of jumping back to the first root.
+- `Ctrl` + `Enter` toggles multi-selection on the focused item, matching `Ctrl` + click. It intentionally does not force `IsSelected` on because a toggled-off item should not remain the navigation anchor.
+- `PageUp`, `PageDown`, `Home`, and `End` behave as the built-in `TreeView` defines them.
+- All navigation keys (`Up`, `Down`, `Left`, `Right`, `PageUp`, `PageDown`, `Home`, `End`) are swallowed on the bubbling `KeyDown` after the built-in `TreeView` has had its turn. That prevents an ancestor `ScrollViewer` from scrolling the whole hosting page when the user hits the top or bottom row of the tree.
+- Focus is not re-asserted after a keyboard commit; the item is already focused (which is how the handler found it), and re-focusing during the built-in selection-change reentry can throw `InvalidOperationException` from `PresentationCore`.
 
 ## How The Tree Is Built
 
@@ -306,6 +337,25 @@ The pipeline is split so the expensive intermediate work can run off the UI thre
 - Nests correctly with manual host `BeginUpdate()` / `EndUpdate()` calls — they share the same reference counter.
 
 Replacing `NodesSource` at the DP level already produces a single notification, so it does not need coalescing.
+
+### Lazy child materialization
+
+When `EnableLazyChildMaterialization` is `true` and the current rebuild would otherwise start collapsed, `CreateTreeViewItem` stops recursing into children once it reaches `LazyChildMaterializationDepth`. Instead:
+
+- A single `TreeViewItem` sentinel (`Visibility=Collapsed`, `Focusable=false`, `IsEnabled=false`) is added to the parent's `Items` so WPF reports `HasItems=true` and renders the expand chevron. Because the sentinel is collapsed and disabled it never shows a placeholder row and never accepts focus.
+- The parent's `HasLazyPlaceholder` flag is set and a one-shot handler is attached to its `Expanded` event.
+- On first expansion, `OnLazyItemExpanded` verifies `e.OriginalSource` matches the sender (so bubbled expansions from descendants do not trigger it), unhooks itself, clears the sentinel, and calls `MaterializeLazyChildren`.
+- `MaterializeLazyChildren` walks up the parent chain via `ItemsControl.ItemsControlFromItemContainer` to compute the current depth, then reuses `CreateTreeViewItem` with `startCollapsed=true` and the current lazy config to build the next layer only. Any grandchildren still at or below the lazy depth get their own sentinel, so exactly one layer materializes per user expand.
+
+Ancestor items of any value in `SelectedValues` are always materialized eagerly during the initial build so external selection lands on a real item even when lazy is active.
+
+### `RebuildCompleted` event
+
+Every rebuild ends with a `RebuildCompleted` event raised on the UI thread — including the `NodesSource == null` clear path. Hosts and tests can subscribe to await the async pipeline before inspecting the visual tree:
+
+```csharp
+treeView.RebuildCompleted += (_, _) => { /* tree is ready */ };
+```
 
 ### Manual batching (`BeginUpdate` / `EndUpdate`)
 
@@ -375,10 +425,12 @@ Recommended responsibilities:
 - `CFTreeView` owns:
   - hierarchy building (path splitting, folder-node synthesis)
   - icon resolution via `TreeViewIconMap`
-  - click and multi-selection behavior
+  - click, keyboard, and multi-selection behavior (including `Enter` / `Ctrl+Enter` commit and swallowing bubble-out of navigation keys)
   - rendering custom `CFTreeViewItem` containers
   - rebuild scheduling, threading, and coalescing
   - collapse-on-threshold decision at build time
+  - optional lazy child materialization for very large sources
+  - convenience helpers such as `SelectFirstItemAndFocus`, `CollapseAll`, and `CollapseAllExceptSelectedItemParents`
 
 ## Example Source Data
 
