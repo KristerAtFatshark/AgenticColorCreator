@@ -813,6 +813,8 @@
 											NodesSource="{Binding PreviewTreeViewNodes}"
 											SelectedValues="{Binding PreviewSelectedTreeViewValues}"
 											CollapseAllThresholdItemCount="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewTreeViewCollapseAllThreshold, Mode=TwoWay}"
+											EnableLazyChildMaterialization="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewTreeViewLazyMaterializationEnabled, Mode=TwoWay}"
+											LazyChildMaterializationDepth="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewTreeViewLazyMaterializationDepth, Mode=TwoWay}"
 											SelectedTreeViewItems="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=SelectedPreviewTreeViewItems, Mode=OneWayToSource}" />
 								<WrapPanel Grid.Row="3" Orientation="Horizontal" Margin="0,8,0,0">
 									<StackPanel Orientation="Horizontal" Margin="0,0,16,4">
@@ -822,12 +824,24 @@
 														Step="10"
 														Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewTreeViewCollapseAllThreshold, Mode=TwoWay}" />
 									</StackPanel>
-									<StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+									<StackPanel Orientation="Horizontal" Margin="0,0,16,4">
 										<TextBlock Style="{StaticResource CF.TextBlock}" VerticalAlignment="Center" Margin="0,0,6,0" Text="Stress Entry Count" />
 										<intControls:CFInt Width="120"
 														Minimum="0"
 														Step="50"
 														Value="{Binding PreviewTreeStressEntryCount, Mode=TwoWay}" />
+									</StackPanel>
+									<StackPanel Orientation="Horizontal" Margin="0,0,16,4">
+										<CheckBox Style="{StaticResource CF.CheckBox}" VerticalAlignment="Center"
+												Content="Lazy Materialization"
+												IsChecked="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewTreeViewLazyMaterializationEnabled, Mode=TwoWay}" />
+									</StackPanel>
+									<StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+										<TextBlock Style="{StaticResource CF.TextBlock}" VerticalAlignment="Center" Margin="0,0,6,0" Text="Lazy Depth" />
+										<intControls:CFInt Width="80"
+														Minimum="0"
+														Step="1"
+														Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewTreeViewLazyMaterializationDepth, Mode=TwoWay}" />
 									</StackPanel>
 								</WrapPanel>
 								<TextBox Style="{StaticResource CF.TextBox}" Grid.Row="4"

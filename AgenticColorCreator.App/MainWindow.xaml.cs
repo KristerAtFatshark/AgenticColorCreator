@@ -188,6 +188,18 @@ public partial class MainWindow : Window
 		typeof(MainWindow),
 		new PropertyMetadata(100));
 
+	public static readonly DependencyProperty PreviewTreeViewLazyMaterializationEnabledProperty = DependencyProperty.Register(
+		nameof(PreviewTreeViewLazyMaterializationEnabled),
+		typeof(bool),
+		typeof(MainWindow),
+		new PropertyMetadata(false));
+
+	public static readonly DependencyProperty PreviewTreeViewLazyMaterializationDepthProperty = DependencyProperty.Register(
+		nameof(PreviewTreeViewLazyMaterializationDepth),
+		typeof(int),
+		typeof(MainWindow),
+		new PropertyMetadata(2));
+
 	public MainWindow()
 	{
 		SelectedPreviewTreeViewValues = [];
@@ -380,6 +392,18 @@ public partial class MainWindow : Window
 	{
 		get => (int)GetValue(PreviewTreeViewCollapseAllThresholdProperty);
 		set => SetValue(PreviewTreeViewCollapseAllThresholdProperty, value);
+	}
+
+	public bool PreviewTreeViewLazyMaterializationEnabled
+	{
+		get => (bool)GetValue(PreviewTreeViewLazyMaterializationEnabledProperty);
+		set => SetValue(PreviewTreeViewLazyMaterializationEnabledProperty, value);
+	}
+
+	public int PreviewTreeViewLazyMaterializationDepth
+	{
+		get => (int)GetValue(PreviewTreeViewLazyMaterializationDepthProperty);
+		set => SetValue(PreviewTreeViewLazyMaterializationDepthProperty, value);
 	}
 
 	private static void OnSelectedPreviewTreeViewItemsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

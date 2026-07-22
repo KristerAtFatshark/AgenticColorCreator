@@ -83,6 +83,20 @@ Public dependency properties:
     - Otherwise items start expanded (the previous default behavior).
   - Changing this DP at runtime re-evaluates the collapse state on the already-built tree; it does not rebuild.
 
+- `EnableLazyChildMaterialization`
+  - Type: `bool`
+  - Default: `false`
+  - When `true`, subtrees at or below `LazyChildMaterializationDepth` are not built up front. A single sentinel object is inserted into the parent's `Items` so WPF still renders the expand chevron, and the real `CFTreeViewItem` children are created on first `Expanded`.
+  - Deeper subtrees keep deferring: when a lazy parent is expanded, its immediate children are materialized, but any of *their* children that are still at or below the lazy depth get their own sentinel placeholder.
+  - Lazy is automatically **skipped** when the current rebuild would not start collapsed — that is, when `NodesSource.Count <= CollapseAllThresholdItemCount`. In that scenario everything is visible-expanded anyway, so there is no collapse state to defer work behind.
+  - Ancestor items of any value in `SelectedValues` are always force-materialized eagerly, so external selection continues to land on a real item.
+
+- `LazyChildMaterializationDepth`
+  - Type: `int`
+  - Default: `2`
+  - Zero-based node depth at which lazy materialization becomes active. Root items are depth `0`. A value of `2` means depths `0` and `1` are always materialized eagerly, and every subtree rooted at depth `2` or deeper defers its children until first expansion.
+  - Only meaningful when `EnableLazyChildMaterialization` is `true`.
+
 Public methods:
 
 - `BeginUpdate()` / `EndUpdate()`

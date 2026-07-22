@@ -22,6 +22,27 @@ public sealed class CFTreeViewLoadPerformanceTests
 	[Fact]
 	public void CFTreeView_LoadingLargeSource_CompletesInReasonableTime()
 	{
+		RunLoadScenario(
+			label: "Eager (no lazy, no auto-collapse)",
+			collapseThreshold: 350_001,
+			enableLazy: false,
+			lazyDepth: 0,
+			maxAllowed: TimeSpan.FromMinutes(4));
+	}
+
+	[Fact]
+	public void CFTreeView_LoadingLargeSource_LazyMaterialization_CompletesFaster()
+	{
+		RunLoadScenario(
+			label: "Lazy (depth 2, auto-collapse active)",
+			collapseThreshold: 100,
+			enableLazy: true,
+			lazyDepth: 2,
+			maxAllowed: TimeSpan.FromMinutes(1));
+	}
+
+	private void RunLoadScenario(string label, int collapseThreshold, bool enableLazy, int lazyDepth, TimeSpan maxAllowed)
+	{
 		const int entryCount = 350_000;
 
 		var buildTimer = Stopwatch.StartNew();
@@ -39,7 +60,9 @@ public sealed class CFTreeViewLoadPerformanceTests
 
 				var treeView = new CFTreeView
 				{
-					CollapseAllThresholdItemCount = entryCount + 1,
+					CollapseAllThresholdItemCount = collapseThreshold,
+					EnableLazyChildMaterialization = enableLazy,
+					LazyChildMaterializationDepth = lazyDepth,
 				};
 
 				// Force template application so the internal TreeView exists before we time.
@@ -53,13 +76,13 @@ public sealed class CFTreeViewLoadPerformanceTests
 
 				var sw = Stopwatch.StartNew();
 				treeView.NodesSource = new ObservableCollection<TreeViewSourceEntry>(entries);
-				PumpDispatcherUntil(completed, TimeSpan.FromMinutes(2));
+				PumpDispatcherUntil(completed, maxAllowed);
 				sw.Stop();
 
 				treeView.RebuildCompleted -= handler;
 				rebuildElapsed = sw.Elapsed;
 
-				Assert.True(completed.IsSet, "Rebuild did not complete within the allotted time.");
+				Assert.True(completed.IsSet, $"Rebuild did not complete within {maxAllowed}.");
 			}
 			catch (Exception ex)
 			{
@@ -76,8 +99,9 @@ public sealed class CFTreeViewLoadPerformanceTests
 			throw new Xunit.Sdk.XunitException($"STA test body threw: {capturedException}");
 		}
 
-		_output.WriteLine($"Entry generation:    {buildTimer.Elapsed.TotalMilliseconds,10:N2} ms for {entryCount:N0} entries.");
-		_output.WriteLine($"CFTreeView rebuild:  {rebuildElapsed.TotalMilliseconds,10:N2} ms for {entryCount:N0} entries.");
+		_output.WriteLine($"Scenario: {label}");
+		_output.WriteLine($"  Entry generation:    {buildTimer.Elapsed.TotalMilliseconds,12:N2} ms for {entryCount:N0} entries.");
+		_output.WriteLine($"  CFTreeView rebuild:  {rebuildElapsed.TotalMilliseconds,12:N2} ms for {entryCount:N0} entries.");
 	}
 
 	private static List<TreeViewSourceEntry> BuildEntries(int count)

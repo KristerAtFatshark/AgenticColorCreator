@@ -44,5 +44,9 @@ namespace ClownFishUi.CFUserControls.CFTreeViewControl
 		}
 
 		public string Value { get; set; } = string.Empty;
+
+		internal TreeViewNode? SourceNode { get; set; }
+
+		internal bool HasLazyPlaceholder { get; set; }
 	}
 }

@@ -48,6 +48,18 @@ namespace ClownFishUi.CFUserControls.CFTreeViewControl
 		typeof(CFTreeView),
 		new PropertyMetadata(100, OnCollapseAllThresholdItemCountChanged));
 
+	public static readonly DependencyProperty EnableLazyChildMaterializationProperty = DependencyProperty.Register(
+		nameof(EnableLazyChildMaterialization),
+		typeof(bool),
+		typeof(CFTreeView),
+		new PropertyMetadata(false));
+
+	public static readonly DependencyProperty LazyChildMaterializationDepthProperty = DependencyProperty.Register(
+		nameof(LazyChildMaterializationDepth),
+		typeof(int),
+		typeof(CFTreeView),
+		new PropertyMetadata(2));
+
 	private ObservableCollection<TreeViewSourceEntry> _subscribedSource;
 	private ObservableCollection<string> _subscribedSelectedValues;
 	private readonly List<CFTreeViewItem> _selectedTreeViewItems = new List<CFTreeViewItem>();
@@ -94,6 +106,37 @@ namespace ClownFishUi.CFUserControls.CFTreeViewControl
 	{
 		get => (int)GetValue(CollapseAllThresholdItemCountProperty);
 		set => SetValue(CollapseAllThresholdItemCountProperty, value);
+	}
+
+	/// <summary>
+	/// When <c>true</c>, subtrees at or below <see cref="LazyChildMaterializationDepth"/> are not
+	/// materialized until the parent item is expanded. A single sentinel child is inserted so the
+	/// expand chevron still renders. This significantly reduces initial rebuild cost for very
+	/// large sources at the price of a small delay the first time each subtree is expanded.
+	/// <para>
+	/// Lazy materialization is skipped entirely when the current rebuild would otherwise start
+	/// with everything expanded — that is, when the source item count is at or below
+	/// <see cref="CollapseAllThresholdItemCount"/> — because there is no visible collapse state
+	/// to defer work behind in that scenario.
+	/// </para>
+	/// </summary>
+	public bool EnableLazyChildMaterialization
+	{
+		get => (bool)GetValue(EnableLazyChildMaterializationProperty);
+		set => SetValue(EnableLazyChildMaterializationProperty, value);
+	}
+
+	/// <summary>
+	/// Zero-based depth threshold at which lazy child materialization becomes active. Root items
+	/// are depth <c>0</c>. A value of <c>2</c> means depths <c>0</c> and <c>1</c> are always
+	/// materialized eagerly, and every subtree rooted at depth <c>2</c> or deeper defers its
+	/// children until first expansion. Only meaningful when
+	/// <see cref="EnableLazyChildMaterialization"/> is <c>true</c>.
+	/// </summary>
+	public int LazyChildMaterializationDepth
+	{
+		get => (int)GetValue(LazyChildMaterializationDepthProperty);
+		set => SetValue(LazyChildMaterializationDepthProperty, value);
 	}
 
 	/// <summary>
@@ -358,6 +401,13 @@ namespace ClownFishUi.CFUserControls.CFTreeViewControl
 		var threshold = CollapseAllThresholdItemCount;
 		var startCollapsed = threshold > 0 && NodesSource.Count > threshold;
 
+		// Lazy child materialization is only active when the source is large enough that we're
+		// already starting collapsed. If everything would be visible-expanded anyway there is no
+		// visible collapse state to defer work behind, so lazy would just add a first-expand
+		// stutter with zero benefit.
+		var lazyEnabled = EnableLazyChildMaterialization && startCollapsed;
+		var lazyDepth = lazyEnabled ? Math.Max(0, LazyChildMaterializationDepth) : -1;
+
 		var snapshot = new TreeViewSourceEntry[NodesSource.Count];
 		for (var index = 0; index < snapshot.Length; index++)
 		{
@@ -384,12 +434,12 @@ namespace ClownFishUi.CFUserControls.CFTreeViewControl
 						return;
 					}
 
-					FinishRebuildTreeViewItems(rootNodes, selectedValues, useMultipleSelection, treeViewItemStyle, startCollapsed, snapshot.Length);
+					FinishRebuildTreeViewItems(rootNodes, selectedValues, useMultipleSelection, treeViewItemStyle, startCollapsed, snapshot.Length, lazyDepth);
 				}));
 		});
 	}
 
-	private void FinishRebuildTreeViewItems(List<TreeViewNode> rootNodes, HashSet<string> selectedValues, bool useMultipleSelection, Style treeViewItemStyle, bool startCollapsed, int sourceEntryCount)
+	private void FinishRebuildTreeViewItems(List<TreeViewNode> rootNodes, HashSet<string> selectedValues, bool useMultipleSelection, Style treeViewItemStyle, bool startCollapsed, int sourceEntryCount, int lazyDepth)
 	{
 		var estimatedItemCount = sourceEntryCount * 2;
 		if (_treeViewItemsByValue.Count == 0 && estimatedItemCount > 0)
@@ -401,12 +451,36 @@ namespace ClownFishUi.CFUserControls.CFTreeViewControl
 			_treeViewItemsByValue = new Dictionary<string, CFTreeViewItem>(estimatedItemCount, StringComparer.OrdinalIgnoreCase);
 		}
 
+		// When lazy is active we still need to materialize every ancestor of any selected value,
+		// otherwise external selection would silently do nothing (the item does not yet exist in
+		// the lookup dictionary). This set is intentionally empty when there is no selection.
+		HashSet<string> forcedMaterializationValues = null;
+		if (lazyDepth >= 0 && selectedValues.Count > 0)
+		{
+			forcedMaterializationValues = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+			foreach (var selectedValue in selectedValues)
+			{
+				var current = selectedValue;
+				while (!string.IsNullOrEmpty(current))
+				{
+					forcedMaterializationValues.Add(current);
+					var separatorIndex = current.LastIndexOf('/');
+					if (separatorIndex <= 0)
+					{
+						break;
+					}
+
+					current = current.Substring(0, separatorIndex);
+				}
+			}
+		}
+
 		var rootItems = new List<CFTreeViewItem>(rootNodes.Count);
 		var collectSelections = selectedValues.Count > 0;
 
 		foreach (var rootNode in rootNodes)
 		{
-			var treeViewItem = CreateTreeViewItem(rootNode, selectedValues, useMultipleSelection, treeViewItemStyle, _treeViewItemsByValue, startCollapsed, collectSelections, _selectedTreeViewItems);
+			var treeViewItem = CreateTreeViewItem(rootNode, selectedValues, useMultipleSelection, treeViewItemStyle, _treeViewItemsByValue, startCollapsed, collectSelections, _selectedTreeViewItems, 0, lazyDepth, forcedMaterializationValues);
 			rootItems.Add(treeViewItem);
 		}
 
@@ -560,7 +634,7 @@ namespace ClownFishUi.CFUserControls.CFTreeViewControl
 		return rootNodes;
 	}
 
-	private static CFTreeViewItem CreateTreeViewItem(TreeViewNode treeViewNode, IReadOnlyCollection<string> selectedValues, bool useMultipleSelection, Style treeViewItemStyle, IDictionary<string, CFTreeViewItem> treeViewItemsByValue, bool startCollapsed, bool collectSelections, List<CFTreeViewItem> selectionSink)
+	private CFTreeViewItem CreateTreeViewItem(TreeViewNode treeViewNode, IReadOnlyCollection<string> selectedValues, bool useMultipleSelection, Style treeViewItemStyle, IDictionary<string, CFTreeViewItem> treeViewItemsByValue, bool startCollapsed, bool collectSelections, List<CFTreeViewItem> selectionSink, int depth, int lazyDepth, HashSet<string> forcedMaterializationValues)
 	{
 		var childCount = treeViewNode.Children.Count;
 		var hasChildren = childCount > 0;
@@ -575,6 +649,7 @@ namespace ClownFishUi.CFUserControls.CFTreeViewControl
 			Text = treeViewNode.Text,
 			Value = treeViewNode.Value,
 			Style = treeViewItemStyle,
+			SourceNode = treeViewNode,
 		};
 
 		if (shouldBeExpanded)
@@ -599,17 +674,125 @@ namespace ClownFishUi.CFUserControls.CFTreeViewControl
 
 		treeViewItemsByValue[treeViewNode.Value] = treeViewItem;
 
-		if (hasChildren)
+		if (!hasChildren)
 		{
-			var itemsCollection = treeViewItem.Items;
-			for (var childIndex = 0; childIndex < childCount; childIndex++)
-			{
-				var childItem = CreateTreeViewItem(treeViewNode.Children[childIndex], selectedValues, useMultipleSelection, treeViewItemStyle, treeViewItemsByValue, startCollapsed, collectSelections, selectionSink);
-				itemsCollection.Add(childItem);
-			}
+			return treeViewItem;
+		}
+
+		// Decide whether to materialize this subtree now or defer it until first expansion.
+		// Rules:
+		//   * lazyDepth < 0 means the master switch is off (or start-collapsed didn't fire), so
+		//     always materialize eagerly to preserve the pre-lazy behavior.
+		//   * Subtrees whose value is on the ancestor path of a selected item must always be
+		//     materialized eagerly so external selection can find the target CFTreeViewItem.
+		//   * Otherwise, subtrees rooted at depth >= lazyDepth defer their children.
+		var isForced = forcedMaterializationValues != null && forcedMaterializationValues.Contains(treeViewNode.Value);
+		var deferChildren = lazyDepth >= 0 && depth >= lazyDepth && !isForced;
+
+		if (deferChildren)
+		{
+			InsertLazyPlaceholder(treeViewItem);
+			return treeViewItem;
+		}
+
+		var itemsCollection = treeViewItem.Items;
+		for (var childIndex = 0; childIndex < childCount; childIndex++)
+		{
+			var childItem = CreateTreeViewItem(treeViewNode.Children[childIndex], selectedValues, useMultipleSelection, treeViewItemStyle, treeViewItemsByValue, startCollapsed, collectSelections, selectionSink, depth + 1, lazyDepth, forcedMaterializationValues);
+			itemsCollection.Add(childItem);
 		}
 
 		return treeViewItem;
+	}
+
+	private void InsertLazyPlaceholder(CFTreeViewItem parentItem)
+	{
+		// A single sentinel child is enough for WPF to render the expand chevron on the parent
+		// TreeViewItem. It is a plain TreeViewItem (not a CFTreeViewItem) with Visibility set to
+		// Collapsed so it takes no visible space and does not render as "System.Object" while the
+		// parent is briefly expanded. Using a real container also avoids the WPF default
+		// item-container fallback that displayed the string form of the previous raw-object
+		// sentinel before materialization completed.
+		var placeholder = new TreeViewItem
+		{
+			Visibility = Visibility.Collapsed,
+			Focusable = false,
+			IsEnabled = false,
+		};
+
+		parentItem.Items.Add(placeholder);
+		parentItem.HasLazyPlaceholder = true;
+		parentItem.Expanded += OnLazyItemExpanded;
+	}
+
+	private void OnLazyItemExpanded(object sender, RoutedEventArgs e)
+	{
+		if (!(sender is CFTreeViewItem treeViewItem))
+		{
+			return;
+		}
+
+		if (!treeViewItem.HasLazyPlaceholder)
+		{
+			return;
+		}
+
+		// The Expanded event bubbles from descendants; ignore anything that is not the item we
+		// actually hooked, otherwise we would try to materialize the wrong subtree.
+		if (!ReferenceEquals(e.OriginalSource, sender))
+		{
+			return;
+		}
+
+		treeViewItem.HasLazyPlaceholder = false;
+		treeViewItem.Expanded -= OnLazyItemExpanded;
+
+		MaterializeLazyChildren(treeViewItem);
+	}
+
+	private void MaterializeLazyChildren(CFTreeViewItem parentItem)
+	{
+		var sourceNode = parentItem.SourceNode;
+		if (sourceNode == null)
+		{
+			return;
+		}
+
+		var treeViewItemStyle = PreviewTreeView.TryFindResource("CF.TreeViewItem") as Style;
+		var selectedValues = GetSelectedValueSet();
+		var useMultipleSelection = IsMultiSelect && selectedValues.Count > 1;
+		var collectSelections = selectedValues.Count > 0;
+		var lazyDepth = EnableLazyChildMaterialization ? Math.Max(0, LazyChildMaterializationDepth) : -1;
+
+		// Compute depth of the item being expanded by walking up its parent chain of
+		// CFTreeViewItem containers. That way we correctly propagate the deferred-materialization
+		// rule to grandchildren of the just-expanded node.
+		var depth = 0;
+		DependencyObject walker = ItemsControl.ItemsControlFromItemContainer(parentItem);
+		while (walker is CFTreeViewItem)
+		{
+			depth++;
+			walker = ItemsControl.ItemsControlFromItemContainer((CFTreeViewItem)walker);
+		}
+
+		parentItem.Items.Clear();
+
+		var itemsCollection = parentItem.Items;
+		var childNodes = sourceNode.Children;
+		for (var childIndex = 0; childIndex < childNodes.Count; childIndex++)
+		{
+			// startCollapsed = true here is deliberate: when the user expands a lazy parent, we
+			// only want that one level to appear. Setting startCollapsed = false would cause
+			// every newly-materialized child to auto-expand, which in turn triggers their own
+			// lazy sentinels to materialize, cascading the whole subtree in a single click.
+			var childItem = CreateTreeViewItem(childNodes[childIndex], selectedValues, useMultipleSelection, treeViewItemStyle, _treeViewItemsByValue, true, collectSelections, _selectedTreeViewItems, depth + 1, lazyDepth, null);
+			itemsCollection.Add(childItem);
+		}
+
+		if (_selectedTreeViewItems.Count > 0)
+		{
+			UpdateSelectedTreeViewItems();
+		}
 	}
 
 	private void SubscribeToSource(ObservableCollection<TreeViewSourceEntry> source)
