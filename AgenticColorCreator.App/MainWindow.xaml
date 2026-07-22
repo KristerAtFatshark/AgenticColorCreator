@@ -803,6 +803,7 @@
 									<RowDefinition Height="140" />
 									<RowDefinition Height="Auto" />
 									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
 								</Grid.RowDefinitions>
 								<TextBlock Style="{StaticResource CF.TextBlock}" FontSize="16" FontWeight="SemiBold" Text="CFTreeView" />
 								<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="1" Margin="0,2,0,14" Foreground="{StaticResource CF.Text.Selected.Foreground}" Text="App.UserControls.CFTreeViewControl.CFTreeView" />
@@ -811,8 +812,25 @@
 											IsMultiSelect="True"
 											NodesSource="{Binding PreviewTreeViewNodes}"
 											SelectedValues="{Binding PreviewSelectedTreeViewValues}"
+											CollapseAllThresholdItemCount="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewTreeViewCollapseAllThreshold, Mode=TwoWay}"
 											SelectedTreeViewItems="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=SelectedPreviewTreeViewItems, Mode=OneWayToSource}" />
-								<TextBox Style="{StaticResource CF.TextBox}" Grid.Row="3"
+								<WrapPanel Grid.Row="3" Orientation="Horizontal" Margin="0,8,0,0">
+									<StackPanel Orientation="Horizontal" Margin="0,0,16,4">
+										<TextBlock Style="{StaticResource CF.TextBlock}" VerticalAlignment="Center" Margin="0,0,6,0" Text="Collapse All Threshold" />
+										<intControls:CFInt Width="120"
+														Minimum="0"
+														Step="10"
+														Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewTreeViewCollapseAllThreshold, Mode=TwoWay}" />
+									</StackPanel>
+									<StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+										<TextBlock Style="{StaticResource CF.TextBlock}" VerticalAlignment="Center" Margin="0,0,6,0" Text="Stress Entry Count" />
+										<intControls:CFInt Width="120"
+														Minimum="0"
+														Step="50"
+														Value="{Binding PreviewTreeStressEntryCount, Mode=TwoWay}" />
+									</StackPanel>
+								</WrapPanel>
+								<TextBox Style="{StaticResource CF.TextBox}" Grid.Row="4"
 										Margin="0,8,0,0"
 										Height="72"
 										AcceptsReturn="True"
@@ -820,7 +838,7 @@
 										TextWrapping="Wrap"
 										VerticalScrollBarVisibility="Auto"
 										Text="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=SelectedPreviewTreeViewDetails}" />
-								<WrapPanel Grid.Row="4"
+								<WrapPanel Grid.Row="5"
 										Margin="0,8,0,0">
 									<Button Style="{StaticResource CF.Button}" Command="{Binding RemovePreviewTreeViewTailCommand}"
 											Content="Remove Last 4" />

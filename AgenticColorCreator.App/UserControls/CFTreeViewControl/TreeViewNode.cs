@@ -1,4 +1,5 @@
-using System.Collections.ObjectModel;
+using System;
+using System.Collections.Generic;
 
 
 namespace ClownFishUi.CFUserControls.CFTreeViewControl
@@ -12,6 +13,8 @@ namespace ClownFishUi.CFUserControls.CFTreeViewControl
 
 		public string Icon { get; set; } = string.Empty;
 
-		public ObservableCollection<TreeViewNode> Children { get; set; } = new ObservableCollection<TreeViewNode>();
+		public List<TreeViewNode> Children { get; } = new List<TreeViewNode>();
+
+		public Dictionary<string, TreeViewNode> ChildIndex { get; } = new Dictionary<string, TreeViewNode>(StringComparer.OrdinalIgnoreCase);
 	}
 }

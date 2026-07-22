@@ -2,6 +2,8 @@
 
 This folder contains the custom TreeView implementation used by the UI preview.
 
+Namespace: `ClownFishUi.CFUserControls.CFTreeViewControl`
+
 Files in this folder:
 
 - `CFTreeView.xaml`
@@ -44,24 +46,26 @@ controls
 
 The main user control.
 
-Public properties:
+Public dependency properties:
 
 - `IsMultiSelect`
   - Type: `bool`
+  - Default: `false`
   - Enables custom multi-selection behavior.
   - `false`: normal single selection behavior.
-  - `true`: supports multi-selection by selected value list and by `Ctrl` + click.
+  - `true`: supports multi-selection driven by `SelectedValues` and by `Ctrl` + click.
 
 - `NodesSource`
   - Type: `ObservableCollection<TreeViewSourceEntry>`
   - The flat source data for the tree.
   - This is the main collection you bind from a view model.
-  - When entries are added or removed, the tree rebuilds automatically.
+  - Full replacement of the DP value triggers exactly one rebuild.
+  - Full-replace bursts on the same instance (`Clear` + N × `Add`) are auto-coalesced (see "Rebuild Pipeline").
 
 - `SelectedValues`
   - Type: `ObservableCollection<string>`
   - External selection input/output based on `Value` paths.
-  - This is the property to bind if selection should be controlled from outside the TreeView.
+  - Bind this if selection should be controlled from outside the TreeView.
   - The control also writes back to this collection when the user selects items manually.
 
 - `SelectedTreeViewItems`
@@ -69,24 +73,51 @@ Public properties:
   - Output-only view of the currently selected rendered items.
   - Useful when the host wants access to the actual visual TreeView items.
 
+- `CollapseAllThresholdItemCount`
+  - Type: `int`
+  - Default: `100`
+  - Controls whether items are created already-collapsed when the source is large.
+  - Decision is made from `NodesSource.Count` **before** any `CFTreeViewItem` is created:
+    - `threshold <= 0` disables the auto-collapse (items always start expanded).
+    - `NodesSource.Count > threshold` builds every item with `IsExpanded = false`.
+    - Otherwise items start expanded (the previous default behavior).
+  - Changing this DP at runtime re-evaluates the collapse state on the already-built tree; it does not rebuild.
+
+Public methods:
+
+- `BeginUpdate()` / `EndUpdate()`
+  - Reference-counted batch pair; nesting is supported.
+  - While `_updateSuppressionCount > 0`, source-triggered rebuilds are suppressed and only marked as pending.
+  - The outermost `EndUpdate` triggers exactly one rebuild if any were pending.
+  - Useful for hosts that mutate `NodesSource` across multiple dispatcher frames (e.g. an async load that awaits between mutations), where the automatic same-frame coalescer can't help.
+  - Call only from the UI thread.
+
+- `CollapseAll()`
+  - Collapses every item in the tree.
+
+- `CollapseAllExceptSelectedItemParents()`
+  - Collapses every item except the ancestor paths of the currently-selected items, so the selection stays visible while everything else is collapsed.
+
 ### `CFTreeViewItem`
 
-The custom item container used inside the tree.
+The custom item container used inside the tree. Derives from `TreeViewItem`.
 
 Public properties:
 
-- `Icon`
-  - The icon text shown for the item.
+- `Icon` (DP, `string`)
+  - The icon glyph text shown for the item (see `TreeViewIconMap`).
 
-- `Text`
+- `Text` (DP, `string`)
   - The visible label shown for the item.
 
-- `Value`
+- `Value` (CLR, `string`)
   - The full path value for the item.
   - Example: `controls/inputs/textbox`
 
-- `IsMultiSelected`
+- `IsMultiSelected` (DP, `bool`)
   - Internal custom selection flag used for multi-selection visuals.
+
+The item also gets a `ToolTip` bound to its `Value` in the shared `CF.TreeViewItem` style, so hovering shows the full path.
 
 ### `TreeViewSourceEntry`
 
@@ -94,29 +125,57 @@ This is the source data structure you should normally create and bind.
 
 Properties:
 
-- `Value`
+- `Value` (`string`)
   - The path for the item.
   - Example: `palette/primary`
 
-- `Type`
+- `Type` (`string`)
   - The semantic type for the leaf item.
-  - Example: `palette`, `control`
+  - Example: `palette`, `control`, `folder`.
 
 This is the data structure intended for external use.
 
 ### `TreeViewNode`
 
-This is the internal hierarchical structure used by `CFTreeView` after transforming `TreeViewSourceEntry` items.
+Internal hierarchical structure used by `CFTreeView` after transforming `TreeViewSourceEntry` items into a tree.
 
 Properties:
 
 - `Text`
 - `Value`
-- `Type`
 - `Icon`
-- `Children`
+- `Children` (`List<TreeViewNode>`)
+- `ChildIndex` (`Dictionary<string, TreeViewNode>`, ordinal-ignore-case)
 
-You usually do not need to bind to `TreeViewNode` directly.
+Notes:
+
+- `Children` is a plain `List<T>`, not an `ObservableCollection`, so nothing is bound to it and no `INotifyCollectionChanged` plumbing runs during the build.
+- `ChildIndex` is used to look up existing children by path in O(1) while inserting new source entries; this replaced the previous per-segment linear scan.
+- You should not need to construct or bind to `TreeViewNode` directly.
+
+### `TreeViewIconMap`
+
+Static type-to-icon lookup used by the control.
+
+Current mappings:
+
+- `default` → `🧩`
+- `folder`  → `📁`
+- `level`   → `🏠`
+- `material`→ `🎨`
+- `unit`    → `🧩`
+- `item`    → `🎁`
+- `vfx`     → `🎉`
+- `control` → `🧩`
+- `palette` → `🎨`
+
+Usage inside the control:
+
+```csharp
+var icon = TreeViewIconMap.GetIcon(type);
+```
+
+If the requested `type` is missing, `GetIcon` falls back to the `default` entry instead of throwing.
 
 ## How To Bind It
 
@@ -124,10 +183,11 @@ Typical usage:
 
 ```xaml
 <userControls:CFTreeView
-	NodesSource="{Binding PreviewTreeViewNodes}"
-	SelectedValues="{Binding PreviewSelectedTreeViewValues}"
-	SelectedTreeViewItems="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=SelectedPreviewTreeViewItems, Mode=OneWayToSource}"
-	IsMultiSelect="True" />
+    NodesSource="{Binding PreviewTreeViewNodes}"
+    SelectedValues="{Binding PreviewSelectedTreeViewValues}"
+    SelectedTreeViewItems="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=SelectedPreviewTreeViewItems, Mode=OneWayToSource}"
+    CollapseAllThresholdItemCount="100"
+    IsMultiSelect="True" />
 ```
 
 Typical view model properties:
@@ -148,17 +208,25 @@ Behavior:
   - no forced selection is applied.
 
 - If `SelectedValues` contains `1` item:
-  - normal single selection is used.
+  - normal single selection is used (the item's `IsSelected` is set).
 
 - If `SelectedValues` contains more than `1` item:
-  - custom multi-selection visuals are used.
-  - this only works correctly when `IsMultiSelect` is `true`.
+  - custom multi-selection visuals are used (each match's `IsMultiSelected` is set).
+  - this only works meaningfully when `IsMultiSelect` is `true`.
+
+External selection changes:
+
+- When `SelectedValues` changes, the tree updates selection **in place** via a `Value` → `CFTreeViewItem` lookup dictionary; it does not rebuild.
+- The first externally-selected item is scrolled into view on the next `DispatcherPriority.Loaded` tick via `BringIntoView`.
 
 Manual interaction behavior:
 
 - Clicking an item manually updates the selection.
-- If there was an externally forced selection, manual clicking clears that forced state first.
+- If a forced selection was active, manual clicking clears that forced state first.
 - `Ctrl` + click toggles additional items only when `IsMultiSelect` is `true`.
+- Manual clicking on the expand chevron/`ToggleButton` does not change selection.
+
+Manual selection is written back into `SelectedValues` when it is bound.
 
 Important note:
 
@@ -189,43 +257,96 @@ palette
   primary
 ```
 
-Intermediate path segments like `controls` and `inputs` are automatically treated as `folder` nodes.
+Intermediate path segments like `controls` and `inputs` are automatically treated as `folder` nodes and use the `folder` icon.
 
-## Icon Mapping
+Empty or whitespace-only source values are ignored.
 
-`TreeViewIconMap.cs` contains the type-to-icon lookup used by the control.
+## Rebuild Pipeline
 
-Current mappings:
+A rebuild is triggered when:
 
-- `folder` -> `📁`
-- `control` -> `🧩`
-- `palette` -> `🎨`
+- `NodesSource` DP is replaced with a new collection.
+- The bound `NodesSource` collection raises `CollectionChanged`.
 
-Usage inside the control:
+The pipeline is split so the expensive intermediate work can run off the UI thread:
+
+1. **UI thread** — Any inbound source change routes through `RequestRebuildTreeViewItems`. It:
+   - Honors `_updateSuppressionCount`; if non-zero (batch is open) it just marks a rebuild pending and returns.
+   - Bumps a monotonic `long` rebuild generation via `Interlocked.Increment`.
+   - Clears current selection tracking and the `Value` → `CFTreeViewItem` lookup.
+   - Snapshots the source into a `TreeViewSourceEntry[]` (required because `ObservableCollection` is not thread-safe).
+2. **Background thread** — `Task.Run` executes the pure `BuildTreeViewNodes(snapshot)` which walks the flat entries and produces a `List<TreeViewNode>` hierarchy using per-node `ChildIndex` dictionaries for O(1) sibling lookup.
+3. **UI thread** — `Dispatcher.BeginInvoke(DispatcherPriority.Background, ...)` marshals the result back. It:
+   - Compares the captured generation against the current one via `Interlocked.Read`; stale results (a newer rebuild is already in flight) are dropped.
+   - Constructs `CFTreeViewItem` instances from the node tree (DP thread-affinity requires this on the UI thread).
+   - Skips explicit assignment of DP values equal to their default (`IsExpanded=false`, `IsSelected=false`, `IsMultiSelected=false`) to avoid unnecessary `SetValue` calls per item.
+   - Assigns the final `List<CFTreeViewItem>` as a batch to `TreeView.ItemsSource` so the WPF virtualizing panel generates containers on demand instead of eagerly for every node.
+
+### Automatic full-replace coalescing
+
+`CFTreeView` treats its source as full-replace by design. Rather than requiring hosts to wrap `Clear` + N × `Add` bursts in `BeginUpdate`/`EndUpdate` manually, the control does it itself:
+
+- On the first `CollectionChanged` in a burst it internally calls `BeginUpdate()` and queues `EndUpdate()` at `DispatcherPriority.Background`.
+- That priority runs after all pending `Clear`/`Add` callbacks on the current dispatcher frame but before the next render pass, so the entire burst coalesces into exactly **one** rebuild.
+- Guarded by an internal `_isCoalescingSourceChanges` flag so nested notifications don't open a second batch.
+- Nests correctly with manual host `BeginUpdate()` / `EndUpdate()` calls — they share the same reference counter.
+
+Replacing `NodesSource` at the DP level already produces a single notification, so it does not need coalescing.
+
+### Manual batching (`BeginUpdate` / `EndUpdate`)
+
+For hosts that mutate `NodesSource` across multiple dispatcher frames or want to guarantee coalescing without relying on the same-frame heuristic:
 
 ```csharp
-var icon = TreeViewIconMap.GetIcon(type);
+treeView.BeginUpdate();
+try
+{
+    // Any number of mutations to NodesSource here, including full replacement.
+    NodesSource.Clear();
+    foreach (var entry in newEntries)
+    {
+        NodesSource.Add(entry);
+    }
+}
+finally
+{
+    treeView.EndUpdate();
+}
 ```
 
-If a type is missing from the map, `GetIcon` throws an exception.
+Rules:
 
-If you add a new `Type` value to `TreeViewSourceEntry`, you should also add a mapping in `TreeViewIconMap.cs`.
+- Every `BeginUpdate` must be paired with an `EndUpdate`.
+- Pairs may nest.
+- Only the outermost `EndUpdate` triggers a rebuild, and only if at least one rebuild was requested while suppressed.
+- Call only from the UI thread.
+
+## Virtualization
+
+Both the outer `TreeView` and the item container style enable virtualization and recycling:
+
+- `VirtualizingPanel.IsVirtualizing="True"`
+- `VirtualizingPanel.VirtualizationMode="Recycling"`
+- Items panel is `VirtualizingStackPanel` on both the tree and each item.
+
+Combined with the batched `ItemsSource` assign, WPF only generates `CFTreeViewItem` containers for items currently in the viewport. Large trees stay responsive even when many items remain expanded, and starting large trees collapsed via `CollapseAllThresholdItemCount` further reduces initial container-generation cost.
 
 ## Runtime Updates
 
 `NodesSource` is an `ObservableCollection<TreeViewSourceEntry>`.
 
-That means these operations are supported at runtime:
+Supported operations at runtime:
 
 - add entries
 - remove entries
-- replace entries
+- replace entries (item-by-item, or `Clear` + repopulate)
+- replace the whole collection instance via the DP
 
-When the collection changes, `CFTreeView` rebuilds the visible tree.
+When the collection changes, `CFTreeView` rebuilds the visible tree via the pipeline described above.
 
 Current limitation:
 
-- changing `Value` or `Type` on an existing `TreeViewSourceEntry` instance does not automatically refresh the tree unless the collection itself changes or the item is replaced.
+- Mutating properties on an existing `TreeViewSourceEntry` instance (changing `Value` or `Type`) does not automatically refresh the tree. Replace the entry, or trigger a `Clear` + repopulate, to update.
 
 ## Recommended Usage Pattern
 
@@ -234,28 +355,30 @@ Use `TreeViewSourceEntry` in the view model as the source of truth.
 Recommended responsibilities:
 
 - View model owns:
-  - `ObservableCollection<TreeViewSourceEntry>`
+  - `ObservableCollection<TreeViewSourceEntry>` (the flat source)
   - `ObservableCollection<string>` for selected paths
 
 - `CFTreeView` owns:
-  - hierarchy building
-  - icon resolution
-  - click selection behavior
+  - hierarchy building (path splitting, folder-node synthesis)
+  - icon resolution via `TreeViewIconMap`
+  - click and multi-selection behavior
   - rendering custom `CFTreeViewItem` containers
+  - rebuild scheduling, threading, and coalescing
+  - collapse-on-threshold decision at build time
 
 ## Example Source Data
 
 ```csharp
 PreviewTreeViewNodes.Add(new TreeViewSourceEntry
 {
-	Value = "palette/primary",
-	Type = "palette",
+    Value = "palette/primary",
+    Type = "palette",
 });
 
 PreviewTreeViewNodes.Add(new TreeViewSourceEntry
 {
-	Value = "controls/inputs/textbox",
-	Type = "control",
+    Value = "controls/inputs/textbox",
+    Type = "control",
 });
 ```
 
@@ -268,7 +391,7 @@ PreviewSelectedTreeViewValues.Clear();
 PreviewSelectedTreeViewValues.Add("palette/primary");
 ```
 
-Multi selection:
+Multi selection (requires `IsMultiSelect="True"`):
 
 ```csharp
 PreviewSelectedTreeViewValues.Clear();

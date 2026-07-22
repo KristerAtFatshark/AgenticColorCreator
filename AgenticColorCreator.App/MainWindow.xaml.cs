@@ -182,6 +182,12 @@ public partial class MainWindow : Window
 		typeof(MainWindow),
 		new PropertyMetadata("Selected: none"));
 
+	public static readonly DependencyProperty PreviewTreeViewCollapseAllThresholdProperty = DependencyProperty.Register(
+		nameof(PreviewTreeViewCollapseAllThreshold),
+		typeof(int),
+		typeof(MainWindow),
+		new PropertyMetadata(100));
+
 	public MainWindow()
 	{
 		SelectedPreviewTreeViewValues = [];
@@ -368,6 +374,12 @@ public partial class MainWindow : Window
 	{
 		get => (string)GetValue(SelectedPreviewTreeViewDetailsProperty);
 		set => SetValue(SelectedPreviewTreeViewDetailsProperty, value);
+	}
+
+	public int PreviewTreeViewCollapseAllThreshold
+	{
+		get => (int)GetValue(PreviewTreeViewCollapseAllThresholdProperty);
+		set => SetValue(PreviewTreeViewCollapseAllThresholdProperty, value);
 	}
 
 	private static void OnSelectedPreviewTreeViewItemsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

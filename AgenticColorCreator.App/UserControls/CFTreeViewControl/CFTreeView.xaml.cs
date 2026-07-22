@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -40,14 +42,24 @@ namespace ClownFishUi.CFUserControls.CFTreeViewControl
 		typeof(CFTreeView),
 		new PropertyMetadata(null, OnSelectedValuesChanged));
 
+	public static readonly DependencyProperty CollapseAllThresholdItemCountProperty = DependencyProperty.Register(
+		nameof(CollapseAllThresholdItemCount),
+		typeof(int),
+		typeof(CFTreeView),
+		new PropertyMetadata(100, OnCollapseAllThresholdItemCountChanged));
+
 	private ObservableCollection<TreeViewSourceEntry> _subscribedSource;
 	private ObservableCollection<string> _subscribedSelectedValues;
 	private readonly List<CFTreeViewItem> _selectedTreeViewItems = new List<CFTreeViewItem>();
-	private readonly Dictionary<string, CFTreeViewItem> _treeViewItemsByValue = new Dictionary<string, CFTreeViewItem>(StringComparer.OrdinalIgnoreCase);
+	private Dictionary<string, CFTreeViewItem> _treeViewItemsByValue = new Dictionary<string, CFTreeViewItem>(StringComparer.OrdinalIgnoreCase);
 	private bool _isApplyingExternalSelection;
 	private bool _hasExternalSelectionState;
 	private bool _isUpdatingSelectedValues;
 	private bool _suppressSelectedItemChanged;
+	private int _updateSuppressionCount;
+	private bool _hasPendingRebuild;
+	private long _currentRebuildGeneration;
+	private bool _isCoalescingSourceChanges;
 
 	public CFTreeView()
 	{
@@ -78,6 +90,56 @@ namespace ClownFishUi.CFUserControls.CFTreeViewControl
 		set => SetValue(SelectedValuesProperty, value);
 	}
 
+	public int CollapseAllThresholdItemCount
+	{
+		get => (int)GetValue(CollapseAllThresholdItemCountProperty);
+		set => SetValue(CollapseAllThresholdItemCountProperty, value);
+	}
+
+	/// <summary>
+	/// Raised on the UI thread after each rebuild completes, including when the tree is cleared
+	/// because <see cref="NodesSource"/> was set to <c>null</c>. Useful for hosts and tests that
+	/// need to await the async rebuild pipeline before inspecting the visual tree.
+	/// </summary>
+	public event EventHandler RebuildCompleted;
+
+	/// <summary>
+	/// Suspends automatic rebuilds triggered by <see cref="NodesSource"/> replacements or source
+	/// collection changes. Every call must be paired with a matching <see cref="EndUpdate"/>.
+	/// Callers can perform multiple mutations to <see cref="NodesSource"/> (or replace it entirely)
+	/// and only a single rebuild will occur once the outermost <see cref="EndUpdate"/> returns.
+	/// </summary>
+	public void BeginUpdate()
+	{
+		_updateSuppressionCount++;
+	}
+
+	/// <summary>
+	/// Ends a batch started by <see cref="BeginUpdate"/>. When the outermost pair completes and
+	/// at least one rebuild was requested while suppressed, a single rebuild is scheduled.
+	/// </summary>
+	public void EndUpdate()
+	{
+		if (_updateSuppressionCount == 0)
+		{
+			return;
+		}
+
+		_updateSuppressionCount--;
+		if (_updateSuppressionCount > 0)
+		{
+			return;
+		}
+
+		if (!_hasPendingRebuild)
+		{
+			return;
+		}
+
+		_hasPendingRebuild = false;
+		RequestRebuildTreeViewItems();
+	}
+
 	public void CollapseAllExceptSelectedItemParents()
 	{
 		var expandedValues = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
@@ -87,7 +149,7 @@ namespace ClownFishUi.CFUserControls.CFTreeViewControl
 			AddParentPaths(expandedValues, selectedItem.Value);
 		}
 
-		foreach (var rootItem in PreviewTreeView.Items.OfType<CFTreeViewItem>())
+		foreach (var rootItem in GetRootTreeViewItems())
 		{
 			ApplyExpansionState(rootItem, expandedValues);
 		}
@@ -95,10 +157,20 @@ namespace ClownFishUi.CFUserControls.CFTreeViewControl
 
 	public void CollapseAll()
 	{
-		foreach (var rootItem in PreviewTreeView.Items.OfType<CFTreeViewItem>())
+		foreach (var rootItem in GetRootTreeViewItems())
 		{
 			CollapseItemAndChildren(rootItem);
 		}
+	}
+
+	private IEnumerable<CFTreeViewItem> GetRootTreeViewItems()
+	{
+		if (PreviewTreeView.ItemsSource is IEnumerable<CFTreeViewItem> typedSource)
+		{
+			return typedSource;
+		}
+
+		return PreviewTreeView.Items.OfType<CFTreeViewItem>();
 	}
 
 	private static void OnIsMultiSelectChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -122,7 +194,7 @@ namespace ClownFishUi.CFUserControls.CFTreeViewControl
 
 		treeView.ResetNodeSubscription();
 		treeView.SubscribeToSource(e.NewValue as ObservableCollection<TreeViewSourceEntry>);
-		treeView.RebuildTreeViewItems();
+		treeView.RequestRebuildTreeViewItems();
 	}
 
 	private static void OnSelectedValuesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -136,6 +208,17 @@ namespace ClownFishUi.CFUserControls.CFTreeViewControl
 		treeView.ResetSelectedValuesSubscription();
 		treeView.SubscribeToSelectedValues(e.NewValue as ObservableCollection<string>);
 		treeView.ApplySelectionFromValues();
+	}
+
+	private static void OnCollapseAllThresholdItemCountChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+	{
+		var treeView = d as CFTreeView;
+		if (treeView == null)
+		{
+			return;
+		}
+
+		treeView.ApplyCollapseAllThreshold();
 	}
 
 	private void OnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -239,14 +322,21 @@ namespace ClownFishUi.CFUserControls.CFTreeViewControl
 		SyncSelectedValuesFromItems();
 	}
 
-	private void RebuildTreeViewItems()
+	private static readonly char[] PathSeparators = new[] { '/' };
+
+	private void RequestRebuildTreeViewItems()
 	{
+		if (_updateSuppressionCount > 0)
+		{
+			_hasPendingRebuild = true;
+			return;
+		}
+
+		var generation = Interlocked.Increment(ref _currentRebuildGeneration);
+
 		var selectedValues = GetSelectedValueSet();
 		var useMultipleSelection = IsMultiSelect && selectedValues.Count > 1;
 		var treeViewItemStyle = PreviewTreeView.TryFindResource("CF.TreeViewItem") as Style;
-
-		PreviewTreeView.Items.Clear();
-		_treeViewItemsByValue.Clear();
 
 		foreach (var item in _selectedTreeViewItems)
 		{
@@ -254,18 +344,97 @@ namespace ClownFishUi.CFUserControls.CFTreeViewControl
 		}
 
 		_selectedTreeViewItems.Clear();
+		_treeViewItemsByValue.Clear();
 
-		if (NodesSource != null)
+		if (NodesSource == null)
 		{
-			foreach (var rootNode in BuildTreeViewNodes(NodesSource))
-			{
-				var treeViewItem = CreateTreeViewItem(rootNode, selectedValues, useMultipleSelection, treeViewItemStyle, _treeViewItemsByValue);
-				PreviewTreeView.Items.Add(treeViewItem);
-				CollectSelectedTreeViewItems(treeViewItem);
-			}
+			PreviewTreeView.ItemsSource = null;
+			PreviewTreeView.Items.Clear();
+			UpdateSelectedTreeViewItems();
+			RebuildCompleted?.Invoke(this, EventArgs.Empty);
+			return;
 		}
 
+		var threshold = CollapseAllThresholdItemCount;
+		var startCollapsed = threshold > 0 && NodesSource.Count > threshold;
+
+		var snapshot = new TreeViewSourceEntry[NodesSource.Count];
+		for (var index = 0; index < snapshot.Length; index++)
+		{
+			var entry = NodesSource[index];
+			snapshot[index] = new TreeViewSourceEntry
+			{
+				Value = entry.Value,
+				Type = entry.Type,
+			};
+		}
+
+		var dispatcher = Dispatcher;
+
+		Task.Run(() =>
+		{
+			var rootNodes = BuildTreeViewNodes(snapshot);
+
+			dispatcher.BeginInvoke(
+				DispatcherPriority.Background,
+				new Action(() =>
+				{
+					if (generation != Interlocked.Read(ref _currentRebuildGeneration))
+					{
+						return;
+					}
+
+					FinishRebuildTreeViewItems(rootNodes, selectedValues, useMultipleSelection, treeViewItemStyle, startCollapsed, snapshot.Length);
+				}));
+		});
+	}
+
+	private void FinishRebuildTreeViewItems(List<TreeViewNode> rootNodes, HashSet<string> selectedValues, bool useMultipleSelection, Style treeViewItemStyle, bool startCollapsed, int sourceEntryCount)
+	{
+		var estimatedItemCount = sourceEntryCount * 2;
+		if (_treeViewItemsByValue.Count == 0 && estimatedItemCount > 0)
+		{
+			// Dictionary<TKey,TValue>.EnsureCapacity is a .NET Core / .NET 5+ API and is not
+			// available on the older framework versions this control needs to stay compatible
+			// with. Reallocating the dictionary with the estimated capacity produces the same
+			// grow-avoidance benefit without depending on the newer API.
+			_treeViewItemsByValue = new Dictionary<string, CFTreeViewItem>(estimatedItemCount, StringComparer.OrdinalIgnoreCase);
+		}
+
+		var rootItems = new List<CFTreeViewItem>(rootNodes.Count);
+		var collectSelections = selectedValues.Count > 0;
+
+		foreach (var rootNode in rootNodes)
+		{
+			var treeViewItem = CreateTreeViewItem(rootNode, selectedValues, useMultipleSelection, treeViewItemStyle, _treeViewItemsByValue, startCollapsed, collectSelections, _selectedTreeViewItems);
+			rootItems.Add(treeViewItem);
+		}
+
+		PreviewTreeView.ItemsSource = null;
+		PreviewTreeView.Items.Clear();
+		PreviewTreeView.ItemsSource = rootItems;
+
 		UpdateSelectedTreeViewItems();
+		RebuildCompleted?.Invoke(this, EventArgs.Empty);
+	}
+
+	private void ApplyCollapseAllThreshold()
+	{
+		var threshold = CollapseAllThresholdItemCount;
+		if (threshold <= 0 || NodesSource == null)
+		{
+			return;
+		}
+
+		if (NodesSource.Count <= threshold)
+		{
+			return;
+		}
+
+		foreach (var rootItem in GetRootTreeViewItems())
+		{
+			CollapseItemAndChildren(rootItem);
+		}
 	}
 
 	private static void AddParentPaths(ISet<string> expandedValues, string value)
@@ -313,93 +482,131 @@ namespace ClownFishUi.CFUserControls.CFTreeViewControl
 	{
 		if (SelectedValues != null && (_hasExternalSelectionState || _isApplyingExternalSelection))
 		{
-			return SelectedValues.ToHashSet(StringComparer.OrdinalIgnoreCase);
+			if (SelectedValues.Count == 0)
+			{
+				return new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+			}
+
+			return new HashSet<string>(SelectedValues, StringComparer.OrdinalIgnoreCase);
 		}
 
-		return _selectedTreeViewItems.Select(item => item.Value).ToHashSet(StringComparer.OrdinalIgnoreCase);
+		if (_selectedTreeViewItems.Count == 0)
+		{
+			return new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+		}
+
+		var result = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+		foreach (var item in _selectedTreeViewItems)
+		{
+			result.Add(item.Value);
+		}
+
+		return result;
 	}
 
-	private static IReadOnlyList<TreeViewNode> BuildTreeViewNodes(IEnumerable<TreeViewSourceEntry> sourceEntries)
+	private static List<TreeViewNode> BuildTreeViewNodes(IList<TreeViewSourceEntry> sourceEntries)
 	{
 		var rootNodes = new List<TreeViewNode>();
+		var rootIndex = new Dictionary<string, TreeViewNode>(StringComparer.OrdinalIgnoreCase);
 
-		foreach (var sourceEntry in sourceEntries)
+		for (var sourceIndex = 0; sourceIndex < sourceEntries.Count; sourceIndex++)
 		{
-			var segments = sourceEntry.Value
-				.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries)
-				.Select(segment => segment.Trim())
-				.Where(segment => segment.Length > 0)
-				.ToArray();
+			var sourceEntry = sourceEntries[sourceIndex];
+			var rawValue = sourceEntry.Value;
+			if (string.IsNullOrEmpty(rawValue))
+			{
+				continue;
+			}
+
+			var segments = rawValue.Split(PathSeparators, StringSplitOptions.RemoveEmptyEntries);
 			if (segments.Length == 0)
 			{
 				continue;
 			}
 
-			ICollection<TreeViewNode> currentNodes = rootNodes;
-			var currentPath = string.Empty;
+			List<TreeViewNode> currentList = rootNodes;
+			Dictionary<string, TreeViewNode> currentIndex = rootIndex;
+			string currentPath = null;
 
 			for (var index = 0; index < segments.Length; index++)
 			{
 				var segment = segments[index];
 				var isLeaf = index == segments.Length - 1;
-				currentPath = string.IsNullOrWhiteSpace(currentPath) ? segment : $"{currentPath}/{segment}";
-				var nodeType = isLeaf ? sourceEntry.Type : "folder";
+				currentPath = currentPath == null ? segment : string.Concat(currentPath, "/", segment);
 
-				var existingNode = currentNodes.FirstOrDefault(node => string.Equals(node.Value, currentPath, StringComparison.OrdinalIgnoreCase));
-				if (existingNode == null)
+				TreeViewNode existingNode;
+				if (!currentIndex.TryGetValue(currentPath, out existingNode))
 				{
+					var nodeType = isLeaf ? sourceEntry.Type : "folder";
 					existingNode = new TreeViewNode
 					{
 						Text = segment,
 						Value = currentPath,
 						Icon = TreeViewIconMap.GetIcon(nodeType),
 					};
-					currentNodes.Add(existingNode);
+					currentList.Add(existingNode);
+					currentIndex.Add(currentPath, existingNode);
 				}
 				else if (isLeaf)
 				{
 					existingNode.Icon = TreeViewIconMap.GetIcon(sourceEntry.Type);
 				}
 
-				currentNodes = existingNode.Children;
+				currentList = existingNode.Children;
+				currentIndex = existingNode.ChildIndex;
 			}
 		}
 
 		return rootNodes;
 	}
 
-	private void CollectSelectedTreeViewItems(CFTreeViewItem treeViewItem)
+	private static CFTreeViewItem CreateTreeViewItem(TreeViewNode treeViewNode, IReadOnlyCollection<string> selectedValues, bool useMultipleSelection, Style treeViewItemStyle, IDictionary<string, CFTreeViewItem> treeViewItemsByValue, bool startCollapsed, bool collectSelections, List<CFTreeViewItem> selectionSink)
 	{
-		if (treeViewItem.IsMultiSelected || treeViewItem.IsSelected)
-		{
-			_selectedTreeViewItems.Add(treeViewItem);
-		}
+		var childCount = treeViewNode.Children.Count;
+		var hasChildren = childCount > 0;
+		var isSelected = collectSelections && selectedValues.Contains(treeViewNode.Value);
+		var isMultiSelected = isSelected && useMultipleSelection;
+		var isSingleSelected = isSelected && !useMultipleSelection;
+		var shouldBeExpanded = !startCollapsed && hasChildren;
 
-		foreach (var childItem in treeViewItem.Items.OfType<CFTreeViewItem>())
-		{
-			CollectSelectedTreeViewItems(childItem);
-		}
-	}
-
-	private static CFTreeViewItem CreateTreeViewItem(TreeViewNode treeViewNode, IReadOnlyCollection<string> selectedValues, bool useMultipleSelection, Style treeViewItemStyle, IDictionary<string, CFTreeViewItem> treeViewItemsByValue)
-	{
-		var isSelected = selectedValues.Contains(treeViewNode.Value);
 		var treeViewItem = new CFTreeViewItem
 		{
 			Icon = treeViewNode.Icon,
 			Text = treeViewNode.Text,
 			Value = treeViewNode.Value,
-			IsExpanded = treeViewNode.Children.Count > 0,
-			IsMultiSelected = isSelected && useMultipleSelection,
-			IsSelected = isSelected && !useMultipleSelection,
 			Style = treeViewItemStyle,
 		};
 
+		if (shouldBeExpanded)
+		{
+			treeViewItem.IsExpanded = true;
+		}
+
+		if (isMultiSelected)
+		{
+			treeViewItem.IsMultiSelected = true;
+		}
+
+		if (isSingleSelected)
+		{
+			treeViewItem.IsSelected = true;
+		}
+
+		if (isSelected)
+		{
+			selectionSink.Add(treeViewItem);
+		}
+
 		treeViewItemsByValue[treeViewNode.Value] = treeViewItem;
 
-		foreach (var childNode in treeViewNode.Children)
+		if (hasChildren)
 		{
-			treeViewItem.Items.Add(CreateTreeViewItem(childNode, selectedValues, useMultipleSelection, treeViewItemStyle, treeViewItemsByValue));
+			var itemsCollection = treeViewItem.Items;
+			for (var childIndex = 0; childIndex < childCount; childIndex++)
+			{
+				var childItem = CreateTreeViewItem(treeViewNode.Children[childIndex], selectedValues, useMultipleSelection, treeViewItemStyle, treeViewItemsByValue, startCollapsed, collectSelections, selectionSink);
+				itemsCollection.Add(childItem);
+			}
 		}
 
 		return treeViewItem;
@@ -451,7 +658,34 @@ namespace ClownFishUi.CFUserControls.CFTreeViewControl
 
 	private void OnSourceCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
 	{
-		RebuildTreeViewItems();
+		// Sources for this control are always full-replace (Clear + N Adds, or a single Reset),
+		// so a single notification burst should coalesce into exactly one rebuild.
+		// In short all calls coming in in the same frame will automatically be batched.
+		// We automatically open a batch on the first change we see and close it on a background-
+		// priority dispatcher tick, which runs after the current burst of CollectionChanged
+		// callbacks but before the next render pass. Any manual BeginUpdate/EndUpdate calls made
+		// by the host still nest correctly through the same suppression counter.
+		if (!_isCoalescingSourceChanges)
+		{
+			_isCoalescingSourceChanges = true;
+			BeginUpdate();
+			Dispatcher.BeginInvoke(
+				DispatcherPriority.Background,
+				new Action(EndCoalescedSourceChangeBatch));
+		}
+
+		RequestRebuildTreeViewItems();
+	}
+
+	private void EndCoalescedSourceChangeBatch()
+	{
+		if (!_isCoalescingSourceChanges)
+		{
+			return;
+		}
+
+		_isCoalescingSourceChanges = false;
+		EndUpdate();
 	}
 
 	private void OnSelectedValuesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
