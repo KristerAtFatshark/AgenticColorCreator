@@ -164,6 +164,12 @@ public partial class MainWindow : Window
 		typeof(MainWindow),
 		new PropertyMetadata(TickPlacement.BottomRight));
 
+	public static readonly DependencyProperty PreviewSliderIsSnapToTickEnabledProperty = DependencyProperty.Register(
+		nameof(PreviewSliderIsSnapToTickEnabled),
+		typeof(bool),
+		typeof(MainWindow),
+		new PropertyMetadata(false));
+
 	public static readonly DependencyProperty SelectedPreviewTreeViewItemsProperty = DependencyProperty.Register(
 		nameof(SelectedPreviewTreeViewItems),
 		typeof(IReadOnlyList<CFTreeViewItem>),
@@ -374,6 +380,12 @@ public partial class MainWindow : Window
 	{
 		get => (TickPlacement)GetValue(PreviewSliderTickPlacementProperty);
 		set => SetValue(PreviewSliderTickPlacementProperty, value);
+	}
+
+	public bool PreviewSliderIsSnapToTickEnabled
+	{
+		get => (bool)GetValue(PreviewSliderIsSnapToTickEnabledProperty);
+		set => SetValue(PreviewSliderIsSnapToTickEnabledProperty, value);
 	}
 
 	public ObservableCollection<string> SelectedPreviewTreeViewValues

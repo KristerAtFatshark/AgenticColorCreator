@@ -623,6 +623,7 @@
 									<RowDefinition Height="Auto" />
 									<RowDefinition Height="Auto" />
 									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
 								</Grid.RowDefinitions>
 								<CheckBox Style="{StaticResource CF.CheckBox}"
 										  HorizontalAlignment="Right"
@@ -638,6 +639,7 @@
 												Step="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewSliderStep}"
 												TickFrequency="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewSliderTickFrequency}"
 												TickPlacement="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewSliderTickPlacement}"
+												IsSnapToTickEnabled="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewSliderIsSnapToTickEnabled}"
 												Decimals="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewSliderDecimals}" />
 								<sliderControls:CFSlider Grid.Row="4"
 												IsEnabled="False"
@@ -647,6 +649,7 @@
 												Step="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewSliderStep}"
 												TickFrequency="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewSliderTickFrequency}"
 												TickPlacement="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewSliderTickPlacement}"
+												IsSnapToTickEnabled="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewSliderIsSnapToTickEnabled}"
 												Decimals="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewSliderDecimals}"
 												Margin="0,2,0,2" />
 								<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="5" Margin="0,8,0,6"
@@ -660,22 +663,19 @@
 										<RowDefinition Height="Auto" />
 										<RowDefinition Height="Auto" />
 										<RowDefinition Height="Auto" />
-										<RowDefinition Height="Auto" />
 									</Grid.RowDefinitions>
 									<Grid.ColumnDefinitions>
 										<ColumnDefinition Width="Auto" />
 										<ColumnDefinition Width="*" />
 									</Grid.ColumnDefinitions>
 
-									<TextBlock Style="{StaticResource CF.TextBlock}" VerticalAlignment="Center" Margin="0,0,6,0" Text="Min" />
-									<floatControls:CFFloat Grid.Column="1"
+									<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="0" VerticalAlignment="Center" Margin="0,0,6,0" Text="Min" />
+									<floatControls:CFFloat Grid.Row="0" Grid.Column="1"
 													Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewSliderMinimum, Mode=TwoWay}"
-													Step="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewSliderSmallChange}"
 													Decimals="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewSliderDecimals}" />
 									<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="1" VerticalAlignment="Center" Margin="0,8,6,0" Text="Max" />
 									<floatControls:CFFloat Grid.Row="1" Grid.Column="1"
 													Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewSliderMaximum, Mode=TwoWay}"
-													Step="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewSliderSmallChange}"
 													Decimals="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewSliderDecimals}" />
 									<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="2" VerticalAlignment="Center" Margin="0,8,6,0" Text="Step" />
 									<intControls:CFInt Grid.Row="2" Grid.Column="1"
@@ -699,6 +699,9 @@
 										<Button Style="{StaticResource CF.Button}" Margin="0,0,6,0" Click="OnSliderTicksTopClick" Content="Top" />
 										<Button Style="{StaticResource CF.Button}" Click="OnSliderTicksBothClick" Content="Both" />
 									</WrapPanel>
+									<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="6" VerticalAlignment="Center" Margin="0,8,6,0" Text="Snap To Tick" />
+									<CheckBox Style="{StaticResource CF.CheckBox}" Grid.Row="6" Grid.Column="1" Margin="0,8,0,0"
+											  IsChecked="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewSliderIsSnapToTickEnabled, Mode=TwoWay}" />
 								</Grid>
 							</Grid>
 						</Border>
