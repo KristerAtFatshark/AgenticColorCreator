@@ -56,8 +56,7 @@ public sealed class CFTreeViewLoadPerformanceTests
 		{
 			try
 			{
-				EnsureApplication();
-
+				WpfTestApplication.Ensure();
 				var treeView = new CFTreeView
 				{
 					CollapseAllThresholdItemCount = collapseThreshold,
@@ -143,34 +142,6 @@ public sealed class CFTreeViewLoadPerformanceTests
 		}
 
 		return entries;
-	}
-
-	private static void EnsureApplication()
-	{
-		if (Application.Current == null)
-		{
-			_ = new Application();
-		}
-
-		const string stylesUri = "pack://application:,,,/AgenticColorCreator.App;component/CFStyles/CFDarkStyles.xaml";
-		var appResources = Application.Current!.Resources;
-		var alreadyMerged = false;
-		foreach (var dict in appResources.MergedDictionaries)
-		{
-			if (dict.Source != null && string.Equals(dict.Source.ToString(), stylesUri, StringComparison.OrdinalIgnoreCase))
-			{
-				alreadyMerged = true;
-				break;
-			}
-		}
-
-		if (!alreadyMerged)
-		{
-			appResources.MergedDictionaries.Add(new ResourceDictionary
-			{
-				Source = new Uri(stylesUri, UriKind.Absolute),
-			});
-		}
 	}
 
 	private static void RunOnStaThread(Action action)

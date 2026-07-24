@@ -26,6 +26,15 @@ public partial class MainWindow : Window
 	public static readonly DependencyProperty PreviewCFCheckBoxValueProperty =
 		DependencyProperty.Register(
 			nameof(PreviewCFCheckBoxValue), typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
+	public static readonly DependencyProperty PreviewCFRadioIsMixedProperty =
+		DependencyProperty.Register(
+			nameof(PreviewCFRadioIsMixed), typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
+	public static readonly DependencyProperty PreviewCFRadioOptionAProperty =
+		DependencyProperty.Register(
+			nameof(PreviewCFRadioOptionA), typeof(bool), typeof(MainWindow), new PropertyMetadata(true));
+	public static readonly DependencyProperty PreviewCFRadioOptionBProperty =
+		DependencyProperty.Register(
+			nameof(PreviewCFRadioOptionB), typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
 	public static readonly DependencyProperty PreviewCFFloatIsMixedProperty =
 		DependencyProperty.Register(
 			nameof(PreviewCFFloatIsMixed), typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
@@ -247,6 +256,24 @@ public partial class MainWindow : Window
 	{
 		get => (bool)GetValue(PreviewCFCheckBoxValueProperty);
 		set => SetValue(PreviewCFCheckBoxValueProperty, value);
+	}
+
+	public bool PreviewCFRadioIsMixed
+	{
+		get => (bool)GetValue(PreviewCFRadioIsMixedProperty);
+		set => SetValue(PreviewCFRadioIsMixedProperty, value);
+	}
+
+	public bool PreviewCFRadioOptionA
+	{
+		get => (bool)GetValue(PreviewCFRadioOptionAProperty);
+		set => SetValue(PreviewCFRadioOptionAProperty, value);
+	}
+
+	public bool PreviewCFRadioOptionB
+	{
+		get => (bool)GetValue(PreviewCFRadioOptionBProperty);
+		set => SetValue(PreviewCFRadioOptionBProperty, value);
 	}
 	public bool PreviewCFFloatIsMixed
 	{

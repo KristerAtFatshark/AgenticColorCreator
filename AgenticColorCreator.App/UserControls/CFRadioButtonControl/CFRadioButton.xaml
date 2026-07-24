@@ -1,0 +1,18 @@
+<UserControl x:Class="AgenticColorCreator.App.UserControls.CFRadioButtonControl.CFRadioButton"
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 mc:Ignorable="d"
+			 d:DesignHeight="24"
+			 d:DesignWidth="160">
+	<Grid>
+		<RadioButton x:Name="InnerRadioButton"
+					 Style="{StaticResource CF.RadioButton}"
+					 IsThreeState="False"
+					 GroupName="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=GroupName}"
+					 Content="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Label}"
+					 Checked="OnInnerChecked"
+					 Unchecked="OnInnerUnchecked" />
+	</Grid>
+</UserControl>

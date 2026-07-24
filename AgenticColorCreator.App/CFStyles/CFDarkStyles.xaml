@@ -578,6 +578,13 @@
 										 MinWidth="6"
 										 MinHeight="6"
 										 Opacity="0" />
+								<Ellipse x:Name="mixedMark"
+										 Stroke="{StaticResource CF.RadioButton.Default.Glyph}"
+										 StrokeThickness="2"
+										 Fill="Transparent"
+										 MinWidth="8"
+										 MinHeight="8"
+										 Opacity="0" />
 							</Grid>
 						</Border>
 
@@ -597,21 +604,26 @@
 						<Trigger Property="IsMouseOver" Value="True">
 							<Setter TargetName="radioButtonBorder" Property="Background" Value="{StaticResource CF.RadioButton.MouseOver.Background}" />
 							<Setter TargetName="optionMark" Property="Fill" Value="{StaticResource CF.RadioButton.Default.Glyph}" />
+							<Setter TargetName="mixedMark" Property="Stroke" Value="{StaticResource CF.RadioButton.Default.Glyph}" />
 						</Trigger>
 						<Trigger Property="IsEnabled" Value="False">
 							<Setter Property="Foreground" Value="{StaticResource CF.RadioButton.Disabled.Foreground}" />
 							<Setter TargetName="radioButtonBorder" Property="Background" Value="{StaticResource CF.RadioButton.Disabled.Background}" />
 							<Setter TargetName="optionMark" Property="Fill" Value="{StaticResource CF.RadioButton.Disabled.Glyph}" />
+							<Setter TargetName="mixedMark" Property="Stroke" Value="{StaticResource CF.RadioButton.Disabled.Glyph}" />
 						</Trigger>
 						<Trigger Property="IsPressed" Value="True">
 							<Setter TargetName="radioButtonBorder" Property="Background" Value="{StaticResource CF.RadioButton.Pressed.Background}" />
 							<Setter TargetName="optionMark" Property="Fill" Value="{StaticResource CF.RadioButton.Default.Glyph}" />
+							<Setter TargetName="mixedMark" Property="Stroke" Value="{StaticResource CF.RadioButton.Default.Glyph}" />
 						</Trigger>
 						<Trigger Property="IsChecked" Value="True">
 							<Setter TargetName="optionMark" Property="Opacity" Value="1" />
+							<Setter TargetName="mixedMark" Property="Opacity" Value="0" />
 						</Trigger>
 						<Trigger Property="IsChecked" Value="{x:Null}">
-							<Setter TargetName="optionMark" Property="Opacity" Value="0.56" />
+							<Setter TargetName="optionMark" Property="Opacity" Value="0" />
+							<Setter TargetName="mixedMark" Property="Opacity" Value="1" />
 						</Trigger>
 					</ControlTemplate.Triggers>
 				</ControlTemplate>
