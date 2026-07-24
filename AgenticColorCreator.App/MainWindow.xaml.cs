@@ -35,6 +35,12 @@ public partial class MainWindow : Window
 	public static readonly DependencyProperty PreviewCFRadioOptionBProperty =
 		DependencyProperty.Register(
 			nameof(PreviewCFRadioOptionB), typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
+	public static readonly DependencyProperty PreviewCFComboBoxIsMixedProperty =
+		DependencyProperty.Register(
+			nameof(PreviewCFComboBoxIsMixed), typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
+	public static readonly DependencyProperty PreviewCFComboBoxSelectedIndexProperty =
+		DependencyProperty.Register(
+			nameof(PreviewCFComboBoxSelectedIndex), typeof(int), typeof(MainWindow), new PropertyMetadata(0));
 	public static readonly DependencyProperty PreviewCFFloatIsMixedProperty =
 		DependencyProperty.Register(
 			nameof(PreviewCFFloatIsMixed), typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
@@ -274,6 +280,18 @@ public partial class MainWindow : Window
 	{
 		get => (bool)GetValue(PreviewCFRadioOptionBProperty);
 		set => SetValue(PreviewCFRadioOptionBProperty, value);
+	}
+
+	public bool PreviewCFComboBoxIsMixed
+	{
+		get => (bool)GetValue(PreviewCFComboBoxIsMixedProperty);
+		set => SetValue(PreviewCFComboBoxIsMixedProperty, value);
+	}
+
+	public int PreviewCFComboBoxSelectedIndex
+	{
+		get => (int)GetValue(PreviewCFComboBoxSelectedIndexProperty);
+		set => SetValue(PreviewCFComboBoxSelectedIndexProperty, value);
 	}
 	public bool PreviewCFFloatIsMixed
 	{

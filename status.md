@@ -5,7 +5,7 @@
 - The app can create, load, edit, validate, and save `agentic_colors.md` markdown files.
 - The main UI uses `Colors` and `UI Preview` tabs for editor work and themed control previewing.
 - Shared theme resources live in `AgenticColorCreator.App\CFStyles\CFDarkStyles.xaml` and use explicit `CF.` brush keys plus keyed `CF...` styles/templates.
-- Custom previewed controls currently include `CFTextBox`, `CFInt`, `CFFloat`, `CFSlider`, `CFColor`, `CFHdrColor`, `CFCheckBox`, `CFRadioButton`, and `CFTreeView`.
+- Custom previewed controls currently include `CFTextBox`, `CFInt`, `CFFloat`, `CFSlider`, `CFColor`, `CFHdrColor`, `CFCheckBox`, `CFRadioButton`, `CFComboBox`, and `CFTreeView`.
 - `CFTextBox` now supports delayed external value commits plus immediate validation feedback while typing.
 - `CFTextBox` now also commits valid pending edits immediately on focus loss, so tab-out and click-outside behave the same as Enter for textbox-based controls.
 - `CFInt` now uses `CFTextBox` as its delayed-commit text layer and mixed-state implementation, applying actual integer validation through that shared control.
@@ -79,8 +79,7 @@
 - `CFColor` still binds through hex `Value`, and now also exposes public RGB/HSV conversion helpers plus XAML converters so code-behind and bindings can work with RGB(A) and HSV(A) representations.
 - `Color\agentic_colors.md` remains the tracked UI color source, with the latest recorded source timestamp now `2026-05-26 12:42:52`.
 
-## Active Issues
-- Rebuilding the full debug solution can fail while another process is locking `AgenticColorCreator.Core.dll`.
+## Active Issues- Rebuilding the full debug solution can fail while another process is locking `AgenticColorCreator.Core.dll`.
 - The refactored `CFTextBox`, `CFInt`, `CFFloat`, `CFColor`, and upgraded color-picker behavior have been build-verified but still need manual visual confirmation in the running UI.
 - `CFTextBox` validation currently uses a direct red foreground override for invalid text, so final visual approval should confirm that this matches the intended theme.
 - Descriptions are still saved as a single canonical markdown line even if entered over multiple lines in the UI.
@@ -93,6 +92,8 @@
 - Use category expanders to manage larger color sets until search/filtering exists.
 
 ## Recent Important Changes
+- Added a new `CFComboBox` user control (`AgenticColorCreator.App\UserControls\CFComboBoxControl\CFComboBox.xaml(.cs)`) that wraps a `ComboBox` styled with the existing `CF.ComboBox` / `CF.ComboBoxTemplate` / `CF.ComboPopupItemStyle` and adds a mixed state. API: `ItemsSource` (`IEnumerable`), `SelectedItem` (object, two-way), `SelectedIndex` (int, two-way), `DisplayMemberPath` (string), and `IsMixedState` (bool, two-way). Mixed state uses the `CFColor` visual pattern: a translucent `– Mixed –` overlay drawn over the selection display, made `IsHitTestVisible="False"` so the drop-down still opens underneath it. Host-vs-user selection changes are distinguished with an internal `_isSyncingSelection` guard: a user pick commits the value and clears `IsMixedState`, while a host-driven `SelectedItem`/`SelectedIndex` change updates the display but leaves mixed set. Added a `CFComboBox` preview card in `MainWindow` (enabled + disabled instances with a shared 3-item `x:Array` source, a `Mixed State` toggle bound to new `MainWindow` DPs `PreviewCFComboBoxIsMixed` / `PreviewCFComboBoxSelectedIndex`, and a `SelectedIndex:` readout). Covered by `AgenticColorCreator.Tests\CFComboBoxTests.cs` (4 STA-thread tests: overlay does not change selection, external selection keeps mixed, user selection clears mixed, `SelectedItem` round-trips through the wrapper); all pass. Added `CFComboBoxControl\README.md`.
+- Diagnosed the reported `System.InvalidCastException` (thrown in pairs) that appears in the debugger when selecting a `ComboBox` item. Root cause: it is a WPF framework-internal, first-chance exception - `Unable to cast object of type 'System.Windows.Automation.Peers.ComboBoxAutomationPeer' to type 'System.Windows.Automation.Provider.IScrollProvider'` - raised on the automation "scroll selected item into view" path. It fires only when a UI Automation client is attached (screen reader, Narrator, or Visual Studio's accessibility / Live Visual Tree), and WPF catches it internally, so selection still works. Verified with an STA automation-peer repro that a completely default, unstyled `ComboBox` throws the identical two casts, so it is unrelated to the `CF.ComboBox` styles/template/colors or any recent change. No code fix is warranted; the speculative style/template edits tried during investigation were reverted. To stop the debugger from breaking on it, untick `System.InvalidCastException` in VS Exception Settings (or ignore it - it is harmless).
 - Added reusable delayed-commit `CFTextBox` behavior so the externally bound `Value` commits on Enter, on focus loss, or after 1000ms idle while the control still has focus.
 - Added `AgenticColorCreator.Core\Services\ColorSpaceConverter.cs` plus `ColorSpaceConverterTests.cs` so HSV/RGB color conversion used by the picker is covered by unit tests.
 - Extended `CFTextBox` validation with `FloatNumber` mode plus a `DecimalPlaces` property so shared delayed-commit text handling can validate invariant float text with a configurable decimal-place limit.
