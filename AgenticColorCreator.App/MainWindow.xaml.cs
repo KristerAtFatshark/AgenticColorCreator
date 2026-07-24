@@ -20,6 +20,12 @@ public partial class MainWindow : Window
 	public static readonly DependencyProperty PreviewCFIntIsMixedProperty =
 		DependencyProperty.Register(
 			nameof(PreviewCFIntIsMixed), typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
+	public static readonly DependencyProperty PreviewCFCheckBoxIsMixedProperty =
+		DependencyProperty.Register(
+			nameof(PreviewCFCheckBoxIsMixed), typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
+	public static readonly DependencyProperty PreviewCFCheckBoxValueProperty =
+		DependencyProperty.Register(
+			nameof(PreviewCFCheckBoxValue), typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
 	public static readonly DependencyProperty PreviewCFFloatIsMixedProperty =
 		DependencyProperty.Register(
 			nameof(PreviewCFFloatIsMixed), typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
@@ -229,6 +235,18 @@ public partial class MainWindow : Window
 	{
 		get => (bool)GetValue(PreviewCFIntIsMixedProperty);
 		set => SetValue(PreviewCFIntIsMixedProperty, value);
+	}
+
+	public bool PreviewCFCheckBoxIsMixed
+	{
+		get => (bool)GetValue(PreviewCFCheckBoxIsMixedProperty);
+		set => SetValue(PreviewCFCheckBoxIsMixedProperty, value);
+	}
+
+	public bool PreviewCFCheckBoxValue
+	{
+		get => (bool)GetValue(PreviewCFCheckBoxValueProperty);
+		set => SetValue(PreviewCFCheckBoxValueProperty, value);
 	}
 	public bool PreviewCFFloatIsMixed
 	{
