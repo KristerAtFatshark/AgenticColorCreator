@@ -156,9 +156,9 @@
 	<ValueConverters:StringToResourceConverter x:Key="StringToResourceConverter"/>
 
 	<Style
-        x:Key="CF.IconTextBlock"
-        BasedOn="{x:Null}"
-        TargetType="{x:Type TextBlock}">
+		x:Key="CF.IconTextBlock"
+		BasedOn="{x:Null}"
+		TargetType="{x:Type TextBlock}">
 		<Setter Property="FontFamily" Value="/AgenticColorCreator.App;component/Shared/Fonts/#fs-editor-icons" />
 		<Setter Property="VerticalAlignment" Value="Center" />
 		<Setter Property="TextAlignment" Value="Center" />
@@ -750,6 +750,7 @@
 								  Grid.Row="0"
 								  Grid.Column="0"
 								  Width="16"
+								  MinWidth="16"
 								  Height="16"
 								  Margin="0,0,2,0"
 								  Background="{StaticResource CF.TreeView.Default.GlyphBackground}"
