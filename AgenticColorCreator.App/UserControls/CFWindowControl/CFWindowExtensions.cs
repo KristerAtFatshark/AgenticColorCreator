@@ -15,7 +15,7 @@ public static class CFWindowExtensions
 
 	private static readonly ConditionalWeakTable<Window, WindowSetupData> SetupData = new();
 
-	public static void StingrayWPFSetup(this Window window)
+	public static void ConfigureCFWindowBehavior(this Window window)
 	{
 		if (SetupData.TryGetValue(window, out _))
 		{

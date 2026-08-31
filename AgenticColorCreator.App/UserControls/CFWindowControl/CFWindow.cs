@@ -18,7 +18,7 @@ public class CFWindow : Window
 
 	public CFWindow()
 	{
-		this.StingrayWPFSetup();
+		this.ConfigureCFWindowBehavior();
 	}
 
 	public string? TitleBarIconGlyph

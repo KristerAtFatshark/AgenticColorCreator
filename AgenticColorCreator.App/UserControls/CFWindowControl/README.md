@@ -47,10 +47,10 @@ the window.
 
 ## Window Setup
 
-The `CFWindow` constructor calls `StingrayWPFSetup()` automatically. The public extension is
+The `CFWindow` constructor calls `ConfigureCFWindowBehavior()` automatically. The public extension is
 idempotent, so calling it again does not add duplicate hooks or command bindings.
 
-`StingrayWPFSetup()`:
+`ConfigureCFWindowBehavior()`:
 
 - Registers handlers for `SystemCommands.CloseWindowCommand`, `MinimizeWindowCommand`,
   `MaximizeWindowCommand`, and `RestoreWindowCommand`.

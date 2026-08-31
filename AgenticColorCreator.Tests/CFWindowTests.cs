@@ -60,7 +60,7 @@ public sealed class CFWindowTests
 			WpfTestApplication.Ensure();
 			var window = new CFWindow();
 
-			window.StingrayWPFSetup();
+			window.ConfigureCFWindowBehavior();
 
 			Assert.Equal(4, window.CommandBindings.Count);
 			Assert.Contains(window.CommandBindings.Cast<CommandBinding>(), binding => binding.Command == SystemCommands.CloseWindowCommand);
