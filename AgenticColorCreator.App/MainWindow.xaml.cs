@@ -8,6 +8,7 @@ using AgenticColorCreator.App.UserControls.CFColorControl;
 using AgenticColorCreator.App.UserControls.CFHdrColorControl;
 using ClownFishUi.CFUserControls.CFTreeViewControl;
 using AgenticColorCreator.App.ViewModels;
+using AgenticColorCreator.App.Dialogs;
 
 namespace AgenticColorCreator.App;
 
@@ -577,6 +578,12 @@ public partial class MainWindow : Window
 	private void OnSelectFirstTreeViewItemClick(object sender, RoutedEventArgs e)
 	{
 		PreviewTreeViewControl.SelectFirstItemAndFocus();
+	}
+
+	private void OnOpenWindowPreviewClick(object sender, RoutedEventArgs e)
+	{
+		var preview = new CFWindowPreview();
+		preview.ShowDialog();
 	}
 
 	private void OnSliderTicksNoneClick(object sender, RoutedEventArgs e)

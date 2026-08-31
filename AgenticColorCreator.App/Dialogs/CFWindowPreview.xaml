@@ -1,0 +1,33 @@
+<windowControls:CFWindow x:Class="AgenticColorCreator.App.Dialogs.CFWindowPreview"
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:windowControls="clr-namespace:AgenticColorCreator.App.UserControls.CFWindowControl"
+		Title="Custom Window Preview"
+		TitleBarIconGlyph="{StaticResource icon-app_level_editor_icon}"
+		Style="{StaticResource CF.CustomWindow}"
+		Width="640"
+		Height="420"
+		MinWidth="420"
+		MinHeight="280"
+		WindowStartupLocation="CenterOwner">
+	<Grid Margin="24">
+		<StackPanel VerticalAlignment="Center">
+			<TextBlock Style="{StaticResource CF.TextBlock}"
+					   HorizontalAlignment="Center"
+					   FontSize="24"
+					   FontWeight="SemiBold"
+					   Text="CFWindow" />
+			<TextBlock Style="{StaticResource CF.TextBlock}"
+					   MaxWidth="440"
+					   Margin="0,12,0,20"
+					   HorizontalAlignment="Center"
+					   TextAlignment="Center"
+					   TextWrapping="Wrap"
+					   Text="This example uses fully custom WPF chrome while retaining native resizing, dragging, minimizing, maximizing, restoring, and closing." />
+			<Button Style="{StaticResource CF.Button}"
+					HorizontalAlignment="Center"
+					Click="OnCloseClick"
+					Content="Close Example" />
+		</StackPanel>
+	</Grid>
+</windowControls:CFWindow>

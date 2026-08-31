@@ -569,3 +569,21 @@
 ### Tooltip / Border Default
 - value: #FF4C4C4C
 - description:
+
+## Category: Window
+
+### Window / Text Default
+- value: #FFC8C8C8
+- description:
+
+### Window / Icon Default
+- value: #FFC8C8C8
+- description:
+
+### Window / Background Default
+- value: #FF202020
+- description:
+
+### Window / Icon MouseOver
+- value: #FFFFFFFF
+- description:

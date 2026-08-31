@@ -1,13 +1,18 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 					xmlns:ValueConverters="clr-namespace:ClownFishUi.Converters"
-					xmlns:local="clr-namespace:ClownFishUi.CFUserControls.CFTreeViewControl">
+					xmlns:local="clr-namespace:ClownFishUi.CFUserControls.CFTreeViewControl"
+					xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
+					xmlns:windowControls="clr-namespace:AgenticColorCreator.App.UserControls.CFWindowControl">
 
 	<ResourceDictionary.MergedDictionaries>
 		<ResourceDictionary Source="/AgenticColorCreator.App;component/Shared/Styles/EditorIconGlyphs.xaml" />
 	</ResourceDictionary.MergedDictionaries>
 
-	<SolidColorBrush x:Key="CF.Window.Default.Background" Color="#FF282828" />
+	<SolidColorBrush x:Key="CF.Window.Default.Background" Color="#FF202020" />
+	<SolidColorBrush x:Key="CF.Window.Default.Foreground" Color="#FFC8C8C8" />
+	<SolidColorBrush x:Key="CF.Window.Default.Icon" Color="#FFC8C8C8" />
+	<SolidColorBrush x:Key="CF.Window.MouseOver.Icon" Color="#FFFFFFFF" />
 	<SolidColorBrush x:Key="CF.Panel.Default.Background" Color="#FF333333" />
 	<SolidColorBrush x:Key="CF.Popup.Default.Background" Color="#FF4C4C4C" />
 	<SolidColorBrush x:Key="CF.Border.Default.Border" Color="#FF292929" />
@@ -168,7 +173,134 @@
 
 	<Style x:Key="CF.Window" TargetType="Window">
 		<Setter Property="Background" Value="{StaticResource CF.Window.Default.Background}" />
-		<Setter Property="Foreground" Value="{StaticResource CF.Text.Default.Foreground}" />
+		<Setter Property="Foreground" Value="{StaticResource CF.Window.Default.Foreground}" />
+	</Style>
+
+	<Style x:Key="CF.WindowCaptionButton" TargetType="Button">
+		<Setter Property="Width" Value="46" />
+		<Setter Property="Height" Value="36" />
+		<Setter Property="Padding" Value="0" />
+		<Setter Property="Background" Value="Transparent" />
+		<Setter Property="BorderThickness" Value="0" />
+		<Setter Property="Foreground" Value="{StaticResource CF.Window.Default.Icon}" />
+		<Setter Property="shell:WindowChrome.IsHitTestVisibleInChrome" Value="True" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="Button">
+					<Border x:Name="CaptionButtonBackground" Background="{TemplateBinding Background}">
+						<ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+					</Border>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsMouseOver" Value="True">
+							<Setter Property="Foreground" Value="{StaticResource CF.Window.MouseOver.Icon}" />
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style x:Key="CF.CustomWindow" TargetType="{x:Type windowControls:CFWindow}">
+		<Setter Property="Background" Value="{StaticResource CF.Window.Default.Background}" />
+		<Setter Property="Foreground" Value="{StaticResource CF.Window.Default.Foreground}" />
+		<Setter Property="WindowStyle" Value="None" />
+		<Setter Property="ResizeMode" Value="CanResize" />
+		<Setter Property="shell:WindowChrome.WindowChrome">
+			<Setter.Value>
+				<shell:WindowChrome CaptionHeight="36"
+								CornerRadius="0"
+								GlassFrameThickness="0"
+								ResizeBorderThickness="6"
+								UseAeroCaptionButtons="False" />
+			</Setter.Value>
+		</Setter>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type windowControls:CFWindow}">
+					<Border Background="{TemplateBinding Background}">
+						<Grid>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="36" />
+								<RowDefinition Height="*" />
+							</Grid.RowDefinitions>
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="*" />
+									<ColumnDefinition Width="Auto" />
+								</Grid.ColumnDefinitions>
+								<StackPanel Margin="12,0,8,0" VerticalAlignment="Center" Orientation="Horizontal">
+									<TextBlock x:Name="WindowGlyphIcon"
+											   Style="{StaticResource CF.IconTextBlock}"
+											   Margin="0,0,8,0"
+											   Foreground="{StaticResource CF.Window.Default.Icon}"
+											   Text="{TemplateBinding TitleBarIconGlyph}" />
+									<Image x:Name="WindowIcon" Width="16" Height="16" Margin="0,0,8,0" Source="{TemplateBinding Icon}" />
+									<TextBlock VerticalAlignment="Center"
+											   Foreground="{StaticResource CF.Window.Default.Foreground}"
+											   Text="{TemplateBinding Title}" />
+								</StackPanel>
+								<StackPanel Grid.Column="1" Orientation="Horizontal">
+									<Button x:Name="PART_MinimizeButton"
+											Style="{StaticResource CF.WindowCaptionButton}"
+											Command="{x:Static SystemCommands.MinimizeWindowCommand}"
+											ToolTip="Minimize">
+										<TextBlock Style="{StaticResource CF.IconTextBlock}" FontSize="12" Text="{StaticResource icon-minimize_window}" />
+									</Button>
+									<Button x:Name="PART_MaximizeButton"
+											Style="{StaticResource CF.WindowCaptionButton}"
+											Command="{x:Static SystemCommands.MaximizeWindowCommand}"
+											ToolTip="Maximize">
+										<TextBlock Style="{StaticResource CF.IconTextBlock}" FontSize="12" Text="{StaticResource icon-maximize_window}" />
+									</Button>
+									<Button x:Name="PART_RestoreButton"
+											Style="{StaticResource CF.WindowCaptionButton}"
+											Command="{x:Static SystemCommands.RestoreWindowCommand}"
+											ToolTip="Restore"
+											Visibility="Collapsed">
+										<TextBlock Style="{StaticResource CF.IconTextBlock}" FontSize="12" Text="{StaticResource icon-restore_window}" />
+									</Button>
+									<Button x:Name="PART_CloseButton"
+											Style="{StaticResource CF.WindowCaptionButton}"
+											Command="{x:Static SystemCommands.CloseWindowCommand}"
+											ToolTip="Close">
+										<TextBlock Style="{StaticResource CF.IconTextBlock}" FontSize="12" Text="{StaticResource icon-close_window}" />
+									</Button>
+								</StackPanel>
+							</Grid>
+							<AdornerDecorator Grid.Row="1">
+								<ContentPresenter Content="{TemplateBinding Content}"
+											  ContentTemplate="{TemplateBinding ContentTemplate}"
+											  ContentStringFormat="{TemplateBinding ContentStringFormat}" />
+							</AdornerDecorator>
+						</Grid>
+					</Border>
+					<ControlTemplate.Triggers>
+						<Trigger Property="TitleBarIconGlyph" Value="{x:Null}">
+							<Setter TargetName="WindowGlyphIcon" Property="Visibility" Value="Collapsed" />
+						</Trigger>
+						<Trigger Property="TitleBarIconGlyph" Value="">
+							<Setter TargetName="WindowGlyphIcon" Property="Visibility" Value="Collapsed" />
+						</Trigger>
+						<Trigger Property="Icon" Value="{x:Null}">
+							<Setter TargetName="WindowIcon" Property="Visibility" Value="Collapsed" />
+						</Trigger>
+						<Trigger Property="WindowState" Value="Maximized">
+							<Setter TargetName="PART_MaximizeButton" Property="Visibility" Value="Collapsed" />
+							<Setter TargetName="PART_RestoreButton" Property="Visibility" Value="Visible" />
+						</Trigger>
+						<Trigger Property="ResizeMode" Value="CanMinimize">
+							<Setter TargetName="PART_MaximizeButton" Property="Visibility" Value="Collapsed" />
+							<Setter TargetName="PART_RestoreButton" Property="Visibility" Value="Collapsed" />
+						</Trigger>
+						<Trigger Property="ResizeMode" Value="NoResize">
+							<Setter TargetName="PART_MinimizeButton" Property="Visibility" Value="Collapsed" />
+							<Setter TargetName="PART_MaximizeButton" Property="Visibility" Value="Collapsed" />
+							<Setter TargetName="PART_RestoreButton" Property="Visibility" Value="Collapsed" />
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
 	</Style>
 
 	<Style x:Key="CF.GroupBox" TargetType="GroupBox">
