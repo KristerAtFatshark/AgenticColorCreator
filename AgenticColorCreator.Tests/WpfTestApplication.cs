@@ -20,7 +20,10 @@ internal static class WpfTestApplication
 		{
 			if (Application.Current == null)
 			{
-				_ = new Application();
+				_ = new Application
+				{
+					ShutdownMode = ShutdownMode.OnExplicitShutdown,
+				};
 			}
 
 			var appResources = Application.Current!.Resources;

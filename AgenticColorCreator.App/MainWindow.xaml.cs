@@ -580,6 +580,29 @@ public partial class MainWindow : Window
 		PreviewTreeViewControl.SelectFirstItemAndFocus();
 	}
 
+	private void OnCollapseCFListTreeViewToSelectedParentsClick(object sender, RoutedEventArgs e)
+	{
+		PreviewCFListTreeViewControl.CollapseAllExceptSelectedItemParents();
+	}
+
+	private void OnCollapseCFListTreeViewAllClick(object sender, RoutedEventArgs e)
+	{
+		PreviewCFListTreeViewControl.CollapseAll();
+	}
+
+	private void OnSelectFirstCFListTreeViewItemClick(object sender, RoutedEventArgs e)
+	{
+		PreviewCFListTreeViewControl.SelectFirstItemAndFocus();
+	}
+
+	private void OnClearCFListTreeViewFilterClick(object sender, RoutedEventArgs e)
+	{
+		if (DataContext is MainWindowViewModel viewModel)
+		{
+			viewModel.PreviewCFListTreeFilterText = string.Empty;
+		}
+	}
+
 	private void OnOpenWindowPreviewClick(object sender, RoutedEventArgs e)
 	{
 		var preview = new CFWindowPreview();

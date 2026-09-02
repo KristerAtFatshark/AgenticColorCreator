@@ -1,9 +1,11 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Windows.Input;
+using System.Windows.Data;
 using AgenticColorCreator.App.Commands;
 using AgenticColorCreator.App.Dialogs;
 using AgenticColorCreator.App.Services;
@@ -15,6 +17,15 @@ namespace AgenticColorCreator.App.ViewModels;
 
 public sealed class MainWindowViewModel : ViewModelBase
 {
+	private static readonly string[] PreviewCFListTreeResourceTypes =
+	{
+		"level",
+		"unit",
+		"material",
+		"texture",
+		"item",
+	};
+
 	private readonly AgenticColorsMarkdownSerializer _serializer;
 	private readonly IFileDialogService _fileDialogService;
 	private readonly IMessageBoxService _messageBoxService;
@@ -25,6 +36,11 @@ public sealed class MainWindowViewModel : ViewModelBase
 	private bool _isDirty;
 	private int _previewTreeStressEntryCount = 200;
 	private ObservableCollection<TreeViewSourceEntry> _previewTreeViewNodes = new ObservableCollection<TreeViewSourceEntry>();
+	private IReadOnlyList<PreviewCFListTreeItem> _previewCFListTreeSourceItems = Array.Empty<PreviewCFListTreeItem>();
+	private ListCollectionView? _previewCFListTreeMatchedItems;
+	private string _previewCFListTreeFilterText = string.Empty;
+	private int _previewCFListTreeStressEntryCount = 200;
+	private int _previewCFListTreeCollapseAllThreshold = 100;
 
 	public MainWindowViewModel(
 		AgenticColorsMarkdownSerializer serializer,
@@ -39,6 +55,8 @@ public sealed class MainWindowViewModel : ViewModelBase
 
 		Categories = new ObservableCollection<CategoryViewModel>();
 		_previewTreeViewNodes = CreatePreviewTreeViewNodesCollection(_previewTreeStressEntryCount);
+		RebuildPreviewCFListTreeItems();
+		PreviewCFListTreeSelectedItems.CollectionChanged += (_, _) => OnPropertyChanged(nameof(PreviewCFListTreeSelectedText));
 		ValidationErrors = new ObservableCollection<string>();
 
 		NewDocumentCommand = new RelayCommand(NewDocument);
@@ -89,6 +107,55 @@ public sealed class MainWindowViewModel : ViewModelBase
 	public ICommand SelectPreviewPrimaryAndAccentCommand { get; }
 
 	public ObservableCollection<string> PreviewSelectedTreeViewValues { get; } = [];
+
+	public ObservableCollection<object> PreviewCFListTreeSelectedItems { get; } = [];
+
+	public IReadOnlyList<PreviewCFListTreeItem> PreviewCFListTreeSourceItems
+	{
+		get => _previewCFListTreeSourceItems;
+		private set => SetProperty(ref _previewCFListTreeSourceItems, value);
+	}
+
+	public ListCollectionView? PreviewCFListTreeMatchedItems
+	{
+		get => _previewCFListTreeMatchedItems;
+		private set => SetProperty(ref _previewCFListTreeMatchedItems, value);
+	}
+
+	public string PreviewCFListTreeFilterText
+	{
+		get => _previewCFListTreeFilterText;
+		set
+		{
+			if (SetProperty(ref _previewCFListTreeFilterText, value ?? string.Empty))
+			{
+				RefreshPreviewCFListTreeFilter();
+			}
+		}
+	}
+
+	public int PreviewCFListTreeStressEntryCount
+	{
+		get => _previewCFListTreeStressEntryCount;
+		set
+		{
+			var clamped = Math.Max(0, value);
+			if (SetProperty(ref _previewCFListTreeStressEntryCount, clamped))
+			{
+				RebuildPreviewCFListTreeItems();
+			}
+		}
+	}
+
+	public int PreviewCFListTreeCollapseAllThreshold
+	{
+		get => _previewCFListTreeCollapseAllThreshold;
+		set => SetProperty(ref _previewCFListTreeCollapseAllThreshold, Math.Max(0, value));
+	}
+
+	public string PreviewCFListTreeSelectedText => PreviewCFListTreeSelectedItems.Count == 0
+		? "Selected: none"
+		: "Selected: " + string.Join(", ", PreviewCFListTreeSelectedItems.Cast<PreviewCFListTreeItem>().Select(item => item.ResourceName + "." + item.ResourceType));
 
 	public string Title
 	{
@@ -338,6 +405,62 @@ public sealed class MainWindowViewModel : ViewModelBase
 		}
 
 		return new ObservableCollection<TreeViewSourceEntry>(entries);
+	}
+
+	private void RebuildPreviewCFListTreeItems()
+	{
+		var items = new List<PreviewCFListTreeItem>(15 + PreviewCFListTreeStressEntryCount)
+		{
+			new PreviewCFListTreeItem("global_settings", "config", null),
+			new PreviewCFListTreeItem("cryptic_color_decals", "level", "content/debug/cryptic_colors"),
+			new PreviewCFListTreeItem("cryptic_color_decals", "unit", "content/debug/cryptic_colors"),
+			new PreviewCFListTreeItem("cryptic_color_wall", "material", "content/debug/cryptic_colors/materials"),
+			new PreviewCFListTreeItem("cryptic_color_wall_d", "texture", "content/debug/cryptic_colors/textures"),
+			new PreviewCFListTreeItem("cryptic_color_lighting", "shading_environment", "content/debug/cryptic_colors/lighting"),
+			new PreviewCFListTreeItem("cryptic_color_sparks", "particles", "content/debug/cryptic_colors/effects"),
+			new PreviewCFListTreeItem("cryptic_color_spin", "animation", "content/debug/cryptic_colors/animation"),
+			new PreviewCFListTreeItem("cryptic_color_state", "state_machine", "content/debug/cryptic_colors/logic"),
+			new PreviewCFListTreeItem("cryptic_color_template", "template_definition", "content/debug/cryptic_colors/templates"),
+			new PreviewCFListTreeItem("cryptic_color_sword", "item", "content/debug/cryptic_colors/items"),
+			new PreviewCFListTreeItem("cryptic_colors", "wwise_bank", "content/debug/cryptic_colors/audio"),
+			new PreviewCFListTreeItem("cryptic_color_hit", "wwise_event", "content/debug/cryptic_colors/audio/events"),
+			new PreviewCFListTreeItem("hero", "unit", "content/characters/heroes"),
+			new PreviewCFListTreeItem("forest", "level", "content/levels"),
+		};
+
+		var random = new Random(24680);
+		var roots = new[] { "Assets", "Library", "Project", "Themes" };
+		var branches = new[] { "Core", "Editor", "Preview", "Runtime", "Shared" };
+		for (var index = 0; index < PreviewCFListTreeStressEntryCount; index++)
+		{
+			var folder = roots[random.Next(roots.Length)] + "/" + branches[random.Next(branches.Length)] + "-" + random.Next(1, 8);
+			var resourceName = $"generated_resource_{index + 1:0000}";
+			var resourceType = PreviewCFListTreeResourceTypes[index % PreviewCFListTreeResourceTypes.Length];
+			items.Add(new PreviewCFListTreeItem(resourceName, resourceType, folder));
+		}
+
+		PreviewCFListTreeSourceItems = items;
+		PreviewCFListTreeSelectedItems.Clear();
+		RefreshPreviewCFListTreeFilter();
+	}
+
+	private void RefreshPreviewCFListTreeFilter()
+	{
+		if (string.IsNullOrWhiteSpace(PreviewCFListTreeFilterText))
+		{
+			PreviewCFListTreeMatchedItems = null;
+			return;
+		}
+
+		var filterText = PreviewCFListTreeFilterText.Trim();
+		var view = new ListCollectionView((IList)PreviewCFListTreeSourceItems)
+		{
+			Filter = value => value is PreviewCFListTreeItem item
+				&& (item.ResourceName.Contains(filterText, StringComparison.OrdinalIgnoreCase)
+					|| item.ResourceType.Contains(filterText, StringComparison.OrdinalIgnoreCase)
+					|| (item.TreeFolderPath?.Contains(filterText, StringComparison.OrdinalIgnoreCase) ?? false)),
+		};
+		PreviewCFListTreeMatchedItems = view;
 	}
 
 	private void RebuildPreviewTreeViewNodes()

@@ -1025,6 +1025,87 @@
 		</Setter>
 	</Style>
 
+	<Style x:Key="CF.CFListTreeViewItem" TargetType="ListViewItem">
+		<Setter Property="Background" Value="{StaticResource CF.TreeViewItem.Default.Background}" />
+		<Setter Property="Foreground" Value="{StaticResource CF.TreeViewItem.Default.Text}" />
+		<Setter Property="BorderBrush" Value="{StaticResource CF.TreeViewItem.Default.Border}" />
+		<Setter Property="BorderThickness" Value="1" />
+		<Setter Property="HorizontalContentAlignment" Value="Stretch" />
+		<Setter Property="VerticalContentAlignment" Value="Center" />
+		<Setter Property="Padding" Value="2,1" />
+		<Setter Property="Focusable" Value="True" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="ListViewItem">
+					<Border x:Name="RowBorder"
+							Background="{TemplateBinding Background}"
+							BorderBrush="{TemplateBinding BorderBrush}"
+							BorderThickness="{TemplateBinding BorderThickness}"
+							Padding="{TemplateBinding Padding}">
+						<ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+										  VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+					</Border>
+					<ControlTemplate.Triggers>
+						<DataTrigger Binding="{Binding IsSelected}" Value="True">
+							<Setter TargetName="RowBorder" Property="Background" Value="{StaticResource CF.TreeViewItem.Selected.Background}" />
+							<Setter TargetName="RowBorder" Property="BorderBrush" Value="{StaticResource CF.TreeViewItem.Selected.Border}" />
+							<Setter Property="Foreground" Value="{StaticResource CF.TreeViewItem.Selected.Text}" />
+						</DataTrigger>
+						<MultiDataTrigger>
+							<MultiDataTrigger.Conditions>
+								<Condition Binding="{Binding IsSelected}" Value="False" />
+								<Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True" />
+							</MultiDataTrigger.Conditions>
+							<Setter Property="Foreground" Value="{StaticResource CF.TreeViewItem.MouseOver.Text}" />
+						</MultiDataTrigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style x:Key="CF.CFListTreeView" TargetType="ListView">
+		<Setter Property="Background" Value="{StaticResource CF.TreeView.Default.Background}" />
+		<Setter Property="BorderBrush" Value="{StaticResource CF.TreeView.Default.Border}" />
+		<Setter Property="BorderThickness" Value="1" />
+		<Setter Property="Foreground" Value="{StaticResource CF.TreeView.Default.Text}" />
+		<Setter Property="Padding" Value="1" />
+		<Setter Property="ScrollViewer.CanContentScroll" Value="True" />
+		<Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+		<Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+		<Setter Property="VirtualizingPanel.IsVirtualizing" Value="True" />
+		<Setter Property="VirtualizingPanel.VirtualizationMode" Value="Recycling" />
+		<Setter Property="ItemsPanel">
+			<Setter.Value>
+				<ItemsPanelTemplate>
+					<VirtualizingStackPanel />
+				</ItemsPanelTemplate>
+			</Setter.Value>
+		</Setter>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="ListView">
+					<Border x:Name="ListBorder"
+							Background="{TemplateBinding Background}"
+							BorderBrush="{TemplateBinding BorderBrush}"
+							BorderThickness="{TemplateBinding BorderThickness}">
+						<ScrollViewer Padding="{TemplateBinding Padding}"
+									  CanContentScroll="{TemplateBinding ScrollViewer.CanContentScroll}"
+									  HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+									  VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
+							<ItemsPresenter />
+						</ScrollViewer>
+					</Border>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsEnabled" Value="False">
+							<Setter TargetName="ListBorder" Property="Background" Value="{StaticResource CF.TreeView.Disabled.Background}" />
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
 	<Style x:Key="CF.Expander" TargetType="Expander">
 		<Setter Property="Foreground" Value="{StaticResource CF.Text.Default.Foreground}" />
 		<Setter Property="Background" Value="{StaticResource CF.Panel.Default.Background}" />
