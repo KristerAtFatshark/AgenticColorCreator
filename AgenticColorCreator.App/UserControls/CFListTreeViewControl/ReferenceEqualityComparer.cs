@@ -1,22 +1,34 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-namespace AgenticColorCreator.App.UserControls.CFListTreeViewControl;
-
-/// <summary>
-/// Compares source objects by identity so equal-valued resources remain distinct tree leaves.
-/// </summary>
-internal sealed class ReferenceEqualityComparer : IEqualityComparer<object>
+namespace AgenticColorCreator.App.UserControls.CFListTreeViewControl
 {
-	public static ReferenceEqualityComparer Instance { get; } = new();
-
-	public new bool Equals(object? x, object? y)
+	/// <summary>
+	/// Compares class instances by identity so equal-valued objects remain distinct dictionary keys.
+	/// </summary>
+	public class ReferenceEqualityComparer<T> : IEqualityComparer<T>
+		where T : class
 	{
-		return ReferenceEquals(x, y);
-	}
+		public static readonly IEqualityComparer<T> Default = new ReferenceEqualityComparer<T>();
 
-	public int GetHashCode(object obj)
-	{
-		return RuntimeHelpers.GetHashCode(obj);
+		private ReferenceEqualityComparer()
+		{
+		}
+
+		public bool Equals(
+			#if NETCORE
+			T? x, T? y
+			#else
+			T x, T y
+			#endif
+			)
+		{
+			return ReferenceEquals(x, y);
+		}
+
+		public int GetHashCode(T obj)
+		{
+			return RuntimeHelpers.GetHashCode(obj);
+		}
 	}
 }

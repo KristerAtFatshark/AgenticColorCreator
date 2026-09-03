@@ -27,6 +27,7 @@
 - Release app build passes with zero warnings.
 - All remaining tests pass: 59 total, including 27 CFListTreeView functional tests and 3 CFListTreeView performance tests.
 - CFWindowControl's non-`NETCORE` branch compiles with C# 7.3 against .NET Framework 4.7.2 WPF references; the net8 branch resolves `NETCORE`, its isolated `FinalOutputPath80`, disabled framework suffix appending, and `CA1416` exclusion as intended.
+- CFListTreeViewControl's non-`NETCORE` production files and generated XAML partial compile with C# 7.3 against .NET Framework 4.7.2 WPF references; its net8 branch remains nullable-aware.
 - CFListTreeView performance tests cover 50,000-item loading, sparse masks, flat scrolling, and expanded mixed-icon scrolling.
 - Loaded scrolling tests confirm approximately one viewport of ListView containers is realized.
 
@@ -47,6 +48,8 @@
 
 - Added the conditional net8 project output block: `NETCORE` is defined for `net8.0-windows`, output is routed through externally overrideable `FinalOutputPath80` (default `bin\$(Configuration)\net8.0-windows\`), framework suffix appending is disabled, and `CA1416` is excluded for the Windows-only assembly.
 - Added `NETCORE` branches to CFWindowControl for nullable/file-scoped/generic-marshal net8 syntax and plain C# 7.3/block-scoped/non-generic-marshal .NET Framework syntax. The fallback compiles against .NET Framework 4.7.2 references without defining `NETCORE`.
+- Added `NETCORE` compatibility branches across CFListTreeViewControl. Shared code now uses C# 7.3-compatible namespaces, explicit construction, mutable setters instead of `init`, and older pattern syntax; nullable declarations are limited to the net8 branch.
+- Converted `ReferenceEqualityComparer` to reusable `ReferenceEqualityComparer<T>` with a public `Default` comparer; CFListTreeView now uses `ReferenceEqualityComparer<object>.Default`.
 - Removed the superseded TreeView-backed control, preview card/state, styles, and performance tests after replacing it with `CFListTreeView`.
 - Shared `CF.TreeView...` brush keys and `CF.TreeViewExpanderToggleTemplate` remain intentionally because CFListTreeView uses them; no legacy control type or style remains.
 - Added class-level documentation and final behavior cleanup for CFListTreeView selection, focus, sorting, and filtering.

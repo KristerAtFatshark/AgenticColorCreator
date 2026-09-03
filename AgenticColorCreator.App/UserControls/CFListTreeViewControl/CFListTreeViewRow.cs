@@ -3,84 +3,117 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Media;
 
-namespace AgenticColorCreator.App.UserControls.CFListTreeViewControl;
-
-/// <summary>
-/// Exposes stable presentation state for one flattened ListView row while retaining its graph node.
-/// </summary>
-public sealed class CFListTreeViewRow : INotifyPropertyChanged
+namespace AgenticColorCreator.App.UserControls.CFListTreeViewControl
 {
-	private bool _isExpanded;
-	private bool _isSelected;
-
-	internal CFListTreeViewRow(bool isFolder, string name, string resourceType, object? item, CFListTreeViewIconImages iconImages, int depth)
+	/// <summary>
+	/// Exposes stable presentation state for one flattened ListView row while retaining its graph node.
+	/// </summary>
+	public sealed class CFListTreeViewRow : INotifyPropertyChanged
 	{
-		IsFolder = isFolder;
-		Name = name;
-		ResourceType = resourceType;
-		Item = item;
-		DefaultIcon = iconImages.Default;
-		MouseOverIcon = iconImages.MouseOver;
-		SelectedIcon = iconImages.Selected;
-		Depth = depth;
-		Indent = new Thickness(depth * 18, 0, 0, 0);
-		_isExpanded = isFolder;
-	}
+		private bool _isExpanded;
+		private bool _isSelected;
 
-	public event PropertyChangedEventHandler? PropertyChanged;
-
-	public bool IsFolder { get; }
-
-	public string Name { get; }
-
-	public string ResourceType { get; }
-
-	public object? Item { get; }
-
-	public ImageSource DefaultIcon { get; }
-
-	public ImageSource MouseOverIcon { get; }
-
-	public ImageSource SelectedIcon { get; }
-
-	public int Depth { get; }
-
-	public Thickness Indent { get; }
-
-	public bool IsExpanded
-	{
-		get => _isExpanded;
-		internal set
+		internal CFListTreeViewRow(
+			bool isFolder,
+			string name,
+			string resourceType,
+			#if NETCORE
+			object? item,
+			#else
+			object item,
+			#endif
+			CFListTreeViewIconImages iconImages,
+			int depth)
 		{
-			if (_isExpanded == value)
-			{
-				return;
-			}
-
-			_isExpanded = value;
-			OnPropertyChanged();
+			IsFolder = isFolder;
+			Name = name;
+			ResourceType = resourceType;
+			Item = item;
+			DefaultIcon = iconImages.Default;
+			MouseOverIcon = iconImages.MouseOver;
+			SelectedIcon = iconImages.Selected;
+			Depth = depth;
+			Indent = new Thickness(depth * 18, 0, 0, 0);
+			_isExpanded = isFolder;
 		}
-	}
 
-	public bool IsSelected
-	{
-		get => _isSelected;
-		internal set
+		#if NETCORE
+		public event PropertyChangedEventHandler? PropertyChanged;
+		#else
+		public event PropertyChangedEventHandler PropertyChanged;
+		#endif
+
+		public bool IsFolder { get; private set; }
+
+		public string Name { get; private set; }
+
+		public string ResourceType { get; private set; }
+
+		#if NETCORE
+		public object? Item { get; private set; }
+		#else
+		public object Item { get; private set; }
+		#endif
+
+		public ImageSource DefaultIcon { get; private set; }
+
+		public ImageSource MouseOverIcon { get; private set; }
+
+		public ImageSource SelectedIcon { get; private set; }
+
+		public int Depth { get; private set; }
+
+		public Thickness Indent { get; private set; }
+
+		public bool IsExpanded
 		{
-			if (_isSelected == value)
+			get { return _isExpanded; }
+			internal set
 			{
-				return;
+				if (_isExpanded == value)
+				{
+					return;
+				}
+
+				_isExpanded = value;
+				OnPropertyChanged();
 			}
-
-			_isSelected = value;
-			OnPropertyChanged();
 		}
-	}
 
-	internal CFListTreeNode Node { get; set; } = null!;
+		public bool IsSelected
+		{
+			get { return _isSelected; }
+			internal set
+			{
+				if (_isSelected == value)
+				{
+					return;
+				}
 
-	private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-	{
-		PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+				_isSelected = value;
+				OnPropertyChanged();
+			}
+		}
+
+		#if NETCORE
+		internal CFListTreeNode Node { get; set; } = null!;
+		#else
+		internal CFListTreeNode Node { get; set; }
+		#endif
+
+		private void OnPropertyChanged(
+			#if NETCORE
+			[CallerMemberName] string? propertyName = null
+			#else
+			[CallerMemberName] string propertyName = null
+			#endif
+			)
+		{
+			var handler = PropertyChanged;
+			if (handler != null)
+			{
+				handler(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
 	}
 }

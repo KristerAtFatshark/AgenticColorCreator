@@ -8,13 +8,27 @@
 folder/leaf graph from the complete source, then projects expanded or filtered nodes into a flat visible
 row list. It avoids the nested `TreeViewItem` container cost of a standard WPF `TreeView`.
 
+## Framework Compatibility
+
+The application project defines `NETCORE` for `net8.0-windows`. CFListTreeView uses that symbol only
+for compiler/framework syntax differences:
+
+- `NETCORE`: nullable-reference declarations and other net8-compatible declarations.
+- Without `NETCORE`: C# 7.3-compatible declarations with no nullable-reference syntax, file-scoped
+  namespaces, target-typed construction, `init` accessors, or newer pattern matching.
+
+The fallback production files plus the generated XAML partial class compile directly with Roslyn
+`/langversion:7.3` against .NET Framework 4.7.2 WPF references (`WindowsBase`, `PresentationCore`,
+`PresentationFramework`, `System.Xaml`, and Ribbon). No warnings are disabled in CFListTreeViewControl.
+
 ## Files
 
 - `CFListTreeView.xaml` / `CFListTreeView.xaml.cs` - control, projection, interaction, and binding logic.
 - `ICFTreeViewItem.cs` - structural contract implemented by source objects.
 - `CFListTreeNode.cs` - internal persistent folder/leaf graph node.
 - `CFListTreeViewRow.cs` - stable row model consumed by the virtualized ListView.
-- `ReferenceEqualityComparer.cs` - source-object identity comparer used by filtering and selection.
+- `ReferenceEqualityComparer.cs` - reusable generic class-identity comparer; CFListTreeView uses
+  `ReferenceEqualityComparer<object>.Default` for filtering and selection lookups.
 - `CFListTreeViewIconMap.cs` - maps dotless resource types/extensions to editor glyph resource keys.
 - `CFListTreeViewIconImages.cs` - converts mapped font glyphs into cached, frozen vector images for the
   default, mouse-over, and selected states.

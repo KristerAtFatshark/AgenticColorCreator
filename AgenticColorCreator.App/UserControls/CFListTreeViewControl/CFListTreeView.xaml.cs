@@ -10,14 +10,14 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 
-namespace AgenticColorCreator.App.UserControls.CFListTreeViewControl;
-
-/// <summary>
-/// Presents an <see cref="ICFTreeViewItem"/> hierarchy through one recycling ListView. Source changes
-/// rebuild the persistent graph; match, expansion, and selection changes update only its flat row view.
-/// </summary>
-public partial class CFListTreeView : UserControl
+namespace AgenticColorCreator.App.UserControls.CFListTreeViewControl
 {
+	/// <summary>
+	/// Presents an <see cref="ICFTreeViewItem"/> hierarchy through one recycling ListView. Source changes
+	/// rebuild the persistent graph; match, expansion, and selection changes update only its flat row view.
+	/// </summary>
+	public partial class CFListTreeView : UserControl
+	{
 	public static readonly DependencyProperty SourceItemsProperty = DependencyProperty.Register(
 		nameof(SourceItems), typeof(IEnumerable), typeof(CFListTreeView), new PropertyMetadata(null, OnSourceItemsChanged));
 	public static readonly DependencyProperty MatchedItemsProperty = DependencyProperty.Register(
@@ -39,50 +39,101 @@ public partial class CFListTreeView : UserControl
 		nameof(IsFilterActive), typeof(bool), typeof(CFListTreeView), new PropertyMetadata(false));
 	public static readonly DependencyProperty IsFilterActiveProperty = IsFilterActivePropertyKey.DependencyProperty;
 
-	private readonly List<CFListTreeNode> _roots = new();
-	private readonly List<CFListTreeNode> _allNodes = new();
-	private readonly List<CFListTreeNode> _filterVisibleNodes = new();
-	private readonly Dictionary<object, CFListTreeNode> _nodesByItem = new(ReferenceEqualityComparer.Instance);
-	private readonly List<CFListTreeViewRow> _selectedRows = new();
+	private readonly List<CFListTreeNode> _roots = new List<CFListTreeNode>();
+	private readonly List<CFListTreeNode> _allNodes = new List<CFListTreeNode>();
+	private readonly List<CFListTreeNode> _filterVisibleNodes = new List<CFListTreeNode>();
+	private readonly Dictionary<object, CFListTreeNode> _nodesByItem = new Dictionary<object, CFListTreeNode>(ReferenceEqualityComparer<object>.Default);
+	private readonly List<CFListTreeViewRow> _selectedRows = new List<CFListTreeViewRow>();
+	#if NETCORE
 	private CFListTreeViewRow? _focusedRow;
 	private INotifyCollectionChanged? _sourceNotifier;
 	private INotifyCollectionChanged? _matchedNotifier;
 	private INotifyCollectionChanged? _selectedNotifier;
+	#else
+	private CFListTreeViewRow _focusedRow;
+	private INotifyCollectionChanged _sourceNotifier;
+	private INotifyCollectionChanged _matchedNotifier;
+	private INotifyCollectionChanged _selectedNotifier;
+	#endif
 	private bool _isUpdatingSelectedItems;
 	private bool _sourceRefreshQueued;
 	private bool _matchedRefreshQueued;
 	private int _sourceRefreshGeneration;
 	private int _matchedRefreshGeneration;
-	private readonly Dictionary<string, CFListTreeViewIconImages> _iconImages = new(StringComparer.Ordinal);
+	private readonly Dictionary<string, CFListTreeViewIconImages> _iconImages = new Dictionary<string, CFListTreeViewIconImages>(StringComparer.Ordinal);
 
 	public CFListTreeView()
 	{
 		InitializeComponent();
 	}
 
+	#if NETCORE
 	public event EventHandler? StructureLoadCompleted;
+	#else
+	public event EventHandler StructureLoadCompleted;
+	#endif
 
-	public IEnumerable? SourceItems
+	public
+	#if NETCORE
+		IEnumerable?
+	#else
+		IEnumerable
+	#endif
+		SourceItems
 	{
+		#if NETCORE
 		get => (IEnumerable?)GetValue(SourceItemsProperty);
+		#else
+		get { return GetValue(SourceItemsProperty) as IEnumerable; }
+		#endif
 		set => SetValue(SourceItemsProperty, value);
 	}
 
-	public IEnumerable? MatchedItems
+	public
+	#if NETCORE
+		IEnumerable?
+	#else
+		IEnumerable
+	#endif
+		MatchedItems
 	{
+		#if NETCORE
 		get => (IEnumerable?)GetValue(MatchedItemsProperty);
+		#else
+		get { return GetValue(MatchedItemsProperty) as IEnumerable; }
+		#endif
 		set => SetValue(MatchedItemsProperty, value);
 	}
 
-	public IList? SelectedItems
+	public
+	#if NETCORE
+		IList?
+	#else
+		IList
+	#endif
+		SelectedItems
 	{
+		#if NETCORE
 		get => (IList?)GetValue(SelectedItemsProperty);
+		#else
+		get { return GetValue(SelectedItemsProperty) as IList; }
+		#endif
 		set => SetValue(SelectedItemsProperty, value);
 	}
 
-	public DataTemplate? ItemTemplate
+	public
+	#if NETCORE
+		DataTemplate?
+	#else
+		DataTemplate
+	#endif
+		ItemTemplate
 	{
+		#if NETCORE
 		get => (DataTemplate?)GetValue(ItemTemplateProperty);
+		#else
+		get { return GetValue(ItemTemplateProperty) as DataTemplate; }
+		#endif
 		set => SetValue(ItemTemplateProperty, value);
 	}
 
@@ -145,11 +196,17 @@ public partial class CFListTreeView : UserControl
 		RefreshVisibleRows();
 	}
 
-	public CFListTreeViewRow? SelectFirstItemAndFocus()
+	public
+	#if NETCORE
+		CFListTreeViewRow?
+	#else
+		CFListTreeViewRow
+	#endif
+		SelectFirstItemAndFocus()
 	{
 		var node = MatchedItems == null
 			? FindFirstLeaf(_roots)
-			: GetVisibleRows().FirstOrDefault(row => !row.IsFolder)?.Node;
+			: GetVisibleRows().FirstOrDefault(candidate => !candidate.IsFolder)?.Node;
 		if (node == null)
 		{
 			return null;
@@ -189,7 +246,8 @@ public partial class CFListTreeView : UserControl
 	private static void OnSelectedItemsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 	{
 		var control = (CFListTreeView)d;
-		if (e.NewValue is IList selectedItems && (selectedItems.IsReadOnly || selectedItems.IsFixedSize))
+		var selectedItems = e.NewValue as IList;
+		if (selectedItems != null && (selectedItems.IsReadOnly || selectedItems.IsFixedSize))
 		{
 			throw new ArgumentException("SelectedItems must be a mutable IList.", nameof(SelectedItems));
 		}
@@ -211,7 +269,13 @@ public partial class CFListTreeView : UserControl
 		((CFListTreeView)d).ApplyCollapseAllThreshold();
 	}
 
-	private void ReplaceSubscription(ref INotifyCollectionChanged? current, INotifyCollectionChanged? next, NotifyCollectionChangedEventHandler handler)
+	private void ReplaceSubscription(
+		#if NETCORE
+		ref INotifyCollectionChanged? current, INotifyCollectionChanged? next,
+		#else
+		ref INotifyCollectionChanged current, INotifyCollectionChanged next,
+		#endif
+		NotifyCollectionChangedEventHandler handler)
 	{
 		if (current != null)
 		{
@@ -225,7 +289,13 @@ public partial class CFListTreeView : UserControl
 		}
 	}
 
-	private void OnSourceCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+	private void OnSourceCollectionChanged(
+		#if NETCORE
+		object?
+		#else
+		object
+		#endif
+		sender, NotifyCollectionChangedEventArgs e)
 	{
 		if (_sourceRefreshQueued)
 		{
@@ -245,7 +315,13 @@ public partial class CFListTreeView : UserControl
 		}));
 	}
 
-	private void OnMatchedCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+	private void OnMatchedCollectionChanged(
+		#if NETCORE
+		object?
+		#else
+		object
+		#endif
+		sender, NotifyCollectionChangedEventArgs e)
 	{
 		if (_matchedRefreshQueued)
 		{
@@ -265,7 +341,13 @@ public partial class CFListTreeView : UserControl
 		}));
 	}
 
-	private void OnSelectedCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+	private void OnSelectedCollectionChanged(
+		#if NETCORE
+		object?
+		#else
+		object
+		#endif
+		sender, NotifyCollectionChangedEventArgs e)
 	{
 		if (!_isUpdatingSelectedItems)
 		{
@@ -289,7 +371,8 @@ public partial class CFListTreeView : UserControl
 		{
 			foreach (var sourceItem in SourceItems)
 			{
-				if (sourceItem is not ICFTreeViewItem item)
+				var item = sourceItem as ICFTreeViewItem;
+				if (item == null)
 				{
 					sourceIndex++;
 					continue;
@@ -319,7 +402,7 @@ public partial class CFListTreeView : UserControl
 				{
 					Node = node,
 				};
-				(parent?.Children ?? _roots).Add(node);
+				(parent != null ? parent.Children : _roots).Add(node);
 				_allNodes.Add(node);
 				_nodesByItem[sourceItem] = node;
 			}
@@ -330,11 +413,25 @@ public partial class CFListTreeView : UserControl
 		ApplyMatchMask();
 		ApplyExternalSelection();
 		SyncSelectedItems();
-		StructureLoadCompleted?.Invoke(this, EventArgs.Empty);
+		var structureLoadCompleted = StructureLoadCompleted;
+		if (structureLoadCompleted != null)
+		{
+			structureLoadCompleted(this, EventArgs.Empty);
+		}
 	}
 
-	private CFListTreeNode? BuildFolderPath(
+	private
+	#if NETCORE
+		CFListTreeNode?
+	#else
+		CFListTreeNode
+	#endif
+		BuildFolderPath(
+		#if NETCORE
 		string? folderPath,
+		#else
+		string folderPath,
+		#endif
 		IDictionary<string, CFListTreeNode> folders,
 		IDictionary<string, CFListTreeNode> terminalFolders,
 		ref int sourceIndex)
@@ -348,7 +445,11 @@ public partial class CFListTreeView : UserControl
 			return terminalFolder;
 		}
 
+		#if NETCORE
 		CFListTreeNode? parent = null;
+		#else
+		CFListTreeNode parent = null;
+		#endif
 		var fullPath = string.Empty;
 		foreach (var rawSegment in folderPath.Split('/'))
 		{
@@ -370,7 +471,7 @@ public partial class CFListTreeView : UserControl
 					Depth = parent == null ? 0 : parent.Depth + 1,
 				};
 				folder.Row = new CFListTreeViewRow(true, segment, string.Empty, null, GetIconImages("icon-folder"), folder.Depth) { Node = folder };
-				(parent?.Children ?? _roots).Add(folder);
+				(parent != null ? parent.Children : _roots).Add(folder);
 				_allNodes.Add(folder);
 				folders.Add(fullPath, folder);
 			}
@@ -408,9 +509,15 @@ public partial class CFListTreeView : UserControl
 		return TryFindResource(resourceKey) as Brush ?? Brushes.White;
 	}
 
-	private static string NormalizeSortKey(string? value)
+	private static string NormalizeSortKey(
+		#if NETCORE
+		string?
+		#else
+		string
+		#endif
+		value)
 	{
-		return value?.Trim() ?? string.Empty;
+		return value != null ? value.Trim() : string.Empty;
 	}
 
 	private static void SortNodes(List<CFListTreeNode> nodes)
@@ -528,7 +635,13 @@ public partial class CFListTreeView : UserControl
 		}
 	}
 
-	private static CFListTreeNode? FindFirstLeaf(IEnumerable<CFListTreeNode> nodes)
+	private static
+	#if NETCORE
+		CFListTreeNode?
+	#else
+		CFListTreeNode
+	#endif
+		FindFirstLeaf(IEnumerable<CFListTreeNode> nodes)
 	{
 		foreach (var node in nodes)
 		{
@@ -554,7 +667,9 @@ public partial class CFListTreeView : UserControl
 
 	private void OnExpanderClick(object sender, RoutedEventArgs e)
 	{
-		if ((sender as FrameworkElement)?.DataContext is CFListTreeViewRow row && row.IsFolder)
+		var element = sender as FrameworkElement;
+		var row = element != null ? element.DataContext as CFListTreeViewRow : null;
+		if (row != null && row.IsFolder)
 		{
 			row.IsExpanded = !row.IsExpanded;
 			RefreshVisibleRows();
@@ -570,7 +685,8 @@ public partial class CFListTreeView : UserControl
 		}
 
 		var container = FindAncestor<ListViewItem>(e.OriginalSource as DependencyObject);
-		if (container?.DataContext is not CFListTreeViewRow row)
+		var row = container != null ? container.DataContext as CFListTreeViewRow : null;
+		if (container == null || row == null)
 		{
 			return;
 		}
@@ -806,7 +922,10 @@ public partial class CFListTreeView : UserControl
 			SelectedItems.Clear();
 			foreach (var row in _selectedRows)
 			{
-				SelectedItems.Add(row.Item!);
+				if (row.Item != null)
+				{
+					SelectedItems.Add(row.Item);
+				}
 			}
 		}
 		finally
@@ -815,7 +934,19 @@ public partial class CFListTreeView : UserControl
 		}
 	}
 
-	private static T? FindAncestor<T>(DependencyObject? source) where T : DependencyObject
+	private static
+	#if NETCORE
+		T?
+	#else
+		T
+	#endif
+		FindAncestor<T>(
+		#if NETCORE
+		DependencyObject?
+		#else
+		DependencyObject
+		#endif
+		source) where T : DependencyObject
 	{
 		var current = source;
 		while (current != null)
@@ -828,5 +959,6 @@ public partial class CFListTreeView : UserControl
 		}
 
 		return null;
+	}
 	}
 }
