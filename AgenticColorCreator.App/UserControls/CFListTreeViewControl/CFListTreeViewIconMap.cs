@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace AgenticColorCreator.App.UserControls.CFListTreeViewControl;
 
+/// <summary>
+/// Maps dotless resource types to icon resource keys from the shared editor icon dictionary.
+/// </summary>
 public static class CFListTreeViewIconMap
 {
 	private const string DefaultIconResourceKey = "icon-resource_default";

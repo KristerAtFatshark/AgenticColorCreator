@@ -53,6 +53,7 @@ ResourceType = "level"
 - `SourceItems` (`IEnumerable`) - complete scope and structural source.
 - `MatchedItems` (`IEnumerable`) - optional filtered subset of the same object instances.
 - `SelectedItems` (`IList`) - selected original source objects; synchronized in both directions.
+  The list must support `Clear` and `Add`; arrays and read-only/fixed-size lists are rejected.
 - `ItemTemplate` (`DataTemplate`) - leaf presentation.
 - `IsMultiSelect` (`bool`, default `false`) - enables Ctrl-click and Ctrl+Enter toggling.
 - `CollapseAllThreshold` (`int`, default `100`) - starts all folders collapsed when the number of
@@ -160,6 +161,7 @@ Clearing the filter therefore restores the user's expansion state.
 - Left collapses or moves to the parent; Right expands or moves to the first child.
 - Selected leaves remain selected when a filter temporarily hides them.
 - External selections scroll the first currently visible selected leaf into view.
+- Source rebuilds remove selected objects that are no longer present and remove duplicate references.
 
 Public helpers:
 
@@ -173,6 +175,11 @@ Public helpers:
 existing `CF.TreeView...` and `CF.TreeViewItem...` brushes, expander template, icon font, indentation,
 hover colors, and selected colors so the control visually matches `CFTreeView` without duplicating color
 values. Synthetic folders use `icon-folder`.
+
+Keyboard focus uses the dedicated `CF.CFListTreeViewFocusVisual`: a 1px dashed
+`CF.Text.Default.Foreground` (`#FFC8C8C8`) rectangle with zero inset, sized to the same ListViewItem
+bounds as the orange selected `RowBorder`. Selection and keyboard focus therefore remain visually
+distinct without the smaller black Windows default adorner.
 
 The loaded scrolling test verifies that approximately one viewport of containers is realized rather than
 one container per source item. Current local measurements include 12 realized containers while scrolling

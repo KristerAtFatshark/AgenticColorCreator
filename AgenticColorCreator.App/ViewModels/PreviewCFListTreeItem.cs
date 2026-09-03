@@ -2,6 +2,9 @@ using AgenticColorCreator.App.UserControls.CFListTreeViewControl;
 
 namespace AgenticColorCreator.App.ViewModels;
 
+/// <summary>
+/// Supplies production-shaped resource metadata for the CFListTreeView UI preview.
+/// </summary>
 public sealed class PreviewCFListTreeItem : ICFTreeViewItem
 {
 	public PreviewCFListTreeItem(string resourceName, string resourceType, string? treeFolderPath, string? treeSortKey = null)

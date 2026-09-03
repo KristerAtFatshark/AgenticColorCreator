@@ -5,6 +5,9 @@ using System.Windows.Media;
 
 namespace AgenticColorCreator.App.UserControls.CFListTreeViewControl;
 
+/// <summary>
+/// Exposes stable presentation state for one flattened ListView row while retaining its graph node.
+/// </summary>
 public sealed class CFListTreeViewRow : INotifyPropertyChanged
 {
 	private bool _isExpanded;
@@ -43,8 +46,6 @@ public sealed class CFListTreeViewRow : INotifyPropertyChanged
 	public int Depth { get; }
 
 	public Thickness Indent { get; }
-
-	public bool HasChildren => Node.Children.Count > 0;
 
 	public bool IsExpanded
 	{

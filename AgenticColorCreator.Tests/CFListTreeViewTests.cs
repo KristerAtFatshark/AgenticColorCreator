@@ -8,6 +8,8 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Threading;
 using AgenticColorCreator.App.UserControls.CFListTreeViewControl;
 
@@ -331,6 +333,62 @@ public sealed class CFListTreeViewTests
 	}
 
 	[Fact]
+	public void SelectFirstItemAndFocus_UsesSortedTreeOrder()
+	{
+		RunOnStaThread(() =>
+		{
+			var later = new TestItem("Later", "Z", "z");
+			var first = new TestItem("First", "A", "a");
+			var selectedItems = new ObservableCollection<object>();
+			var control = CreateControl(new[] { later, first });
+			control.SelectedItems = selectedItems;
+
+			control.SelectFirstItemAndFocus();
+
+			Assert.Same(first, Assert.Single(selectedItems));
+		});
+	}
+
+	[Fact]
+	public void SelectFirstItemAndFocus_WithEmptyFilterReturnsNull()
+	{
+		RunOnStaThread(() =>
+		{
+			var control = CreateControl(new[] { new TestItem("Leaf", "A", "a") });
+			control.MatchedItems = Array.Empty<TestItem>();
+
+			Assert.Null(control.SelectFirstItemAndFocus());
+		});
+	}
+
+	[Fact]
+	public void SourceReplacement_RemovesStaleSelectedItems()
+	{
+		RunOnStaThread(() =>
+		{
+			var oldItem = new TestItem("Old", "A", "a");
+			var selectedItems = new ObservableCollection<object> { oldItem };
+			var control = CreateControl(new[] { oldItem });
+			control.SelectedItems = selectedItems;
+
+			control.SourceItems = new[] { new TestItem("New", "B", "b") };
+
+			Assert.Empty(selectedItems);
+		});
+	}
+
+	[Fact]
+	public void SelectedItems_RejectsFixedSizeLists()
+	{
+		RunOnStaThread(() =>
+		{
+			var control = CreateControl(Array.Empty<TestItem>());
+
+			Assert.Throws<ArgumentException>(() => control.SelectedItems = Array.Empty<object>());
+		});
+	}
+
+	[Fact]
 	public void DuplicateSourceReference_IsLoadedOnce()
 	{
 		RunOnStaThread(() =>
@@ -392,6 +450,48 @@ public sealed class CFListTreeViewTests
 			control.ShowResourceType = false;
 
 			Assert.False(control.ShowResourceType);
+		});
+	}
+
+	[Fact]
+	public void KeyboardFocusedRow_UsesFullSizeLightGrayDashedFocusVisual()
+	{
+		RunOnStaThread(() =>
+		{
+			var control = CreateControl(new[] { new TestItem("Leaf", null, "leaf") });
+			var window = new Window
+			{
+				Width = 400,
+				Height = 200,
+				Content = control,
+				ShowInTaskbar = false,
+			};
+			window.Show();
+			window.Activate();
+			control.UpdateLayout();
+			var listView = GetRowsListView(control);
+			var container = Assert.IsType<ListViewItem>(listView.ItemContainerGenerator.ContainerFromIndex(0));
+
+			Keyboard.Focus(container);
+			DrainDispatcher();
+			control.UpdateLayout();
+			var focusVisualStyle = container.FocusVisualStyle;
+			Assert.NotNull(focusVisualStyle);
+			var templateSetter = Assert.Single(focusVisualStyle!.Setters.OfType<Setter>(), setter => setter.Property == Control.TemplateProperty);
+			var template = Assert.IsType<ControlTemplate>(templateSetter.Value);
+			var focusVisual = new Control
+			{
+				Template = template,
+			};
+			focusVisual.ApplyTemplate();
+			var rectangle = Assert.IsType<System.Windows.Shapes.Rectangle>(VisualTreeHelper.GetChild(focusVisual, 0));
+
+			Assert.True(container.IsKeyboardFocusWithin);
+			Assert.Equal(new Thickness(0), rectangle.Margin);
+			Assert.Equal(1, rectangle.StrokeThickness);
+			Assert.Equal(new DoubleCollection { 1, 2 }, rectangle.StrokeDashArray);
+			Assert.Equal("#FFC8C8C8", rectangle.Stroke.ToString().ToUpperInvariant());
+			window.Close();
 		});
 	}
 

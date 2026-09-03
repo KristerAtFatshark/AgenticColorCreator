@@ -2,6 +2,9 @@ using System.Collections.Generic;
 
 namespace AgenticColorCreator.App.UserControls.CFListTreeViewControl;
 
+/// <summary>
+/// Represents one persistent folder or source leaf in the non-visual tree graph.
+/// </summary>
 internal sealed class CFListTreeNode
 {
 	public bool IsFolder { get; init; }
@@ -11,6 +14,8 @@ internal sealed class CFListTreeNode
 	public int SourceIndex { get; init; }
 
 	public CFListTreeNode? Parent { get; init; }
+
+	public int Depth { get; init; }
 
 	public List<CFListTreeNode> Children { get; } = new();
 

@@ -5,6 +5,9 @@ using System.Windows.Media;
 
 namespace AgenticColorCreator.App.UserControls.CFListTreeViewControl;
 
+/// <summary>
+/// Holds shared frozen vector images for one icon glyph in each row interaction state.
+/// </summary>
 internal sealed class CFListTreeViewIconImages
 {
 	private static readonly Typeface IconTypeface = new(

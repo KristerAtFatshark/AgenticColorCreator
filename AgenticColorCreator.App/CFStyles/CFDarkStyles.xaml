@@ -1025,6 +1025,20 @@
 		</Setter>
 	</Style>
 
+	<Style x:Key="CF.CFListTreeViewFocusVisual" TargetType="Control">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate>
+					<Rectangle Margin="0"
+							   Stroke="{StaticResource CF.Text.Default.Foreground}"
+							   StrokeDashArray="1 2"
+							   StrokeThickness="1"
+							   SnapsToDevicePixels="True" />
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
 	<Style x:Key="CF.CFListTreeViewItem" TargetType="ListViewItem">
 		<Setter Property="Background" Value="{StaticResource CF.TreeViewItem.Default.Background}" />
 		<Setter Property="Foreground" Value="{StaticResource CF.TreeViewItem.Default.Text}" />
@@ -1034,6 +1048,7 @@
 		<Setter Property="VerticalContentAlignment" Value="Center" />
 		<Setter Property="Padding" Value="2,1" />
 		<Setter Property="Focusable" Value="True" />
+		<Setter Property="FocusVisualStyle" Value="{StaticResource CF.CFListTreeViewFocusVisual}" />
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="ListViewItem">

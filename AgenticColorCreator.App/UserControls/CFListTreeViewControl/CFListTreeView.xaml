@@ -71,10 +71,14 @@
 						<Setter TargetName="FolderName" Property="Visibility" Value="Collapsed" />
 						<Setter TargetName="LeafContent" Property="Visibility" Value="Visible" />
 					</DataTrigger>
-					<DataTrigger Binding="{Binding HasChildren}" Value="False">
-						<Setter TargetName="Expander" Property="Visibility" Value="Hidden" />
-					</DataTrigger>
 					<DataTrigger Binding="{Binding IsExpanded}" Value="True">
+						<Setter TargetName="ExpanderGlyph" Property="LayoutTransform">
+							<Setter.Value>
+								<RotateTransform Angle="90" />
+							</Setter.Value>
+						</Setter>
+					</DataTrigger>
+					<DataTrigger Binding="{Binding IsFilterActive, RelativeSource={RelativeSource AncestorType={x:Type local:CFListTreeView}}}" Value="True">
 						<Setter TargetName="ExpanderGlyph" Property="LayoutTransform">
 							<Setter.Value>
 								<RotateTransform Angle="90" />

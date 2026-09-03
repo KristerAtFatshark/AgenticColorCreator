@@ -12,6 +12,10 @@ using System.Windows.Threading;
 
 namespace AgenticColorCreator.App.UserControls.CFListTreeViewControl;
 
+/// <summary>
+/// Presents an <see cref="ICFTreeViewItem"/> hierarchy through one recycling ListView. Source changes
+/// rebuild the persistent graph; match, expansion, and selection changes update only its flat row view.
+/// </summary>
 public partial class CFListTreeView : UserControl
 {
 	public static readonly DependencyProperty SourceItemsProperty = DependencyProperty.Register(
@@ -31,6 +35,9 @@ public partial class CFListTreeView : UserControl
 	private static readonly DependencyPropertyKey VisibleRowCountPropertyKey = DependencyProperty.RegisterReadOnly(
 		nameof(VisibleRowCount), typeof(int), typeof(CFListTreeView), new PropertyMetadata(0));
 	public static readonly DependencyProperty VisibleRowCountProperty = VisibleRowCountPropertyKey.DependencyProperty;
+	private static readonly DependencyPropertyKey IsFilterActivePropertyKey = DependencyProperty.RegisterReadOnly(
+		nameof(IsFilterActive), typeof(bool), typeof(CFListTreeView), new PropertyMetadata(false));
+	public static readonly DependencyProperty IsFilterActiveProperty = IsFilterActivePropertyKey.DependencyProperty;
 
 	private readonly List<CFListTreeNode> _roots = new();
 	private readonly List<CFListTreeNode> _allNodes = new();
@@ -99,6 +106,8 @@ public partial class CFListTreeView : UserControl
 
 	public int VisibleRowCount => (int)GetValue(VisibleRowCountProperty);
 
+	public bool IsFilterActive => (bool)GetValue(IsFilterActiveProperty);
+
 	public void CollapseAll()
 	{
 		foreach (var node in _allNodes)
@@ -138,7 +147,9 @@ public partial class CFListTreeView : UserControl
 
 	public CFListTreeViewRow? SelectFirstItemAndFocus()
 	{
-		var node = _allNodes.FirstOrDefault(candidate => !candidate.IsFolder);
+		var node = MatchedItems == null
+			? FindFirstLeaf(_roots)
+			: GetVisibleRows().FirstOrDefault(row => !row.IsFolder)?.Node;
 		if (node == null)
 		{
 			return null;
@@ -178,6 +189,10 @@ public partial class CFListTreeView : UserControl
 	private static void OnSelectedItemsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 	{
 		var control = (CFListTreeView)d;
+		if (e.NewValue is IList selectedItems && (selectedItems.IsReadOnly || selectedItems.IsFixedSize))
+		{
+			throw new ArgumentException("SelectedItems must be a mutable IList.", nameof(SelectedItems));
+		}
 		control.ReplaceSubscription(ref control._selectedNotifier, e.NewValue as INotifyCollectionChanged, control.OnSelectedCollectionChanged);
 		control.ApplyExternalSelection();
 	}
@@ -265,6 +280,7 @@ public partial class CFListTreeView : UserControl
 		_filterVisibleNodes.Clear();
 		_nodesByItem.Clear();
 		_selectedRows.Clear();
+		_focusedRow = null;
 		var folders = new Dictionary<string, CFListTreeNode>(StringComparer.OrdinalIgnoreCase);
 		var terminalFolders = new Dictionary<string, CFListTreeNode>(StringComparer.OrdinalIgnoreCase);
 		var sourceIndex = 0;
@@ -291,14 +307,15 @@ public partial class CFListTreeView : UserControl
 					SortKey = NormalizeSortKey(item.TreeSortKey),
 					SourceIndex = sourceIndex++,
 					Parent = parent,
+					Depth = parent == null ? 0 : parent.Depth + 1,
 				};
-					node.Row = new CFListTreeViewRow(
+				node.Row = new CFListTreeViewRow(
 					false,
 					item.ResourceName,
 					item.ResourceType,
 					sourceItem,
 					GetIconImages(CFListTreeViewIconMap.GetIconResourceKey(item.ResourceType)),
-					GetDepth(node))
+					node.Depth)
 				{
 					Node = node,
 				};
@@ -312,6 +329,7 @@ public partial class CFListTreeView : UserControl
 		ApplyCollapseAllThreshold(false);
 		ApplyMatchMask();
 		ApplyExternalSelection();
+		SyncSelectedItems();
 		StructureLoadCompleted?.Invoke(this, EventArgs.Empty);
 	}
 
@@ -349,8 +367,9 @@ public partial class CFListTreeView : UserControl
 					SortKey = segment,
 					SourceIndex = sourceIndex++,
 					Parent = parent,
+					Depth = parent == null ? 0 : parent.Depth + 1,
 				};
-				folder.Row = new CFListTreeViewRow(true, segment, string.Empty, null, GetIconImages("icon-folder"), GetDepth(folder)) { Node = folder };
+				folder.Row = new CFListTreeViewRow(true, segment, string.Empty, null, GetIconImages("icon-folder"), folder.Depth) { Node = folder };
 				(parent?.Children ?? _roots).Add(folder);
 				_allNodes.Add(folder);
 				folders.Add(fullPath, folder);
@@ -387,19 +406,6 @@ public partial class CFListTreeView : UserControl
 	private Brush FindBrush(string resourceKey)
 	{
 		return TryFindResource(resourceKey) as Brush ?? Brushes.White;
-	}
-
-	private static int GetDepth(CFListTreeNode node)
-	{
-		var depth = 0;
-		var parent = node.Parent;
-		while (parent != null)
-		{
-			depth++;
-			parent = parent.Parent;
-		}
-
-		return depth;
 	}
 
 	private static string NormalizeSortKey(string? value)
@@ -456,6 +462,7 @@ public partial class CFListTreeView : UserControl
 
 	private void ApplyMatchMask()
 	{
+		SetValue(IsFilterActivePropertyKey, MatchedItems != null);
 		foreach (var node in _filterVisibleNodes)
 		{
 			node.IsFilterVisible = false;
@@ -493,7 +500,7 @@ public partial class CFListTreeView : UserControl
 		var rows = new List<CFListTreeViewRow>();
 		AppendVisibleRows(_roots, rows, MatchedItems != null);
 		RowsListView.ItemsSource = rows;
-		if (_focusedRow != null && rows.Contains(_focusedRow))
+		if (_focusedRow != null && IsNodeVisible(_focusedRow.Node))
 		{
 			RowsListView.SelectedItem = _focusedRow;
 		}
@@ -519,6 +526,25 @@ public partial class CFListTreeView : UserControl
 				AppendVisibleRows(node.Children, rows, filterActive);
 			}
 		}
+	}
+
+	private static CFListTreeNode? FindFirstLeaf(IEnumerable<CFListTreeNode> nodes)
+	{
+		foreach (var node in nodes)
+		{
+			if (!node.IsFolder)
+			{
+				return node;
+			}
+
+			var leaf = FindFirstLeaf(node.Children);
+			if (leaf != null)
+			{
+				return leaf;
+			}
+		}
+
+		return null;
 	}
 
 	private IReadOnlyList<CFListTreeViewRow> GetVisibleRows()
@@ -551,6 +577,7 @@ public partial class CFListTreeView : UserControl
 
 		RowsListView.SelectedItem = row;
 		_focusedRow = row;
+		container.Focus();
 		if (row.IsFolder)
 		{
 			row.IsExpanded = !row.IsExpanded;
