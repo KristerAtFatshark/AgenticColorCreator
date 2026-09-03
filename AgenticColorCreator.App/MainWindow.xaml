@@ -12,7 +12,6 @@
 		xmlns:checkBoxControls="clr-namespace:AgenticColorCreator.App.UserControls.CFCheckBoxControl"
 		xmlns:radioButtonControls="clr-namespace:AgenticColorCreator.App.UserControls.CFRadioButtonControl"
 		xmlns:comboBoxControls="clr-namespace:AgenticColorCreator.App.UserControls.CFComboBoxControl"
-		xmlns:userControls="clr-namespace:ClownFishUi.CFUserControls.CFTreeViewControl"
 		xmlns:listTreeControls="clr-namespace:AgenticColorCreator.App.UserControls.CFListTreeViewControl"
 		xmlns:viewModels="clr-namespace:AgenticColorCreator.App.ViewModels"
 		mc:Ignorable="d"
@@ -1025,91 +1024,6 @@
 							</StackPanel>
 						</Border>
 
-						<Border Margin="0,0,18,18"
-								Padding="16"
-								Width="300"
-								Background="{StaticResource CF.Panel.Default.Background}"
-								BorderBrush="{StaticResource CF.Border.Default.Border}"
-								BorderThickness="1"
-								CornerRadius="10">
-							<Grid>
-								<Grid.RowDefinitions>
-									<RowDefinition Height="Auto" />
-									<RowDefinition Height="Auto" />
-									<RowDefinition Height="140" />
-									<RowDefinition Height="Auto" />
-									<RowDefinition Height="Auto" />
-									<RowDefinition Height="Auto" />
-								</Grid.RowDefinitions>
-								<TextBlock Style="{StaticResource CF.TextBlock}" FontSize="16" FontWeight="SemiBold" Text="CFTreeView" />
-								<TextBlock Style="{StaticResource CF.TextBlock}" Grid.Row="1" Margin="0,2,0,14" Foreground="{StaticResource CF.Text.Selected.Foreground}" Text="App.UserControls.CFTreeViewControl.CFTreeView" />
-								<userControls:CFTreeView x:Name="PreviewTreeViewControl"
-											Grid.Row="2"
-											IsMultiSelect="True"
-											NodesSource="{Binding PreviewTreeViewNodes}"
-											SelectedValues="{Binding PreviewSelectedTreeViewValues}"
-											CollapseAllThresholdItemCount="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewTreeViewCollapseAllThreshold, Mode=TwoWay}"
-											EnableLazyChildMaterialization="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewTreeViewLazyMaterializationEnabled, Mode=TwoWay}"
-											LazyChildMaterializationDepth="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewTreeViewLazyMaterializationDepth, Mode=TwoWay}"
-											SelectedTreeViewItems="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=SelectedPreviewTreeViewItems, Mode=OneWayToSource}" />
-								<WrapPanel Grid.Row="3" Orientation="Horizontal" Margin="0,8,0,0">
-									<StackPanel Orientation="Horizontal" Margin="0,0,16,4">
-										<TextBlock Style="{StaticResource CF.TextBlock}" VerticalAlignment="Center" Margin="0,0,6,0" Text="Collapse All Threshold" />
-										<intControls:CFInt Width="120"
-														Minimum="0"
-														Step="10"
-														Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewTreeViewCollapseAllThreshold, Mode=TwoWay}" />
-									</StackPanel>
-									<StackPanel Orientation="Horizontal" Margin="0,0,16,4">
-										<TextBlock Style="{StaticResource CF.TextBlock}" VerticalAlignment="Center" Margin="0,0,6,0" Text="Stress Entry Count" />
-										<intControls:CFInt Width="120"
-														Minimum="0"
-														Step="50"
-														Value="{Binding PreviewTreeStressEntryCount, Mode=TwoWay}" />
-									</StackPanel>
-									<StackPanel Orientation="Horizontal" Margin="0,0,16,4">
-										<CheckBox Style="{StaticResource CF.CheckBox}" VerticalAlignment="Center"
-												Content="Lazy Materialization"
-												IsChecked="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewTreeViewLazyMaterializationEnabled, Mode=TwoWay}" />
-									</StackPanel>
-									<StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-										<TextBlock Style="{StaticResource CF.TextBlock}" VerticalAlignment="Center" Margin="0,0,6,0" Text="Lazy Depth" />
-										<intControls:CFInt Width="80"
-														Minimum="0"
-														Step="1"
-														Value="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=PreviewTreeViewLazyMaterializationDepth, Mode=TwoWay}" />
-									</StackPanel>
-								</WrapPanel>
-								<TextBox Style="{StaticResource CF.TextBox}" Grid.Row="4"
-										Margin="0,8,0,0"
-										Height="72"
-										AcceptsReturn="True"
-										IsReadOnly="True"
-										TextWrapping="Wrap"
-										VerticalScrollBarVisibility="Auto"
-										Text="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=SelectedPreviewTreeViewDetails}" />
-								<WrapPanel Grid.Row="5"
-										Margin="0,8,0,0">
-									<Button Style="{StaticResource CF.Button}" Command="{Binding RemovePreviewTreeViewTailCommand}"
-											Content="Remove Last 4" />
-									<Button Style="{StaticResource CF.Button}" Command="{Binding AddPreviewTreeViewTailCommand}"
-											Content="Add Last 4" />
-									<Button Style="{StaticResource CF.Button}" Command="{Binding SelectPreviewPrimaryCommand}"
-											Content="Select Primary" />
-									<Button Style="{StaticResource CF.Button}" Command="{Binding SelectPreviewPrimaryAndAccentCommand}"
-											Content="Select Primary + Accent" />
-									<Button Style="{StaticResource CF.Button}"
-											Click="OnCollapseTreeViewToSelectedParentsClick"
-											Content="Collapse To Selected" />
-									<Button Style="{StaticResource CF.Button}"
-											Click="OnCollapseTreeViewAllClick"
-											Content="Collapse All" />
-									<Button Style="{StaticResource CF.Button}"
-											Click="OnSelectFirstTreeViewItemClick"
-											Content="Select First + Focus" />
-								</WrapPanel>
-							</Grid>
-						</Border>
 					</WrapPanel>
 				</ScrollViewer>
 			</TabItem>

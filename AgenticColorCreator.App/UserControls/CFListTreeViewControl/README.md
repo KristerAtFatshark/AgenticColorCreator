@@ -173,7 +173,7 @@ Public helpers:
 
 `CF.CFListTreeView` uses a recycling `VirtualizingStackPanel` with logical scrolling. Rows reuse the
 existing `CF.TreeView...` and `CF.TreeViewItem...` brushes, expander template, icon font, indentation,
-hover colors, and selected colors so the control visually matches `CFTreeView` without duplicating color
+hover colors, and selected colors so the control matches the established tree visual language without duplicating color
 values. Synthetic folders use `icon-folder`.
 
 Keyboard focus uses the dedicated `CF.CFListTreeViewFocusVisual`: a 1px dashed

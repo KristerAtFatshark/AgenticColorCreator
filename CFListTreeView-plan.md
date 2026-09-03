@@ -3,8 +3,8 @@
 ## Goal
 
 Create `CFListTreeView`, a tree-style WPF control backed by a virtualized `ListView`. It should provide
-the important behavior of `CFTreeView` while avoiding the cost of nested WPF `TreeViewItem` containers.
-Its visuals should match `CFTreeView`.
+the important behavior expected from a tree while avoiding the cost of nested WPF `TreeViewItem` containers.
+Its visuals should match the established tree visual language.
 
 The control separates structural loading from filtering:
 
@@ -185,7 +185,7 @@ Use synchronization guards to prevent collection-update loops between the contro
 
 ## Keyboard And Mouse Interaction
 
-Match the useful `CFTreeView` behavior:
+Match the useful legacy tree interaction behavior:
 
 - Up/Down move through visible rows, skipping non-selectable folders when committing selection but still
   allowing folder focus if needed for expansion navigation.
@@ -202,7 +202,7 @@ regardless.
 
 ## Visual Design
 
-Match `CFTreeView` as closely as possible:
+Match the established tree visuals as closely as possible:
 
 - Same background, border, text, selected, hover, icon, and expander colors.
 - Same row height, padding, indentation, and expander geometry.
@@ -269,7 +269,7 @@ The preview should include:
 - Load a representative large `SourceItems` scope and record graph-build plus first-display timing.
 - Apply many successive `MatchedItems` refreshes and assert no structural rebuild occurs.
 - Measure zero-result, sparse-result, and broad-result masks separately.
-- Compare initial load, memory use, and filter latency against the existing `CFTreeView` baseline.
+- Compare initial load, memory use, and filter latency against the recorded legacy baseline.
 - Confirm ListView recycling remains enabled and realized container count stays close to viewport size.
 
 Keep expensive performance tests separately identifiable so normal test runs can exclude them reliably.
@@ -288,10 +288,10 @@ Keep expensive performance tests separately identifiable so normal test runs can
 1. Define `ICFTreeViewItem`, internal node/row models, and source loading tests.
 2. Implement persistent graph construction, sorting, and identity indexes.
 3. Implement flat expansion projection and virtualized ListView presentation.
-4. Match CFTreeView styling and folder visuals.
+4. Match the established tree styling and folder visuals.
 5. Implement `MatchedItems` masking and expansion-state restoration.
 6. Implement selection synchronization and mouse interaction.
 7. Implement keyboard navigation and helper methods.
 8. Add UI Preview integration.
-9. Add load/filter performance coverage and compare with CFTreeView.
+9. Add load/filter performance coverage and compare with the recorded legacy baseline.
 10. Complete README, formatting checks, build, tests, and manual verification.

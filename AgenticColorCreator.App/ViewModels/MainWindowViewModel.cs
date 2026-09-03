@@ -9,7 +9,6 @@ using System.Windows.Data;
 using AgenticColorCreator.App.Commands;
 using AgenticColorCreator.App.Dialogs;
 using AgenticColorCreator.App.Services;
-using ClownFishUi.CFUserControls.CFTreeViewControl;
 using AgenticColorCreator.Core.Models;
 using AgenticColorCreator.Core.Services;
 
@@ -34,8 +33,6 @@ public sealed class MainWindowViewModel : ViewModelBase
 	private string? _currentFilePath;
 	private string _statusMessage = "Ready";
 	private bool _isDirty;
-	private int _previewTreeStressEntryCount = 200;
-	private ObservableCollection<TreeViewSourceEntry> _previewTreeViewNodes = new ObservableCollection<TreeViewSourceEntry>();
 	private IReadOnlyList<PreviewCFListTreeItem> _previewCFListTreeSourceItems = Array.Empty<PreviewCFListTreeItem>();
 	private ListCollectionView? _previewCFListTreeMatchedItems;
 	private string _previewCFListTreeFilterText = string.Empty;
@@ -54,7 +51,6 @@ public sealed class MainWindowViewModel : ViewModelBase
 		_colorPickerDialogService = colorPickerDialogService;
 
 		Categories = new ObservableCollection<CategoryViewModel>();
-		_previewTreeViewNodes = CreatePreviewTreeViewNodesCollection(_previewTreeStressEntryCount);
 		RebuildPreviewCFListTreeItems();
 		PreviewCFListTreeSelectedItems.CollectionChanged += (_, _) => OnPropertyChanged(nameof(PreviewCFListTreeSelectedText));
 		ValidationErrors = new ObservableCollection<string>();
@@ -66,21 +62,11 @@ public sealed class MainWindowViewModel : ViewModelBase
 		AddCategoryCommand = new RelayCommand(AddCategory);
 		ExpandAllCategoriesCommand = new RelayCommand(ExpandAllCategories);
 		CollapseAllCategoriesCommand = new RelayCommand(CollapseAllCategories);
-		RemovePreviewTreeViewTailCommand = new RelayCommand(RemovePreviewTreeViewTail);
-		AddPreviewTreeViewTailCommand = new RelayCommand(AddPreviewTreeViewTail);
-		SelectPreviewPrimaryCommand = new RelayCommand(SelectPreviewPrimary);
-		SelectPreviewPrimaryAndAccentCommand = new RelayCommand(SelectPreviewPrimaryAndAccent);
 
 		NewDocument();
 	}
 
 	public ObservableCollection<CategoryViewModel> Categories { get; }
-
-	public ObservableCollection<TreeViewSourceEntry> PreviewTreeViewNodes
-	{
-		get => _previewTreeViewNodes;
-		private set => SetProperty(ref _previewTreeViewNodes, value);
-	}
 
 	public ObservableCollection<string> ValidationErrors { get; }
 
@@ -97,16 +83,6 @@ public sealed class MainWindowViewModel : ViewModelBase
 	public ICommand ExpandAllCategoriesCommand { get; }
 
 	public ICommand CollapseAllCategoriesCommand { get; }
-
-	public ICommand RemovePreviewTreeViewTailCommand { get; }
-
-	public ICommand AddPreviewTreeViewTailCommand { get; }
-
-	public ICommand SelectPreviewPrimaryCommand { get; }
-
-	public ICommand SelectPreviewPrimaryAndAccentCommand { get; }
-
-	public ObservableCollection<string> PreviewSelectedTreeViewValues { get; } = [];
 
 	public ObservableCollection<object> PreviewCFListTreeSelectedItems { get; } = [];
 
@@ -171,19 +147,6 @@ public sealed class MainWindowViewModel : ViewModelBase
 
 	public string CurrentFileDisplay => string.IsNullOrWhiteSpace(_currentFilePath) ? "Current File: not saved yet" : $"Current File: {_currentFilePath}";
 
-	public int PreviewTreeStressEntryCount
-	{
-		get => _previewTreeStressEntryCount;
-		set
-		{
-			var clamped = value < 0 ? 0 : value;
-			if (SetProperty(ref _previewTreeStressEntryCount, clamped))
-			{
-				RebuildPreviewTreeViewNodes();
-			}
-		}
-	}
-
 	public string StatusMessage
 	{
 		get => _statusMessage;
@@ -222,60 +185,6 @@ public sealed class MainWindowViewModel : ViewModelBase
 		{
 			category.IsExpanded = true;
 		}
-	}
-
-	public void RemovePreviewTreeViewTail()
-	{
-		var currentCount = PreviewTreeViewNodes.Count;
-		var removeCount = Math.Min(4, currentCount);
-		if (removeCount == 0)
-		{
-			return;
-		}
-
-		var newList = new List<TreeViewSourceEntry>(currentCount - removeCount);
-		for (var index = 0; index < currentCount - removeCount; index++)
-		{
-			newList.Add(PreviewTreeViewNodes[index]);
-		}
-
-		PreviewTreeViewNodes = new ObservableCollection<TreeViewSourceEntry>(newList);
-	}
-
-	public void AddPreviewTreeViewTail()
-	{
-		var tailEntries = CreatePreviewTreeViewTailEntries();
-		var currentCount = PreviewTreeViewNodes.Count;
-		var newList = new List<TreeViewSourceEntry>(currentCount + tailEntries.Count);
-		for (var index = 0; index < currentCount; index++)
-		{
-			newList.Add(PreviewTreeViewNodes[index]);
-		}
-
-		for (var index = 0; index < tailEntries.Count; index++)
-		{
-			var entry = tailEntries[index];
-			newList.Add(new TreeViewSourceEntry
-			{
-				Value = entry.Value,
-				Type = entry.Type,
-			});
-		}
-
-		PreviewTreeViewNodes = new ObservableCollection<TreeViewSourceEntry>(newList);
-	}
-
-	public void SelectPreviewPrimary()
-	{
-		PreviewSelectedTreeViewValues.Clear();
-		PreviewSelectedTreeViewValues.Add("palette/primary");
-	}
-
-	public void SelectPreviewPrimaryAndAccent()
-	{
-		PreviewSelectedTreeViewValues.Clear();
-		PreviewSelectedTreeViewValues.Add("palette/primary");
-		PreviewSelectedTreeViewValues.Add("palette/accent");
 	}
 
 	public bool TryLoadDocument(string path)
@@ -379,34 +288,6 @@ public sealed class MainWindowViewModel : ViewModelBase
 		return _messageBoxService.Confirm("You have unsaved changes. Continue without saving them?", "Unsaved Changes");
 	}
 
-	private static ObservableCollection<TreeViewSourceEntry> CreatePreviewTreeViewNodesCollection(int stressEntryCount)
-	{
-		// Production callers hand the CFTreeView a pre-built ObservableCollection<TreeViewSourceEntry>
-		// rather than mutating an existing collection one entry at a time. The preview mimics that
-		// by building a flat List first and then wrapping it in a single ObservableCollection
-		// constructor call, which raises no per-item CollectionChanged events.
-		var entries = new List<TreeViewSourceEntry>(3 + Math.Max(0, stressEntryCount) + 4)
-		{
-			new TreeViewSourceEntry { Value = "palette/primary", Type = "palette" },
-			new TreeViewSourceEntry { Value = "palette/secondary", Type = "palette" },
-			new TreeViewSourceEntry { Value = "palette/accent", Type = "palette" },
-		};
-
-		var stressEntries = CreatePreviewTreeStressEntries(stressEntryCount);
-		for (var index = 0; index < stressEntries.Count; index++)
-		{
-			entries.Add(stressEntries[index]);
-		}
-
-		var tailEntries = CreatePreviewTreeViewTailEntries();
-		for (var index = 0; index < tailEntries.Count; index++)
-		{
-			entries.Add(tailEntries[index]);
-		}
-
-		return new ObservableCollection<TreeViewSourceEntry>(entries);
-	}
-
 	private void RebuildPreviewCFListTreeItems()
 	{
 		var items = new List<PreviewCFListTreeItem>(15 + PreviewCFListTreeStressEntryCount)
@@ -461,75 +342,6 @@ public sealed class MainWindowViewModel : ViewModelBase
 					|| (item.TreeFolderPath?.Contains(filterText, StringComparison.OrdinalIgnoreCase) ?? false)),
 		};
 		PreviewCFListTreeMatchedItems = view;
-	}
-
-	private void RebuildPreviewTreeViewNodes()
-	{
-		// Replace the whole collection instance instead of mutating the existing one. This matches
-		// the production pattern (source is always a full-replace) and lets CFTreeView see exactly
-		// one NodesSource DP change, which triggers a single rebuild without needing to coalesce
-		// a Clear + N × Add burst on the current collection.
-		PreviewTreeViewNodes = CreatePreviewTreeViewNodesCollection(_previewTreeStressEntryCount);
-	}
-
-	private static IReadOnlyList<TreeViewSourceEntry> CreatePreviewTreeStressEntries(int count)
-	{
-		if (count <= 0)
-		{
-			return Array.Empty<TreeViewSourceEntry>();
-		}
-
-		var random = new Random(12345);
-		var roots = new[] { "library", "project", "themes", "assets", "plugins" };
-		var branches = new[] { "core", "editor", "preview", "runtime", "shared", "layout", "inputs", "colors" };
-		var leaves = new[] { "panel", "button", "textbox", "combobox", "treeview", "slider", "badge", "dialog", "accent", "surface" };
-		var types = new[] { "level", "unit", "folder" };
-		var entries = new List<TreeViewSourceEntry>(count);
-		var usedValues = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-
-		while (entries.Count < count)
-		{
-			var depth = random.Next(2, 6);
-			var segments = new List<string>(depth)
-			{
-				roots[random.Next(roots.Length)],
-			};
-
-			for (var index = 1; index < depth - 1; index++)
-			{
-				segments.Add($"{branches[random.Next(branches.Length)]}-{random.Next(1, 10)}");
-			}
-
-			segments.Add($"{leaves[random.Next(leaves.Length)]}-{entries.Count + 1:000}");
-			var value = string.Join("/", segments);
-
-			if (!usedValues.Add(value))
-			{
-				continue;
-			}
-
-			entries.Add(new TreeViewSourceEntry
-			{
-				Value = value,
-				Type = types[random.Next(types.Length)],
-			});
-
-
-			
-		}
-
-		return entries;
-	}
-
-	private static IReadOnlyList<TreeViewSourceEntry> CreatePreviewTreeViewTailEntries()
-	{
-		return
-		[
-			new TreeViewSourceEntry { Value = "controls/inputs/textbox", Type = "control" },
-			new TreeViewSourceEntry { Value = "controls/inputs/combobox", Type = "control" },
-			new TreeViewSourceEntry { Value = "controls/selection/checkbox", Type = "control" },
-			new TreeViewSourceEntry { Value = "controls/selection/radiobutton", Type = "control" },
-		];
 	}
 
 	private void LoadDocument(AgenticColorsDocument document)
