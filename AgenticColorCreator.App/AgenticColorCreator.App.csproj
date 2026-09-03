@@ -12,6 +12,17 @@
 		<UseWPF>true</UseWPF>
 	</PropertyGroup>
 
+	<PropertyGroup>
+		<FinalOutputPath80 Condition="'$(FinalOutputPath80)' == ''">bin\$(Configuration)\net8.0-windows\</FinalOutputPath80>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(TargetFramework)' == 'net8.0-windows'">
+		<OutputPath>$(FinalOutputPath80)</OutputPath>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<NoWarn>$(NoWarn);CA1416</NoWarn> <!-- Windows-only assembly; platform warnings are noise -->
+		<DefineConstants>$(DefineConstants);NETCORE</DefineConstants>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<!--
 		Font files must be explicitly compiled into the assembly as a WPF Resource so the

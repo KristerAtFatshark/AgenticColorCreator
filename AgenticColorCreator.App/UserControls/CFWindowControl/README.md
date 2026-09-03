@@ -8,6 +8,22 @@ A WPF `Window` subclass with fully themed client-drawn chrome. It replaces the s
 the `CF.CustomWindow` template while retaining window dragging, native edge resizing, caption commands,
 multi-monitor maximization, and DPI-aware minimum sizing.
 
+## Framework Compatibility
+
+The application project defines `NETCORE` when `TargetFramework` is `net8.0-windows`. CFWindow uses
+that symbol only where the framework/compiler paths differ:
+
+- `NETCORE`: nullable-reference declarations, file-scoped namespaces, and generic `Marshal` helpers.
+- Without `NETCORE`: C# 7.3 declarations, block-scoped namespaces, and non-generic .NET Framework
+  `Marshal` helpers.
+
+Shared behavior remains in one implementation. No warnings are disabled in CFWindowControl. The fallback
+branch is compiled directly with Roslyn `/langversion:7.3` against the .NET Framework 4.7.2 WPF reference
+assemblies during compatibility verification.
+
+The net8 project output uses `FinalOutputPath80`. It can be supplied externally; when absent it defaults
+to `bin\$(Configuration)\net8.0-windows\`.
+
 ## Files
 
 - `CFWindow.cs` - the window subclass and its dependency properties.

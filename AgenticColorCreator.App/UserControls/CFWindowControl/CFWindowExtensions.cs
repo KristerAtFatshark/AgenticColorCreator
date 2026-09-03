@@ -6,17 +6,36 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 
+#if NETCORE
 namespace AgenticColorCreator.App.UserControls.CFWindowControl;
 
+/// <summary>
+/// Configures caption commands and native monitor-aware sizing for custom-chrome windows.
+/// </summary>
 public static class CFWindowExtensions
 {
+#else
+namespace AgenticColorCreator.App.UserControls.CFWindowControl
+{
+	/// <summary>
+	/// Configures caption commands and native monitor-aware sizing for custom-chrome windows.
+	/// </summary>
+	public static class CFWindowExtensions
+	{
+#endif
 	private const int MonitorDefaultToNearest = 0x00000002;
 	private const int WmGetMinMaxInfo = 0x0024;
 
-	private static readonly ConditionalWeakTable<Window, WindowSetupData> SetupData = new();
+	private static readonly ConditionalWeakTable<Window, WindowSetupData> SetupData =
+		new ConditionalWeakTable<Window, WindowSetupData>();
 
 	public static void ConfigureCFWindowBehavior(this Window window)
 	{
+		if (window == null)
+		{
+			throw new ArgumentNullException(nameof(window));
+		}
+
 		if (SetupData.TryGetValue(window, out _))
 		{
 			return;
@@ -83,7 +102,13 @@ public static class CFWindowExtensions
 	private sealed class WindowSetupData
 	{
 		private readonly Window _window;
-		private HwndSource? _source;
+		private
+#if NETCORE
+			HwndSource?
+#else
+			HwndSource
+#endif
+			_source;
 
 		public WindowSetupData(Window window)
 		{
@@ -98,15 +123,30 @@ public static class CFWindowExtensions
 			}
 
 			_source = HwndSource.FromHwnd(handle);
-			_source?.AddHook(WindowProc);
+			if (_source != null)
+			{
+				_source.AddHook(WindowProc);
+			}
 		}
 
-		public void OnSourceInitialized(object? sender, EventArgs e)
+		public void OnSourceInitialized(
+#if NETCORE
+			object?
+#else
+			object
+#endif
+			sender, EventArgs e)
 		{
 			AddHook(new WindowInteropHelper(_window).Handle);
 		}
 
-		public void OnClosed(object? sender, EventArgs e)
+		public void OnClosed(
+#if NETCORE
+			object?
+#else
+			object
+#endif
+			sender, EventArgs e)
 		{
 			if (_source != null)
 			{
@@ -137,11 +177,11 @@ public static class CFWindowExtensions
 			_window.WindowState = WindowState.Normal;
 		}
 
-		private IntPtr WindowProc(IntPtr hwnd, int message, IntPtr wParam, IntPtr lParam, ref bool handled)
+		private IntPtr WindowProc(IntPtr handle, int message, IntPtr wParam, IntPtr lParam, ref bool handled)
 		{
 			if (message == WmGetMinMaxInfo)
 			{
-				ApplyMinMaxInfo(hwnd, lParam);
+				ApplyMinMaxInfo(handle, lParam);
 				handled = true;
 			}
 
@@ -158,21 +198,31 @@ public static class CFWindowExtensions
 
 			var monitorInfo = new MonitorInfo
 			{
+#if NETCORE
 				Size = Marshal.SizeOf<MonitorInfo>(),
+#else
+				Size = Marshal.SizeOf(typeof(MonitorInfo)),
+#endif
 			};
 			if (!GetMonitorInfo(monitor, ref monitorInfo))
 			{
 				return;
 			}
 
+#if NETCORE
 			var minMaxInfo = Marshal.PtrToStructure<MinMaxInfo>(parameter);
+#else
+			var minMaxInfo = (MinMaxInfo)Marshal.PtrToStructure(parameter, typeof(MinMaxInfo));
+#endif
 			minMaxInfo.MaxPosition.X = monitorInfo.WorkArea.Left - monitorInfo.Monitor.Left;
 			minMaxInfo.MaxPosition.Y = monitorInfo.WorkArea.Top - monitorInfo.Monitor.Top;
 			minMaxInfo.MaxSize.X = monitorInfo.WorkArea.Right - monitorInfo.WorkArea.Left;
 			minMaxInfo.MaxSize.Y = monitorInfo.WorkArea.Bottom - monitorInfo.WorkArea.Top;
 
 			var source = PresentationSource.FromVisual(_window);
-			var transform = source?.CompositionTarget?.TransformToDevice ?? Matrix.Identity;
+			var transform = source != null && source.CompositionTarget != null
+				? source.CompositionTarget.TransformToDevice
+				: Matrix.Identity;
 			minMaxInfo.MinTrackSize.X = (int)Math.Ceiling(_window.MinWidth * transform.M11);
 			minMaxInfo.MinTrackSize.Y = (int)Math.Ceiling(_window.MinHeight * transform.M22);
 
@@ -180,3 +230,7 @@ public static class CFWindowExtensions
 		}
 	}
 }
+
+#if !NETCORE
+}
+#endif
