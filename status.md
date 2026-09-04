@@ -18,14 +18,14 @@
 - `ShowResourceType` controls dark gray file extensions; selected extensions use `#FFC8C8C8`.
 - Resource icons are mapped by dotless `ResourceType` and cached as frozen `DrawingImage` instances.
 - Keyboard focus uses a full-size 1px dashed `#FFC8C8C8` focus visual; committed selection keeps the orange border.
-- Public helpers: `CollapseAll()`, `CollapseAllExceptSelectedItemParents()`, and `SelectFirstItemAndFocus()`.
+- Public helpers include `CollapseAll()`, `ExpandAll()`, `CollapseAllExceptSelectedItemParents()`, `SelectFirstItemAndFocus()`, and `ForceSelection(object)`.
 - The UI Preview includes realistic resource data, filtering, stress count, threshold, extension toggle, selection readout, and helper actions.
 - `CFListTreeViewControl\README.md` documents the complete API and behavior.
 
 ## Current Verification
 
 - Release app build passes with zero warnings.
-- All remaining tests pass: 59 total, including 27 CFListTreeView functional tests and 3 CFListTreeView performance tests.
+- All remaining tests pass: 63 total, including 31 CFListTreeView functional tests and 3 CFListTreeView performance tests.
 - CFWindowControl's non-`NETCORE` branch compiles with C# 7.3 against .NET Framework 4.7.2 WPF references; the net8 branch resolves `NETCORE`, its isolated `FinalOutputPath80`, disabled framework suffix appending, and `CA1416` exclusion as intended.
 - CFListTreeViewControl's non-`NETCORE` production files and generated XAML partial compile with C# 7.3 against .NET Framework 4.7.2 WPF references; its net8 branch remains nullable-aware.
 - `PreviewCFListTreeItem` uses the same `NETCORE`/fallback declaration pattern and compiles under C# 7.3 with optional folder/sort strings represented as plain reference types.
@@ -51,6 +51,7 @@
 - Added `NETCORE` branches to CFWindowControl for nullable/file-scoped/generic-marshal net8 syntax and plain C# 7.3/block-scoped/non-generic-marshal .NET Framework syntax. The fallback compiles against .NET Framework 4.7.2 references without defining `NETCORE`.
 - Added `NETCORE` compatibility branches across CFListTreeViewControl. Shared code now uses C# 7.3-compatible namespaces, explicit construction, mutable setters instead of `init`, and older pattern syntax; nullable declarations are limited to the net8 branch.
 - Converted `ReferenceEqualityComparer` to reusable `ReferenceEqualityComparer<T>` with a public `Default` comparer; CFListTreeView now uses `ReferenceEqualityComparer<object>.Default`.
+- Added CFListTreeView `ExpandAll()` and one-shot `ForceSelection(object)`. Forced selection replaces current selection, expands and focuses the target, and is naturally replaced by the next user selection; the UI Preview can force-select its second source item.
 - Removed the superseded TreeView-backed control, preview card/state, styles, and performance tests after replacing it with `CFListTreeView`.
 - Shared `CF.TreeView...` brush keys and `CF.TreeViewExpanderToggleTemplate` remain intentionally because CFListTreeView uses them; no legacy control type or style remains.
 - Added class-level documentation and final behavior cleanup for CFListTreeView selection, focus, sorting, and filtering.

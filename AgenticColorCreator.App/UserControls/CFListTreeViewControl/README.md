@@ -182,8 +182,12 @@ Clearing the filter therefore restores the user's expansion state.
 Public helpers:
 
 - `CollapseAll()`.
+- `ExpandAll()`.
 - `CollapseAllExceptSelectedItemParents()`.
 - `SelectFirstItemAndFocus()`.
+- `ForceSelection(object item)` replaces current selection with a source object, expands its ancestors,
+  scrolls/focuses it, and returns false when the object is not in `SourceItems`. It does not create a
+  persistent lock: the next click or Enter selection replaces it normally.
 
 ## Virtualization And Styling
 
@@ -232,3 +236,4 @@ names with different extensions, varied resource-type icons, and generated stres
 - `Show Extensions` (`ShowResourceType`).
 - Selected-item and visible-row readouts.
 - Collapse all, collapse to selected, and select-first actions.
+- Expand all and force-select-second actions.

@@ -169,6 +169,82 @@ public sealed class CFListTreeViewTests
 	}
 
 	[Fact]
+	public void ExpandAll_RevealsAllCollapsedRows()
+	{
+		RunOnStaThread(() =>
+		{
+			var control = CreateControl(new[]
+			{
+				new TestItem("First", "A/B", "a"),
+				new TestItem("Second", "C/D", "b"),
+			});
+			control.CollapseAll();
+
+			control.ExpandAll();
+
+			Assert.Equal(new[] { "A", "B", "First", "C", "D", "Second" }, GetVisibleRows(control).Select(GetDisplayName));
+		});
+	}
+
+	[Fact]
+	public void ForceSelection_ReplacesSelectionAndExpandsAncestors()
+	{
+		RunOnStaThread(() =>
+		{
+			var first = new TestItem("First", "A", "a");
+			var second = new TestItem("Second", "B/C", "b");
+			var selectedItems = new ObservableCollection<object> { first };
+			var control = CreateControl(new[] { first, second });
+			control.SelectedItems = selectedItems;
+			control.CollapseAll();
+
+			var result = control.ForceSelection(second);
+
+			Assert.True(result);
+			Assert.Same(second, Assert.Single(selectedItems));
+			Assert.Equal(new[] { "A", "B", "C", "Second" }, GetVisibleRows(control).Select(GetDisplayName));
+		});
+	}
+
+	[Fact]
+	public void ForceSelection_UnknownItemLeavesSelectionUnchanged()
+	{
+		RunOnStaThread(() =>
+		{
+			var first = new TestItem("First", null, "a");
+			var selectedItems = new ObservableCollection<object> { first };
+			var control = CreateControl(new[] { first });
+			control.SelectedItems = selectedItems;
+
+			var result = control.ForceSelection(new TestItem("Unknown", null, "b"));
+
+			Assert.False(result);
+			Assert.Same(first, Assert.Single(selectedItems));
+		});
+	}
+
+	[Fact]
+	public void UserSelectionPath_OverridesForcedSelection()
+	{
+		RunOnStaThread(() =>
+		{
+			var first = new TestItem("First", null, "a");
+			var second = new TestItem("Second", null, "b");
+			var selectedItems = new ObservableCollection<object>();
+			var control = CreateControl(new[] { first, second });
+			control.SelectedItems = selectedItems;
+			control.ForceSelection(first);
+			var secondRow = GetVisibleRows(control).Single(row => row.Item == second);
+			var selectOnly = typeof(CFListTreeView).GetMethod("SelectOnly", BindingFlags.Instance | BindingFlags.NonPublic);
+			Assert.NotNull(selectOnly);
+
+			selectOnly!.Invoke(control, new object[] { secondRow });
+
+			Assert.Same(second, Assert.Single(selectedItems));
+		});
+	}
+
+	[Fact]
 	public void SourceCollectionBurst_CoalescesToOneStructureLoad()
 	{
 		RunOnStaThread(() =>

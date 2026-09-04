@@ -358,7 +358,9 @@
 												  IsChecked="{Binding ElementName=PreviewCFListTreeViewControl, Path=ShowResourceType, Mode=TwoWay}" />
 										<Button Style="{StaticResource CF.Button}" Click="OnCollapseCFListTreeViewToSelectedParentsClick" Content="Collapse To Selected" />
 										<Button Style="{StaticResource CF.Button}" Click="OnCollapseCFListTreeViewAllClick" Content="Collapse All" />
+										<Button Style="{StaticResource CF.Button}" Click="OnExpandCFListTreeViewAllClick" Content="Expand All" />
 										<Button Style="{StaticResource CF.Button}" Click="OnSelectFirstCFListTreeViewItemClick" Content="Select First + Focus" />
+										<Button Style="{StaticResource CF.Button}" Click="OnForceSelectSecondCFListTreeViewItemClick" Content="Force Select Second" />
 									</WrapPanel>
 								</StackPanel>
 							</Grid>

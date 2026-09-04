@@ -480,9 +480,22 @@ public partial class MainWindow : Window
 		PreviewCFListTreeViewControl.CollapseAll();
 	}
 
+	private void OnExpandCFListTreeViewAllClick(object sender, RoutedEventArgs e)
+	{
+		PreviewCFListTreeViewControl.ExpandAll();
+	}
+
 	private void OnSelectFirstCFListTreeViewItemClick(object sender, RoutedEventArgs e)
 	{
 		PreviewCFListTreeViewControl.SelectFirstItemAndFocus();
+	}
+
+	private void OnForceSelectSecondCFListTreeViewItemClick(object sender, RoutedEventArgs e)
+	{
+		if (DataContext is MainWindowViewModel viewModel && viewModel.PreviewCFListTreeSourceItems.Count > 1)
+		{
+			PreviewCFListTreeViewControl.ForceSelection(viewModel.PreviewCFListTreeSourceItems[1]);
+		}
 	}
 
 	private void OnClearCFListTreeViewFilterClick(object sender, RoutedEventArgs e)

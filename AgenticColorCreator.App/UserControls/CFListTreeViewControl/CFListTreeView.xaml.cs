@@ -172,6 +172,47 @@ namespace AgenticColorCreator.App.UserControls.CFListTreeViewControl
 		RefreshVisibleRows();
 	}
 
+	public void ExpandAll()
+	{
+		foreach (var node in _allNodes)
+		{
+			if (node.IsFolder)
+			{
+				node.Row.IsExpanded = true;
+			}
+		}
+
+		RefreshVisibleRows();
+	}
+
+	/// <summary>
+	/// Replaces the current selection with one source item. The next user selection replaces this
+	/// forced selection through the normal interaction path.
+	/// </summary>
+	public bool ForceSelection(object item)
+	{
+		if (item == null)
+		{
+			throw new ArgumentNullException(nameof(item));
+		}
+
+		#if NETCORE
+		CFListTreeNode? node;
+		#else
+		CFListTreeNode node;
+		#endif
+		if (!_nodesByItem.TryGetValue(item, out node))
+		{
+			return false;
+		}
+
+		ExpandAncestors(node);
+		RefreshVisibleRows();
+		SelectOnly(node.Row);
+		FocusRow(node.Row);
+		return true;
+	}
+
 	public void CollapseAllExceptSelectedItemParents()
 	{
 		var expanded = new HashSet<CFListTreeNode>();
@@ -212,17 +253,22 @@ namespace AgenticColorCreator.App.UserControls.CFListTreeViewControl
 			return null;
 		}
 
+		ExpandAncestors(node);
+		RefreshVisibleRows();
+		var row = node.Row;
+		SelectOnly(row);
+		FocusRow(row);
+		return row;
+	}
+
+	private static void ExpandAncestors(CFListTreeNode node)
+	{
 		var parent = node.Parent;
 		while (parent != null)
 		{
 			parent.Row.IsExpanded = true;
 			parent = parent.Parent;
 		}
-		RefreshVisibleRows();
-		var row = node.Row;
-		SelectOnly(row);
-		FocusRow(row);
-		return row;
 	}
 
 	private static void OnSourceItemsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
