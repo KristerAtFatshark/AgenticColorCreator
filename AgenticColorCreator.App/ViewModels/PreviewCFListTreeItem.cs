@@ -1,5 +1,6 @@
 using AgenticColorCreator.App.UserControls.CFListTreeViewControl;
 
+#if NETCORE
 namespace AgenticColorCreator.App.ViewModels;
 
 /// <summary>
@@ -7,7 +8,25 @@ namespace AgenticColorCreator.App.ViewModels;
 /// </summary>
 public sealed class PreviewCFListTreeItem : ICFTreeViewItem
 {
-	public PreviewCFListTreeItem(string resourceName, string resourceType, string? treeFolderPath, string? treeSortKey = null)
+#else
+namespace AgenticColorCreator.App.ViewModels
+{
+	/// <summary>
+	/// Supplies production-shaped resource metadata for the CFListTreeView UI preview.
+	/// </summary>
+	public sealed class PreviewCFListTreeItem : ICFTreeViewItem
+	{
+#endif
+	public PreviewCFListTreeItem(
+		string resourceName,
+		string resourceType,
+#if NETCORE
+		string? treeFolderPath,
+		string? treeSortKey = null)
+#else
+		string treeFolderPath,
+		string treeSortKey = null)
+#endif
 	{
 		ResourceName = resourceName;
 		ResourceType = resourceType;
@@ -19,9 +38,15 @@ public sealed class PreviewCFListTreeItem : ICFTreeViewItem
 
 	public string ResourceType { get; }
 
+#if NETCORE
 	public string? TreeFolderPath { get; }
 
 	public string? TreeSortKey { get; }
+#else
+	public string TreeFolderPath { get; private set; }
+
+	public string TreeSortKey { get; private set; }
+#endif
 
 	public override string ToString()
 	{
@@ -29,3 +54,7 @@ public sealed class PreviewCFListTreeItem : ICFTreeViewItem
 		return string.IsNullOrEmpty(TreeFolderPath) ? resource : TreeFolderPath + "/" + resource;
 	}
 }
+
+#if !NETCORE
+}
+#endif

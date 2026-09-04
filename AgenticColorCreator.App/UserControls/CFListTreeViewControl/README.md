@@ -20,6 +20,8 @@ for compiler/framework syntax differences:
 The fallback production files plus the generated XAML partial class compile directly with Roslyn
 `/langversion:7.3` against .NET Framework 4.7.2 WPF references (`WindowsBase`, `PresentationCore`,
 `PresentationFramework`, `System.Xaml`, and Ribbon). No warnings are disabled in CFListTreeViewControl.
+The UI preview model `PreviewCFListTreeItem` follows the same `NETCORE`/C# 7.3 namespace and nullable
+declaration pattern.
 
 ## Files
 

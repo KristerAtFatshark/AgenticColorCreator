@@ -28,6 +28,7 @@
 - All remaining tests pass: 59 total, including 27 CFListTreeView functional tests and 3 CFListTreeView performance tests.
 - CFWindowControl's non-`NETCORE` branch compiles with C# 7.3 against .NET Framework 4.7.2 WPF references; the net8 branch resolves `NETCORE`, its isolated `FinalOutputPath80`, disabled framework suffix appending, and `CA1416` exclusion as intended.
 - CFListTreeViewControl's non-`NETCORE` production files and generated XAML partial compile with C# 7.3 against .NET Framework 4.7.2 WPF references; its net8 branch remains nullable-aware.
+- `PreviewCFListTreeItem` uses the same `NETCORE`/fallback declaration pattern and compiles under C# 7.3 with optional folder/sort strings represented as plain reference types.
 - CFListTreeView performance tests cover 50,000-item loading, sparse masks, flat scrolling, and expanded mixed-icon scrolling.
 - Loaded scrolling tests confirm approximately one viewport of ListView containers is realized.
 
