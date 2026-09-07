@@ -666,7 +666,12 @@
 				Background="{TemplateBinding Background}"
 				BorderBrush="{TemplateBinding BorderBrush}"
 				BorderThickness="{TemplateBinding BorderThickness}">
-			<ContentPresenter HorizontalAlignment="Center"
+			<ContentPresenter Content="{TemplateBinding Content}"
+						  ContentTemplate="{TemplateBinding ContentTemplate}"
+						  ContentStringFormat="{TemplateBinding ContentStringFormat}"
+						  HorizontalAlignment="Center"
+						  RecognizesAccessKey="True"
+						  SnapsToDevicePixels="True"
 						  VerticalAlignment="Center" />
 		</Border>
 		<ControlTemplate.Triggers>
@@ -851,6 +856,56 @@
 							   StrokeDashArray="1 2"
 							   StrokeThickness="1"
 							   SnapsToDevicePixels="True" />
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style x:Key="CF.CFListTreeViewExpander" TargetType="ToggleButton">
+		<Setter Property="Width" Value="16" />
+		<Setter Property="Height" Value="16" />
+		<Setter Property="Background" Value="{StaticResource CF.TreeView.Default.GlyphBackground}" />
+		<Setter Property="BorderBrush" Value="{StaticResource CF.TreeView.Default.GlyphBorder}" />
+		<Setter Property="BorderThickness" Value="1" />
+		<Setter Property="Focusable" Value="False" />
+		<Setter Property="IsChecked" Value="{Binding IsExpanded, Mode=OneWay}" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="ToggleButton">
+					<Border x:Name="ToggleBorder"
+							Background="{TemplateBinding Background}"
+							BorderBrush="{TemplateBinding BorderBrush}"
+							BorderThickness="{TemplateBinding BorderThickness}">
+						<Path x:Name="ExpanderGlyph"
+							  Width="8"
+							  Height="8"
+							  HorizontalAlignment="Center"
+							  VerticalAlignment="Center"
+							  Data="M 0 0 L 4 4 L 0 8 Z"
+							  Fill="{StaticResource CF.TreeView.Default.Glyph}"
+							  Stretch="Uniform" />
+					</Border>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsMouseOver" Value="True">
+							<Setter TargetName="ToggleBorder" Property="Background" Value="{StaticResource CF.TreeView.MouseOver.GlyphBackground}" />
+							<Setter TargetName="ToggleBorder" Property="BorderBrush" Value="{StaticResource CF.TreeView.MouseOver.GlyphBorder}" />
+							<Setter TargetName="ExpanderGlyph" Property="Fill" Value="{StaticResource CF.TreeView.MouseOver.Glyph}" />
+						</Trigger>
+						<Trigger Property="IsChecked" Value="True">
+							<Setter TargetName="ExpanderGlyph" Property="LayoutTransform">
+								<Setter.Value>
+									<RotateTransform Angle="90" />
+								</Setter.Value>
+							</Setter>
+						</Trigger>
+						<DataTrigger Binding="{Binding IsFilterActive, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" Value="True">
+							<Setter TargetName="ExpanderGlyph" Property="LayoutTransform">
+								<Setter.Value>
+									<RotateTransform Angle="90" />
+								</Setter.Value>
+							</Setter>
+						</DataTrigger>
+					</ControlTemplate.Triggers>
 				</ControlTemplate>
 			</Setter.Value>
 		</Setter>

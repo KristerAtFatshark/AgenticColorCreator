@@ -153,6 +153,11 @@ The persistent graph and the ListView rows are separate concerns:
 This projection model is what allows one recycling ListView to behave like a tree without nested WPF
 item containers.
 
+Folder expanders use `CF.CFListTreeViewExpander` from `CFDarkStyles.xaml`. That style owns the 16px
+toggle dimensions, brushes, triangle geometry, hover state, expansion binding, and normal/filter-forced
+rotation. The control XAML only supplies the click handler and style reference, keeping visuals available
+when the control and shared dictionary are consumed from another assembly.
+
 ## Filter Mask
 
 `MatchedItems` never rebuilds the graph:

@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -572,6 +573,35 @@ public sealed class CFListTreeViewTests
 	}
 
 	[Fact]
+	public void LoadedFolderExpander_RendersTrianglePathContent()
+	{
+		RunOnStaThread(() =>
+		{
+			var control = CreateControl(new[] { new TestItem("Leaf", "Folder", "leaf") });
+			var window = new Window
+			{
+				Width = 400,
+				Height = 200,
+				Content = control,
+				ShowInTaskbar = false,
+			};
+			window.Show();
+			control.UpdateLayout();
+			var listView = GetRowsListView(control);
+			var folderContainer = Assert.IsType<ListViewItem>(listView.ItemContainerGenerator.ContainerFromIndex(0));
+			var expander = FindVisualChild<ToggleButton>(folderContainer);
+			Assert.NotNull(expander);
+			var glyph = FindVisualChild<System.Windows.Shapes.Path>(expander!);
+
+			Assert.NotNull(glyph);
+			Assert.Equal(Visibility.Visible, glyph!.Visibility);
+			Assert.True(glyph.ActualWidth > 0);
+			Assert.True(glyph.ActualHeight > 0);
+			window.Close();
+		});
+	}
+
+	[Fact]
 	public void NonContractSourceItems_AreIgnored()
 	{
 		RunOnStaThread(() =>
@@ -618,6 +648,26 @@ public sealed class CFListTreeViewTests
 		var field = typeof(CFListTreeView).GetField("RowsListView", BindingFlags.Instance | BindingFlags.NonPublic);
 		Assert.NotNull(field);
 		return Assert.IsType<ListView>(field!.GetValue(control));
+	}
+
+	private static T? FindVisualChild<T>(DependencyObject parent) where T : DependencyObject
+	{
+		for (var index = 0; index < VisualTreeHelper.GetChildrenCount(parent); index++)
+		{
+			var child = VisualTreeHelper.GetChild(parent, index);
+			if (child is T match)
+			{
+				return match;
+			}
+
+			var descendant = FindVisualChild<T>(child);
+			if (descendant != null)
+			{
+				return descendant;
+			}
+		}
+
+		return null;
 	}
 
 	private static string GetDisplayName(CFListTreeViewRow row)

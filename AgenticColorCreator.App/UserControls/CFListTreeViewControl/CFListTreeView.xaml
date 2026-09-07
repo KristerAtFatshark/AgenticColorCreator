@@ -14,22 +14,8 @@
 						<ColumnDefinition Width="*" />
 					</Grid.ColumnDefinitions>
 					<ToggleButton x:Name="Expander"
-							  Width="16"
-							  Height="16"
-							  Background="{StaticResource CF.TreeView.Default.GlyphBackground}"
-							  BorderBrush="{StaticResource CF.TreeView.Default.GlyphBorder}"
-							  BorderThickness="1"
-							  Focusable="False"
-							  IsChecked="{Binding IsExpanded, Mode=OneWay}"
-							  Click="OnExpanderClick"
-							  Template="{StaticResource CF.TreeViewExpanderToggleTemplate}">
-						<Path x:Name="ExpanderGlyph"
-							  Width="8"
-							  Height="8"
-							  Data="M 0 0 L 4 4 L 0 8 Z"
-							  Fill="{StaticResource CF.TreeView.Default.Glyph}"
-							  Stretch="Uniform" />
-					</ToggleButton>
+							  Style="{StaticResource CF.CFListTreeViewExpander}"
+							  Click="OnExpanderClick" />
 					<Grid Grid.Column="1">
 						<StackPanel Orientation="Horizontal">
 							<Image Width="14" Height="14" Stretch="Uniform">
@@ -70,20 +56,6 @@
 						<Setter TargetName="Expander" Property="Visibility" Value="Hidden" />
 						<Setter TargetName="FolderName" Property="Visibility" Value="Collapsed" />
 						<Setter TargetName="LeafContent" Property="Visibility" Value="Visible" />
-					</DataTrigger>
-					<DataTrigger Binding="{Binding IsExpanded}" Value="True">
-						<Setter TargetName="ExpanderGlyph" Property="LayoutTransform">
-							<Setter.Value>
-								<RotateTransform Angle="90" />
-							</Setter.Value>
-						</Setter>
-					</DataTrigger>
-					<DataTrigger Binding="{Binding IsFilterActive, RelativeSource={RelativeSource AncestorType={x:Type local:CFListTreeView}}}" Value="True">
-						<Setter TargetName="ExpanderGlyph" Property="LayoutTransform">
-							<Setter.Value>
-								<RotateTransform Angle="90" />
-							</Setter.Value>
-						</Setter>
 					</DataTrigger>
 					<MultiDataTrigger>
 						<MultiDataTrigger.Conditions>
